@@ -44,11 +44,6 @@ jobs:
           ref: gh-pages
           path: gh-pages
 
-      - name: Configure Git
-        run: |
-            git config user.name "$GITHUB_ACTOR"
-            git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-
       - name: Extract Helm Charts
         id: extract_chart_entries
         uses: mikefarah/yq@master
@@ -73,6 +68,9 @@ jobs:
 
       - name: Commit and push README.md to gh-pages
         run: |
-            git add gh-pages/README.md
+            cd gh-pages
+            git config user.name "$GITHUB_ACTOR"
+            git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+            git add README.md
             git commit -m "Update README.md with latest Helm charts"
             git push origin gh-pages
