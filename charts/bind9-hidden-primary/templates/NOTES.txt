@@ -1,0 +1,76 @@
+
+Welcome to {{ include "bind9-hidden-primary.fullname" . }}!
+
+1. The dns service is provided via service type {{ .Values.service.type }}.
+
+  To test updates, you could use the nsupdate cli-tool.
+  * Prepare your environment by executing the following code (copy & paste).
+  * Then follow the additional on-screen instructions.
+
+```
+  export TSIG_AUTH=$(echo $(kubectl get secret --namespace {{ .Release.Namespace }} {{ include "bind9-hidden-primary.fullname" . }}-tsigkey -o jsonpath="{.data.rndc-allow-transfer-tsigkey\.conf}" | base64 -d | cut -d' ' -f2) | awk '{print substr($2, 1, length($2)-1)  ":"substr($1, 2, length($1)-2)":"substr($3, 2, length($3)-3)}')
+
+{{- if contains "NodePort" .Values.service.type }}
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "bind9-hidden-primary.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo " ";echo " "
+  echo "Use the following commands, exec them line-by-line:"
+  echo 'nsupdate -y $TSIG_AUTH'
+  echo "> server $NODE_IP {{ .Values.service.port }}"
+  echo '> update add {{ .Values.zone.name }}. 600  IN  TXT   "Hello world?"'
+  echo "> send"
+  echo '> update delete {{ .Values.zone.name }}. 600  IN  TXT   "Hello world?"'
+  echo "> send"
+  echo " ";echo " "
+```
+{{- else if contains "LoadBalancer" .Values.service.type }}
+
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "bind9-hidden-primary.fullname" . }} -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
+  echo " ";echo " "
+  echo "Use the following commands, exec them line-by-line:"
+  echo 'nsupdate -y $TSIG_AUTH'
+  echo "> server $SERVICE_IP {{ .Values.service.port }}"
+  echo '> update add {{ .Values.zone.name }}. 600  IN  TXT   "Hello world?"'
+  echo "> send"
+  echo '> update delete {{ .Values.zone.name }}. 600  IN  TXT   "Hello world?"'
+  echo "> send"
+  echo " ";echo " "
+```
+
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+        You can watch its status by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "bind9-hidden-primary.fullname" . }}'
+
+
+
+{{- else if contains "ClusterIP" .Values.service.type }}
+  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "bind9-hidden-primary.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  export CONTAINER_PORT=$(kubectl get pod --namespace {{ .Release.Namespace }} $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  echo " ";echo " "
+  echo "Open a port-forwarding session (within an new terminal):"
+  echo "echo "kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:$CONTAINER_PORT"
+  echo " "
+  echo "Use the following commands, exec them line-by-line:"
+  echo 'nsupdate -y $TSIG_AUTH'
+  echo "> server 127.0.0.1 8080"
+  echo '> update add {{ .Values.zone.name }}. 600  IN  TXT   "Hello world?"'
+  echo "> send"
+  echo '> update delete {{ .Values.zone.name }}. 600  IN  TXT   "Hello world?"'
+  echo "> send"
+  echo " ";echo " "
+  ```
+{{- end }}
+
+
+Feel free to use dig to query the nameserver results, while adding/removing entries:
+
+
+{{- if contains "NodePort" .Values.service.type }}
+dig @$NODE_PORT -p $NODE_IP {{ .Values.zone.name }} txt
+{{- else if contains "LoadBalancer" .Values.service.type }}
+dig @$SERVICE_IP -p {{ .Values.service.port }} {{ .Values.zone.name }} txt
+{{- else if contains "ClusterIP" .Values.service.type }}
+dig @127.0.0.1 -p 8080 {{ .Values.zone.name }} txt
+{{- end }}
+
+
+Happy DNS entry adding! - :party:

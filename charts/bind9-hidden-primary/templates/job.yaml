@@ -1,0 +1,61 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "bind9-hidden-primary.fullname" . }}-tsigkey-patch
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "bind9-hidden-primary.labels" . | nindent 4 }}
+spec:
+  template:
+    metadata:
+      name: {{ include "bind9-hidden-primary.fullname" . }}-tsigkey-patch
+      namespace: {{ .Release.Namespace }}
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: {{ include "bind9-hidden-primary.fullname" . }}-job
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: {{ .Chart.Name }}-tsigkey-patch-job
+        {{- with .Values.securityContext }}
+        securityContext:
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
+        image: "{{ .Values.jobImage.repository }}:{{ .Values.jobImage.tag | default .Chart.AppVersion }}"
+        command: ["sh", "-c", '
+          . ./cmd/run.sh
+        ']
+        env:
+        - name: TSIG_HMAC_FUNC
+          value: {{ .Values.env.tsigHmacFunc }}
+        - name: TSIG_KEYNAME
+          value: {{ .Values.env.tsigKeyname }}
+        - name: TSIGKEY_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "bind9-hidden-primary.fullname" . }}-tsigkey
+              key: rndc-allow-transfer-tsigkey.conf
+        {{- with .Values.resources }}
+        resources:
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
+        volumeMounts:
+            - name: {{ .Release.Name }}-data
+              mountPath: "/var/lib/bind"
+            - mountPath: "/zonedbs"
+              name: {{ .Release.Name }}-zonedbs
+              readOnly: true
+            - mountPath: "/cmd/"
+              name: runsh
+              readOnly: true
+      volumes:
+      {{- include "common.app.pvc" . | nindent 8 }}
+        - name: {{ .Release.Name }}-zonedbs
+          configMap:
+            name: {{ include "bind9-hidden-primary.fullname" . }}-zonedbs
+        - name: runsh
+          configMap:
+            name: {{ include "bind9-hidden-primary.fullname" . }}-run

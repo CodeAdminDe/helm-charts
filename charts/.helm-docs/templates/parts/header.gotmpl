@@ -1,0 +1,9 @@
+{{- define "extra.templates.parts.header" -}}
+
+{{ template "chart.header" . }}
+
+{{ template "chart.deprecationWarning" . }}
+
+{{ template "chart.badgesSection" . }}
+
+{{- end -}}

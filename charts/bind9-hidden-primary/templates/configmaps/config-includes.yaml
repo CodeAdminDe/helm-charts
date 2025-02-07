@@ -1,0 +1,34 @@
+{{- if empty .Values.existingConfigMap.includes }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "bind9-hidden-primary.fullname" . }}-config-includes
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "bind9-hidden-primary.labels" . | nindent 4 }}
+data:
+  000-list-providerprimaries.conf: |
+        primaries providerprimarylist {
+          {{ .Values.providerPrimaryIpList }};
+        };
+  200-acl-providerprimaries.conf: |
+        acl providerprimaryacl {
+          {{ .Values.providerPrimaryIpList }};
+        };
+  900-zone-main.conf: |
+        zone "{{ .Values.zone.name }}." {
+                type primary;
+                file "/var/lib/bind/db.zone-main";
+                serial-update-method unixtime;
+                notify explicit;
+                also-notify {
+                        providerprimarylist;
+                };
+                allow-transfer {
+                        providerprimaryacl;
+                };
+                allow-update {
+                        key "{{ .Values.env.tsigKeyname }}";
+                };
+        };
+{{- end }}

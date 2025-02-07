@@ -1,0 +1,56 @@
+{{- if empty .Values.existingConfigMap.named }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "bind9-hidden-primary.fullname" . }}-config-named
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "bind9-hidden-primary.labels" . | nindent 4 }}
+data:
+  named.conf: |
+    options {
+            directory "/var/cache/bind";
+            version "not currently available";
+            listen-on port 5353 { any; };
+            allow-recursion {
+                    none;
+            };
+            allow-transfer {
+                    none;
+            };
+            allow-update {
+                    none;
+            };
+            allow-query {
+                    any;
+            };
+            allow-notify {
+                    none;
+            };
+            allow-query-cache {
+                    none;
+            };
+    };
+
+    logging {
+        channel stdout {
+            stderr;
+            severity info;
+            print-category no;
+            print-severity no;
+            print-time yes;
+        };
+        channel debug_log {
+              stderr;
+              severity debug;
+        };
+        category security { stdout; };
+        category dnssec   { stdout; };
+        category default  { debug_log; };
+    };
+{{- if .Values.statisticsChannels.enabled }}
+    statistics-channels { inet 0.0.0.0 port {{ .Values.statisticsChannels.port }} allow { any; } ; };
+{{- end }}
+    include "/etc/bind/includes.d/*.conf";
+    include "/etc/bind/includes.d/tsig/*.conf";
+{{- end }}

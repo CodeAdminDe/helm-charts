@@ -1,0 +1,78 @@
+name: Release Charts
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.7.0
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+  update-readme:
+    needs: release
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch into main
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main
+
+      - name: Checkout gh-pages branch into gh-pages
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Configure Git
+        run: |
+            git config user.name "$GITHUB_ACTOR"
+            git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Extract Helm Charts
+        id: extract_chart_entries
+        uses: mikefarah/yq@master
+        with:
+            cmd: cat gh-pages/index.yaml | yq -o=json eval '.entries | to_entries'
+
+      - name: Generate README.md
+        run: |
+            helm_charts='${{ steps.extract_chart_entries.outputs.result }}'
+            table="| Name | Version | AppVersion | Description |\n|------|---------|------------|-------------|\n"
+            while IFS= read -r chart; do
+                value=$(echo "$chart" | jq '.value[0]')
+                name=$(echo $value | jq '.name')
+                version=$(echo $value | jq '.version')
+                appVersion=$(echo $value | jq '.appVersion')
+                description=$(echo $value | jq '.description')
+                table+="| ${name} | ${version} | ${appVersion} | ${description} |\n"
+            done < <(echo "$helm_charts" | jq -c '.[]')
+            echo -e "$(cat main/${CA_GHR_HEADER_TMPL})\n\n${table}" > gh-pages/README.md
+        env:
+            CA_GHR_HEADER_TMPL: ".gh-pages/templates/README.md"
+
+      - name: Commit and push README.md to gh-pages
+        run: |
+            git add gh-pages/README.md
+            git commit -m "Update README.md with latest Helm charts"
+            git push origin gh-pages

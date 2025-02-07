@@ -1,0 +1,111 @@
+{{- define "extra.atom.repository.url" -}}
+https://github.com/codeadminde/helm-charts/
+{{- end -}}
+
+{{- define "extra.atom.repository.owner" -}}
+codeadminde
+{{- end -}}
+
+{{- define "extra.atom.contact.mail" -}}
+frederic.roggon@codeadmin.de
+{{- end -}}
+
+{{- define "extra.atom.helm.url" -}}
+https://codeadminde.github.io/helm-charts/
+{{- end -}}
+
+{{- define "extra.atom.helm.path" -}}
+{{ template "extra.atom.repository.owner" . }}/{{ template "chart.name" . }}
+{{- end -}}
+
+{{- define "extra.atom.helm.namespace" -}}
+_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
+{{- end -}}
+
+
+{{- define "extra.atom.tldr" -}}
+## TL;DR
+
+You don't want to read through the docs? That's the quick and dirty way:
+
+```bash
+helm repo add {{ template "extra.atom.repository.owner" . }} {{ template "extra.atom.helm.url" . }}
+helm repo update
+helm install {{ template "chart.name" . }} {{ template "extra.atom.helm.path" . }}
+```
+{{ template "extra.atom.helm.namespace" . }}
+
+
+> I'd recommend to read trough the docs. Skip them at your own risk. ;-)
+{{- end -}}
+
+{{- define "extra.atom.repo" -}}
+## Repository
+
+In order to install / query / etc... the charts, you'll need to add the repository:
+
+```bash
+helm repo add {{ template "extra.atom.repository.owner" . }} {{ template "extra.atom.helm.url" . }}
+helm repo update
+```
+{{- end -}}
+
+{{- define "extra.atom.install" -}}
+
+## Installation
+
+To install the chart with the release name `{{ template "chart.name" . }}`
+
+```bash
+helm install {{ template "chart.name" . }} {{ template "extra.atom.helm.path" . }}
+```
+{{ template "extra.atom.helm.namespace" . }}
+
+{{- end -}}
+
+{{- define "extra.atom.uninstall" -}}
+## Uninstallation
+
+To uninstall the chart release named `{{ template "chart.name" . }}`
+
+```bash
+helm uninstall {{ template "chart.name" . }}
+```
+{{ template "extra.atom.helm.namespace" . }}
+
+The command removes all the Kubernetes components associated with the chart **including persistent volumes** and deletes the release.
+{{- end -}}
+
+{{- define "extra.atom.configsection" -}}
+## Configuration
+
+Take a look at the [values.yaml](./values.yaml) file of the chart. It contains the default configuration and additional notes.
+So it would be a good idea to take a look at it, even if you already know what you would like to accomplish.
+
+
+To configure the release (chart values), provide your own values via a *.yaml file and reference it with the `-f` flag.
+
+> #### Sample
+>
+> ```bash
+> helm install {{ template "chart.name" . }} {{ template "extra.atom.helm.path" . }} -f values.yaml
+> ```
+
+Alternatively, you could provide the values which you want to override at the CLI directly. Than you've to provide the values as key=value pair(s), referenced by the `--set` flag.
+
+> #### Sample
+>
+> ```bash
+> helm install {{ template "chart.name" . }} --set key=value --set keyTwo=secondValue {{ template "extra.atom.helm.path" . }}
+> ```
+
+{{- end -}}
+
+{{- define "extra.atom.feedbackandsecurity" -}}
+## Feedback & Security
+
+Please reach out to me at {{ template "extra.atom.contact.mail" . }} for feedback.
+
+If you find security-related issues, please do not use the issue tracker instead, contact me via email.
+
+{{- end -}}

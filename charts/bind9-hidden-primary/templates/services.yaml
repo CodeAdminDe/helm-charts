@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "bind9-hidden-primary.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "bind9-hidden-primary.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  externalTrafficPolicy:  {{ .Values.service.externalTrafficPolicy }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
+      protocol: TCP
+      name: dns-tcp
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
+      protocol: UDP
+      name: dns-udp
+  selector:
+    {{- include "bind9-hidden-primary.selectorLabels" . | nindent 4 }}
+---
+{{- if .Values.statisticsChannels.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "bind9-hidden-primary.fullname" . }}-statistics
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "bind9-hidden-primary.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.statisticsChannels.type }}
+  externalTrafficPolicy:  {{ .Values.statisticsChannels.externalTrafficPolicy }}
+  ports:
+    - port: {{- .Values.statisticsChannels.port }}
+      targetPort: {{- .Values.statisticsChannels.port }}
+      protocol: TCP
+      name: statistics-http
+  selector:
+    {{- include "bind9-hidden-primary.selectorLabels" . | nindent 4 }}
+{{- end }}

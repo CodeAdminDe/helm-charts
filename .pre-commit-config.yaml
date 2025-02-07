@@ -1,0 +1,24 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v5.0.0
+  hooks:
+  - id: trailing-whitespace
+  - id: end-of-file-fixer
+  - id: fix-byte-order-marker
+  - id: mixed-line-ending
+  - id: check-merge-conflict
+  - id: check-case-conflict
+
+- repo: https://github.com/norwoodj/helm-docs
+  rev: v1.14.2
+  hooks:
+    - id: helm-docs
+      args:
+        - --chart-search-root=charts
+        - --template-files=./.helm-docs/definitions/atom/_definitions.gotmpl
+        - --template-files=./.helm-docs/definitions/readme/README.md.default-template.gotmpl
+        - --template-files=./.helm-docs/definitions/readme/README.md.complexvalues-template.gotmpl
+        - --template-files=./.helm-docs/templates/parts/header.gotmpl
+        - --template-files=./.helm-docs/templates/parts/main.gotmpl
+        - --template-files=./.helm-docs/templates/parts/footer.gotmpl
+        - --template-files=README.md.gotmpl

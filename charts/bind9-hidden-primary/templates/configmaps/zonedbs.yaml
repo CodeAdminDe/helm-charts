@@ -1,0 +1,24 @@
+{{- if empty .Values.existingConfigMap.zonedbs }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "bind9-hidden-primary.fullname" . }}-zonedbs
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "bind9-hidden-primary.labels" . | nindent 4 }}
+data:
+  db.zone-main: |
+    $TTL 1d
+    $ORIGIN {{ .Values.zone.name }}.
+    @          IN      SOA   {{ .Values.zone.soa.nsHostname }}.{{ .Values.zone.name }}. {{ .Values.zone.soa.hostmasterMail }}. (
+                                    <<SERIALASUNIXTIMESTAMPDYN>> ; serial number
+                                    12h        ; refresh
+                                    15m        ; update retry
+                                    2w         ; expiry
+                                    1h         ; minimum
+                                    )
+{{- range .Values.zone.providerPrimaryNameservers }}
+    @          IN      NS      {{ . }}.
+{{- end }}
+    @          IN      TXT     "{{ .Values.zone.spfTxtRecordValue }}"
+{{- end }}

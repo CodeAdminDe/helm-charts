@@ -1,0 +1,23 @@
+{{- define "extra.templates.parts.main" -}}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.homepageLine" . }}
+
+{{ template "chart.maintainersSection" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "extra.atom.tldr" . }}
+
+{{ template "extra.atom.repo" . }}
+
+{{ template "extra.atom.install" . }}
+
+{{ template "extra.atom.uninstall" . }}
+
+{{ template "extra.atom.configsection" . }}
+
+{{- end -}}

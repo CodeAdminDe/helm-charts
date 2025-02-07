@@ -1,0 +1,118 @@
+apiVersion: apps/v1
+kind: {{ .Values.kind }}
+metadata:
+  name: {{ include "bind9-hidden-primary.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "bind9-hidden-primary.labels" . | nindent 4 }}
+spec:
+  {{- if contains "Deployment" .Values.kind  }}
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "bind9-hidden-primary.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "bind9-hidden-primary.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "bind9-hidden-primary.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ['/bin/sh', '-c', '. /cmd/exec.sh']
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+          {{- if .Values.volumeMounts }}
+            {{- .Values.volumeMounts | toYaml . | nindent 12 }}
+          {{- end }}
+            - mountPath: "/etc/bind/includes.d/tsig/"
+              name: tsig-key
+              readOnly: true
+            - mountPath: "/etc/bind/includes.d/"
+              name: config-includes
+              readOnly: true
+            - mountPath: "/etc/bind/named.conf"
+              name: config-named
+              subPath: named.conf
+              readOnly: true
+            - mountPath: "/cmd/"
+              name: execsh
+              readOnly: true
+            - name: {{ .Release.Name }}-data
+              mountPath: "/var/lib/bind"
+            - name: {{ .Release.Name }}-cache
+              mountPath: "/var/cache/bind"
+      volumes:
+      {{- if .Values.volumes }}
+        {{- .Values.volumes | toYaml . | nindent 8 }}
+      {{- end }}
+      {{- include "common.app.pvc" . | nindent 8 }}
+        - name: tsig-key
+          secret:
+            secretName: {{ include "bind9-hidden-primary.fullname" . }}-tsigkey
+        - name: config-includes
+          configMap:
+            name: {{ include "bind9-hidden-primary.fullname" . }}-config-includes
+        - name: config-named
+          configMap:
+            name: {{ include "bind9-hidden-primary.fullname" . }}-config-named
+            items:
+              - key: named.conf
+                path: named.conf
+        - name: execsh
+          configMap:
+            name: {{ include "bind9-hidden-primary.fullname" . }}-run
+        - name: {{ .Release.Name }}-cache
+          emptyDir:
+            sizeLimit: {{ .Values.persistence.cacheDirSizeLimit }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
