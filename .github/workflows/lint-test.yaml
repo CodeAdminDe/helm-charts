@@ -22,10 +22,14 @@ jobs:
         with:
           version: v3.17.0
 
-      - uses: actions/setup-python@v5.4.0
+      - name: Set up python
+        uses: actions/setup-python@v5.4.0
         with:
           python-version: '3.x'
           check-latest: true
+
+      - name: Run pre-commit
+        uses: pre-commit/action@v3.0.1
 
       - name: Set up chart-testing
         uses: helm/chart-testing-action@v2.7.0
