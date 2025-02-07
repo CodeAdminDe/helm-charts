@@ -56,10 +56,10 @@ jobs:
             table="| Name | Version | AppVersion | Description |\n|------|---------|------------|-------------|\n"
             while IFS= read -r chart; do
                 value=$(echo "$chart" | jq '.value[0]')
-                name=$(echo $value | jq '.name')
-                version=$(echo $value | jq '.version')
-                appVersion=$(echo $value | jq '.appVersion')
-                description=$(echo $value | jq '.description')
+                name=$(echo $value | jq -r '.name')
+                version=$(echo $value | jq -r '.version')
+                appVersion=$(echo $value | jq -r '.appVersion')
+                description=$(echo $value | jq -r '.description')
                 table+="| ${name} | ${version} | ${appVersion} | ${description} |\n"
             done < <(echo "$helm_charts" | jq -c '.[]')
             echo -e "$(cat main/${CA_GHR_HEADER_TMPL})\n\n${table}" > gh-pages/README.md
