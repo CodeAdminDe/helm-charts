@@ -28,6 +28,11 @@ jobs:
           python-version: '3.x'
           check-latest: true
 
+      - name: Install helm-docs
+        run: go install github.com/norwoodj/helm-docs/cmd/helm-docs@v1.14.2
+        env:
+          GOBIN: /usr/local/bin/
+
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
 
