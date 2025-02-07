@@ -1,4 +1,4 @@
 {
     "branchPrefix": "renovate/",
-    "onboarding": false
+    "onboarding": true
 }
