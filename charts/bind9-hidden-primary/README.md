@@ -221,7 +221,7 @@ Alternatively, you could provide the values which you want to override at the CL
 		</tr>
 		<tr>
 			<td>persistence</td>
-			<td>CHANGE REQUIRED</td>
+			<td>object</td>
 			<td><pre lang="json">
 {
   "accessModes": [
@@ -268,12 +268,12 @@ Alternatively, you could provide the values which you want to override at the CL
 		</tr>
 		<tr>
 			<td>providerPrimaryIpList</td>
-			<td>CHANGE REQUIRED</td>
+			<td>string</td>
 			<td><pre lang="json">
 "127.0.0.1"
 </pre>
 </td>
-			<td>List of upstream dns servers that are allowed to query the hidden primary and getting notified (Separator: ";") Provide your providers upstream IP and/or IPs.</td>
+			<td>List of upstream dns servers that are allowed to query the hidden primary (AXFR requests) and getting notified (Separator: ";") Provide your providers upstream IP and/or IPs.</td>
 		</tr>
 		<tr>
 			<td>readinessProbe</td>
@@ -427,7 +427,7 @@ Alternatively, you could provide the values which you want to override at the CL
 		</tr>
 		<tr>
 			<td>zone</td>
-			<td>CHANGE REQUIRED</td>
+			<td>object</td>
 			<td><pre lang="json">
 {
   "name": "myzone.sample-chart.example.com",
@@ -444,7 +444,25 @@ Alternatively, you could provide the values which you want to override at the CL
 }
 </pre>
 </td>
-			<td>Zone details zone:   name: Name of the zone that this bind deployment is authorative hidden primary  soa:    nsHostname: nameserver hostname for soa record... just use whatever you like, it does not need to be resolvable.    hostmasterMail: The mail that you like to publish withn the soa record. replace the @-sign by a dot, like: hostmaster@example.com -> hostmaster.example.com   spfTxtRecordValue: We set the SPF record to disallow all servers sending mails with this domain. You could overwirte it as you wish.   providerPrimaryNameservers: Provide a list of nameservers that are resposible for the zone. These are typically the providers primary nameservers.     - ns1.provider.tld     - ns2.provider.tld</td>
+			<td>Zone details Provide your zone details to configure the nameserver to match our needs.
+
+<details>
+<summary> Object param description (Expand)</summary>
+
+```
+zone:
+  name: Name of the zone that this bind deployment is authorative hidden primary
+  soa:
+    nsHostname: nameserver hostname for soa record... just use whatever you like, it does not need to be resolvable.
+    hostmasterMail: The mail that you like to publish withn the soa record. replace the @-sign by a dot, like: hostmaster@example.com -> hostmaster.example.com
+  spfTxtRecordValue: We set the SPF record to disallow all servers sending mails with this domain. You could overwirte it as you wish.
+  providerPrimaryNameservers: Provide a list of nameservers that are resposible for the zone. These are typically the providers primary nameservers.
+    - ns1.provider.tld
+    - ns2.provider.tld
+```
+
+</details>
+</td>
 		</tr>
 	</tbody>
 </table>
