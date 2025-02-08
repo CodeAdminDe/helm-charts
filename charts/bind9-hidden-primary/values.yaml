@@ -86,26 +86,58 @@ securityContext:
   seccompProfile:
     type: RuntimeDefault
 
+# -- Set a RuntimeClass to execute the containers with a custom runtime configuration.
+# Register a runtimeClass within your cluster beforehand.
+# @raw
+#
+# <details>
+# <summary>Motivation (Expand)</summary>
+#
+# > The container runtime configuration is used to run a Pod's containers. . . .
+# > For example, if part of your workload deserves a high level of information security assurance, you might choose to schedule those Pods so that they run in a container runtime that uses hardware virtualization.
+# > You'd then benefit from the extra isolation of the alternative runtime, at the expense of some additional overhead. . . .
+#
+# <i>Source and more informations: https://kubernetes.io/docs/concepts/containers/runtime-class/ </i>
+#
+# </details>
+#
+runtimeClass:
+  # -- (string/runtimeClassName) Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).
+  pods: ""
+  # -- (string/runtimeClassName) Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).
+  jobs: ""
+
 # -- This configures the TSIG Key HMAC algo and Key Name which will be used within the configuration of bind9. Usually, you won't need to change these defaults.
 # General details about the TSIG implementation could be found at: https://www.isc.org/docs/2021-bind-mgmt-05-webinar.pdf
 env:
   tsigHmacFunc: HMAC-SHA512
   tsigKeyname: rndc-allow-transfer-tsigkey
 
-# -- (CHANGE REQUIRED) List of upstream dns servers that are allowed to query the hidden primary and getting notified (Separator: ";")
+# -- List of upstream dns servers that are allowed to query the hidden primary (AXFR requests) and getting notified (Separator: ";")
 # Provide your providers upstream IP and/or IPs.
 providerPrimaryIpList: "127.0.0.1"
 
-# -- (CHANGE REQUIRED) Zone details
+# -- Zone details
+# Provide your zone details to configure the nameserver to match our needs.
+# @raw
+#
+# <details>
+# <summary> Object param description (Expand)</summary>
+#
+# ```
 # zone:
 #   name: Name of the zone that this bind deployment is authorative hidden primary
-#  soa:
-#    nsHostname: nameserver hostname for soa record... just use whatever you like, it does not need to be resolvable.
-#    hostmasterMail: The mail that you like to publish withn the soa record. replace the @-sign by a dot, like: hostmaster@example.com -> hostmaster.example.com
+#   soa:
+#     nsHostname: nameserver hostname for soa record... just use whatever you like, it does not need to be resolvable.
+#     hostmasterMail: The mail that you like to publish withn the soa record. replace the @-sign by a dot, like: hostmaster@example.com -> hostmaster.example.com
 #   spfTxtRecordValue: We set the SPF record to disallow all servers sending mails with this domain. You could overwirte it as you wish.
 #   providerPrimaryNameservers: Provide a list of nameservers that are resposible for the zone. These are typically the providers primary nameservers.
 #     - ns1.provider.tld
 #     - ns2.provider.tld
+# ```
+#
+# </details>
+#
 zone:
   name: myzone.sample-chart.example.com # <== Provide your zone.
   soa:
@@ -117,7 +149,7 @@ zone:
     - b.sample-chart.example.com
     - c.sample-chart.example.com
 
-# -- (CHANGE REQUIRED) This configures the persistens of your release.
+# -- This configures the persistens of your release.
 # The bind9 service uses persistent storage to save it's current zone database
 # and to ensure all running containers does share the same details.
 # See values.yaml for a detailed sample.
