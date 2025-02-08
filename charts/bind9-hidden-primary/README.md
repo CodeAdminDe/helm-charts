@@ -2,7 +2,7 @@
 
 # bind9-hidden-primary
 
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.21](https://img.shields.io/badge/AppVersion-9.21-informational?style=flat-square)
+![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.21](https://img.shields.io/badge/AppVersion-9.21-informational?style=flat-square)
 
 A Helm chart for bind9 to use as hidden primary, based on the offical Docker Image by InternetSystemsConsortium (ISC)
 
@@ -79,7 +79,7 @@ Alternatively, you could provide the values which you want to override at the CL
 
 ## Values
 
-<table height="400px" >
+<table height="800px" >
 	<thead>
 		<th>Key</th>
 		<th>Type</th>
@@ -696,7 +696,7 @@ kubectl get -A runtimeClasses
 ```
 
 _**Personal recommendation**: A runtime that I believe is worth trying is the Kata Container Runtime.
-Take a look at xxx to get an overview about it.
+Take a look at [https://katacontainers.io](https://katacontainers.io) to get an overview about it.
 Also take a look at the HowTo-Section within the kata-container GitHub Repository,
 e.g. to learn [how to create a runtime class](https://github.com/kata-containers/kata-containers/blob/main/docs/how-to/run-kata-with-k8s.md#create-runtime-class-for-kata-containers)_
 
