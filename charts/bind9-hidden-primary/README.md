@@ -1,6 +1,6 @@
 # bind9-hidden-primary
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.21](https://img.shields.io/badge/AppVersion-9.21-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.21](https://img.shields.io/badge/AppVersion-9.21-informational?style=flat-square)
 
 A Helm chart for bind9 to use as hidden primary, based on the offical Docker Image by InternetSystemsConsortium (ISC)
 
@@ -307,6 +307,48 @@ Alternatively, you could provide the values which you want to override at the CL
 </pre>
 </td>
 			<td>Specify default resources for the</td>
+		</tr>
+		<tr>
+			<td>runtimeClass</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "jobs": "",
+  "pods": ""
+}
+</pre>
+</td>
+			<td>Set a RuntimeClass to execute the containers with a custom runtime configuration. Register a runtimeClass within your cluster beforehand.
+
+<details>
+<summary>Motivation (Expand)</summary>
+
+> The container runtime configuration is used to run a Pod's containers. . . .
+> For example, if part of your workload deserves a high level of information security assurance, you might choose to schedule those Pods so that they run in a container runtime that uses hardware virtualization.
+> You'd then benefit from the extra isolation of the alternative runtime, at the expense of some additional overhead. . . .
+
+<i>Source and more informations: https://kubernetes.io/docs/concepts/containers/runtime-class/ </i>
+
+</details>
+</td>
+		</tr>
+		<tr>
+			<td>runtimeClass.jobs</td>
+			<td>string/runtimeClassName</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).</td>
+		</tr>
+		<tr>
+			<td>runtimeClass.pods</td>
+			<td>string/runtimeClassName</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
 			<td>securityContext</td>
