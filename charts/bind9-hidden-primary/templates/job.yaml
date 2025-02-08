@@ -20,6 +20,9 @@ spec:
       {{- end }}
       containers:
       - name: {{ .Chart.Name }}-tsigkey-patch-job
+        {{- if .Values.runtimeClass.jobs }}
+        runtimeClass: {{ .Values.runtimeClass.jobs }}
+        {{- end }}
         {{- with .Values.securityContext }}
         securityContext:
           {{- toYaml . | nindent 12 }}
