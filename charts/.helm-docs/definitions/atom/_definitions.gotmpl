@@ -109,3 +109,31 @@ Please reach out to me at {{ template "extra.atom.contact.mail" . }} for feedbac
 If you find security-related issues, please do not use the issue tracker instead, contact me via email.
 
 {{- end -}}
+
+
+{{- define "extra.atom.valuetypesection" -}}
+    {{- $allIncludedExtraValueTypes := list "empty" -}}
+    {{- range .Values }}
+        {{- $allIncludedExtraValueTypes = append $allIncludedExtraValueTypes .Type -}}
+    {{- end -}}
+    {{- $allIncludedExtraValueTypes :=  rest ($allIncludedExtraValueTypes | toStrings | uniq) -}}
+
+{{ if $allIncludedExtraValueTypes }}
+## Value type details
+
+The chart uses some value types for which I would like to add a further explanation / recommendation:
+
+{{ if (has "string/email" $allIncludedExtraValueTypes) }}
+### string/email
+
+{{ template "extra.atom.valuetypes.email" . }}
+{{- end -}}
+
+{{ if (has "string/runtimeClassName" $allIncludedExtraValueTypes) }}
+### string/runtimeClassName
+
+{{ template "extra.atom.valuetypes.runtimeClassName" . }}
+{{- end -}}
+{{- end -}}
+
+{{- end -}}
