@@ -38,7 +38,7 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           {{- if .Values.runtimeClass.pods }}
-          runtimeClass: {{ .Values.runtimeClass.pods }}
+          runtimeClassName: {{ .Values.runtimeClass.pods }}
           {{- end }}
           {{- with .Values.securityContext }}
           securityContext:

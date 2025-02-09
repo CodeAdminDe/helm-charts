@@ -21,7 +21,7 @@ spec:
       containers:
       - name: {{ .Chart.Name }}-tsigkey-patch-job
         {{- if .Values.runtimeClass.jobs }}
-        runtimeClass: {{ .Values.runtimeClass.jobs }}
+        runtimeClassName: {{ .Values.runtimeClass.jobs }}
         {{- end }}
         {{- with .Values.securityContext }}
         securityContext:
