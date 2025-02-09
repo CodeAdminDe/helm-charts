@@ -37,11 +37,11 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          {{- if .Values.runtimeClass.pods }}
-          runtimeClassName: {{ .Values.runtimeClass.pods }}
-          {{- end }}
           {{- with .Values.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}

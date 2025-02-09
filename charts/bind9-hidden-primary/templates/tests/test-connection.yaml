@@ -8,11 +8,11 @@ metadata:
   annotations:
     "helm.sh/hook": test
 spec:
+  {{- if .Values.runtimeClass.tests }}
+  runtimeClassName: {{ .Values.runtimeClass.tests }}
+  {{- end }}
   containers:
     - name: wget
-      {{- if .Values.runtimeClass.tests }}
-      runtimeClassName: {{ .Values.runtimeClass.tests }}
-      {{- end }}
       image: busybox
       command: ['wget']
       args: ['{{ include "bind9-hidden-primary.fullname" . }}:{{ .Values.service.port }}']
