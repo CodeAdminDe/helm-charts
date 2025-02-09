@@ -2,7 +2,7 @@
 
 # bind9-hidden-primary
 
-![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.21](https://img.shields.io/badge/AppVersion-9.21-informational?style=flat-square)
+![Version: 0.2.2](https://img.shields.io/badge/Version-0.2.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.21](https://img.shields.io/badge/AppVersion-9.21-informational?style=flat-square)
 
 A Helm chart for bind9 to use as hidden primary, based on the offical Docker Image by InternetSystemsConsortium (ISC)
 
@@ -88,7 +88,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L231">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L233">affinity</a></td>
 			<td>
 object
 </td>
@@ -102,7 +102,7 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L207">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L209">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -121,7 +121,7 @@ object
 			<td>This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/</td>
 		</tr>
 		<tr>
-			<td id="env"><a href="./values.yaml#L112">env</a></td>
+			<td id="env"><a href="./values.yaml#L114">env</a></td>
 			<td>
 object
 </td>
@@ -138,7 +138,7 @@ object
 			<td>This configures the TSIG Key HMAC algo and Key Name which will be used within the configuration of bind9. Usually, you won't need to change these defaults. General details about the TSIG implementation could be found at: https://www.isc.org/docs/2021-bind-mgmt-05-webinar.pdf</td>
 		</tr>
 		<tr>
-			<td id="existingConfigMap"><a href="./values.yaml#L169">existingConfigMap</a></td>
+			<td id="existingConfigMap"><a href="./values.yaml#L171">existingConfigMap</a></td>
 			<td>
 object
 </td>
@@ -234,7 +234,7 @@ string
 			<td>This will set the kind of deployment Use "Deployment" to deploy as ReplicaSet or use DaemonSet to deploy as DaemonSet.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L191">livenessProbe</a></td>
+			<td id="livenessProbe"><a href="./values.yaml#L193">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -268,7 +268,7 @@ string
 			<td>This is to override the chart name.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L227">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L229">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -282,7 +282,7 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="persistence"><a href="./values.yaml#L156">persistence</a></td>
+			<td id="persistence"><a href="./values.yaml#L158">persistence</a></td>
 			<td>
 object
 </td>
@@ -349,7 +349,7 @@ object
 			<td>This is for the pod-level security attributes and common container settings. More information: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/</td>
 		</tr>
 		<tr>
-			<td id="providerPrimaryIpList"><a href="./values.yaml#L118">providerPrimaryIpList</a></td>
+			<td id="providerPrimaryIpList"><a href="./values.yaml#L120">providerPrimaryIpList</a></td>
 			<td>
 string
 </td>
@@ -363,7 +363,7 @@ string
 			<td>List of upstream dns servers that are allowed to query the hidden primary (AXFR requests) and getting notified (Separator: ";") Provide your providers upstream IP and/or IPs.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe"><a href="./values.yaml#L200">readinessProbe</a></td>
+			<td id="readinessProbe"><a href="./values.yaml#L202">readinessProbe</a></td>
 			<td>
 object
 </td>
@@ -397,7 +397,7 @@ int
 			<td>This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/ (Only used when kind: Deployment)</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L176">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L178">resources</a></td>
 			<td>
 object
 </td>
@@ -420,7 +420,8 @@ object
 <pre lang="json">
 {
   "jobs": "",
-  "pods": ""
+  "pods": "",
+  "tests": ""
 }
 </pre>
 </div>
@@ -466,6 +467,20 @@ object
 </div>
 			</td>
 			<td>Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).</td>
+		</tr>
+		<tr>
+			<td id="runtimeClass--tests"><a href="./values.yaml#L110">runtimeClass.tests</a></td>
+			<td>
+<a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Sets the runtimeClass for the containers which gets executed by the test hook. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
 			<td id="securityContext"><a href="./values.yaml#L78">securityContext</a></td>
@@ -593,7 +608,7 @@ object
 			<td>The statistics channel provides a XML and JSON (/json) HTTP endpoint to monitor bind. It is not protected. Use a reverse-proxy with basic-auth and ssl, if you want to expose it externally.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L229">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L231">tolerations</a></td>
 			<td>
 list
 </td>
@@ -607,7 +622,7 @@ list
 			<td></td>
 		</tr>
 		<tr>
-			<td id="volumeMounts"><a href="./values.yaml#L222">volumeMounts</a></td>
+			<td id="volumeMounts"><a href="./values.yaml#L224">volumeMounts</a></td>
 			<td>
 list
 </td>
@@ -621,7 +636,7 @@ list
 			<td>Additional volumeMounts on the output Deployment definition.</td>
 		</tr>
 		<tr>
-			<td id="volumes"><a href="./values.yaml#L215">volumes</a></td>
+			<td id="volumes"><a href="./values.yaml#L217">volumes</a></td>
 			<td>
 list
 </td>
@@ -635,7 +650,7 @@ list
 			<td>Additional volumes on the output Deployment definition.</td>
 		</tr>
 		<tr>
-			<td id="zone"><a href="./values.yaml#L141">zone</a></td>
+			<td id="zone"><a href="./values.yaml#L143">zone</a></td>
 			<td>
 object
 </td>

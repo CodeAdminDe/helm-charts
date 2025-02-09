@@ -10,6 +10,9 @@ metadata:
 spec:
   containers:
     - name: wget
+      {{- if .Values.runtimeClass.tests }}
+      runtimeClass: {{ .Values.runtimeClass.tests }}
+      {{- end }}
       image: busybox
       command: ['wget']
       args: ['{{ include "bind9-hidden-primary.fullname" . }}:{{ .Values.service.port }}']
