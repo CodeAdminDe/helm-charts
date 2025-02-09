@@ -25,5 +25,5 @@ The following charts are currently available:
 
 | Name | Version | AppVersion | Description |
 |------|---------|------------|-------------|
-| bind9-hidden-primary | 0.2.3 | 9.21 | A Helm chart for bind9 to use as hidden primary, based on the offical Docker Image by InternetSystemsConsortium (ISC) |
+| bind9-hidden-primary | 0.2.4 | 9.21 | A Helm chart for bind9 to use as hidden primary, based on the offical Docker Image by InternetSystemsConsortium (ISC) |
 
