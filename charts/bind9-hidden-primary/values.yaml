@@ -105,6 +105,7 @@ runtimeClass:
   # -- (string/runtimeClassName) Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).
   pods: ""
   # -- (string/runtimeClassName) Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).
+  # WARNING: Successful execution with non-default runtimeClass not tested.
   jobs: ""
   # -- (string/runtimeClassName) Sets the runtimeClass for the containers which gets executed by the test hook. Takes the runtimeClass name, or "" (default).
   tests: ""

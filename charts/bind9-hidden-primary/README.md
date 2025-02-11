@@ -2,7 +2,7 @@
 
 # bind9-hidden-primary
 
-![Version: 0.2.6](https://img.shields.io/badge/Version-0.2.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.21](https://img.shields.io/badge/AppVersion-9.21-informational?style=flat-square)
+![Version: 0.2.7](https://img.shields.io/badge/Version-0.2.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.21](https://img.shields.io/badge/AppVersion-9.21-informational?style=flat-square)
 
 A Helm chart for bind9 to use as hidden primary, based on the offical Docker Image by InternetSystemsConsortium (ISC)
 
@@ -88,7 +88,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L233">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L234">affinity</a></td>
 			<td>
 object
 </td>
@@ -102,7 +102,7 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L209">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L210">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -121,7 +121,7 @@ object
 			<td>This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/</td>
 		</tr>
 		<tr>
-			<td id="env"><a href="./values.yaml#L114">env</a></td>
+			<td id="env"><a href="./values.yaml#L115">env</a></td>
 			<td>
 object
 </td>
@@ -138,7 +138,7 @@ object
 			<td>This configures the TSIG Key HMAC algo and Key Name which will be used within the configuration of bind9. Usually, you won't need to change these defaults. General details about the TSIG implementation could be found at: https://www.isc.org/docs/2021-bind-mgmt-05-webinar.pdf</td>
 		</tr>
 		<tr>
-			<td id="existingConfigMap"><a href="./values.yaml#L171">existingConfigMap</a></td>
+			<td id="existingConfigMap"><a href="./values.yaml#L172">existingConfigMap</a></td>
 			<td>
 object
 </td>
@@ -234,7 +234,7 @@ string
 			<td>This will set the kind of deployment Use "Deployment" to deploy as ReplicaSet or use DaemonSet to deploy as DaemonSet.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L193">livenessProbe</a></td>
+			<td id="livenessProbe"><a href="./values.yaml#L194">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -268,7 +268,7 @@ string
 			<td>This is to override the chart name.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L229">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L230">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -282,7 +282,7 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="persistence"><a href="./values.yaml#L158">persistence</a></td>
+			<td id="persistence"><a href="./values.yaml#L159">persistence</a></td>
 			<td>
 object
 </td>
@@ -349,7 +349,7 @@ object
 			<td>This is for the pod-level security attributes and common container settings. More information: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/</td>
 		</tr>
 		<tr>
-			<td id="providerPrimaryIpList"><a href="./values.yaml#L120">providerPrimaryIpList</a></td>
+			<td id="providerPrimaryIpList"><a href="./values.yaml#L121">providerPrimaryIpList</a></td>
 			<td>
 string
 </td>
@@ -363,7 +363,7 @@ string
 			<td>List of upstream dns servers that are allowed to query the hidden primary (AXFR requests) and getting notified (Separator: ";") Provide your providers upstream IP and/or IPs.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe"><a href="./values.yaml#L202">readinessProbe</a></td>
+			<td id="readinessProbe"><a href="./values.yaml#L203">readinessProbe</a></td>
 			<td>
 object
 </td>
@@ -397,7 +397,7 @@ int
 			<td>This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/ (Only used when kind: Deployment)</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L178">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L179">resources</a></td>
 			<td>
 object
 </td>
@@ -441,7 +441,7 @@ object
 </td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--jobs"><a href="./values.yaml#L108">runtimeClass.jobs</a></td>
+			<td id="runtimeClass--jobs"><a href="./values.yaml#L109">runtimeClass.jobs</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -452,7 +452,7 @@ object
 </pre>
 </div>
 			</td>
-			<td>Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).</td>
+			<td>Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default). WARNING: Successful execution with non-default runtimeClass not tested.</td>
 		</tr>
 		<tr>
 			<td id="runtimeClass--pods"><a href="./values.yaml#L106">runtimeClass.pods</a></td>
@@ -469,7 +469,7 @@ object
 			<td>Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--tests"><a href="./values.yaml#L110">runtimeClass.tests</a></td>
+			<td id="runtimeClass--tests"><a href="./values.yaml#L111">runtimeClass.tests</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -608,7 +608,7 @@ object
 			<td>The statistics channel provides a XML and JSON (/json) HTTP endpoint to monitor bind. It is not protected. Use a reverse-proxy with basic-auth and ssl, if you want to expose it externally.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L231">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L232">tolerations</a></td>
 			<td>
 list
 </td>
@@ -622,7 +622,7 @@ list
 			<td></td>
 		</tr>
 		<tr>
-			<td id="volumeMounts"><a href="./values.yaml#L224">volumeMounts</a></td>
+			<td id="volumeMounts"><a href="./values.yaml#L225">volumeMounts</a></td>
 			<td>
 list
 </td>
@@ -636,7 +636,7 @@ list
 			<td>Additional volumeMounts on the output Deployment definition.</td>
 		</tr>
 		<tr>
-			<td id="volumes"><a href="./values.yaml#L217">volumes</a></td>
+			<td id="volumes"><a href="./values.yaml#L218">volumes</a></td>
 			<td>
 list
 </td>
@@ -650,7 +650,7 @@ list
 			<td>Additional volumes on the output Deployment definition.</td>
 		</tr>
 		<tr>
-			<td id="zone"><a href="./values.yaml#L143">zone</a></td>
+			<td id="zone"><a href="./values.yaml#L144">zone</a></td>
 			<td>
 object
 </td>

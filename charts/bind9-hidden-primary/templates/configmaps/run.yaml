@@ -58,7 +58,22 @@ data:
         fi
     done
 
-    echo "Found patched zonefile/s ... starting bind ..."
+    for file in /etc/bind/includes.d/tsig/*.conf; do
+        if [ -f "$file" ]; then
+          if grep -q "secret" "$file"; then
+            echo "TSIG keys not ready, exiting ..."
+            /bin/sleep 3
+            exit 1
+          fi
+        else
+          echo "No TSIG key files found, exiting ..."
+          /bin/sleep 3
+          exit 1
+        fi
+    done
+
+    echo "Found patched zonefile/s ..."
+    echo "Found TSIG key files ... starting bind ..."
     /bin/sleep 10
     exec /usr/sbin/named -f -c /etc/bind/named.conf -4
 {{- end }}
