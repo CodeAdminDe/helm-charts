@@ -4,12 +4,11 @@ kind: Job
 metadata:
   name: {{ include "bind9-hidden-primary.fullname" . }}-tsigkey-patch
   namespace: {{ .Release.Namespace }}
-  annotations:
-    checksum/values: {{ print .Values | sha256sum }}
   labels:
     {{- include "bind9-hidden-primary.labels" . | nindent 4 }}
 spec:
   template:
+    ttlSecondsAfterFinished: 100
     metadata:
       name: {{ include "bind9-hidden-primary.fullname" . }}-tsigkey-patch
       namespace: {{ .Release.Namespace }}
