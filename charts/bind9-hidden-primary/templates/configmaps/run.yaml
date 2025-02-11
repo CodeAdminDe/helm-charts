@@ -60,7 +60,7 @@ data:
 
     for file in /etc/bind/includes.d/tsig/*.conf; do
         if [ -f "$file" ]; then
-          if grep -q "secret" "$file"; then
+          if ! grep -q "secret" "$file"; then
             echo "TSIG keys not ready, exiting ..."
             /bin/sleep 3
             exit 1
