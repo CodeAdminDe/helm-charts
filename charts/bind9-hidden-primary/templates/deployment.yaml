@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: {{ .Values.kind }}
+kind: Deployment
 metadata:
   name: {{ include "bind9-hidden-primary.fullname" . }}
   namespace: {{ .Release.Namespace }}
@@ -8,10 +8,8 @@ metadata:
   labels:
     {{- include "bind9-hidden-primary.labels" . | nindent 4 }}
 spec:
-  {{- if contains "Deployment" .Values.kind  }}
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
-  {{- end }}
   {{- end }}
   selector:
     matchLabels:

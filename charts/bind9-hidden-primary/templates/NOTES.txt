@@ -1,6 +1,32 @@
 
 Welcome to {{ include "bind9-hidden-primary.fullname" . }}!
 
+{{- if eq .Values.proxyv2.enabled true }}
+IMPORTANT: You enabled the ProxyV2 protocol. Please ensure that you really know that you want to enable that feature.
+To enable access outside the cluster using ingress, you must configure your ingress controller accordingly.
+In the case of ingress-nginx, when deployed via HelmRelease, you could add the tcp-service configuration like so:
+
+```
+apiVersion: v1
+kind: HelmRelease
+...
+  values:
+    controller:
+      tcp:
+        {{ .Values.service.port }}:{{ .Release.Namespace }}/{{ include "bind9-hidden-primary.fullname" . }}:{{ .Values.service.port }}:[PROXY]:[PROXY]
+    ...
+```
+
+See also:
+  * https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/
+  * https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
+
+Automatic configuration is not possible, as this is a very individual setting in the respective cluster setup.
+
+---
+
+{{- end }}
+
 1. The dns service is provided via service type {{ .Values.service.type }}.
 
   To test updates, you could use the nsupdate cli-tool.

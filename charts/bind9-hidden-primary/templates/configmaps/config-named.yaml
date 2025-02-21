@@ -11,7 +11,11 @@ data:
     options {
             directory "/var/cache/bind";
             version "not currently available";
+            {{- if eq .Values.proxyv2.enabled true }}
+            listen-on port 5353 proxy plain { any; };
+            {{- else }}
             listen-on port 5353 { any; };
+            {{- end }}
             allow-recursion {
                     none;
             };

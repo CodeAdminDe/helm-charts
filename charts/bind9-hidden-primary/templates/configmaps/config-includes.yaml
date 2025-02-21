@@ -15,6 +15,12 @@ data:
         acl providerprimaryacl {
           {{ .Values.providerPrimaryIpList }};
         };
+{{- if eq .Values.proxyv2.enabled true }}
+  400-acl-allow-proxy.conf: |
+        acl allowproxyacl {
+          {{ .Values.proxyv2.allowProxyIpList }};
+        };
+{{- end }}
   900-zone-main.conf: |
         zone "{{ .Values.zone.name }}." {
                 type primary;
@@ -29,6 +35,9 @@ data:
                 };
                 allow-update {
                         key "{{ .Values.env.tsigKeyname }}";
+                };
+                allow-proxy {
+                        allowproxyacl;
                 };
         };
 {{- end }}

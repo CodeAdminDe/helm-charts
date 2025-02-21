@@ -2,22 +2,14 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# -- This will set the kind of deployment
-# Use "Deployment" to deploy as ReplicaSet or
-# use DaemonSet to deploy as DaemonSet.
-kind: DaemonSet
-
 # -- This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
-# (Only used when kind: Deployment)
+# (Only replicaCount 1 supported)
 replicaCount: 1
 
 # -- This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
-  # -- This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
-  type: LoadBalancer
-  # -- Set the externalTrafficPolicy to Local or Cluster. I recommmend to use Local in combination with kind: DaemonSet to get the real client-ip (as long as you won't have any other measures in place to get the real client-ip)
-  externalTrafficPolicy: Local
-  # -- This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  type: ClusterIP
+  externalTrafficPolicy: Cluster
   port: 5353
 
 # -- The statistics channel provides a XML and JSON (/json) HTTP endpoint to monitor bind.
@@ -26,7 +18,7 @@ statisticsChannels:
   enabled: false
   type: ClusterIP
   port: 8053
-  externalTrafficPolicy: Local
+  externalTrafficPolicy: Cluster
 
 # -- This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 # Override the image tag, whose default is the chart appVersion.
@@ -105,7 +97,6 @@ runtimeClass:
   # -- (string/runtimeClassName) Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).
   pods: ""
   # -- (string/runtimeClassName) Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).
-  # WARNING: Successful execution with non-default runtimeClass not tested.
   jobs: ""
   # -- (string/runtimeClassName) Sets the runtimeClass for the containers which gets executed by the test hook. Takes the runtimeClass name, or "" (default).
   tests: ""
@@ -119,6 +110,16 @@ env:
 # -- List of upstream dns servers that are allowed to query the hidden primary (AXFR requests) and getting notified (Separator: ";")
 # Provide your providers upstream IP and/or IPs.
 providerPrimaryIpList: "127.0.0.1"
+
+
+# -- Enable / Disable usage of proxyv2 protocol.
+# WARNING: You should apply a custom NetworkPolicy to avoid spoofing, when using this feature!
+# more details: https://kb.isc.org/docs/proxyv2-support-in-bind-9
+proxyv2:
+  enabled: false
+  # -- List of addresses / networks which are allowed to send PROXYv2 headers. (Separator: ";")
+  # Provide your cluster ingress ips / range.
+  allowProxyIpList: "127.0.0.1/32"
 
 # -- Zone details
 # Provide your zone details to configure the nameserver to match our needs.
@@ -163,7 +164,7 @@ persistence:
   size: 1Gi
   storageClass: "longhorn" # <== Provide your storageclass or leave it empty to use the default one.
   accessModes:
-  - ReadWriteMany
+  - ReadWriteOnce
   #- ReadWriteOnce
   ## Use an existing PVC instead
   # existingClaim: "my-pvc"
