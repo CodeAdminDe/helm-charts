@@ -11,9 +11,8 @@ apiVersion: v1
 kind: HelmRelease
 ...
   values:
-    controller:
-      tcp:
-        "{{ .Values.service.port }}": "{{ .Release.Namespace }}/{{ include "bind9-hidden-primary.fullname" . }}:{{ .Values.service.port }}:[PROXY]:[PROXY]"
+    tcp:
+      "{{ .Values.service.port }}": "{{ .Release.Namespace }}/{{ include "bind9-hidden-primary.fullname" . }}:{{ .Values.service.port }}:[PROXY]:[PROXY]"
     ...
 ```
 
