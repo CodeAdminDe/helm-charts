@@ -7,7 +7,9 @@ metadata:
     {{- include "bind9-hidden-primary.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
+  {{- if eq .Values.service.type "LoadBalancer"}}
   externalTrafficPolicy:  {{ .Values.service.externalTrafficPolicy }}
+  {{- end }}
   ports:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.port }}
