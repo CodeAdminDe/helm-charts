@@ -101,6 +101,26 @@ Alternatively, you could provide the values which you want to override at the CL
 
 {{- end -}}
 
+{{- define "extra.atom.no-networkpolicies-provided" -}}
+## Chart without NetworkPolicies
+
+Please note that this chart does not provide any network policies itself.
+Therefore, I recommend the implementation of network policies before using in prod environments.
+
+{{- end -}}
+
+{{- define "extra.atom.opinionated" -}}
+## Opinionated & Non-standard
+
+Please note that this chart is highly opinionated and may therefore not be ideal for your environment and/or does not meet the typical standard for helm charts.
+
+Therefore, I'm very happy if you find the chart/s provided here helpful and perhaps even use it in your environment,
+but at the same time I strongly advise you to take a close look at it and adapt it to your needs where necessary.
+
+If you would like to return any helpful changes, I would also be happy to receive a pull request or two ;-)
+
+{{- end -}}
+
 {{- define "extra.atom.feedbackandsecurity" -}}
 ## Feedback & Security
 
