@@ -2,7 +2,7 @@
 
 # bind9-hidden-primary
 
-![Version: 0.2.8](https://img.shields.io/badge/Version-0.2.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.21](https://img.shields.io/badge/AppVersion-9.21-informational?style=flat-square)
+![Version: 0.2.9](https://img.shields.io/badge/Version-0.2.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.21](https://img.shields.io/badge/AppVersion-9.21-informational?style=flat-square)
 
 A Helm chart for bind9 to use as hidden primary, based on the offical Docker Image by InternetSystemsConsortium (ISC)
 
@@ -714,6 +714,20 @@ _**Personal recommendation**: A runtime that I believe is worth trying is the Ka
 Take a look at [https://katacontainers.io](https://katacontainers.io) to get an overview about it.
 Also take a look at the HowTo-Section within the kata-container GitHub Repository,
 e.g. to learn [how to create a runtime class](https://github.com/kata-containers/kata-containers/blob/main/docs/how-to/run-kata-with-k8s.md#create-runtime-class-for-kata-containers)_
+
+## Chart without NetworkPolicies
+
+Please note that this chart does not provide any network policies itself.
+Therefore, I recommend the implementation of network policies before using in prod environments.
+
+## Opinionated & Non-standard
+
+Please note that this chart is highly opinionated and may therefore not be ideal for your environment and/or does not meet the typical standard for helm charts.
+
+Therefore, I'm very happy if you find the chart/s provided here helpful and perhaps even use it in your environment,
+but at the same time I strongly advise you to take a close look at it and adapt it to your needs where necessary.
+
+If you would like to return any helpful changes, I would also be happy to receive a pull request or two ;-)
 
 ## Feedback & Security
 
