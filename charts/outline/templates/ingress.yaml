@@ -1,0 +1,69 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "outline.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "outline.labels" . | nindent 4 }}
+  {{- if or .Values.ingress.annotations .Values.provideMinioApiAsIngressSubpath.additionalAnnotations }}
+  annotations:
+  {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+    {{- if eq .Values.provideMinioApiAsIngressSubpath.enabled true }}
+      {{- with .Values.provideMinioApiAsIngressSubpath.additionalAnnotations }}
+      {{- toYaml . | nindent 4 }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+spec:
+  {{- with .Values.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- if .Values.ingress.tls }}
+  tls:
+    {{- range .Values.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      {{ if not (empty .secretName)  }}
+      secretName: {{ .secretName }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- with .pathType }}
+            pathType: {{ . }}
+            {{- end }}
+            {{- if not (empty .backend) }}
+            backend:
+              {{- .backend | toYaml | nindent 14 }}
+            {{- else }}
+            backend:
+              service:
+                name: {{ include "outline.fullname" $ }}
+                port:
+                  number: {{ $.Values.service.port }}
+          {{- end }}
+          {{- if eq $.Values.provideMinioApiAsIngressSubpath.enabled true }}
+          - path: {{ $.Values.provideMinioApiAsIngressSubpath.path }}
+            {{- with $.Values.provideMinioApiAsIngressSubpath.pathType }}
+            pathType: {{ . }}
+            {{- end }}
+            backend:
+              service:
+                name: {{ template "common.names.fullname" $.Subcharts.minio }}
+                port:
+                  number: {{ default 9000 $.Values.minio.service.ports.api }}
+          {{- end }}
+          {{- end }}
+    {{- end }}
+{{- end }}

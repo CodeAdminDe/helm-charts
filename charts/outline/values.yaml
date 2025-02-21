@@ -1,0 +1,313 @@
+# Default values for outline.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# -- This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+replicaCount: 1
+
+
+# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # -- This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: ClusterIP
+  # -- This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  port: 80
+  targetPort: 3000
+
+# -- This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+# Override the image tag, whose default is the chart appVersion.
+image:
+  repository: outlinewiki/outline
+  pullPolicy: IfNotPresent
+  tag: ""
+
+# -- This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets: []
+
+# -- This is to override the chart name.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# -- This is for setting Kubernetes Annotations to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+# -- This is for setting Kubernetes Labels to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+# -- This is for the pod-level security attributes and common container settings.
+# More information: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+podSecurityContext:
+  fsGroup: 1000
+
+# -- This is for the scurityContext at container level.
+# Note that container settings do not affect the Pod's Volumes.
+# More information: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  runAsUser: 1000
+  seccompProfile:
+    type: RuntimeDefault
+
+
+# -- Set a RuntimeClass to execute the containers with a custom runtime configuration.
+# Register a runtimeClass within your cluster beforehand.
+# @raw
+#
+# <details>
+# <summary>Motivation (Expand)</summary>
+#
+# > The container runtime configuration is used to run a Pod's containers. . . .
+# > For example, if part of your workload deserves a high level of information security assurance, you might choose to schedule those Pods so that they run in a container runtime that uses hardware virtualization.
+# > You'd then benefit from the extra isolation of the alternative runtime, at the expense of some additional overhead. . . .
+#
+# <i>Source and more informations: https://kubernetes.io/docs/concepts/containers/runtime-class/ </i>
+#
+# </details>
+runtimeClass:
+  # -- (string/runtimeClassName) Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).
+  pods: ""
+  # -- (string/runtimeClassName) Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).
+  jobs: ""
+  # -- (string/runtimeClassName) Sets the runtimeClass for the containers which gets executed by the test hook. Takes the runtimeClass name, or "" (default).
+  tests: ""
+
+# -- FileStorage (local or remote) config
+# Define if you'd like to store avatar images and document attachments at local disk (requires PV) or at s3 storage.
+# When set to 'true',  will be saved on local disk. Note that this would require a persistent volume (see persistence).
+# When set to 'false', s3 storage with provided configuration will be used.
+fileStorage:
+  useLocal: false
+
+# -- This configures the persistens of your release. Note that outline needs a writeable tmp/home directory, even when using S3 as storage backend.
+persistence:
+    # -- false -> app uses emptyDir (with persistence.emptyDirSizeLimit) // true -> app uses pvc created by helm. (or existingClaim, if provided).
+    # When not using local filestorage (fileStorage.useLocal: false), no volume (empty or pv/c) would be assigned.
+    # Important: If you're using fileStorage.useLocal: true, together with persistence.enabled: false, you'd loose your stored data as soon as the container restarts.
+    enabled: true
+    # -- Define the max directory size when using persistence.enabled: false together with fileStorage.useLocal: true (absolutely not recommended for production)
+    emptyDirSizeLimit: 500Mi
+    # -- Define the max directory size for the /tmp directory. We need to use a emptyDir, when require securtyContext.readOnlyRootFilesystem: true.
+    cacheDirTmpSizeLimit: 100Mi
+    # -- Define the max directory size for the /home directory. We need to use a emptyDir, when require securtyContext.readOnlyRootFilesystem: true.
+    cacheDirHomeSizeLimit: 100Mi
+    # -- Define the size of the PV when using persistence.enabled: true together with fileStorage.useLocal: true
+    size: 1Gi
+    # -- Define the storageClass to use when not providing a already existing PVC claim. Provide your cluster storageclass or leave it empty to use the default one.
+    storageClass: "longhorn"
+    # -- Define the accessModes to use when not providing a already existing PVC claim.
+    accessModes:
+    - ReadWriteOnce
+    # -- Define an already existing PVC claim.
+    # The following values will be ignored when providing an existingClaim: persistence.{size, storageClass, accessModes}
+    # existingClaim: "my-pvc"
+
+# -- Provide env vars to the deployment.
+# Do not add secretes here... use additionalEnvSecrets instead!
+env:
+  # SLACK_KEY: "slack key in slack oidc context"
+  # SLACK_SECRET: "slack secret in slack oidc context"
+
+
+# -- Provide the name of a pre-existing secret for the keys SECRET_KEY and UTILS_SECRET, if you do not want to use a auto-generated one.
+# Note that the autogenerated secrets won't be regenerated on updates.
+# Leave empty, to let helm handle it for you.
+existingEnvSecret: ""
+
+# -- Provide additonal env vars via one or more secretes... useful for OIDC setup etc...
+# Specifiy the ENV key used by outline as KEY and the secret name as VALUE.
+# The secret should contain the ENV key and the encrypted value:
+# Sample secret
+# ...
+# apiVersion: v1
+# kind: Secret
+# metadata:
+# name: your-secret-name-to-slack-oidc-secrets
+# type: Opaque
+# stringData:
+#   SLACK_KEY: "slack-key-value-goes-here"
+#   SLACK_SECRET: "slack-secret-value-goes-here"
+additionalEnvSecrets:
+  # SLACK_KEY: "your-secret-name-to-slack-oidc-secrets" # you could add more env vars via secret/s
+  # SLACK_SECRET: "your-secret-name-to-slack-oidc-secrets"
+  # SLACK_ENDPOINT: "my-slack-endpoint-secret" # this env var would be populated with content of the `my-slack-endpoint-secret` secret.
+
+# -- This block configures the dependeny / subchart details for bitnami/redis.
+# Please take a look into the values.yaml to get a more detailed view of the needed settings.
+# If you'd want to tweak settings, please take a look at the upstream values.yaml
+# at https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml
+redis:
+  enabled: true
+  architecture: "standalone"
+  persistence:
+    size: 2Gi
+    storageClass: ""
+  auth:
+    enabled: true
+
+# -- This block configures the dependeny / subchart details for bitnami/postgresql.
+# Please take a look into the values.yaml to get a more detailed view of the needed settings.
+# If you'd want to tweak settings, please take a look at the upstream values.yaml
+# at https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml
+postgresql:
+  enabled: true
+  architecture: "standalone"
+  auth:
+    database: "outline"
+    username: "outline"
+  persistence:
+    enabled: true
+    storageClass: ""
+    size: 8Gi
+
+# -- This block configures the dependeny / subchart details for bitnami/minio.
+# Please take a look into the values.yaml to get a more detailed view of the required settings.
+# If you'd want to tweak settings, please take a look at the upstream values.yaml
+# at https://github.com/bitnami/charts/blob/main/bitnami/minio/values.yaml
+# Note: Provides annotation for ingress-nginx to block minio cluster metrics. You should check if that's okay within your env and update if required!
+minio:
+  enabled: true
+  disableWebUI: true
+  apiIngress:
+    enabled: true
+    hostname: data.outline.yourdomain.tld
+    certManager: false
+    tls: true
+    ingressClassName: ""
+    annotations:
+      nginx.ingress.kubernetes.io/server-snippet: |
+        location /minio/v2/metrics/cluster {
+            deny all;
+            return 403 "Forbidden";
+        }
+      # cert-manager.io/cluster-issuer: "letsencrypt-staging"
+  mode: "standalone"
+  defaultBuckets: "ol-data" # should not be "outline" - see https://github.com/outline/outline/issues/2068
+  persistence:
+    enabled: true
+    storageClass: ""
+    size: 16Gi
+
+# -- EXPERIMENTAL FEATURE=> If enabled, the minio service will be provided as subpath under *all* listed ingress.hosts.
+# Note: You should set minio.apiIngress.enabled: false to avoid exposing minio via subpath and own ingress (!)
+# Could require additional configuration changes. E.g. within subcharts!
+# <=EXPERIMENTAL FEATURE
+provideMinioApiAsIngressSubpath:
+  # -- Enable subpath for minio api service.
+  enabled: false
+  # -- Add additional annotations to the ingress object.
+  # Recommended: Block external access to minio metrics.
+  # To disable, provide additionalAnnotations: {}
+  additionalAnnotations:
+    # -- Annotation for ingress-nginx to block minio cluster metrics. You should check if that's okay within your env and update / change if required!
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location /ol-data-path/minio/v2/metrics/cluster {
+          deny all;
+          return 403 "Forbidden";
+      }
+  path: "/ol-data-path"
+  pathType: ImplementationSpecific
+
+# -- This block is for setting up the outline ingress. More information about ingress in general can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+# To get a better understanding and some more explanation, take a look into the values.yaml provided with the chart.
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+        ## It is possible to add another service under the same ingress host by providing an additional path together with the desired backend configuration.
+        # The "backend:" block gets proxied through the tmpl, if used.
+        # - path: /another-service
+        #   pathType: ImplementationSpecific
+        #   backend:
+        #     service:
+        #       name: another-service
+        #       port:
+        #         number: 8080
+  #tls:
+  tls:
+    - hosts:
+        - chart-example.local
+      #secretName: chart-example-tls
+      # -- secretName of the certificate to use.
+      # When providing an empty string as secretNmae, the key will be skipped. That allowes to use the default ingress-nginx certificate for this ingress object.
+      secretName: "" #When providing an empty string as secretNmae, the key will be skipped. That allowes to use the default ingress-nginx certificate for this ingress object.
+
+# -- Specify default resources (not recommended, see values.yaml)
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# -- This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+livenessProbe:
+  httpGet:
+    path: /_health
+    port: 3000
+  failureThreshold: 3
+  periodSeconds: 10
+  initialDelaySeconds: 30
+readinessProbe:
+  httpGet:
+    path: /_health
+    port: 3000
+  failureThreshold: 3
+  periodSeconds: 10
+  initialDelaySeconds: 30
+
+# -- This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# -- Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# -- Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

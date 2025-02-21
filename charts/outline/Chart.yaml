@@ -1,0 +1,39 @@
+apiVersion: v2
+name: outline
+description: A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes.
+type: application
+version: 0.1.0
+# renovate: image=outlinewiki/outline
+appVersion: "0.81.1"
+home: https://github.com/CodeAdminDe/helm-charts
+keywords:
+  - outline
+  - app
+  - docs
+  - wiki
+  - sso
+  - helm
+  - s3
+  - minio
+  - postgresql
+  - mongodb
+maintainers:
+  - name: Frederic Roggon
+    email: frederic.roggon@codeadmin.de
+    url: https://github.com/CodeAdminDe
+dependencies:
+  - name: postgresql
+    repository: https://charts.bitnami.com/bitnami
+    version: 16.4.13
+    alias: postgresql
+    condition: postgresql.enabled
+  - name: redis
+    repository: https://charts.bitnami.com/bitnami
+    version: 20.8.0
+    alias: redis
+    condition: redis.enabled
+  - name: minio
+    repository: https://charts.bitnami.com/bitnami
+    version: 15.0.4
+    alias: minio
+    condition: minio.enabled

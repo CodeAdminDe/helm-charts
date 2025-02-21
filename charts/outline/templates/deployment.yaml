@@ -1,0 +1,189 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "outline.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+  labels:
+    {{- include "outline.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "outline.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        checksum/values: {{ print .Values | sha256sum }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "outline.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "outline.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          {{ if and .Values.redis.enabled .Values.redis.auth.enabled }}
+          command: ["/bin/sh", "-c", ". /cmd/run.sh"]
+          {{- end }}
+          env:
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name:  {{ default .Release.Name .Values.existingEnvSecret }}
+                  key: SECRET_KEY
+            - name: UTILS_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name:  {{ default .Release.Name .Values.existingEnvSecret }}
+                  key: UTILS_SECRET
+            - name: PORT
+              value: "{{ .Values.service.targetPort }}"
+            - name: COLLABORATION_URL
+              value: "{{ternary "https" "http" (not (empty .Values.ingress.tls)) }}://{{ ( index .Values.ingress.hosts 0 ).host }}"
+            - name: URL
+              value: "{{ternary "https" "http" (not (empty .Values.ingress.tls)) }}://{{ ( index .Values.ingress.hosts 0 ).host }}"
+          {{ if not .Values.ingress.tls }}
+            - name: FORCE_HTTPS
+              value: "false"
+          {{ end }}
+          {{ if .Values.fileStorage.useLocal }}
+            - name: FILE_STORAGE
+              value: "local"
+            - name: FILE_STORAGE_LOCAL_ROOT_DIR
+              value: "/var/lib/outline/data"
+          {{ end }}
+          {{ if .Values.postgresql.enabled }}
+              {{ include "common.env.postgresqlConnection" . | nindent 12 }}
+              {{ include "outline.env.database" . | nindent 12 }}
+            - name: PGSSLMODE
+              value: "disable"
+          {{ end }}
+          {{ if .Values.redis.enabled }}
+            {{ if .Values.redis.auth.enabled }}
+            {{ include "common.env.redisConnection" . | nindent 12 }}
+            {{ else }}
+            - name: REDIS_URL
+              value: "redis://{{ .Release.Name }}-redis-master:6379"
+            {{ end }}
+          {{ end }}
+          {{ if and .Values.minio.enabled (not .Values.fileStorage.useLocal) }}
+            {{ include "outline.env.minioCreds" . | nindent 12 }}
+            - name: AWS_REGION
+              value: "us-east-1"
+            - name: AWS_S3_UPLOAD_BUCKET_URL
+            {{- if eq .Values.provideMinioApiAsIngressSubpath.enabled true}}
+              value: "{{ternary "https" "http" (not (empty .Values.ingress.tls)) }}://{{ ( index .Values.ingress.hosts 0 ).host }}{{ .Values.provideMinioApiAsIngressSubpath.path }}"
+            {{- else }}
+              value: "{{ternary "https" "http" .Values.minio.apiIngress.tls }}://{{ .Values.minio.apiIngress.hostname }}"
+            {{ end }}
+            - name: AWS_S3_UPLOAD_BUCKET_NAME
+              value: {{ .Values.minio.defaultBuckets | quote }}
+            - name: FILE_STORAGE_UPLOAD_MAX_SIZE
+              value: "262144000"
+            - name: AWS_S3_FORCE_PATH_STYLE
+              value: "true"
+            - name: AWS_S3_ACL
+              value: "private"
+          {{ end }}
+          {{- if or $.Values.env $.Values.additionalEnvSecrets }}
+            {{- range $key, $value := $.Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- range $key, $secret := $.Values.additionalEnvSecrets }}
+            - name: {{ $key }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secret }}
+                  key: {{ $key | quote }}
+            {{- end }}
+          {{- end }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: {{ .Release.Name }}-cache-home
+              mountPath: "/home/node"
+            - name: {{ .Release.Name }}-cache-tmp
+              mountPath: "/tmp"
+            {{ if and .Values.redis.enabled .Values.redis.auth.enabled }}
+            - name: {{ .Release.Name }}-configmap-run
+              mountPath: "/cmd"
+            {{- end }}
+          {{- if eq .Values.fileStorage.useLocal true}}
+            - name: {{ .Release.Name }}-data
+              mountPath: "/var/lib/outline/data"
+          {{- end }}
+          {{- if .Values.volumeMounts }}
+            {{- .Values.volumeMounts | toYaml . | nindent 12 }}
+          {{- end }}
+      volumes:
+        - name: {{ .Release.Name }}-cache-home
+          emptyDir:
+            sizeLimit: {{ .Values.persistence.cacheDirTmpSizeLimit }}
+        - name: {{ .Release.Name }}-cache-tmp
+          emptyDir:
+            sizeLimit: {{ .Values.persistence.cacheDirHomeSizeLimit }}
+        {{ if and .Values.redis.enabled .Values.redis.auth.enabled }}
+        - name: {{ .Release.Name }}-configmap-run
+          configMap:
+            name: "{{ .Release.Name }}-run"
+       {{- end }}
+      {{- if .Values.fileStorage.useLocal }}
+       {{- include "common.app.pvc" . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.volumes }}
+        {{- .Values.volumes | toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
