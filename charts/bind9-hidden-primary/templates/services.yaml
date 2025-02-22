@@ -15,12 +15,10 @@ spec:
       targetPort: {{ .Values.service.port }}
       protocol: TCP
       name: dns-tcp
-    {{- if eq .Values.proxyv2.enabled false }}
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.port }}
       protocol: UDP
       name: dns-udp
-    {{- end }}
   selector:
     {{- include "bind9-hidden-primary.selectorLabels" . | nindent 4 }}
 ---
