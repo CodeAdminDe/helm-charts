@@ -13,6 +13,8 @@ kind: HelmRelease
   values:
     tcp:
       "{{ .Values.service.port }}": "{{ .Release.Namespace }}/{{ include "bind9-hidden-primary.fullname" . }}:{{ .Values.service.port }}:[PROXY]:[PROXY]"
+    udp:
+      "{{ .Values.service.port }}": "{{ .Release.Namespace }}/{{ include "bind9-hidden-primary.fullname" . }}:{{ .Values.service.port }}:[PROXY]:[PROXY]"
     ...
 ```
 

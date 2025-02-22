@@ -13,7 +13,7 @@ data:
         };
   200-acl-providerprimaries.conf: |
         acl providerprimaryacl {
-          {{ .Values.providerPrimaryIpList }};
+          {{ .Values.providerPrimaryAclIpList }};
         };
 {{- if eq .Values.proxyv2.enabled true }}
   400-acl-allow-proxy.conf: |
