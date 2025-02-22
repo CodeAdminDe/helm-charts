@@ -13,6 +13,9 @@ data:
             version "not currently available";
             {{- if eq .Values.proxyv2.enabled true }}
             listen-on port 5353 proxy plain { any; };
+            allow-proxy {
+                allowproxyacl;
+            };
             {{- else }}
             listen-on port 5353 { any; };
             {{- end }}

@@ -36,8 +36,5 @@ data:
                 allow-update {
                         key "{{ .Values.env.tsigKeyname }}";
                 };
-                allow-proxy {
-                        allowproxyacl;
-                };
         };
 {{- end }}
