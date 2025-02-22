@@ -3,6 +3,32 @@ entries:
   bind9-hidden-primary:
   - apiVersion: v2
     appVersion: "9.21"
+    created: "2025-02-22T01:12:20.70724559Z"
+    description: A Helm chart for bind9 to use as hidden primary, based on the offical
+      Docker Image by InternetSystemsConsortium (ISC)
+    digest: 4306ec6d2135a3728433c3431901b76c7bf6778e707fcb3cffc573390831b5d5
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - nameserver
+    - bind9
+    - hidden-primary
+    - domain-name-system
+    - dns
+    - helm
+    - chart
+    - kubernetes
+    - infrastructure
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: bind9-hidden-primary
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/bind9-hidden-primary-0.4.0/bind9-hidden-primary-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
+    appVersion: "9.21"
     created: "2025-02-22T00:37:37.447773055Z"
     description: A Helm chart for bind9 to use as hidden primary, based on the offical
       Docker Image by InternetSystemsConsortium (ISC)
@@ -676,4 +702,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/outline-0.1.0/outline-0.1.0.tgz
     version: 0.1.0
-generated: "2025-02-22T00:37:37.447923322Z"
+generated: "2025-02-22T01:12:20.707378178Z"
