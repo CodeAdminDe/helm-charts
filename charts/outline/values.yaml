@@ -96,6 +96,10 @@ runtimeClass:
 fileStorage:
   useLocal: false
 
+# -- Define the max allowed file upload size in bytes (env FILE_STORAGE_UPLOAD_MAX_SIZE).
+# Note that this defines the upload file size for local filestorage usage and for s3 storage usage.
+uploadMaxSize: "26214400"
+
 # -- This configures the persistens of your release. Note that outline needs a writeable tmp/home directory, even when using S3 as storage backend.
 persistence:
     # -- false -> app uses emptyDir (with persistence.emptyDirSizeLimit) // true -> app uses pvc created by helm. (or existingClaim, if provided).

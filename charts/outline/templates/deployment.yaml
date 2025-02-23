@@ -68,6 +68,8 @@ spec:
               value: "{{ternary "https" "http" (not (empty .Values.ingress.tls)) }}://{{ ( index .Values.ingress.hosts 0 ).host }}"
             - name: URL
               value: "{{ternary "https" "http" (not (empty .Values.ingress.tls)) }}://{{ ( index .Values.ingress.hosts 0 ).host }}"
+            - name: FILE_STORAGE_UPLOAD_MAX_SIZE
+              value: "{{ default "26214400" .Values.uploadMaxSize  }}"
           {{ if not .Values.ingress.tls }}
             - name: FORCE_HTTPS
               value: "false"
@@ -104,8 +106,6 @@ spec:
             {{ end }}
             - name: AWS_S3_UPLOAD_BUCKET_NAME
               value: {{ .Values.minio.defaultBuckets | quote }}
-            - name: FILE_STORAGE_UPLOAD_MAX_SIZE
-              value: "262144000"
             - name: AWS_S3_FORCE_PATH_STYLE
               value: "true"
             - name: AWS_S3_ACL
