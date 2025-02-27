@@ -2,7 +2,7 @@
 
 # outline
 
-![Version: 0.3.5](https://img.shields.io/badge/Version-0.3.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.82.0](https://img.shields.io/badge/AppVersion-0.82.0-informational?style=flat-square)
+![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.82.0](https://img.shields.io/badge/AppVersion-0.82.0-informational?style=flat-square)
 
 A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes.
 
@@ -20,7 +20,7 @@ A Helm chart for an easier outline (https://getoutline.com) deployment at kubern
 |------------|------|---------|
 | https://charts.bitnami.com/bitnami | minio(minio) | 15.0.4 |
 | https://charts.bitnami.com/bitnami | postgresql(postgresql) | 16.4.14 |
-| https://charts.bitnami.com/bitnami | redis(redis) | 20.8.0 |
+| https://charts.bitnami.com/bitnami | redis(redis) | 20.10.0 |
 
 ## TL;DR
 
@@ -110,7 +110,7 @@ null
 			<td>Provide additonal env vars via one or more secretes... useful for OIDC setup etc... Specifiy the ENV key used by outline as KEY and the secret name as VALUE. The secret should contain the ENV key and the encrypted value: Sample secret ... apiVersion: v1 kind: Secret metadata: name: your-secret-name-to-slack-oidc-secrets type: Opaque stringData:   SLACK_KEY: "slack-key-value-goes-here"   SLACK_SECRET: "slack-secret-value-goes-here"</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L317">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L318">affinity</a></td>
 			<td>
 object
 </td>
@@ -124,7 +124,7 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L293">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L294">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -233,7 +233,7 @@ list
 			<td>This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/</td>
 		</tr>
 		<tr>
-			<td id="ingress"><a href="./values.yaml#L234">ingress</a></td>
+			<td id="ingress"><a href="./values.yaml#L235">ingress</a></td>
 			<td>
 object
 </td>
@@ -270,7 +270,7 @@ object
 			<td>This block is for setting up the outline ingress. More information about ingress in general can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/ To get a better understanding and some more explanation, take a look into the values.yaml provided with the chart.</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls[0]--secretName"><a href="./values.yaml#L261">ingress.tls[0].secretName</a></td>
+			<td id="ingress--tls[0]--secretName"><a href="./values.yaml#L262">ingress.tls[0].secretName</a></td>
 			<td>
 string
 </td>
@@ -284,7 +284,7 @@ string
 			<td>secretName of the certificate to use. When providing an empty string as secretNmae, the key will be skipped. That allowes to use the default ingress-nginx certificate for this ingress object.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L277">livenessProbe</a></td>
+			<td id="livenessProbe"><a href="./values.yaml#L278">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -306,7 +306,7 @@ object
 			<td>This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/</td>
 		</tr>
 		<tr>
-			<td id="minio"><a href="./values.yaml#L189">minio</a></td>
+			<td id="minio"><a href="./values.yaml#L190">minio</a></td>
 			<td>
 object
 </td>
@@ -354,7 +354,7 @@ string
 			<td>This is to override the chart name.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L313">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L314">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -536,7 +536,7 @@ object
 			<td>This is for the pod-level security attributes and common container settings. More information: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/</td>
 		</tr>
 		<tr>
-			<td id="postgresql"><a href="./values.yaml#L173">postgresql</a></td>
+			<td id="postgresql"><a href="./values.yaml#L174">postgresql</a></td>
 			<td>
 object
 </td>
@@ -562,7 +562,7 @@ object
 			<td>This block configures the dependeny / subchart details for bitnami/postgresql. Please take a look into the values.yaml to get a more detailed view of the needed settings. If you'd want to tweak settings, please take a look at the upstream values.yaml at https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml</td>
 		</tr>
 		<tr>
-			<td id="provideMinioApiAsIngressSubpath"><a href="./values.yaml#L216">provideMinioApiAsIngressSubpath</a></td>
+			<td id="provideMinioApiAsIngressSubpath"><a href="./values.yaml#L217">provideMinioApiAsIngressSubpath</a></td>
 			<td>
 object
 </td>
@@ -583,7 +583,7 @@ object
 			<td>EXPERIMENTAL FEATURE=> If enabled, the minio service will be provided as subpath under *all* listed ingress.hosts. Note: You should set minio.apiIngress.enabled: false to avoid exposing minio via subpath and own ingress (!) Could require additional configuration changes. E.g. within subcharts! <=EXPERIMENTAL FEATURE</td>
 		</tr>
 		<tr>
-			<td id="provideMinioApiAsIngressSubpath--additionalAnnotations"><a href="./values.yaml#L222">provideMinioApiAsIngressSubpath.additionalAnnotations</a></td>
+			<td id="provideMinioApiAsIngressSubpath--additionalAnnotations"><a href="./values.yaml#L223">provideMinioApiAsIngressSubpath.additionalAnnotations</a></td>
 			<td>
 object
 </td>
@@ -599,7 +599,7 @@ object
 			<td>Add additional annotations to the ingress object. Recommended: Block external access to minio metrics. To disable, provide additionalAnnotations: {}</td>
 		</tr>
 		<tr>
-			<td id="provideMinioApiAsIngressSubpath--additionalAnnotations--"nginx--ingress--kubernetes--io/server-snippet""><a href="./values.yaml#L224">provideMinioApiAsIngressSubpath.additionalAnnotations."nginx.ingress.kubernetes.io/server-snippet"</a></td>
+			<td id="provideMinioApiAsIngressSubpath--additionalAnnotations--"nginx--ingress--kubernetes--io/server-snippet""><a href="./values.yaml#L225">provideMinioApiAsIngressSubpath.additionalAnnotations."nginx.ingress.kubernetes.io/server-snippet"</a></td>
 			<td>
 string
 </td>
@@ -613,7 +613,7 @@ string
 			<td>Annotation for ingress-nginx to block minio cluster metrics. You should check if that's okay within your env and update / change if required!</td>
 		</tr>
 		<tr>
-			<td id="provideMinioApiAsIngressSubpath--enabled"><a href="./values.yaml#L218">provideMinioApiAsIngressSubpath.enabled</a></td>
+			<td id="provideMinioApiAsIngressSubpath--enabled"><a href="./values.yaml#L219">provideMinioApiAsIngressSubpath.enabled</a></td>
 			<td>
 bool
 </td>
@@ -627,7 +627,7 @@ false
 			<td>Enable subpath for minio api service.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L288">readinessProbe.failureThreshold</a></td>
+			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L289">readinessProbe.failureThreshold</a></td>
 			<td>
 int
 </td>
@@ -641,7 +641,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--httpGet--path"><a href="./values.yaml#L286">readinessProbe.httpGet.path</a></td>
+			<td id="readinessProbe--httpGet--path"><a href="./values.yaml#L287">readinessProbe.httpGet.path</a></td>
 			<td>
 string
 </td>
@@ -655,7 +655,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--httpGet--port"><a href="./values.yaml#L287">readinessProbe.httpGet.port</a></td>
+			<td id="readinessProbe--httpGet--port"><a href="./values.yaml#L288">readinessProbe.httpGet.port</a></td>
 			<td>
 int
 </td>
@@ -669,7 +669,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L290">readinessProbe.initialDelaySeconds</a></td>
+			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L291">readinessProbe.initialDelaySeconds</a></td>
 			<td>
 int
 </td>
@@ -683,7 +683,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L289">readinessProbe.periodSeconds</a></td>
+			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L290">readinessProbe.periodSeconds</a></td>
 			<td>
 int
 </td>
@@ -707,7 +707,8 @@ object
 {
   "architecture": "standalone",
   "auth": {
-    "enabled": true
+    "enabled": true,
+    "usePasswordFiles": false
   },
   "enabled": true,
   "persistence": {
@@ -735,7 +736,7 @@ int
 			<td>This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L264">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L265">resources</a></td>
 			<td>
 object
 </td>
@@ -908,7 +909,7 @@ object
 			<td>This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L315">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L316">tolerations</a></td>
 			<td>
 list
 </td>
@@ -936,7 +937,7 @@ string
 			<td>Define the max allowed file upload size in bytes (env FILE_STORAGE_UPLOAD_MAX_SIZE). Note that this defines the upload file size for local filestorage usage and for s3 storage usage.</td>
 		</tr>
 		<tr>
-			<td id="volumeMounts"><a href="./values.yaml#L308">volumeMounts</a></td>
+			<td id="volumeMounts"><a href="./values.yaml#L309">volumeMounts</a></td>
 			<td>
 list
 </td>
@@ -950,7 +951,7 @@ list
 			<td>Additional volumeMounts on the output Deployment definition.</td>
 		</tr>
 		<tr>
-			<td id="volumes"><a href="./values.yaml#L301">volumes</a></td>
+			<td id="volumes"><a href="./values.yaml#L302">volumes</a></td>
 			<td>
 list
 </td>
