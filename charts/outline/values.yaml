@@ -165,6 +165,7 @@ redis:
     storageClass: ""
   auth:
     enabled: true
+    usePasswordFiles: false
 
 # -- This block configures the dependeny / subchart details for bitnami/postgresql.
 # Please take a look into the values.yaml to get a more detailed view of the needed settings.
