@@ -161,8 +161,9 @@ redis:
   enabled: true
   architecture: "standalone"
   persistence:
-    size: 2Gi
-    storageClass: ""
+    master:
+      size: 2Gi
+      storageClass: ""
   auth:
     enabled: true
     usePasswordFiles: false
