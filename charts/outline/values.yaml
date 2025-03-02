@@ -160,8 +160,8 @@ additionalEnvSecrets:
 redis:
   enabled: true
   architecture: "standalone"
-  persistence:
-    master:
+  master:
+    persistence:
       size: 2Gi
       storageClass: ""
   auth:
@@ -178,8 +178,8 @@ postgresql:
   auth:
     database: "outline"
     username: "outline"
-  persistence:
-    primary:
+  primary:
+    persistence:
       storageClass: ""
       size: 8Gi
 
