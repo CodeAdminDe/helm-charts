@@ -179,9 +179,9 @@ postgresql:
     database: "outline"
     username: "outline"
   persistence:
-    enabled: true
-    storageClass: ""
-    size: 8Gi
+    primary:
+      storageClass: ""
+      size: 8Gi
 
 # -- This block configures the dependeny / subchart details for bitnami/minio.
 # Please take a look into the values.yaml to get a more detailed view of the required settings.
