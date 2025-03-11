@@ -2,7 +2,7 @@ apiVersion: v2
 name: outline
 description: A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes.
 type: application
-version: 0.4.7
+version: 0.4.8
 # renovate: image=outlinewiki/outline
 appVersion: "0.82.0"
 home: https://github.com/CodeAdminDe/helm-charts
@@ -24,12 +24,12 @@ maintainers:
 dependencies:
   - name: postgresql
     repository: https://charts.bitnami.com/bitnami
-    version: 16.4.16
+    version: 16.5.0
     alias: postgresql
     condition: postgresql.enabled
   - name: redis
     repository: https://charts.bitnami.com/bitnami
-    version: 20.11.2
+    version: 20.11.3
     alias: redis
     condition: redis.enabled
   - name: minio
