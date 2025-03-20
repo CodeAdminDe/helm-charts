@@ -24,7 +24,7 @@ maintainers:
 dependencies:
   - name: postgresql
     repository: https://charts.bitnami.com/bitnami
-    version: 16.5.0
+    version: 16.5.4
     alias: postgresql
     condition: postgresql.enabled
   - name: redis
