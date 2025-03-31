@@ -178,6 +178,7 @@ postgresql:
   auth:
     database: "outline"
     username: "outline"
+    usePasswordFiles: false
   primary:
     persistence:
       storageClass: ""
