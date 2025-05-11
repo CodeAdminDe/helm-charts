@@ -4,7 +4,7 @@ description: A Helm chart for an easier outline (https://getoutline.com) deploym
 type: application
 version: 0.5.8
 # renovate: image=outlinewiki/outline
-appVersion: "0.82.0"
+appVersion: "0.84.0"
 home: https://github.com/CodeAdminDe/helm-charts
 keywords:
   - outline
