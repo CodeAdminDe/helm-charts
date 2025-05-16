@@ -498,6 +498,49 @@ entries:
   outline:
   - apiVersion: v2
     appVersion: 0.82.0
+    created: "2025-05-16T10:35:30.529676795Z"
+    dependencies:
+    - alias: postgresql
+      condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.7.4
+    - alias: redis
+      condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 21.0.2
+    - alias: minio
+      condition: minio.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.0.7
+    description: A Helm chart for an easier outline (https://getoutline.com) deployment
+      at kubernetes.
+    digest: 44f17d2d7f7d4a408f5e2fe6f75011b1699b60e718c4e42a358e856e8ee11982
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - outline
+    - app
+    - docs
+    - wiki
+    - sso
+    - helm
+    - s3
+    - minio
+    - postgresql
+    - mongodb
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: outline
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/outline-0.5.10/outline-0.5.10.tgz
+    version: 0.5.10
+  - apiVersion: v2
+    appVersion: 0.82.0
     created: "2025-05-12T18:23:55.396130193Z"
     dependencies:
     - alias: postgresql
@@ -1700,4 +1743,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/outline-0.1.0/outline-0.1.0.tgz
     version: 0.1.0
-generated: "2025-05-12T18:23:55.396390829Z"
+generated: "2025-05-16T10:35:30.529955394Z"
