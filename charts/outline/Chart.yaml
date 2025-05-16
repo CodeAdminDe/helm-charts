@@ -2,7 +2,7 @@ apiVersion: v2
 name: outline
 description: A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes.
 type: application
-version: 0.5.9
+version: 0.5.10
 # renovate: image=outlinewiki/outline
 appVersion: "0.82.0"
 home: https://github.com/CodeAdminDe/helm-charts
