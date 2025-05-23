@@ -86,6 +86,11 @@ spec:
             - name: PGSSLMODE
               value: "disable"
           {{ end }}
+          {{ if .Values.useCnpgCluster.enabled }}
+              {{ include "outline.env.database" . | nindent 12 }}
+            - name: PGSSLMODE
+              value: "disable"
+          {{ end }}
           {{ if .Values.redis.enabled }}
             {{ if .Values.redis.auth.enabled }}
             {{ include "common.env.redisConnection" . | nindent 12 }}
