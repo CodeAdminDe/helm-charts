@@ -2,7 +2,7 @@
 
 # outline
 
-![Version: 0.5.13](https://img.shields.io/badge/Version-0.5.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.82.0](https://img.shields.io/badge/AppVersion-0.82.0-informational?style=flat-square)
+![Version: 0.6.0](https://img.shields.io/badge/Version-0.6.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.82.0](https://img.shields.io/badge/AppVersion-0.82.0-informational?style=flat-square)
 
 A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes.
 
@@ -110,7 +110,7 @@ null
 			<td>Provide additonal env vars via one or more secretes... useful for OIDC setup etc... Specifiy the ENV key used by outline as KEY and the secret name as VALUE. The secret should contain the ENV key and the encrypted value: Sample secret ... apiVersion: v1 kind: Secret metadata: name: your-secret-name-to-slack-oidc-secrets type: Opaque stringData:   SLACK_KEY: "slack-key-value-goes-here"   SLACK_SECRET: "slack-secret-value-goes-here"</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L320">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L336">affinity</a></td>
 			<td>
 object
 </td>
@@ -124,7 +124,7 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L296">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L312">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -233,7 +233,7 @@ list
 			<td>This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/</td>
 		</tr>
 		<tr>
-			<td id="ingress"><a href="./values.yaml#L237">ingress</a></td>
+			<td id="ingress"><a href="./values.yaml#L253">ingress</a></td>
 			<td>
 object
 </td>
@@ -270,7 +270,7 @@ object
 			<td>This block is for setting up the outline ingress. More information about ingress in general can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/ To get a better understanding and some more explanation, take a look into the values.yaml provided with the chart.</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls[0]--secretName"><a href="./values.yaml#L264">ingress.tls[0].secretName</a></td>
+			<td id="ingress--tls[0]--secretName"><a href="./values.yaml#L280">ingress.tls[0].secretName</a></td>
 			<td>
 string
 </td>
@@ -284,7 +284,7 @@ string
 			<td>secretName of the certificate to use. When providing an empty string as secretNmae, the key will be skipped. That allowes to use the default ingress-nginx certificate for this ingress object.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L280">livenessProbe</a></td>
+			<td id="livenessProbe"><a href="./values.yaml#L296">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -306,7 +306,7 @@ object
 			<td>This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/</td>
 		</tr>
 		<tr>
-			<td id="minio"><a href="./values.yaml#L192">minio</a></td>
+			<td id="minio"><a href="./values.yaml#L208">minio</a></td>
 			<td>
 object
 </td>
@@ -354,7 +354,7 @@ string
 			<td>This is to override the chart name.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L316">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L332">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -536,7 +536,7 @@ object
 			<td>This is for the pod-level security attributes and common container settings. More information: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/</td>
 		</tr>
 		<tr>
-			<td id="postgresql"><a href="./values.yaml#L175">postgresql</a></td>
+			<td id="postgresql"><a href="./values.yaml#L177">postgresql</a></td>
 			<td>
 object
 </td>
@@ -550,7 +550,7 @@ object
     "usePasswordFiles": false,
     "username": "outline"
   },
-  "enabled": true,
+  "enabled": false,
   "primary": {
     "persistence": {
       "size": "8Gi",
@@ -561,10 +561,10 @@ object
 </pre>
 </div>
 			</td>
-			<td>This block configures the dependeny / subchart details for bitnami/postgresql. Please take a look into the values.yaml to get a more detailed view of the needed settings. If you'd want to tweak settings, please take a look at the upstream values.yaml at https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml</td>
+			<td>[DEPRECATED] This block configures the dependeny / subchart details for bitnami/postgresql. It is deprecated and disabled since release >=0.6.0, in favour of useCnpgCluster block. Note that postgresql and useCnpgCluster blocks cannot be used together. Please take a look into the values.yaml to get a more detailed view of the needed settings. If you'd want to tweak settings, please take a look at the upstream values.yaml at https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml</td>
 		</tr>
 		<tr>
-			<td id="provideMinioApiAsIngressSubpath"><a href="./values.yaml#L219">provideMinioApiAsIngressSubpath</a></td>
+			<td id="provideMinioApiAsIngressSubpath"><a href="./values.yaml#L235">provideMinioApiAsIngressSubpath</a></td>
 			<td>
 object
 </td>
@@ -585,7 +585,7 @@ object
 			<td>EXPERIMENTAL FEATURE=> If enabled, the minio service will be provided as subpath under *all* listed ingress.hosts. Note: You should set minio.apiIngress.enabled: false to avoid exposing minio via subpath and own ingress (!) Could require additional configuration changes. E.g. within subcharts! <=EXPERIMENTAL FEATURE</td>
 		</tr>
 		<tr>
-			<td id="provideMinioApiAsIngressSubpath--additionalAnnotations"><a href="./values.yaml#L225">provideMinioApiAsIngressSubpath.additionalAnnotations</a></td>
+			<td id="provideMinioApiAsIngressSubpath--additionalAnnotations"><a href="./values.yaml#L241">provideMinioApiAsIngressSubpath.additionalAnnotations</a></td>
 			<td>
 object
 </td>
@@ -601,7 +601,7 @@ object
 			<td>Add additional annotations to the ingress object. Recommended: Block external access to minio metrics. To disable, provide additionalAnnotations: {}</td>
 		</tr>
 		<tr>
-			<td id="provideMinioApiAsIngressSubpath--additionalAnnotations--"nginx--ingress--kubernetes--io/server-snippet""><a href="./values.yaml#L227">provideMinioApiAsIngressSubpath.additionalAnnotations."nginx.ingress.kubernetes.io/server-snippet"</a></td>
+			<td id="provideMinioApiAsIngressSubpath--additionalAnnotations--"nginx--ingress--kubernetes--io/server-snippet""><a href="./values.yaml#L243">provideMinioApiAsIngressSubpath.additionalAnnotations."nginx.ingress.kubernetes.io/server-snippet"</a></td>
 			<td>
 string
 </td>
@@ -615,7 +615,7 @@ string
 			<td>Annotation for ingress-nginx to block minio cluster metrics. You should check if that's okay within your env and update / change if required!</td>
 		</tr>
 		<tr>
-			<td id="provideMinioApiAsIngressSubpath--enabled"><a href="./values.yaml#L221">provideMinioApiAsIngressSubpath.enabled</a></td>
+			<td id="provideMinioApiAsIngressSubpath--enabled"><a href="./values.yaml#L237">provideMinioApiAsIngressSubpath.enabled</a></td>
 			<td>
 bool
 </td>
@@ -629,7 +629,7 @@ false
 			<td>Enable subpath for minio api service.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L291">readinessProbe.failureThreshold</a></td>
+			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L307">readinessProbe.failureThreshold</a></td>
 			<td>
 int
 </td>
@@ -643,7 +643,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--httpGet--path"><a href="./values.yaml#L289">readinessProbe.httpGet.path</a></td>
+			<td id="readinessProbe--httpGet--path"><a href="./values.yaml#L305">readinessProbe.httpGet.path</a></td>
 			<td>
 string
 </td>
@@ -657,7 +657,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--httpGet--port"><a href="./values.yaml#L290">readinessProbe.httpGet.port</a></td>
+			<td id="readinessProbe--httpGet--port"><a href="./values.yaml#L306">readinessProbe.httpGet.port</a></td>
 			<td>
 int
 </td>
@@ -671,7 +671,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L293">readinessProbe.initialDelaySeconds</a></td>
+			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L309">readinessProbe.initialDelaySeconds</a></td>
 			<td>
 int
 </td>
@@ -685,7 +685,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L292">readinessProbe.periodSeconds</a></td>
+			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L308">readinessProbe.periodSeconds</a></td>
 			<td>
 int
 </td>
@@ -740,7 +740,7 @@ int
 			<td>This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L267">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L283">resources</a></td>
 			<td>
 object
 </td>
@@ -913,7 +913,7 @@ object
 			<td>This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L318">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L334">tolerations</a></td>
 			<td>
 list
 </td>
@@ -941,7 +941,24 @@ string
 			<td>Define the max allowed file upload size in bytes (env FILE_STORAGE_UPLOAD_MAX_SIZE). Note that this defines the upload file size for local filestorage usage and for s3 storage usage.</td>
 		</tr>
 		<tr>
-			<td id="volumeMounts"><a href="./values.yaml#L311">volumeMounts</a></td>
+			<td id="useCnpgCluster"><a href="./values.yaml#L199">useCnpgCluster</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "appConnectionSecretName": "cnpg-cluster-app",
+  "enabled": true
+}
+</pre>
+</div>
+			</td>
+			<td>This block enables and configures the usage of a existing cnpg-cluster postgresql provided by CNPG Operator (postgresql.cnpg.io/v1/Cluster). It allows to directly say "hey, use the CNPG cluster deployed within my namespace", which gives you the opportunity to "just consume" the already deployed CNPG Cluster provided by your infra team. When using the cnpg-cluster flag, no postgresql database will be deployed and auth secrets are not necessary, because the chart will rely on the available ENV vars provided by CNPG. NOTES:  * Requires a already deployed cnpg cluster (postgresql.cnpg.io/v1/Cluster) within your app namespace! If you'd want to get a better understanding of the cnpg cluster, take a look at the projects values.yaml, etc... at https://github.com/cloudnative-pg/charts/blob/main/charts/cluster/values.yaml  *  When postgresql.enabled is set to "true", you cannot use useCnpgCluster and vice versa!</td>
+		</tr>
+		<tr>
+			<td id="volumeMounts"><a href="./values.yaml#L327">volumeMounts</a></td>
 			<td>
 list
 </td>
@@ -955,7 +972,7 @@ list
 			<td>Additional volumeMounts on the output Deployment definition.</td>
 		</tr>
 		<tr>
-			<td id="volumes"><a href="./values.yaml#L304">volumes</a></td>
+			<td id="volumes"><a href="./values.yaml#L320">volumes</a></td>
 			<td>
 list
 </td>

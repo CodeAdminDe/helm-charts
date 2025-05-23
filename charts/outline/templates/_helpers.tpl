@@ -65,10 +65,18 @@ Create the name of the service account to use
 Define outline related database connection strings (postgresql)
 */}}
 {{- define "outline.env.database" -}}
+{{- if .Values.useCnpgCluster.enabled }}
+- name: CNPG_CLUSTER_PSQL_JDBC_URI
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.useCnpgCluster.appConnectionSecretName }}
+      key: jdbc-uri
+- name: DATABASE_URL
+  value: "$(CNPG_CLUSTER_PSQL_JDBC_URI)"
+{{- else }}
 - name: DATABASE_URL
   value: "postgres://{{ .Values.postgresql.auth.username}}:$(PSQL_PASSWORD)@$(PSQL_HOST):5432/{{ .Values.postgresql.auth.database }}"
-- name: DATABASE_URL_TEST
-  value: "postgres://{{ .Values.postgresql.auth.username}}:$(PSQL_PASSWORD)@$(PSQL_HOST):5432/{{ .Values.postgresql.auth.database }}-test"
+{{- end }}
 {{- end -}}
 
 
@@ -118,6 +126,7 @@ Define common env vars to use redis password protected connections. Note that it
       key: redis-password
 {{- end -}}
 
+{{- if not .Values.useCnpgCluster.enabled }}
 {{/*
 Define common env vars to use postgresql password protected connections. Note that it is possible, that not all services are using every env var setted within common definitions.
 */}}
@@ -150,7 +159,7 @@ Define common env vars to use postgresql password protected connections. Note th
 - name: PSQL_URL
   value: postgres://postgres:$(PSQL_PASSWORD)@$(PSQL_HOST):5432/
 {{- end -}}
-
+{{- end -}}
 
 {{/* PVC definition for existingClaim, shipped or emptyDir*/}}
 {{- define "common.app.pvc" -}}

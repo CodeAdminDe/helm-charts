@@ -168,12 +168,14 @@ redis:
     enabled: true
     usePasswordFiles: false
 
-# -- This block configures the dependeny / subchart details for bitnami/postgresql.
+# -- [DEPRECATED] This block configures the dependeny / subchart details for bitnami/postgresql.
+# It is deprecated and disabled since release >=0.6.0, in favour of useCnpgCluster block.
+# Note that postgresql and useCnpgCluster blocks cannot be used together.
 # Please take a look into the values.yaml to get a more detailed view of the needed settings.
 # If you'd want to tweak settings, please take a look at the upstream values.yaml
 # at https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml
 postgresql:
-  enabled: true
+  enabled: false
   architecture: "standalone"
   auth:
     database: "outline"
@@ -183,6 +185,20 @@ postgresql:
     persistence:
       storageClass: ""
       size: 8Gi
+
+# -- This block enables and configures the usage of a existing cnpg-cluster postgresql provided by CNPG Operator (postgresql.cnpg.io/v1/Cluster).
+# It allows to directly say "hey, use the CNPG cluster deployed within my namespace",
+# which gives you the opportunity to "just consume" the already deployed CNPG Cluster provided by your
+# infra team. When using the cnpg-cluster flag, no postgresql database will be deployed and auth secrets are not necessary,
+# because the chart will rely on the available ENV vars provided by CNPG.
+# NOTES:
+#  * Requires a already deployed cnpg cluster (postgresql.cnpg.io/v1/Cluster) within your app namespace!
+# If you'd want to get a better understanding of the cnpg cluster, take a look at the projects values.yaml, etc...
+# at https://github.com/cloudnative-pg/charts/blob/main/charts/cluster/values.yaml
+#  *  When postgresql.enabled is set to "true", you cannot use useCnpgCluster and vice versa!
+useCnpgCluster:
+  enabled: true
+  appConnectionSecretName: "cnpg-cluster-app" # Secret name defaults to <clusterName>-app, unless you or your infra team provided an existing secret to the cnpg cluster deployment.
 
 # -- This block configures the dependeny / subchart details for bitnami/minio.
 # Please take a look into the values.yaml to get a more detailed view of the required settings.
