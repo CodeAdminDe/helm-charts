@@ -126,7 +126,7 @@ Define common env vars to use redis password protected connections. Note that it
       key: redis-password
 {{- end -}}
 
-{{- if not .Values.useCnpgCluster.enabled }}
+
 {{/*
 Define common env vars to use postgresql password protected connections. Note that it is possible, that not all services are using every env var setted within common definitions.
 */}}
@@ -158,7 +158,6 @@ Define common env vars to use postgresql password protected connections. Note th
       key: postgres-password
 - name: PSQL_URL
   value: postgres://postgres:$(PSQL_PASSWORD)@$(PSQL_HOST):5432/
-{{- end -}}
 {{- end -}}
 
 {{/* PVC definition for existingClaim, shipped or emptyDir*/}}
