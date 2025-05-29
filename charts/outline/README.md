@@ -20,7 +20,7 @@ A Helm chart for an easier outline (https://getoutline.com) deployment at kubern
 |------------|------|---------|
 | https://charts.bitnami.com/bitnami | minio(minio) | 16.0.10 |
 | https://charts.bitnami.com/bitnami | postgresql(postgresql) | 16.7.4 |
-| https://charts.bitnami.com/bitnami | redis(redis) | 21.1.6 |
+| https://charts.bitnami.com/bitnami | redis(redis) | 21.1.8 |
 
 ## TL;DR
 
