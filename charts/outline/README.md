@@ -2,7 +2,7 @@
 
 # outline
 
-![Version: 0.6.3](https://img.shields.io/badge/Version-0.6.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.82.0](https://img.shields.io/badge/AppVersion-0.82.0-informational?style=flat-square)
+![Version: 0.6.4](https://img.shields.io/badge/Version-0.6.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.82.0](https://img.shields.io/badge/AppVersion-0.82.0-informational?style=flat-square)
 
 A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes.
 
@@ -20,7 +20,7 @@ A Helm chart for an easier outline (https://getoutline.com) deployment at kubern
 |------------|------|---------|
 | https://charts.bitnami.com/bitnami | minio(minio) | 16.0.10 |
 | https://charts.bitnami.com/bitnami | postgresql(postgresql) | 16.7.5 |
-| https://charts.bitnami.com/bitnami | redis(redis) | 21.1.10 |
+| https://charts.bitnami.com/bitnami | redis(redis) | 21.1.11 |
 
 ## TL;DR
 
