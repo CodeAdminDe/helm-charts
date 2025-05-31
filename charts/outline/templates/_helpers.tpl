@@ -66,13 +66,13 @@ Define outline related database connection strings (postgresql)
 */}}
 {{- define "outline.env.database" -}}
 {{- if .Values.useCnpgCluster.enabled }}
-- name: CNPG_CLUSTER_PSQL_JDBC_URI
+- name: CNPG_CLUSTER_PSQL_URI
   valueFrom:
     secretKeyRef:
       name: {{ .Values.useCnpgCluster.appConnectionSecretName }}
-      key: jdbc-uri
+      key: uri
 - name: DATABASE_URL
-  value: "$(CNPG_CLUSTER_PSQL_JDBC_URI)"
+  value: "$(CNPG_CLUSTER_PSQL_URI)"
 {{- else }}
 - name: DATABASE_URL
   value: "postgres://{{ .Values.postgresql.auth.username}}:$(PSQL_PASSWORD)@$(PSQL_HOST):5432/{{ .Values.postgresql.auth.database }}"
