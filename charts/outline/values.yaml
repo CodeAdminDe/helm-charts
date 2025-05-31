@@ -200,7 +200,7 @@ useCnpgCluster:
   enabled: true
   appConnectionSecretName: "cnpg-cluster-app" # Secret name defaults to <clusterName>-app, unless you or your infra team provided an existing secret to the cnpg cluster deployment.
 
-# -- This block configures the dependeny / subchart details for bitnami/minio.
+# -- [DEPRECATED] This block configures the dependeny / subchart details for bitnami/minio.
 # Please take a look into the values.yaml to get a more detailed view of the required settings.
 # If you'd want to tweak settings, please take a look at the upstream values.yaml
 # at https://github.com/bitnami/charts/blob/main/bitnami/minio/values.yaml

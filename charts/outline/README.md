@@ -2,7 +2,7 @@
 
 # outline
 
-![Version: 0.7.0](https://img.shields.io/badge/Version-0.7.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.84.0](https://img.shields.io/badge/AppVersion-0.84.0-informational?style=flat-square)
+![Version: 0.7.1](https://img.shields.io/badge/Version-0.7.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.84.0](https://img.shields.io/badge/AppVersion-0.84.0-informational?style=flat-square)
 
 A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes.
 
@@ -337,7 +337,7 @@ object
 </pre>
 </div>
 			</td>
-			<td>This block configures the dependeny / subchart details for bitnami/minio. Please take a look into the values.yaml to get a more detailed view of the required settings. If you'd want to tweak settings, please take a look at the upstream values.yaml at https://github.com/bitnami/charts/blob/main/bitnami/minio/values.yaml Note: Provides annotation for ingress-nginx to block minio cluster metrics. You should check if that's okay within your env and update if required!</td>
+			<td>[DEPRECATED] This block configures the dependeny / subchart details for bitnami/minio. Please take a look into the values.yaml to get a more detailed view of the required settings. If you'd want to tweak settings, please take a look at the upstream values.yaml at https://github.com/bitnami/charts/blob/main/bitnami/minio/values.yaml Note: Provides annotation for ingress-nginx to block minio cluster metrics. You should check if that's okay within your env and update if required!</td>
 		</tr>
 		<tr>
 			<td id="nameOverride"><a href="./values.yaml#L28">nameOverride</a></td>
