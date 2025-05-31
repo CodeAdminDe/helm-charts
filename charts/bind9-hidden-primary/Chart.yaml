@@ -22,7 +22,7 @@ version: 0.4.2
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 # renovate: image=internetsystemsconsortium/bind9
-appVersion: "9.20"
+appVersion: "9.21"
 
 home: https://github.com/CodeAdminDe/helm-charts
 keywords:
