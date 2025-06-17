@@ -32,7 +32,7 @@ dependencies:
     condition: postgresql.enabled
   - name: redis
     repository: https://charts.bitnami.com/bitnami
-    version: 21.1.11
+    version: 21.2.4
     alias: redis
     condition: redis.enabled
   - name: minio
