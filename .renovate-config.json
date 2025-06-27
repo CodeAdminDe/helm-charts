@@ -1,6 +1,8 @@
 {
     "branchPrefix": "renovate/",
     "onboarding": true,
+    "separateMajorMinor": true,
+    "separateMultipleMajor": true,
     "customManagers": [
     {
       "customType": "regex",
