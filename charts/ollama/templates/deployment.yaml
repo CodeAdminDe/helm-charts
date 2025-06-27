@@ -1,0 +1,148 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ollama.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+  labels:
+    {{- include "ollama.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "ollama.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        checksum/values: {{ print .Values | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/run-configmap.yaml") . | sha256sum }}
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "ollama.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "ollama.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      initContainers:
+        - name: "{{ .Chart.Name }}-init"
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command: ["/bin/sh", "-c", ". /cmd/run.sh"]
+          env:
+            - name: OLLAMA_HOST
+              value: "127.0.0.1:{{ .Values.service.targetPort }}"
+            - name: OLLAMA_MODELS
+              value: "/data/models"
+          {{ if .Values.prePullModelList }}
+            - name: PREPULL_MODEL_LIST
+              value: "{{ join "," .Values.prePullModelList }}"
+          {{ end }}
+          volumeMounts:
+            - name: "{{ .Release.Name }}-cache-home"
+              mountPath: "/.ollama"
+            - name: "{{ .Release.Name }}-configmap-run"
+              mountPath: "/cmd"
+            - name: "{{ .Release.Name }}-data"
+              mountPath: "/data/models"
+      containers:
+        - name: {{ .Chart.Name }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command: ["/bin/ollama", "serve"]
+          env:
+            - name: OLLAMA_HOST
+              value: 0.0.0.0:{{ .Values.service.targetPort }}
+            - name: OLLAMA_DEBUG
+              value: {{ default "INFO" .Values.ollama.logLevel  }}
+            - name: OLLAMA_CONTEXT_LENGTH
+              value: {{ default "4096" .Values.ollama.contextLength  }}
+            - name: OLLAMA_KEEP_ALIVE
+              value: {{ default "5m0s" .Values.ollama.keepAlive  }}
+            - name: OLLAMA_MODELS
+              value: "/data/models"
+          {{- if or $.Values.env $.Values.additionalEnvSecrets }}
+          {{- range $key, $value := $.Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+          {{- end }}
+          {{- range $key, $secret := $.Values.additionalEnvSecrets }}
+            - name: {{ $key }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secret }}
+                  key: {{ $key | quote }}
+          {{- end }}
+          {{- end }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+             - name: "{{ .Release.Name }}-cache-home"
+               mountPath: "/.ollama"
+             - name: "{{ .Release.Name }}-data"
+               mountPath: "/data/models"
+          {{- if .Values.volumeMounts }}
+            {{- .Values.volumeMounts | toYaml . | nindent 12 }}
+          {{- end }}
+      volumes:
+        - name: "{{ .Release.Name }}-cache-home"
+          emptyDir:
+            sizeLimit: {{ .Values.persistence.cacheDirTmpSizeLimit }}
+        - name: "{{ .Release.Name }}-configmap-run"
+          configMap:
+            name: "{{ .Release.Name }}-run"
+      {{- include "common.app.pvc" . | nindent 8 }}
+      {{- if .Values.volumes }}
+        {{- .Values.volumes | toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
