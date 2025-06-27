@@ -1,0 +1,49 @@
+name: Regenerate docs for PR
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  setup:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    if: github.event.action != 'closed'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+      - name: Install helm-docs
+        run: go install github.com/norwoodj/helm-docs/cmd/helm-docs@v1.14.2
+        env:
+          GOBIN: /usr/local/bin/
+
+  gen-docs:
+    needs: setup
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    if: github.event.action != 'closed'
+    steps:
+      - name: (Re-)Generate helm-docs
+        run: . charts/.helm-docs/generate-cli.sh
+        env:
+          GOBIN: /usr/local/bin/
+
+      - name: Run pre-commit
+        uses: pre-commit/action@v3.0.1
+
+      - name: Commit and push docs to PR
+        run: |
+            git add .
+            if ! git diff-index --quiet HEAD; then
+              git commit -m "Update helm-docs"
+              git push
+            fi
