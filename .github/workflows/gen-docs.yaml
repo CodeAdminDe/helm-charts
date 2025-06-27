@@ -6,9 +6,9 @@ on:
       - main
 
 jobs:
-  setup:
+  gen-docs:
     permissions:
-      contents: read
+      contents: write
     runs-on: ubuntu-latest
     if: github.event.action != 'closed'
     steps:
@@ -24,14 +24,6 @@ jobs:
         run: go install github.com/norwoodj/helm-docs/cmd/helm-docs@v1.14.2
         env:
           GOBIN: /usr/local/bin/
-
-  gen-docs:
-    needs: setup
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    if: github.event.action != 'closed'
-    steps:
       - name: (Re-)Generate helm-docs
         run: . charts/.helm-docs/generate-cli.sh
         env:
