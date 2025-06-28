@@ -78,11 +78,11 @@ spec:
             - name: OLLAMA_HOST
               value: 0.0.0.0:{{ .Values.service.targetPort }}
             - name: OLLAMA_DEBUG
-              value: {{ default "INFO" .Values.ollama.logLevel  }}
+              value: {{ default "INFO" .Values.ollama.logLevel | quote  }}
             - name: OLLAMA_CONTEXT_LENGTH
-              value: {{ default "4096" .Values.ollama.contextLength  }}
+              value: {{ default "4096" .Values.ollama.contextLength | quote  }}
             - name: OLLAMA_KEEP_ALIVE
-              value: {{ default "5m0s" .Values.ollama.keepAlive  }}
+              value: {{ default "5m0s" .Values.ollama.keepAlive | quote  }}
             - name: OLLAMA_MODELS
               value: "/data/models"
           {{- if or $.Values.env $.Values.additionalEnvSecrets }}
