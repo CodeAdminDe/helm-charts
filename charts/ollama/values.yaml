@@ -93,6 +93,9 @@ ollama:
   logLevel: "INFO"
   contextLength: "4096"
   keepAlive: "5m0s"
+  flashAttention: "1"
+  kvCacheType: "q8_0"
+  maxLoadedModels: "1"
 
 # -- This configures the models that ollama should pre-pull while starting the container. Note that this feature will increase the startup time of the container.
 prePullModelList: []

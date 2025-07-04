@@ -81,6 +81,12 @@ spec:
               value: {{ default "INFO" .Values.ollama.logLevel | quote  }}
             - name: OLLAMA_CONTEXT_LENGTH
               value: {{ default "4096" .Values.ollama.contextLength | quote  }}
+            - name: OLLAMA_FLASH_ATTENTION
+              value: {{ default "1" .Values.ollama.flashAttention | quote  }}
+            - name: OLLAMA_KV_CACHE_TYPE
+              value: {{ default "q8_0" .Values.ollama.kvCacheType | quote  }}
+            - name: OLLAMA_MAX_LOADED_MODELS
+              value: {{ default "1" .Values.ollama.maxLoadedModels | quote  }}
             - name: OLLAMA_KEEP_ALIVE
               value: {{ default "5m0s" .Values.ollama.keepAlive | quote  }}
             - name: OLLAMA_MODELS
