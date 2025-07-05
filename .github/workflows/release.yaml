@@ -27,6 +27,7 @@ jobs:
       - name: Add dependencies
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add supabase https://codeadminde.github.io/supabase-kubernetes
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.7.0
