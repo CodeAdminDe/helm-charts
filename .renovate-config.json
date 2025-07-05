@@ -11,6 +11,14 @@
       "matchStrings": [
         "#\\s?renovate: image=(?<depName>.*?)\\s?(appVersion|version):\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\""
       ]
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "helm",
+      "fileMatch": ["(^|/)Chart\\.yaml$"],
+      "matchStrings": [
+        "#\\s?renovate: chart=(?<depName>.*?)\\srepository=(?<registryUrl>.*?)\\s?(appVersion|version):\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\""
+      ]
     }
   ]
 }
