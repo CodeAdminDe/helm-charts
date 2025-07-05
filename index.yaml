@@ -2751,4 +2751,42 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/outline-0.1.0/outline-0.1.0.tgz
     version: 0.1.0
-generated: "2025-07-05T17:48:23.32733938Z"
+  supabase:
+  - apiVersion: v2
+    appVersion: 0.4.3
+    created: "2025-07-05T18:38:51.212136433Z"
+    dependencies:
+    - alias: supabase
+      condition: supabase.enabled
+      name: supabase
+      repository: https://codeadminde.github.io/supabase-kubernetes
+      version: 0.4.3
+    description: A proxy chart for an easier supabase deployment at kubernetes. Take
+      a look at the dependency chart values.yaml and update at least security related
+      values!!
+    digest: 368e402428525673e201dae2d69b04c1a87c418107db55217cb92bc1406b40a1
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - supabase
+    - app
+    - database
+    - poastgresql
+    - auth
+    - helm
+    - s3
+    - sso
+    - vector
+    - cnpg
+    - cloud-native
+    - cnpg-cluster
+    - functions
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: supabase
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/supabase-0.4.3/supabase-0.4.3.tgz
+    version: 0.4.3
+generated: "2025-07-05T18:38:51.212281176Z"
