@@ -1,0 +1,33 @@
+apiVersion: v2
+name: supabase
+description: A proxy chart for an easier supabase deployment at kubernetes. Take a look at the dependency chart values.yaml and update at least security related values!!
+type: application
+# renovate: chart=supabase repository=https://codeadminde.github.io/supabase-kubernetes
+version: 0.4.3
+# renovate: chart=supabase repository=https://codeadminde.github.io/supabase-kubernetes
+appVersion: "0.4.3"
+home: https://github.com/CodeAdminDe/helm-charts
+keywords:
+  - supabase
+  - app
+  - database
+  - poastgresql
+  - auth
+  - helm
+  - s3
+  - sso
+  - vector
+  - cnpg
+  - cloud-native
+  - cnpg-cluster
+  - functions
+maintainers:
+  - name: Frederic Roggon
+    email: frederic.roggon@codeadmin.de
+    url: https://github.com/CodeAdminDe
+dependencies:
+  - name: supabase
+    repository: https://codeadminde.github.io/supabase-kubernetes
+    version: 0.4.3
+    alias: supabase
+    condition: supabase.enabled
