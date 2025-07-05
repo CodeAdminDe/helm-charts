@@ -2,7 +2,7 @@
 
 # outline
 
-![Version: 0.7.9](https://img.shields.io/badge/Version-0.7.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.85.0](https://img.shields.io/badge/AppVersion-0.85.0-informational?style=flat-square)
+![Version: 0.7.9](https://img.shields.io/badge/Version-0.7.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.84.0](https://img.shields.io/badge/AppVersion-0.84.0-informational?style=flat-square)
 
 A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes.
 
@@ -297,7 +297,7 @@ object
     "path": "/_health",
     "port": 3000
   },
-  "initialDelaySeconds": 30,
+  "initialDelaySeconds": 60,
   "periodSeconds": 10
 }
 </pre>
@@ -678,7 +678,7 @@ int
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-30
+60
 </pre>
 </div>
 			</td>
