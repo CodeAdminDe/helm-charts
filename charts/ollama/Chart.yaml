@@ -2,7 +2,7 @@ apiVersion: v2
 name: ollama
 description: A Helm chart for an easier ollama (https://ollama.com) deployment on k8s. Please note that this is a private helm chart and not directly or indirectly affiliated with ollama or its authors.
 type: application
-# renovate: image=ollama/ollama
+# renovate: bumpVersion
 version: "0.9.5"
 # renovate: image=ollama/ollama
 appVersion: "0.9.5"
