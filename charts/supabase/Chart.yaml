@@ -1,6 +1,6 @@
 apiVersion: v2
 name: supabase
-description: A proxy chart for an easier supabase deployment at kubernetes. Take a look at the dependency chart values.yaml and update at least security related values!!
+description: A proxy chart for an easier supabase deployment at kubernetes. Take a look at the dependency chart values.yaml (see https://github.com/CodeAdminDe/supabase-kubernetes) and update at least security related values!!
 type: application
 # renovate: chart=supabase repository=https://codeadminde.github.io/supabase-kubernetes
 version: 0.4.3

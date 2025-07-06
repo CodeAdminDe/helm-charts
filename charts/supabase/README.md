@@ -4,7 +4,7 @@
 
 ![Version: 0.4.3](https://img.shields.io/badge/Version-0.4.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.4.3](https://img.shields.io/badge/AppVersion-0.4.3-informational?style=flat-square)
 
-A proxy chart for an easier supabase deployment at kubernetes. Take a look at the dependency chart values.yaml and update at least security related values!!
+A proxy chart for an easier supabase deployment at kubernetes. Take a look at the dependency chart values.yaml (see https://github.com/CodeAdminDe/supabase-kubernetes) and update at least security related values!!
 
 **Homepage:** <https://github.com/CodeAdminDe/helm-charts>
 
@@ -87,7 +87,7 @@ Alternatively, you could provide the values which you want to override at the CL
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| supabase | object | `{"enabled":true}` | Just enable the dependency, because its a proxy chart for https://codeadminde.github.io/supabase-kubernetes Take a look at the dependency chart values.yaml and update at least security related values!! |
+| supabase | object | `{"enabled":true}` | Just enable the dependency, because its a proxy chart for https://github.com/CodeAdminDe/supabase-kubernetes Take a look at the dependency chart values.yaml and update at least security related values!! |
 
 ## Chart without NetworkPolicies
 

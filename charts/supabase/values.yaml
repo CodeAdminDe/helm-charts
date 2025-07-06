@@ -1,4 +1,4 @@
-# -- Just enable the dependency, because its a proxy chart for https://codeadminde.github.io/supabase-kubernetes
+# -- Just enable the dependency, because its a proxy chart for https://github.com/CodeAdminDe/supabase-kubernetes
 # Take a look at the dependency chart values.yaml and update at least security related values!!
 supabase:
   enabled: true
