@@ -1,13 +1,15 @@
 {
-    "branchPrefix": "renovate/",
-    "onboarding": true,
-    "separateMajorMinor": true,
-    "separateMultipleMajor": true,
-    "customManagers": [
+  "branchPrefix": "renovate/",
+  "onboarding": true,
+  "separateMajorMinor": true,
+  "separateMultipleMajor": true,
+  "customManagers": [
     {
       "customType": "regex",
       "datasourceTemplate": "docker",
-      "fileMatch": ["(^|/)Chart\\.yaml$"],
+      "fileMatch": [
+        "(^|/)Chart\\.yaml$"
+      ],
       "matchStrings": [
         "#\\s?renovate: image=(?<depName>.*?)\\s?(appVersion|version):\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\""
       ]
@@ -15,9 +17,29 @@
     {
       "customType": "regex",
       "datasourceTemplate": "helm",
-      "fileMatch": ["(^|/)Chart\\.yaml$"],
+      "fileMatch": [
+        "(^|/)Chart\\.yaml$"
+      ],
       "matchStrings": [
         "#\\s?renovate: chart=(?<depName>.*?)\\srepository=(?<registryUrl>.*?)\\s?(appVersion|version):\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\""
+      ]
+    }
+  ],
+  "packageRules": [
+    {
+      "matchFileNames": [
+        "charts/**"
+      ],
+      "bumpVersions": [
+        {
+          "filePatterns": [
+            "{{packageFileDir}}/Chart.{yaml,yml}"
+          ],
+          "matchStrings": [
+            "#\\s?renovate: bumpVersion\\s?(appVersion|version):\\s?\\\"?(?<version>[\\w+\\.\\-]*)\""
+          ],
+          "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
+        }
       ]
     }
   ]
