@@ -51,6 +51,8 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           command: ["/bin/sh", "-c", ". /cmd/run.sh"]
           env:
+            - name: HOME
+              value: /
             - name: OLLAMA_HOST
               value: "127.0.0.1:{{ .Values.service.targetPort }}"
             - name: OLLAMA_MODELS
@@ -75,6 +77,8 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           command: ["/bin/ollama", "serve"]
           env:
+            - name: HOME
+              value: /
             - name: OLLAMA_HOST
               value: 0.0.0.0:{{ .Values.service.targetPort }}
             - name: OLLAMA_DEBUG
