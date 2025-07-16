@@ -3,7 +3,7 @@ name: outline
 description: A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes.
 type: application
 # renovate: bumpVersion
-version: 0.7.22
+version: 0.7.23
 # renovate: image=outlinewiki/outline
 appVersion: "0.85.1"
 home: https://github.com/CodeAdminDe/helm-charts
@@ -33,7 +33,7 @@ dependencies:
     condition: postgresql.enabled
   - name: redis
     repository: https://charts.bitnami.com/bitnami
-    version: 21.2.10
+    version: 21.2.11
     alias: redis
     condition: redis.enabled
   - name: minio
