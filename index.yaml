@@ -497,6 +497,31 @@ entries:
     version: 0.1.0
   ollama:
   - apiVersion: v2
+    appVersion: 0.11.0
+    created: "2025-08-05T21:41:58.910585288Z"
+    description: A Helm chart for an easier ollama (https://ollama.com) deployment
+      on k8s. Please note that this is a private helm chart and not directly or indirectly
+      affiliated with ollama or its authors.
+    digest: 67d4c88aeda1fc0675263e70d336bd3e2520e374b5f087cd1483bb96594d2f76
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - ollama
+    - ai
+    - ki
+    - llm
+    - backend
+    - helm
+    - cloud-native
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: ollama
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/ollama-0.11.0/ollama-0.11.0.tgz
+    version: 0.11.0
+  - apiVersion: v2
     appVersion: 0.10.1
     created: "2025-07-31T08:19:03.557856855Z"
     description: A Helm chart for an easier ollama (https://ollama.com) deployment
@@ -3855,4 +3880,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/supabase-0.4.3/supabase-0.4.3.tgz
     version: 0.4.3
-generated: "2025-08-04T16:21:17.208868115Z"
+generated: "2025-08-05T21:41:58.91079937Z"
