@@ -2,7 +2,7 @@
 
 # ollama
 
-![Version: 0.11.5](https://img.shields.io/badge/Version-0.11.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.11.6](https://img.shields.io/badge/AppVersion-0.11.6-informational?style=flat-square)
+![Version: 0.11.6](https://img.shields.io/badge/Version-0.11.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.11.7](https://img.shields.io/badge/AppVersion-0.11.7-informational?style=flat-square)
 
 A Helm chart for an easier ollama (https://ollama.com) deployment on k8s. Please note that this is a private helm chart and not directly or indirectly affiliated with ollama or its authors.
 
