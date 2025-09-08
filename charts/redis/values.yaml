@@ -43,14 +43,17 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-
-
+# -- This is for the pod-level security attributes and common container settings.
+# More information: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 podSecurityContext:
   runAsUser: 1000
   runAsGroup: 1000
   fsGroup: 1000
   seccompProfile:
     type: RuntimeDefault
+# -- This is for the scurityContext at container level.
+# Note that container settings do not affect the Pod's Volumes.
+# More information: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
 securityContext:
   allowPrivilegeEscalation: false
   runAsNonRoot: true
