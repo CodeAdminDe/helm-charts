@@ -1,0 +1,140 @@
+# Default values for redis.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# -- This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+replicaCount: 1
+
+# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # -- This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: ClusterIP
+  # -- This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  port: 6379
+  # -- This sets the targetPorts more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  targetPort: 6379
+  # -- This adds an additional service to be backwards compatible. It uses the same parameters as the "base" service, but it adds an "-master" to the service name.
+  addBackwardsCompatibleMaster: true
+
+# -- This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+# Override the image tag, whose default is the chart appVersion.
+image:
+  repository: library/redis
+  tag: ""
+  pullPolicy: IfNotPresent
+  args: []
+
+# -- This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets: []
+
+# -- This is to override the chart name.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+
+
+podSecurityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  seccompProfile:
+    type: RuntimeDefault
+securityContext:
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+
+# -- Set a RuntimeClass to execute the containers with a custom runtime configuration.
+# Register a runtimeClass within your cluster beforehand.
+# @raw
+#
+# <details>
+# <summary>Motivation (Expand)</summary>
+#
+# > The container runtime configuration is used to run a Pod's containers. . . .
+# > For example, if part of your workload deserves a high level of information security assurance, you might choose to schedule those Pods so that they run in a container runtime that uses hardware virtualization.
+# > You'd then benefit from the extra isolation of the alternative runtime, at the expense of some additional overhead. . . .
+#
+# <i>Source and more informations: https://kubernetes.io/docs/concepts/containers/runtime-class/ </i>
+#
+# </details>
+runtimeClass:
+  # -- (string/runtimeClassName) Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).
+  pods: ""
+  # -- (string/runtimeClassName) Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).
+  jobs: ""
+  # -- (string/runtimeClassName) Sets the runtimeClass for the containers which gets executed by the test hook. Takes the runtimeClass name, or "" (default).
+  tests: ""
+
+# -- This configures the persistens of your release.
+persistence:
+    # If persistence.enabled: false, you'd loose your stored data as soon as the container restarts.
+    enabled: true
+    # -- Define the max directory size when using persistence.enabled: false
+    emptyDirSizeLimit: 500Mi
+    # -- Define the size of the PV when using persistence.enabled: true together with fileStorage.useLocal: true
+    size: 1Gi
+    # -- Define the storageClass to use when not providing a already existing PVC claim. Provide your cluster storageclass or leave it empty to use the default one.
+    storageClass: "longhorn"
+    # -- Define the accessModes to use when not providing a already existing PVC claim.
+    accessModes:
+    - ReadWriteOnce
+    # -- Define an already existing PVC claim.
+    # The following values will be ignored when providing an existingClaim: persistence.{size, storageClass, accessModes}
+    # existingClaim: "my-pvc"
+
+# -- Provide env vars to the deployment.
+# Do not add secretes here... use additionalEnvSecrets instead!
+env:
+  ALLOW_EMPTY_PASSWORD: "no"
+  REDIS_DISABLE_COMMANDS: "FLUSHDB,FLUSHALL"
+  REDIS_DATA_DIR: "/data"
+
+# -- Provide the name of a pre-existing secret for the keys SECRET_KEY and UTILS_SECRET, if you do not want to use a auto-generated one.
+# Note that the autogenerated secrets won't be regenerated on updates.
+# Leave empty, to let helm handle it for you.
+existingEnvSecret: ""
+
+# -- Specify default resources (not recommended, see values.yaml)
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# -- This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+livenessProbe: {}
+readinessProbe: {}
+
+# -- This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
