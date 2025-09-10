@@ -292,7 +292,13 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-# -- This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+# -- This is to setup the startup, liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+startupProbe:
+  httpGet:
+    path: /_health
+    port: 3000
+  failureThreshold: 30
+  periodSeconds: 10
 livenessProbe:
   httpGet:
     path: /_health

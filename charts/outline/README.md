@@ -2,7 +2,7 @@
 
 # outline
 
-![Version: 0.10.0](https://img.shields.io/badge/Version-0.10.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.87.3](https://img.shields.io/badge/AppVersion-0.87.3-informational?style=flat-square)
+![Version: 0.11.0](https://img.shields.io/badge/Version-0.11.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.87.3](https://img.shields.io/badge/AppVersion-0.87.3-informational?style=flat-square)
 
 A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes.
 
@@ -110,7 +110,7 @@ null
 			<td>Provide additonal env vars via one or more secretes... useful for OIDC setup etc... Specifiy the ENV key used by outline as KEY and the secret name as VALUE. The secret should contain the ENV key and the encrypted value: Sample secret ... apiVersion: v1 kind: Secret metadata: name: your-secret-name-to-slack-oidc-secrets type: Opaque stringData:   SLACK_KEY: "slack-key-value-goes-here"   SLACK_SECRET: "slack-secret-value-goes-here"</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L336">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L342">affinity</a></td>
 			<td>
 object
 </td>
@@ -124,7 +124,7 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L312">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L318">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -284,26 +284,74 @@ string
 			<td>secretName of the certificate to use. When providing an empty string as secretNmae, the key will be skipped. That allowes to use the default ingress-nginx certificate for this ingress object.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L296">livenessProbe</a></td>
+			<td id="livenessProbe--failureThreshold"><a href="./values.yaml#L306">livenessProbe.failureThreshold</a></td>
 			<td>
-object
+int
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-{
-  "failureThreshold": 3,
-  "httpGet": {
-    "path": "/_health",
-    "port": 3000
-  },
-  "initialDelaySeconds": 60,
-  "periodSeconds": 10
-}
+3
 </pre>
 </div>
 			</td>
-			<td>This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td id="livenessProbe--httpGet--path"><a href="./values.yaml#L304">livenessProbe.httpGet.path</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"/_health"
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td id="livenessProbe--httpGet--port"><a href="./values.yaml#L305">livenessProbe.httpGet.port</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+3000
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td id="livenessProbe--initialDelaySeconds"><a href="./values.yaml#L308">livenessProbe.initialDelaySeconds</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+60
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td id="livenessProbe--periodSeconds"><a href="./values.yaml#L307">livenessProbe.periodSeconds</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+10
+</pre>
+</div>
+			</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td id="minio"><a href="./values.yaml#L208">minio</a></td>
@@ -354,7 +402,7 @@ string
 			<td>This is to override the chart name.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L332">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L338">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -629,7 +677,7 @@ false
 			<td>Enable subpath for minio api service.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L307">readinessProbe.failureThreshold</a></td>
+			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L313">readinessProbe.failureThreshold</a></td>
 			<td>
 int
 </td>
@@ -643,7 +691,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--httpGet--path"><a href="./values.yaml#L305">readinessProbe.httpGet.path</a></td>
+			<td id="readinessProbe--httpGet--path"><a href="./values.yaml#L311">readinessProbe.httpGet.path</a></td>
 			<td>
 string
 </td>
@@ -657,7 +705,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--httpGet--port"><a href="./values.yaml#L306">readinessProbe.httpGet.port</a></td>
+			<td id="readinessProbe--httpGet--port"><a href="./values.yaml#L312">readinessProbe.httpGet.port</a></td>
 			<td>
 int
 </td>
@@ -671,7 +719,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L309">readinessProbe.initialDelaySeconds</a></td>
+			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L315">readinessProbe.initialDelaySeconds</a></td>
 			<td>
 int
 </td>
@@ -685,7 +733,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L308">readinessProbe.periodSeconds</a></td>
+			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L314">readinessProbe.periodSeconds</a></td>
 			<td>
 int
 </td>
@@ -913,7 +961,28 @@ object
 			<td>This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L334">tolerations</a></td>
+			<td id="startupProbe"><a href="./values.yaml#L296">startupProbe</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "failureThreshold": 30,
+  "httpGet": {
+    "path": "/_health",
+    "port": 3000
+  },
+  "periodSeconds": 10
+}
+</pre>
+</div>
+			</td>
+			<td>This is to setup the startup, liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/</td>
+		</tr>
+		<tr>
+			<td id="tolerations"><a href="./values.yaml#L340">tolerations</a></td>
 			<td>
 list
 </td>
@@ -958,7 +1027,7 @@ object
 			<td>This block enables and configures the usage of a existing cnpg-cluster postgresql provided by CNPG Operator (postgresql.cnpg.io/v1/Cluster). It allows to directly say "hey, use the CNPG cluster deployed within my namespace", which gives you the opportunity to "just consume" the already deployed CNPG Cluster provided by your infra team. When using the cnpg-cluster flag, no postgresql database will be deployed and auth secrets are not necessary, because the chart will rely on the available ENV vars provided by CNPG. NOTES:  * Requires a already deployed cnpg cluster (postgresql.cnpg.io/v1/Cluster) within your app namespace! If you'd want to get a better understanding of the cnpg cluster, take a look at the projects values.yaml, etc... at https://github.com/cloudnative-pg/charts/blob/main/charts/cluster/values.yaml  *  When postgresql.enabled is set to "true", you cannot use useCnpgCluster and vice versa!</td>
 		</tr>
 		<tr>
-			<td id="volumeMounts"><a href="./values.yaml#L327">volumeMounts</a></td>
+			<td id="volumeMounts"><a href="./values.yaml#L333">volumeMounts</a></td>
 			<td>
 list
 </td>
@@ -972,7 +1041,7 @@ list
 			<td>Additional volumeMounts on the output Deployment definition.</td>
 		</tr>
 		<tr>
-			<td id="volumes"><a href="./values.yaml#L320">volumes</a></td>
+			<td id="volumes"><a href="./values.yaml#L326">volumes</a></td>
 			<td>
 list
 </td>

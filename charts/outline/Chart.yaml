@@ -3,7 +3,7 @@ name: outline
 description: A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes.
 type: application
 # renovate: bumpVersion
-version: 0.10.0
+version: 0.11.0
 # renovate: image=outlinewiki/outline
 appVersion: "0.87.3"
 home: https://github.com/CodeAdminDe/helm-charts
