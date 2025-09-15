@@ -899,6 +899,45 @@ entries:
   outline:
   - apiVersion: v2
     appVersion: 0.87.3
+    created: "2025-09-15T08:02:48.880635614Z"
+    dependencies:
+    - alias: postgresql
+      condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.7.27
+    - alias: redis
+      condition: redis.enabled
+      name: redis
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.2
+    description: A Helm chart for an easier outline (https://getoutline.com) deployment
+      at kubernetes.
+    digest: ed5d8f74f40602abbd0c6d80959760d0cb537ac848d6f7d8cb3c3af57e375018
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - outline
+    - app
+    - docs
+    - wiki
+    - sso
+    - helm
+    - s3
+    - postgresql
+    - cnpg
+    - cloud-native
+    - cnpg-cluster
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: outline
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/outline-0.12.1/outline-0.12.1.tgz
+    version: 0.12.1
+  - apiVersion: v2
+    appVersion: 0.87.3
     created: "2025-09-15T07:42:04.601791734Z"
     dependencies:
     - alias: postgresql
@@ -4815,4 +4854,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/supabase-0.4.3/supabase-0.4.3.tgz
     version: 0.4.3
-generated: "2025-09-15T07:59:05.235330982Z"
+generated: "2025-09-15T08:02:48.880902274Z"
