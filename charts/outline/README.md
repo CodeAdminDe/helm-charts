@@ -109,7 +109,7 @@ null
 			<td>Provide additonal env vars via one or more secretes... useful for OIDC setup etc... Specifiy the ENV key used by outline as KEY and the secret name as VALUE. The secret should contain the ENV key and the encrypted value: Sample secret ... apiVersion: v1 kind: Secret metadata: name: your-secret-name-to-slack-oidc-secrets type: Opaque stringData:   SLACK_KEY: "slack-key-value-goes-here"   SLACK_SECRET: "slack-secret-value-goes-here"</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L340">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L342">affinity</a></td>
 			<td>
 object
 </td>
@@ -123,7 +123,7 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L316">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L318">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -232,7 +232,7 @@ list
 			<td>This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/</td>
 		</tr>
 		<tr>
-			<td id="ingress"><a href="./values.yaml#L251">ingress</a></td>
+			<td id="ingress"><a href="./values.yaml#L253">ingress</a></td>
 			<td>
 object
 </td>
@@ -269,7 +269,7 @@ object
 			<td>This block is for setting up the outline ingress. More information about ingress in general can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/ To get a better understanding and some more explanation, take a look into the values.yaml provided with the chart.</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls[0]--secretName"><a href="./values.yaml#L278">ingress.tls[0].secretName</a></td>
+			<td id="ingress--tls[0]--secretName"><a href="./values.yaml#L280">ingress.tls[0].secretName</a></td>
 			<td>
 string
 </td>
@@ -283,7 +283,7 @@ string
 			<td>secretName of the certificate to use. When providing an empty string as secretNmae, the key will be skipped. That allowes to use the default ingress-nginx certificate for this ingress object.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--failureThreshold"><a href="./values.yaml#L304">livenessProbe.failureThreshold</a></td>
+			<td id="livenessProbe--failureThreshold"><a href="./values.yaml#L306">livenessProbe.failureThreshold</a></td>
 			<td>
 int
 </td>
@@ -297,7 +297,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--httpGet--path"><a href="./values.yaml#L302">livenessProbe.httpGet.path</a></td>
+			<td id="livenessProbe--httpGet--path"><a href="./values.yaml#L304">livenessProbe.httpGet.path</a></td>
 			<td>
 string
 </td>
@@ -311,7 +311,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--httpGet--port"><a href="./values.yaml#L303">livenessProbe.httpGet.port</a></td>
+			<td id="livenessProbe--httpGet--port"><a href="./values.yaml#L305">livenessProbe.httpGet.port</a></td>
 			<td>
 int
 </td>
@@ -325,7 +325,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--initialDelaySeconds"><a href="./values.yaml#L306">livenessProbe.initialDelaySeconds</a></td>
+			<td id="livenessProbe--initialDelaySeconds"><a href="./values.yaml#L308">livenessProbe.initialDelaySeconds</a></td>
 			<td>
 int
 </td>
@@ -339,7 +339,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--periodSeconds"><a href="./values.yaml#L305">livenessProbe.periodSeconds</a></td>
+			<td id="livenessProbe--periodSeconds"><a href="./values.yaml#L307">livenessProbe.periodSeconds</a></td>
 			<td>
 int
 </td>
@@ -351,40 +351,6 @@ int
 </div>
 			</td>
 			<td></td>
-		</tr>
-		<tr>
-			<td id="minio"><a href="./values.yaml#L206">minio</a></td>
-			<td>
-object
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-{
-  "apiIngress": {
-    "annotations": {
-      "nginx.ingress.kubernetes.io/server-snippet": "location /minio/v2/metrics/cluster {\n    deny all;\n    return 403 \"Forbidden\";\n}\n"
-    },
-    "certManager": false,
-    "enabled": true,
-    "hostname": "data.outline.yourdomain.tld",
-    "ingressClassName": "",
-    "tls": true
-  },
-  "defaultBuckets": "ol-data",
-  "disableWebUI": true,
-  "enabled": true,
-  "mode": "standalone",
-  "persistence": {
-    "enabled": true,
-    "size": "16Gi",
-    "storageClass": ""
-  }
-}
-</pre>
-</div>
-			</td>
-			<td>[DEPRECATED] This block configures the dependeny / subchart details for bitnami/minio. Please take a look into the values.yaml to get a more detailed view of the required settings. If you'd want to tweak settings, please take a look at the upstream values.yaml at https://github.com/bitnami/charts/blob/main/bitnami/minio/values.yaml Note: Provides annotation for ingress-nginx to block minio cluster metrics. You should check if that's okay within your env and update if required!</td>
 		</tr>
 		<tr>
 			<td id="nameOverride"><a href="./values.yaml#L28">nameOverride</a></td>
@@ -401,7 +367,7 @@ string
 			<td>This is to override the chart name.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L336">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L338">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -611,7 +577,7 @@ object
 			<td>[DEPRECATED] This block configures the dependeny / subchart details for bitnami/postgresql. It is deprecated and disabled since release >=0.6.0, in favour of useCnpgCluster block. Note that postgresql and useCnpgCluster blocks cannot be used together. Please take a look into the values.yaml to get a more detailed view of the needed settings. If you'd want to tweak settings, please take a look at the upstream values.yaml at https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml</td>
 		</tr>
 		<tr>
-			<td id="provideMinioApiAsIngressSubpath"><a href="./values.yaml#L233">provideMinioApiAsIngressSubpath</a></td>
+			<td id="provideS3storeApiAsIngressSubpath"><a href="./values.yaml#L235">provideS3storeApiAsIngressSubpath</a></td>
 			<td>
 object
 </td>
@@ -620,7 +586,7 @@ object
 <pre lang="json">
 {
   "additionalAnnotations": {
-    "nginx.ingress.kubernetes.io/server-snippet": "location /ol-data-path/minio/v2/metrics/cluster {\n    deny all;\n    return 403 \"Forbidden\";\n}\n"
+    "nginx.ingress.kubernetes.io/server-snippet": "location /ol-data-path/s3store/v2/metrics/cluster {\n    deny all;\n    return 403 \"Forbidden\";\n}\n"
   },
   "enabled": false,
   "path": "/ol-data-path",
@@ -629,10 +595,10 @@ object
 </pre>
 </div>
 			</td>
-			<td>EXPERIMENTAL FEATURE=> If enabled, the minio service will be provided as subpath under *all* listed ingress.hosts. Note: You should set minio.apiIngress.enabled: false to avoid exposing minio via subpath and own ingress (!) Could require additional configuration changes. E.g. within subcharts! <=EXPERIMENTAL FEATURE</td>
+			<td>[NotImplemented / WorkInProgress] - see values.yaml "s3store" for further details. EXPERIMENTAL FEATURE => If enabled, the s3store service will be provided as subpath under *all* listed ingress.hosts. Note: You should set s3store.apiIngress.enabled: false to avoid exposing s3store via subpath and own ingress (!) Could require additional configuration changes. E.g. within subcharts! <=EXPERIMENTAL FEATURE</td>
 		</tr>
 		<tr>
-			<td id="provideMinioApiAsIngressSubpath--additionalAnnotations"><a href="./values.yaml#L239">provideMinioApiAsIngressSubpath.additionalAnnotations</a></td>
+			<td id="provideS3storeApiAsIngressSubpath--additionalAnnotations"><a href="./values.yaml#L241">provideS3storeApiAsIngressSubpath.additionalAnnotations</a></td>
 			<td>
 object
 </td>
@@ -640,29 +606,29 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
-  "nginx.ingress.kubernetes.io/server-snippet": "location /ol-data-path/minio/v2/metrics/cluster {\n    deny all;\n    return 403 \"Forbidden\";\n}\n"
+  "nginx.ingress.kubernetes.io/server-snippet": "location /ol-data-path/s3store/v2/metrics/cluster {\n    deny all;\n    return 403 \"Forbidden\";\n}\n"
 }
 </pre>
 </div>
 			</td>
-			<td>Add additional annotations to the ingress object. Recommended: Block external access to minio metrics. To disable, provide additionalAnnotations: {}</td>
+			<td>Add additional annotations to the ingress object. Recommended: Block external access to s3store metrics. To disable, provide additionalAnnotations: {}</td>
 		</tr>
 		<tr>
-			<td id="provideMinioApiAsIngressSubpath--additionalAnnotations--"nginx--ingress--kubernetes--io/server-snippet""><a href="./values.yaml#L241">provideMinioApiAsIngressSubpath.additionalAnnotations."nginx.ingress.kubernetes.io/server-snippet"</a></td>
+			<td id="provideS3storeApiAsIngressSubpath--additionalAnnotations--"nginx--ingress--kubernetes--io/server-snippet""><a href="./values.yaml#L243">provideS3storeApiAsIngressSubpath.additionalAnnotations."nginx.ingress.kubernetes.io/server-snippet"</a></td>
 			<td>
 string
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"location /ol-data-path/minio/v2/metrics/cluster {\n    deny all;\n    return 403 \"Forbidden\";\n}\n"
+"location /ol-data-path/s3store/v2/metrics/cluster {\n    deny all;\n    return 403 \"Forbidden\";\n}\n"
 </pre>
 </div>
 			</td>
-			<td>Annotation for ingress-nginx to block minio cluster metrics. You should check if that's okay within your env and update / change if required!</td>
+			<td>Annotation for ingress-nginx to block s3store cluster metrics. You should check if that's okay within your env and update / change if required!</td>
 		</tr>
 		<tr>
-			<td id="provideMinioApiAsIngressSubpath--enabled"><a href="./values.yaml#L235">provideMinioApiAsIngressSubpath.enabled</a></td>
+			<td id="provideS3storeApiAsIngressSubpath--enabled"><a href="./values.yaml#L237">provideS3storeApiAsIngressSubpath.enabled</a></td>
 			<td>
 bool
 </td>
@@ -673,10 +639,10 @@ false
 </pre>
 </div>
 			</td>
-			<td>Enable subpath for minio api service.</td>
+			<td>Enable subpath for s3store api service.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L311">readinessProbe.failureThreshold</a></td>
+			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L313">readinessProbe.failureThreshold</a></td>
 			<td>
 int
 </td>
@@ -690,7 +656,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--httpGet--path"><a href="./values.yaml#L309">readinessProbe.httpGet.path</a></td>
+			<td id="readinessProbe--httpGet--path"><a href="./values.yaml#L311">readinessProbe.httpGet.path</a></td>
 			<td>
 string
 </td>
@@ -704,7 +670,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--httpGet--port"><a href="./values.yaml#L310">readinessProbe.httpGet.port</a></td>
+			<td id="readinessProbe--httpGet--port"><a href="./values.yaml#L312">readinessProbe.httpGet.port</a></td>
 			<td>
 int
 </td>
@@ -718,7 +684,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L313">readinessProbe.initialDelaySeconds</a></td>
+			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L315">readinessProbe.initialDelaySeconds</a></td>
 			<td>
 int
 </td>
@@ -732,7 +698,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L312">readinessProbe.periodSeconds</a></td>
+			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L314">readinessProbe.periodSeconds</a></td>
 			<td>
 int
 </td>
@@ -794,7 +760,7 @@ int
 			<td>This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L281">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L283">resources</a></td>
 			<td>
 object
 </td>
@@ -877,6 +843,40 @@ object
 </div>
 			</td>
 			<td>Sets the runtimeClass for the containers which gets executed by the test hook. Takes the runtimeClass name, or "" (default).</td>
+		</tr>
+		<tr>
+			<td id="s3store"><a href="./values.yaml#L207">s3store</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "apiIngress": {
+    "annotations": {
+      "nginx.ingress.kubernetes.io/server-snippet": "location /s3store/v2/metrics/cluster {\n    deny all;\n    return 403 \"Forbidden\";\n}\n"
+    },
+    "certManager": false,
+    "enabled": true,
+    "hostname": "data.outline.yourdomain.tld",
+    "ingressClassName": "",
+    "tls": true
+  },
+  "defaultBuckets": "ol-data",
+  "disableWebUI": true,
+  "enabled": false,
+  "mode": "standalone",
+  "persistence": {
+    "enabled": true,
+    "size": "16Gi",
+    "storageClass": ""
+  }
+}
+</pre>
+</div>
+			</td>
+			<td>[NotImplemented / WorkInProgress] This block configures the dependeny / subchart details for a common s3store subchart. The s3store configuration will be provided as a replacement for minio-based s3 subcharts. The required subchart does not exist yet, therefore the s3store implementation is not usable currently. Nevertheless, due to the planned integration in the future, we won't remove the config entirly and instead, disabling it until we'll reuse them within a later release. Therefore: Since v0.12.0: This chart does not provide S3 storage as a backend provider!</td>
 		</tr>
 		<tr>
 			<td id="securityContext"><a href="./values.yaml#L58">securityContext</a></td>
@@ -967,7 +967,7 @@ object
 			<td>This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/</td>
 		</tr>
 		<tr>
-			<td id="startupProbe"><a href="./values.yaml#L294">startupProbe</a></td>
+			<td id="startupProbe"><a href="./values.yaml#L296">startupProbe</a></td>
 			<td>
 object
 </td>
@@ -988,7 +988,7 @@ object
 			<td>This is to setup the startup, liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L338">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L340">tolerations</a></td>
 			<td>
 list
 </td>
@@ -1033,7 +1033,7 @@ object
 			<td>This block enables and configures the usage of a existing cnpg-cluster postgresql provided by CNPG Operator (postgresql.cnpg.io/v1/Cluster). It allows to directly say "hey, use the CNPG cluster deployed within my namespace", which gives you the opportunity to "just consume" the already deployed CNPG Cluster provided by your infra team. When using the cnpg-cluster flag, no postgresql database will be deployed and auth secrets are not necessary, because the chart will rely on the available ENV vars provided by CNPG. NOTES:  * Requires a already deployed cnpg cluster (postgresql.cnpg.io/v1/Cluster) within your app namespace! If you'd want to get a better understanding of the cnpg cluster, take a look at the projects values.yaml, etc... at https://github.com/cloudnative-pg/charts/blob/main/charts/cluster/values.yaml  *  When postgresql.enabled is set to "true", you cannot use useCnpgCluster and vice versa!</td>
 		</tr>
 		<tr>
-			<td id="volumeMounts"><a href="./values.yaml#L331">volumeMounts</a></td>
+			<td id="volumeMounts"><a href="./values.yaml#L333">volumeMounts</a></td>
 			<td>
 list
 </td>
@@ -1047,7 +1047,7 @@ list
 			<td>Additional volumeMounts on the output Deployment definition.</td>
 		</tr>
 		<tr>
-			<td id="volumes"><a href="./values.yaml#L324">volumes</a></td>
+			<td id="volumes"><a href="./values.yaml#L326">volumes</a></td>
 			<td>
 list
 </td>

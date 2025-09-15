@@ -99,18 +99,18 @@ spec:
               value: "redis://{{ .Release.Name }}-redis-master:6379"
             {{ end }}
           {{ end }}
-          {{ if and .Values.minio.enabled (not .Values.fileStorage.useLocal) }}
-            {{ include "outline.env.minioCreds" . | nindent 12 }}
+          {{ if and .Values.s3store.enabled (not .Values.fileStorage.useLocal) }}
+            {{ include "outline.env.s3storeCreds" . | nindent 12 }}
             - name: AWS_REGION
               value: "us-east-1"
             - name: AWS_S3_UPLOAD_BUCKET_URL
-            {{- if eq .Values.provideMinioApiAsIngressSubpath.enabled true}}
-              value: "{{ternary "https" "http" (not (empty .Values.ingress.tls)) }}://{{ ( index .Values.ingress.hosts 0 ).host }}{{ .Values.provideMinioApiAsIngressSubpath.path }}"
+            {{- if eq .Values.provideS3storeApiAsIngressSubpath.enabled true}}
+              value: "{{ternary "https" "http" (not (empty .Values.ingress.tls)) }}://{{ ( index .Values.ingress.hosts 0 ).host }}{{ .Values.provideS3storeApiAsIngressSubpath.path }}"
             {{- else }}
-              value: "{{ternary "https" "http" .Values.minio.apiIngress.tls }}://{{ .Values.minio.apiIngress.hostname }}"
+              value: "{{ternary "https" "http" .Values.s3store.apiIngress.tls }}://{{ .Values.s3store.apiIngress.hostname }}"
             {{ end }}
             - name: AWS_S3_UPLOAD_BUCKET_NAME
-              value: {{ .Values.minio.defaultBuckets | quote }}
+              value: {{ .Values.s3store.defaultBuckets | quote }}
             - name: AWS_S3_FORCE_PATH_STYLE
               value: "true"
             - name: AWS_S3_ACL

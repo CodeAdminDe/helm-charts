@@ -81,35 +81,35 @@ Define outline related database connection strings (postgresql)
 
 
 {{/*
-Define outline AWS credentials (minio)*/}}
-{{- define "outline.env.minioCreds" -}}
+Define outline AWS credentials (s3store)*/}}
+{{- define "outline.env.s3storeCreds" -}}
 - name: AWS_ACCESS_KEY_ID
   valueFrom:
     secretKeyRef:
-      name: {{ .Release.Name }}-minio
+      name: {{ .Release.Name }}-s3store
       key: root-user
 - name: AWS_SECRET_ACCESS_KEY
   valueFrom:
     secretKeyRef:
-      name: {{ .Release.Name }}-minio
+      name: {{ .Release.Name }}-s3store
       key: root-password
 {{- end -}}
 
 {{/*
-Define common env vars for minio connections. Note that it is possible, that not all services are using every env var setted within common definitions.
+Define common env vars for s3store connections. Note that it is possible, that not all services are using every env var setted within common definitions.
 */}}
-{{- define "common.env.minioConnection" -}}
-- name: MINIO_HOST
-  value: {{ .Release.Name }}-minio:{{ default .Values.minio.service.ports.api 9000 }}
-- name: MINIO_ROOT_USER
+{{- define "common.env.s3storeConnection" -}}
+- name: S3STORE_HOST
+  value: {{ .Release.Name }}-s3store:{{ default .Values.s3store.service.ports.api 9000 }}
+- name: S3STORE_ROOT_USER
   valueFrom:
     secretKeyRef:
-      name: {{ .Release.Name }}-minio
+      name: {{ .Release.Name }}-s3store
       key: root-user
-- name: MINIO_ROOT_PASSWORD
+- name: S3STORE_ROOT_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ .Release.Name }}-minio
+      name: {{ .Release.Name }}-s3store
       key: root-password
 {{- end -}}
 

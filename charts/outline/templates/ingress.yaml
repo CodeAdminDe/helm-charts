@@ -6,13 +6,13 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "outline.labels" . | nindent 4 }}
-  {{- if or .Values.ingress.annotations .Values.provideMinioApiAsIngressSubpath.additionalAnnotations }}
+  {{- if or .Values.ingress.annotations .Values.provideS3storeApiAsIngressSubpath.additionalAnnotations }}
   annotations:
   {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
-    {{- if eq .Values.provideMinioApiAsIngressSubpath.enabled true }}
-      {{- with .Values.provideMinioApiAsIngressSubpath.additionalAnnotations }}
+    {{- if eq .Values.provideS3storeApiAsIngressSubpath.enabled true }}
+      {{- with .Values.provideS3storeApiAsIngressSubpath.additionalAnnotations }}
       {{- toYaml . | nindent 4 }}
       {{- end }}
     {{- end }}
@@ -53,16 +53,16 @@ spec:
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}
-          {{- if eq $.Values.provideMinioApiAsIngressSubpath.enabled true }}
-          - path: {{ $.Values.provideMinioApiAsIngressSubpath.path }}
-            {{- with $.Values.provideMinioApiAsIngressSubpath.pathType }}
+          {{- if eq $.Values.provideS3storeApiAsIngressSubpath.enabled true }}
+          - path: {{ $.Values.provideS3storeApiAsIngressSubpath.path }}
+            {{- with $.Values.provideS3storeApiAsIngressSubpath.pathType }}
             pathType: {{ . }}
             {{- end }}
             backend:
               service:
-                name: {{ template "common.names.fullname" $.Subcharts.minio }}
+                name: {{ template "common.names.fullname" $.Subcharts.s3store }}
                 port:
-                  number: {{ default 9000 $.Values.minio.service.ports.api }}
+                  number: {{ default 9000 $.Values.s3store.service.ports.api }}
           {{- end }}
           {{- end }}
     {{- end }}

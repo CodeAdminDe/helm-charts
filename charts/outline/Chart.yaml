@@ -15,12 +15,10 @@ keywords:
   - sso
   - helm
   - s3
-  - minio
   - postgresql
   - cnpg
   - cloud-native
   - cnpg-cluster
-  - mongodb
 maintainers:
   - name: Frederic Roggon
     email: frederic.roggon@codeadmin.de
