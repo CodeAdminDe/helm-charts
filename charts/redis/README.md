@@ -2,7 +2,7 @@
 
 # redis
 
-![Version: 0.2.3](https://img.shields.io/badge/Version-0.2.3-informational?style=flat-square) ![AppVersion: 8.2.1](https://img.shields.io/badge/AppVersion-8.2.1-informational?style=flat-square)
+![Version: 0.2.4](https://img.shields.io/badge/Version-0.2.4-informational?style=flat-square) ![AppVersion: 8.2.1](https://img.shields.io/badge/AppVersion-8.2.1-informational?style=flat-square)
 
 A Helm chart for Redis k8s deployment, based on library/redis
 
