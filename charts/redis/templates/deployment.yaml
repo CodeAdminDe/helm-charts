@@ -87,7 +87,7 @@ spec:
             {{- .Values.volumeMounts | toYaml . | nindent 12 }}
           {{- end }}
       volumes:
-        {{- include "common.app.pvc" . | nindent 8 }}
+        {{- include "common.app.redis.pvc" . | nindent 8 }}
       {{- if .Values.volumes }}
         {{- .Values.volumes | toYaml . | nindent 8 }}
       {{- end }}

@@ -73,7 +73,7 @@ Create the name of the secret to use
 {{- end }}
 
 {{/* PVC definition for existingClaim, shipped or emptyDir*/}}
-{{- define "common.app.pvc" -}}
+{{- define "common.app.redis.pvc" -}}
 {{- if .Values.persistence.enabled -}}
 {{- if .Values.persistence.existingClaim -}}
 - name: {{ .Release.Name }}-redis-data
