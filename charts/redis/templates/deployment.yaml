@@ -81,7 +81,7 @@ spec:
               containerPort: {{ .Values.service.targetPort }}
               protocol: TCP
           volumeMounts:
-            - name: {{ .Release.Name }}-data
+            - name: {{ .Release.Name }}-redis-data
               mountPath: "/data"
           {{- if .Values.volumeMounts }}
             {{- .Values.volumeMounts | toYaml . | nindent 12 }}

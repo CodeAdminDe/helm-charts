@@ -76,16 +76,16 @@ Create the name of the secret to use
 {{- define "common.app.pvc" -}}
 {{- if .Values.persistence.enabled -}}
 {{- if .Values.persistence.existingClaim -}}
-- name: {{ .Release.Name }}-data
+- name: {{ .Release.Name }}-redis-data
   persistentVolumeClaim:
       claimName: {{ .Values.persistence.existingClaim -}}
 {{- else -}}
-- name: {{ .Release.Name }}-data
+- name: {{ .Release.Name }}-redis-data
   persistentVolumeClaim:
-    claimName: {{ .Release.Name }}-data
+    claimName: {{ .Release.Name }}-redis-data
 {{- end -}}
 {{- else -}}
-- name: {{ .Release.Name }}-data
+- name: {{ .Release.Name }}-redis-data
   emptyDir:
     sizeLimit: {{ .Values.persistence.emptyDirSizeLimit }}
 {{- end -}}
