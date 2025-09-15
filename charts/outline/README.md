@@ -2,7 +2,7 @@
 
 # outline
 
-![Version: 0.11.0](https://img.shields.io/badge/Version-0.11.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.87.3](https://img.shields.io/badge/AppVersion-0.87.3-informational?style=flat-square)
+![Version: 0.12.0](https://img.shields.io/badge/Version-0.12.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.87.3](https://img.shields.io/badge/AppVersion-0.87.3-informational?style=flat-square)
 
 A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes.
 
@@ -18,9 +18,8 @@ A Helm chart for an easier outline (https://getoutline.com) deployment at kubern
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | minio(minio) | 17.0.21 |
 | https://charts.bitnami.com/bitnami | postgresql(postgresql) | 16.7.27 |
-| https://charts.bitnami.com/bitnami | redis(redis) | 22.0.7 |
+| https://codeadminde.github.io/helm-charts | redis(redis) | 0.2.1 |
 
 ## TL;DR
 
@@ -354,40 +353,6 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="minio"><a href="./values.yaml#L208">minio</a></td>
-			<td>
-object
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-{
-  "apiIngress": {
-    "annotations": {
-      "nginx.ingress.kubernetes.io/server-snippet": "location /minio/v2/metrics/cluster {\n    deny all;\n    return 403 \"Forbidden\";\n}\n"
-    },
-    "certManager": false,
-    "enabled": true,
-    "hostname": "data.outline.yourdomain.tld",
-    "ingressClassName": "",
-    "tls": true
-  },
-  "defaultBuckets": "ol-data",
-  "disableWebUI": true,
-  "enabled": true,
-  "mode": "standalone",
-  "persistence": {
-    "enabled": true,
-    "size": "16Gi",
-    "storageClass": ""
-  }
-}
-</pre>
-</div>
-			</td>
-			<td>[DEPRECATED] This block configures the dependeny / subchart details for bitnami/minio. Please take a look into the values.yaml to get a more detailed view of the required settings. If you'd want to tweak settings, please take a look at the upstream values.yaml at https://github.com/bitnami/charts/blob/main/bitnami/minio/values.yaml Note: Provides annotation for ingress-nginx to block minio cluster metrics. You should check if that's okay within your env and update if required!</td>
-		</tr>
-		<tr>
 			<td id="nameOverride"><a href="./values.yaml#L28">nameOverride</a></td>
 			<td>
 string
@@ -584,7 +549,7 @@ object
 			<td>This is for the pod-level security attributes and common container settings. More information: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/</td>
 		</tr>
 		<tr>
-			<td id="postgresql"><a href="./values.yaml#L177">postgresql</a></td>
+			<td id="postgresql"><a href="./values.yaml#L175">postgresql</a></td>
 			<td>
 object
 </td>
@@ -612,7 +577,7 @@ object
 			<td>[DEPRECATED] This block configures the dependeny / subchart details for bitnami/postgresql. It is deprecated and disabled since release >=0.6.0, in favour of useCnpgCluster block. Note that postgresql and useCnpgCluster blocks cannot be used together. Please take a look into the values.yaml to get a more detailed view of the needed settings. If you'd want to tweak settings, please take a look at the upstream values.yaml at https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml</td>
 		</tr>
 		<tr>
-			<td id="provideMinioApiAsIngressSubpath"><a href="./values.yaml#L235">provideMinioApiAsIngressSubpath</a></td>
+			<td id="provideS3storeApiAsIngressSubpath"><a href="./values.yaml#L235">provideS3storeApiAsIngressSubpath</a></td>
 			<td>
 object
 </td>
@@ -621,7 +586,7 @@ object
 <pre lang="json">
 {
   "additionalAnnotations": {
-    "nginx.ingress.kubernetes.io/server-snippet": "location /ol-data-path/minio/v2/metrics/cluster {\n    deny all;\n    return 403 \"Forbidden\";\n}\n"
+    "nginx.ingress.kubernetes.io/server-snippet": "location /ol-data-path/s3store/v2/metrics/cluster {\n    deny all;\n    return 403 \"Forbidden\";\n}\n"
   },
   "enabled": false,
   "path": "/ol-data-path",
@@ -630,10 +595,10 @@ object
 </pre>
 </div>
 			</td>
-			<td>EXPERIMENTAL FEATURE=> If enabled, the minio service will be provided as subpath under *all* listed ingress.hosts. Note: You should set minio.apiIngress.enabled: false to avoid exposing minio via subpath and own ingress (!) Could require additional configuration changes. E.g. within subcharts! <=EXPERIMENTAL FEATURE</td>
+			<td>[NotImplemented / WorkInProgress] - see values.yaml "s3store" for further details. EXPERIMENTAL FEATURE => If enabled, the s3store service will be provided as subpath under *all* listed ingress.hosts. Note: You should set s3store.apiIngress.enabled: false to avoid exposing s3store via subpath and own ingress (!) Could require additional configuration changes. E.g. within subcharts! <=EXPERIMENTAL FEATURE</td>
 		</tr>
 		<tr>
-			<td id="provideMinioApiAsIngressSubpath--additionalAnnotations"><a href="./values.yaml#L241">provideMinioApiAsIngressSubpath.additionalAnnotations</a></td>
+			<td id="provideS3storeApiAsIngressSubpath--additionalAnnotations"><a href="./values.yaml#L241">provideS3storeApiAsIngressSubpath.additionalAnnotations</a></td>
 			<td>
 object
 </td>
@@ -641,29 +606,29 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
-  "nginx.ingress.kubernetes.io/server-snippet": "location /ol-data-path/minio/v2/metrics/cluster {\n    deny all;\n    return 403 \"Forbidden\";\n}\n"
+  "nginx.ingress.kubernetes.io/server-snippet": "location /ol-data-path/s3store/v2/metrics/cluster {\n    deny all;\n    return 403 \"Forbidden\";\n}\n"
 }
 </pre>
 </div>
 			</td>
-			<td>Add additional annotations to the ingress object. Recommended: Block external access to minio metrics. To disable, provide additionalAnnotations: {}</td>
+			<td>Add additional annotations to the ingress object. Recommended: Block external access to s3store metrics. To disable, provide additionalAnnotations: {}</td>
 		</tr>
 		<tr>
-			<td id="provideMinioApiAsIngressSubpath--additionalAnnotations--"nginx--ingress--kubernetes--io/server-snippet""><a href="./values.yaml#L243">provideMinioApiAsIngressSubpath.additionalAnnotations."nginx.ingress.kubernetes.io/server-snippet"</a></td>
+			<td id="provideS3storeApiAsIngressSubpath--additionalAnnotations--"nginx--ingress--kubernetes--io/server-snippet""><a href="./values.yaml#L243">provideS3storeApiAsIngressSubpath.additionalAnnotations."nginx.ingress.kubernetes.io/server-snippet"</a></td>
 			<td>
 string
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"location /ol-data-path/minio/v2/metrics/cluster {\n    deny all;\n    return 403 \"Forbidden\";\n}\n"
+"location /ol-data-path/s3store/v2/metrics/cluster {\n    deny all;\n    return 403 \"Forbidden\";\n}\n"
 </pre>
 </div>
 			</td>
-			<td>Annotation for ingress-nginx to block minio cluster metrics. You should check if that's okay within your env and update / change if required!</td>
+			<td>Annotation for ingress-nginx to block s3store cluster metrics. You should check if that's okay within your env and update / change if required!</td>
 		</tr>
 		<tr>
-			<td id="provideMinioApiAsIngressSubpath--enabled"><a href="./values.yaml#L237">provideMinioApiAsIngressSubpath.enabled</a></td>
+			<td id="provideS3storeApiAsIngressSubpath--enabled"><a href="./values.yaml#L237">provideS3storeApiAsIngressSubpath.enabled</a></td>
 			<td>
 bool
 </td>
@@ -674,7 +639,7 @@ false
 </pre>
 </div>
 			</td>
-			<td>Enable subpath for minio api service.</td>
+			<td>Enable subpath for s3store api service.</td>
 		</tr>
 		<tr>
 			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L313">readinessProbe.failureThreshold</a></td>
@@ -755,23 +720,30 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
-  "architecture": "standalone",
-  "auth": {
-    "enabled": true,
-    "usePasswordFiles": false
-  },
   "enabled": true,
-  "master": {
-    "persistence": {
-      "size": "2Gi",
-      "storageClass": ""
-    }
+  "persistence": {
+    "size": "2Gi",
+    "storageClass": ""
   }
 }
 </pre>
 </div>
 			</td>
-			<td>This block configures the dependeny / subchart details for bitnami/redis. Please take a look into the values.yaml to get a more detailed view of the needed settings. If you'd want to tweak settings, please take a look at the upstream values.yaml at https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml</td>
+			<td>This block configures the dependeny / subchart details for codeadminde/redis. Please take a look into the values.yaml to get a more detailed view of the needed settings. If you'd want to tweak settings, please take a look at the upstream values.yaml at https://github.com/CodeAdminDe/helm-charts/blob/main/charts/redis/values.yaml</td>
+		</tr>
+		<tr>
+			<td id="redisAuthEnabled"><a href="./values.yaml#L167">redisAuthEnabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>This value tells the chart if redis uses an password auth. The subchart uses auth by default.</td>
 		</tr>
 		<tr>
 			<td id="replicaCount"><a href="./values.yaml#L6">replicaCount</a></td>
@@ -871,6 +843,40 @@ object
 </div>
 			</td>
 			<td>Sets the runtimeClass for the containers which gets executed by the test hook. Takes the runtimeClass name, or "" (default).</td>
+		</tr>
+		<tr>
+			<td id="s3store"><a href="./values.yaml#L207">s3store</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "apiIngress": {
+    "annotations": {
+      "nginx.ingress.kubernetes.io/server-snippet": "location /s3store/v2/metrics/cluster {\n    deny all;\n    return 403 \"Forbidden\";\n}\n"
+    },
+    "certManager": false,
+    "enabled": true,
+    "hostname": "data.outline.yourdomain.tld",
+    "ingressClassName": "",
+    "tls": true
+  },
+  "defaultBuckets": "ol-data",
+  "disableWebUI": true,
+  "enabled": false,
+  "mode": "standalone",
+  "persistence": {
+    "enabled": true,
+    "size": "16Gi",
+    "storageClass": ""
+  }
+}
+</pre>
+</div>
+			</td>
+			<td>[NotImplemented / WorkInProgress] This block configures the dependeny / subchart details for a common s3store subchart. The s3store configuration will be provided as a replacement for minio-based s3 subcharts. The required subchart does not exist yet, therefore the s3store implementation is not usable currently. Nevertheless, due to the planned integration in the future, we won't remove the config entirly and instead, disabling it until we'll reuse them within a later release. Therefore: Since v0.12.0: This chart does not provide S3 storage as a backend provider!</td>
 		</tr>
 		<tr>
 			<td id="securityContext"><a href="./values.yaml#L58">securityContext</a></td>
@@ -1010,7 +1016,7 @@ string
 			<td>Define the max allowed file upload size in bytes (env FILE_STORAGE_UPLOAD_MAX_SIZE). Note that this defines the upload file size for local filestorage usage and for s3 storage usage.</td>
 		</tr>
 		<tr>
-			<td id="useCnpgCluster"><a href="./values.yaml#L199">useCnpgCluster</a></td>
+			<td id="useCnpgCluster"><a href="./values.yaml#L197">useCnpgCluster</a></td>
 			<td>
 object
 </td>

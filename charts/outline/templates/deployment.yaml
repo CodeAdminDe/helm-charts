@@ -48,7 +48,7 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          {{ if and .Values.redis.enabled .Values.redis.auth.enabled }}
+          {{ if and .Values.redis.enabled .Values.redisAuthEnabled }}
           command: ["/bin/sh", "-c", ". /cmd/run.sh"]
           {{- end }}
           env:
@@ -92,25 +92,25 @@ spec:
               value: "disable"
           {{ end }}
           {{ if .Values.redis.enabled }}
-            {{ if .Values.redis.auth.enabled }}
+            {{ if .Values.redisAuthEnabled }}
             {{ include "common.env.redisConnection" . | nindent 12 }}
             {{ else }}
             - name: REDIS_URL
               value: "redis://{{ .Release.Name }}-redis-master:6379"
             {{ end }}
           {{ end }}
-          {{ if and .Values.minio.enabled (not .Values.fileStorage.useLocal) }}
-            {{ include "outline.env.minioCreds" . | nindent 12 }}
+          {{ if and .Values.s3store.enabled (not .Values.fileStorage.useLocal) }}
+            {{ include "outline.env.s3storeCreds" . | nindent 12 }}
             - name: AWS_REGION
               value: "us-east-1"
             - name: AWS_S3_UPLOAD_BUCKET_URL
-            {{- if eq .Values.provideMinioApiAsIngressSubpath.enabled true}}
-              value: "{{ternary "https" "http" (not (empty .Values.ingress.tls)) }}://{{ ( index .Values.ingress.hosts 0 ).host }}{{ .Values.provideMinioApiAsIngressSubpath.path }}"
+            {{- if eq .Values.provideS3storeApiAsIngressSubpath.enabled true}}
+              value: "{{ternary "https" "http" (not (empty .Values.ingress.tls)) }}://{{ ( index .Values.ingress.hosts 0 ).host }}{{ .Values.provideS3storeApiAsIngressSubpath.path }}"
             {{- else }}
-              value: "{{ternary "https" "http" .Values.minio.apiIngress.tls }}://{{ .Values.minio.apiIngress.hostname }}"
+              value: "{{ternary "https" "http" .Values.s3store.apiIngress.tls }}://{{ .Values.s3store.apiIngress.hostname }}"
             {{ end }}
             - name: AWS_S3_UPLOAD_BUCKET_NAME
-              value: {{ .Values.minio.defaultBuckets | quote }}
+              value: {{ .Values.s3store.defaultBuckets | quote }}
             - name: AWS_S3_FORCE_PATH_STYLE
               value: "true"
             - name: AWS_S3_ACL
@@ -155,7 +155,7 @@ spec:
               mountPath: "/home/node"
             - name: {{ .Release.Name }}-cache-tmp
               mountPath: "/tmp"
-            {{ if and .Values.redis.enabled .Values.redis.auth.enabled }}
+            {{ if and .Values.redis.enabled .Values.redisAuthEnabled }}
             - name: {{ .Release.Name }}-configmap-run
               mountPath: "/cmd"
             {{- end }}
@@ -173,7 +173,7 @@ spec:
         - name: {{ .Release.Name }}-cache-tmp
           emptyDir:
             sizeLimit: {{ .Values.persistence.cacheDirHomeSizeLimit }}
-        {{ if and .Values.redis.enabled .Values.redis.auth.enabled }}
+        {{ if and .Values.redis.enabled .Values.redisAuthEnabled }}
         - name: {{ .Release.Name }}-configmap-run
           configMap:
             name: "{{ .Release.Name }}-run"

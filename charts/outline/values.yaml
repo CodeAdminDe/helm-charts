@@ -153,20 +153,18 @@ additionalEnvSecrets:
   # SLACK_SECRET: "your-secret-name-to-slack-oidc-secrets"
   # SLACK_ENDPOINT: "my-slack-endpoint-secret" # this env var would be populated with content of the `my-slack-endpoint-secret` secret.
 
-# -- This block configures the dependeny / subchart details for bitnami/redis.
+# -- This block configures the dependeny / subchart details for codeadminde/redis.
 # Please take a look into the values.yaml to get a more detailed view of the needed settings.
 # If you'd want to tweak settings, please take a look at the upstream values.yaml
-# at https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml
+# at https://github.com/CodeAdminDe/helm-charts/blob/main/charts/redis/values.yaml
 redis:
   enabled: true
-  architecture: "standalone"
-  master:
-    persistence:
-      size: 2Gi
-      storageClass: ""
-  auth:
-    enabled: true
-    usePasswordFiles: false
+  persistence:
+    size: 2Gi
+    storageClass: ""
+
+# -- This value tells the chart if redis uses an password auth. The subchart uses auth by default.
+redisAuthEnabled: true
 
 # -- [DEPRECATED] This block configures the dependeny / subchart details for bitnami/postgresql.
 # It is deprecated and disabled since release >=0.6.0, in favour of useCnpgCluster block.
@@ -200,13 +198,14 @@ useCnpgCluster:
   enabled: true
   appConnectionSecretName: "cnpg-cluster-app" # Secret name defaults to <clusterName>-app, unless you or your infra team provided an existing secret to the cnpg cluster deployment.
 
-# -- [DEPRECATED] This block configures the dependeny / subchart details for bitnami/minio.
-# Please take a look into the values.yaml to get a more detailed view of the required settings.
-# If you'd want to tweak settings, please take a look at the upstream values.yaml
-# at https://github.com/bitnami/charts/blob/main/bitnami/minio/values.yaml
-# Note: Provides annotation for ingress-nginx to block minio cluster metrics. You should check if that's okay within your env and update if required!
-minio:
-  enabled: true
+# -- [NotImplemented / WorkInProgress] This block configures the dependeny / subchart details for a common s3store subchart.
+# The s3store configuration will be provided as a replacement for minio-based s3 subcharts.
+# The required subchart does not exist yet, therefore the s3store implementation is not usable currently.
+# Nevertheless, due to the planned integration in the future, we won't remove the config entirly and instead,
+# disabling it until we'll reuse them within a later release.
+# Therefore: Since v0.12.0: This chart does not provide S3 storage as a backend provider!
+s3store:
+  enabled: false
   disableWebUI: true
   apiIngress:
     enabled: true
@@ -216,7 +215,7 @@ minio:
     ingressClassName: ""
     annotations:
       nginx.ingress.kubernetes.io/server-snippet: |
-        location /minio/v2/metrics/cluster {
+        location /s3store/v2/metrics/cluster {
             deny all;
             return 403 "Forbidden";
         }
@@ -228,20 +227,21 @@ minio:
     storageClass: ""
     size: 16Gi
 
-# -- EXPERIMENTAL FEATURE=> If enabled, the minio service will be provided as subpath under *all* listed ingress.hosts.
-# Note: You should set minio.apiIngress.enabled: false to avoid exposing minio via subpath and own ingress (!)
+# -- [NotImplemented / WorkInProgress] - see values.yaml "s3store" for further details.
+# EXPERIMENTAL FEATURE => If enabled, the s3store service will be provided as subpath under *all* listed ingress.hosts.
+# Note: You should set s3store.apiIngress.enabled: false to avoid exposing s3store via subpath and own ingress (!)
 # Could require additional configuration changes. E.g. within subcharts!
 # <=EXPERIMENTAL FEATURE
-provideMinioApiAsIngressSubpath:
-  # -- Enable subpath for minio api service.
+provideS3storeApiAsIngressSubpath:
+  # -- Enable subpath for s3store api service.
   enabled: false
   # -- Add additional annotations to the ingress object.
-  # Recommended: Block external access to minio metrics.
+  # Recommended: Block external access to s3store metrics.
   # To disable, provide additionalAnnotations: {}
   additionalAnnotations:
-    # -- Annotation for ingress-nginx to block minio cluster metrics. You should check if that's okay within your env and update / change if required!
+    # -- Annotation for ingress-nginx to block s3store cluster metrics. You should check if that's okay within your env and update / change if required!
     nginx.ingress.kubernetes.io/server-snippet: |
-      location /ol-data-path/minio/v2/metrics/cluster {
+      location /ol-data-path/s3store/v2/metrics/cluster {
           deny all;
           return 403 "Forbidden";
       }
