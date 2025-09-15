@@ -19,7 +19,7 @@ A Helm chart for an easier outline (https://getoutline.com) deployment at kubern
 | Repository | Name | Version |
 |------------|------|---------|
 | https://charts.bitnami.com/bitnami | postgresql(postgresql) | 16.7.27 |
-| https://codeadminde.github.io/helm-charts | redis(redis) | 0.2.2 |
+| https://codeadminde.github.io/helm-charts | redis(redis) | 0.2.3 |
 
 ## TL;DR
 

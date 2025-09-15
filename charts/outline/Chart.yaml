@@ -31,6 +31,6 @@ dependencies:
     condition: postgresql.enabled
   - name: redis
     repository: https://codeadminde.github.io/helm-charts
-    version: 0.2.2
+    version: 0.2.3
     alias: redis
     condition: redis.enabled
