@@ -61,7 +61,7 @@ spec:
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ default .Release.Name .Values.existingEnvSecret }}
+                  name: "{{- include "redis.secretName" . }}"
                   key: REDIS_PASSWORD
           {{- if or $.Values.env $.Values.additionalEnvSecrets }}
             {{- range $key, $value := $.Values.env }}

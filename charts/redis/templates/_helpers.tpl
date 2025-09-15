@@ -61,6 +61,16 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
+{{/*
+Create the name of the secret to use
+*/}}
+{{- define "redis.secretName" -}}
+{{- if .Values.existingEnvSecret }}
+{{- .Values.existingEnvSecret }}
+{{- else }}
+{{- .Release.Name }}-redis
+{{- end }}
+{{- end }}
 
 {{/* PVC definition for existingClaim, shipped or emptyDir*/}}
 {{- define "common.app.pvc" -}}
