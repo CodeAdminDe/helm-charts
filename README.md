@@ -30,6 +30,6 @@ The following charts are currently available:
 | bind9-hidden-primary | 0.4.2 | 9.20 | A Helm chart for bind9 to use as hidden primary, based on the offical Docker Image by InternetSystemsConsortium (ISC) |
 | ollama | 0.11.9 | 0.11.10 | A Helm chart for an easier ollama (https://ollama.com) deployment on k8s. Please note that this is a private helm chart and not directly or indirectly affiliated with ollama or its authors. |
 | outline | 0.12.1 | 0.87.3 | A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes. |
-| redis | 0.2.2 | 8.2.1 | A Helm chart for Redis k8s deployment, based on library/redis |
+| redis | 0.2.3 | 8.2.1 | A Helm chart for Redis k8s deployment, based on library/redis |
 | supabase | 0.4.3 | 0.4.3 | A proxy chart for an easier supabase deployment at kubernetes. Take a look at the dependency chart values.yaml and update at least security related values!! |
 
