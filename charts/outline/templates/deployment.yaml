@@ -48,7 +48,7 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          {{ if and .Values.redis.enabled .Values.redis.auth.enabled }}
+          {{ if and .Values.redis.enabled .Values.redisAuthEnabled }}
           command: ["/bin/sh", "-c", ". /cmd/run.sh"]
           {{- end }}
           env:
@@ -92,7 +92,7 @@ spec:
               value: "disable"
           {{ end }}
           {{ if .Values.redis.enabled }}
-            {{ if .Values.redis.auth.enabled }}
+            {{ if .Values.redisAuthEnabled }}
             {{ include "common.env.redisConnection" . | nindent 12 }}
             {{ else }}
             - name: REDIS_URL
@@ -155,7 +155,7 @@ spec:
               mountPath: "/home/node"
             - name: {{ .Release.Name }}-cache-tmp
               mountPath: "/tmp"
-            {{ if and .Values.redis.enabled .Values.redis.auth.enabled }}
+            {{ if and .Values.redis.enabled .Values.redisAuthEnabled }}
             - name: {{ .Release.Name }}-configmap-run
               mountPath: "/cmd"
             {{- end }}
@@ -173,7 +173,7 @@ spec:
         - name: {{ .Release.Name }}-cache-tmp
           emptyDir:
             sizeLimit: {{ .Values.persistence.cacheDirHomeSizeLimit }}
-        {{ if and .Values.redis.enabled .Values.redis.auth.enabled }}
+        {{ if and .Values.redis.enabled .Values.redisAuthEnabled }}
         - name: {{ .Release.Name }}-configmap-run
           configMap:
             name: "{{ .Release.Name }}-run"

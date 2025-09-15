@@ -123,7 +123,7 @@ Define common env vars to use redis password protected connections. Note that it
   valueFrom:
     secretKeyRef:
       name: {{ .Release.Name }}-redis
-      key: redis-password
+      key: REDIS_PASSWORD
 {{- end -}}
 
 

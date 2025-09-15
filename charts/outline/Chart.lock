@@ -3,10 +3,7 @@ dependencies:
   repository: https://charts.bitnami.com/bitnami
   version: 16.7.27
 - name: redis
-  repository: https://charts.bitnami.com/bitnami
-  version: 22.0.7
-- name: minio
-  repository: https://charts.bitnami.com/bitnami
-  version: 17.0.21
-digest: sha256:f11536bb9a08c8fa2d1907bf733a9c1ca799f598509d6bcee5ff8592a855c629
-generated: "2025-09-08T08:12:23.402311187Z"
+  repository: https://codeadminde.github.io/helm-charts
+  version: 0.2.1
+digest: sha256:f93a2785e097454a147378d192d801f38feeb9976a0f25d1597dd50f86ec4fe3
+generated: "2025-09-15T09:16:31.421407+02:00"

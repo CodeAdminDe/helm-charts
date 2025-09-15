@@ -153,20 +153,18 @@ additionalEnvSecrets:
   # SLACK_SECRET: "your-secret-name-to-slack-oidc-secrets"
   # SLACK_ENDPOINT: "my-slack-endpoint-secret" # this env var would be populated with content of the `my-slack-endpoint-secret` secret.
 
-# -- This block configures the dependeny / subchart details for bitnami/redis.
+# -- This block configures the dependeny / subchart details for codeadminde/redis.
 # Please take a look into the values.yaml to get a more detailed view of the needed settings.
 # If you'd want to tweak settings, please take a look at the upstream values.yaml
-# at https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml
+# at https://github.com/CodeAdminDe/helm-charts/blob/main/charts/redis/values.yaml
 redis:
   enabled: true
-  architecture: "standalone"
-  master:
-    persistence:
-      size: 2Gi
-      storageClass: ""
-  auth:
-    enabled: true
-    usePasswordFiles: false
+  persistence:
+    size: 2Gi
+    storageClass: ""
+
+# -- This value tells the chart if redis uses an password auth. The subchart uses auth by default.
+redisAuthEnabled: true
 
 # -- [DEPRECATED] This block configures the dependeny / subchart details for bitnami/postgresql.
 # It is deprecated and disabled since release >=0.6.0, in favour of useCnpgCluster block.
