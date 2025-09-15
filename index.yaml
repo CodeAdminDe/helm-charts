@@ -4824,6 +4824,24 @@ entries:
   redis:
   - apiVersion: v2
     appVersion: 8.2.1
+    created: "2025-09-15T10:13:06.074237681Z"
+    description: A Helm chart for Redis k8s deployment, based on library/redis
+    digest: 73b4a42d643139397bcb44c8b5facaaaad358ca9ae0bd397ea4ac324326d5bb2
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - redis
+    - database
+    - cache
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: redis
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/redis-0.2.5/redis-0.2.5.tgz
+    version: 0.2.5
+  - apiVersion: v2
+    appVersion: 8.2.1
     created: "2025-09-15T08:55:47.66935167Z"
     description: A Helm chart for Redis k8s deployment, based on library/redis
     digest: 1e4e78d53911751d1421c1842c6635ec063f54cb93a928784249d580da4a99c1
@@ -4968,4 +4986,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/supabase-0.4.3/supabase-0.4.3.tgz
     version: 0.4.3
-generated: "2025-09-15T08:58:02.209173711Z"
+generated: "2025-09-15T10:13:06.074563722Z"
