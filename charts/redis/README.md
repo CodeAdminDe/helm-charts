@@ -2,7 +2,7 @@
 
 # redis
 
-![Version: 0.2.4](https://img.shields.io/badge/Version-0.2.4-informational?style=flat-square) ![AppVersion: 8.2.1](https://img.shields.io/badge/AppVersion-8.2.1-informational?style=flat-square)
+![Version: 0.2.5](https://img.shields.io/badge/Version-0.2.5-informational?style=flat-square) ![AppVersion: 8.2.1](https://img.shields.io/badge/AppVersion-8.2.1-informational?style=flat-square)
 
 A Helm chart for Redis k8s deployment, based on library/redis
 
@@ -88,7 +88,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L143">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L140">affinity</a></td>
 			<td>
 object
 </td>
@@ -102,7 +102,7 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L134">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L131">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -128,18 +128,14 @@ object
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-{
-  "ALLOW_EMPTY_PASSWORD": "no",
-  "REDIS_DATA_DIR": "/data",
-  "REDIS_DISABLE_COMMANDS": "FLUSHDB,FLUSHALL"
-}
+{}
 </pre>
 </div>
 			</td>
 			<td>Provide env vars to the deployment. Do not add secretes here... use additionalEnvSecrets instead!</td>
 		</tr>
 		<tr>
-			<td id="existingEnvSecret"><a href="./values.yaml#L114">existingEnvSecret</a></td>
+			<td id="existingEnvSecret"><a href="./values.yaml#L111">existingEnvSecret</a></td>
 			<td>
 string
 </td>
@@ -200,7 +196,7 @@ list
 			<td>This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L130">livenessProbe</a></td>
+			<td id="livenessProbe"><a href="./values.yaml#L127">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -228,7 +224,7 @@ string
 			<td>This is to override the chart name.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L141">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L138">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -343,7 +339,7 @@ object
 			<td>This is for the pod-level security attributes and common container settings. More information: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe"><a href="./values.yaml#L131">readinessProbe</a></td>
+			<td id="readinessProbe"><a href="./values.yaml#L128">readinessProbe</a></td>
 			<td>
 object
 </td>
@@ -371,7 +367,7 @@ int
 			<td>This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L117">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L114">resources</a></td>
 			<td>
 object
 </td>
@@ -554,7 +550,7 @@ object
 			<td>This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L142">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L139">tolerations</a></td>
 			<td>
 list
 </td>
