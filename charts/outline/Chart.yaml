@@ -3,7 +3,7 @@ name: outline
 description: A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes.
 type: application
 # renovate: bumpVersion
-version: 0.12.5
+version: 0.12.6
 # renovate: image=outlinewiki/outline
 appVersion: "0.87.4"
 home: https://github.com/CodeAdminDe/helm-charts
@@ -31,6 +31,6 @@ dependencies:
     condition: postgresql.enabled
   - name: redis
     repository: https://codeadminde.github.io/helm-charts
-    version: 0.2.5
+    version: 0.2.6
     alias: redis
     condition: redis.enabled
