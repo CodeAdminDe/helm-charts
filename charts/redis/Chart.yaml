@@ -2,9 +2,9 @@
 apiVersion: v2
 name: redis
 # renovate: bumpVersion
-version: 0.2.5
+version: 0.2.6
 # renovate: image=library/redis
-appVersion: "8.2.1"
+appVersion: "8.2.2"
 description: A Helm chart for Redis k8s deployment, based on library/redis
 home: https://github.com/CodeAdminDe/helm-charts
 keywords:
