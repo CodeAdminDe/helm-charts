@@ -1,9 +1,9 @@
 dependencies:
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 18.0.16
+  version: 18.0.17
 - name: redis
   repository: https://codeadminde.github.io/helm-charts
   version: 0.2.6
-digest: sha256:3b44c15449747b07f68d2b365c831a143bb913dae390792d5032fa4142fbfc9f
-generated: "2025-10-18T16:09:05.914257798Z"
+digest: sha256:7ec6e74c3b810bee95c9da68dde1cbc0dee4adde9580fcf8842b26b933add079
+generated: "2025-10-19T09:45:19.591744005Z"
