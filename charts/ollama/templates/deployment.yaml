@@ -62,6 +62,8 @@ spec:
               value: "{{ join "," .Values.prePullModelList }}"
           {{ end }}
           volumeMounts:
+            - name: "{{ .Release.Name }}-cache-tmp"
+              mountPath: "/tmp"
             - name: "{{ .Release.Name }}-cache-home"
               mountPath: "/.ollama"
             - name: "{{ .Release.Name }}-configmap-run"
@@ -128,6 +130,8 @@ spec:
           volumeMounts:
              - name: "{{ .Release.Name }}-cache-home"
                mountPath: "/.ollama"
+             - name: "{{ .Release.Name }}-cache-tmp"
+               mountPath: "/tmp"
              - name: "{{ .Release.Name }}-data"
                mountPath: "/data/models"
           {{- if .Values.volumeMounts }}
@@ -135,6 +139,9 @@ spec:
           {{- end }}
       volumes:
         - name: "{{ .Release.Name }}-cache-home"
+          emptyDir:
+            sizeLimit: {{ .Values.persistence.cacheDirHomeSizeLimit }}
+        - name: "{{ .Release.Name }}-cache-tmp"
           emptyDir:
             sizeLimit: {{ .Values.persistence.cacheDirTmpSizeLimit }}
         - name: "{{ .Release.Name }}-configmap-run"

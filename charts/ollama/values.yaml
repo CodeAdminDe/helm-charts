@@ -115,6 +115,8 @@ persistence:
     enabled: true
     # -- Define the max directory size when using persistence.enabled: false
     emptyDirSizeLimit: 500Mi
+    # -- Define the max directory size for the /tmp directory. We need to use an emptyDir, when require securtyContext.readOnlyRootFilesystem: true.
+    cacheDirTmpSizeLimit: 2Mi
     # -- Define the max directory size for the /home directory. We need to use an emptyDir, when require securtyContext.readOnlyRootFilesystem: true.
     cacheDirHomeSizeLimit: 2Mi
     # -- Define the size of the PV when using persistence.enabled: true
