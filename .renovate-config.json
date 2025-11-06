@@ -16,17 +16,6 @@
     },
     {
       "customType": "regex",
-      "datasourceTemplate": "docker",
-      "pinDigests": true,
-      "fileMatch": [
-        "(^|/)bind9-hidden-primary/Chart\\.yaml$"
-      ],
-      "matchStrings": [
-        "#\\s?renovate: image=(?<depName>.*?)\\s?(appVersion|version):\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\"?"
-      ]
-    },
-    {
-      "customType": "regex",
       "datasourceTemplate": "helm",
       "fileMatch": [
         "(^|/)Chart\\.yaml$"
@@ -52,6 +41,12 @@
           "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
         }
       ]
+    },
+    {
+      "matchFileNames": [
+        "**/bind9-hidden-primary/Chart.yaml"
+      ],
+      "pinDigests": true
     }
   ]
 }
