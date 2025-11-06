@@ -4,6 +4,6 @@ dependencies:
   version: 18.1.4
 - name: redis
   repository: https://codeadminde.github.io/helm-charts
-  version: 0.2.6
-digest: sha256:9b3d3418b935e4e559905e6634ab04c4deea2f96f180a89fbccd53b6ee3c6abd
-generated: "2025-11-04T18:12:22.796204661Z"
+  version: 0.2.7
+digest: sha256:5a9119610516f2faa249b05aed9a2e67fcf3e710376862953045b130ce4d2781
+generated: "2025-11-06T05:45:06.405129659Z"
