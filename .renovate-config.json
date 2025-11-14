@@ -67,8 +67,8 @@
       "enabled": false
     },
     {
-      "matchPackageNames": [
-        "ghcr.io/codeadminde/webfinger"
+      "matchFileNames": [
+        "**/webfinger/*.yaml"
       ],
       "matchUpdateTypes": [
         "minor",
