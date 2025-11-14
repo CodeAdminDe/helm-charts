@@ -6153,4 +6153,25 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/supabase-0.4.3/supabase-0.4.3.tgz
     version: 0.4.3
-generated: "2025-11-14T15:48:39.993823074Z"
+  webfinger:
+  - apiVersion: v2
+    appVersion: 0.1.6
+    created: "2025-11-14T19:47:55.800461376Z"
+    description: A Helm chart for an easy webfinger deployment at kubernetes.
+    digest: bb4660f7f3721d02f4064a3986490d77a0c9e45f0dceb8e3c5f7c6199d89d4c9
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - webfinger
+    - go
+    - web
+    - oidc
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: webfinger
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-11-14T19:47:55.800822403Z"
