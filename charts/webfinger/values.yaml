@@ -21,7 +21,7 @@ image:
   repository: ghcr.io/codeadminde/webfinger
   pullPolicy: IfNotPresent
   tag: ""
-  digest: "sha256:f3445fc138801ded415998d1cc4ab6dd7591a7102e16dccd091791c1c12b1b91"
+  digest: "sha256:e838beac3048b3f591d637a029d2e74c86d474440d8f9407e43ff9e5fe8b6495"
 
 # -- This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
