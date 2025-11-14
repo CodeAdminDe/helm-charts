@@ -67,12 +67,8 @@
       "enabled": false
     },
     {
-      "matchFileNames": [
-        "charts/**"
-      ],
-      "matchDatasources": [
-        "docker",
-        "helm"
+      "matchPackages": [
+        "ghcr.io/codeadminde/webfinger"
       ],
       "matchUpdateTypes": [
         "minor",
