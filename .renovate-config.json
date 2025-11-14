@@ -53,6 +53,7 @@
       "matchFileNames": [
         "charts/**"
       ],
+      "pinDigests": true,
       "bumpVersions": [
         {
           "filePatterns": [
@@ -64,12 +65,6 @@
           "bumpType": "{{#if isMajor}}major{{else}}{{#if isPatch}}patch{{else}}minor{{/if}}{{/if}}"
         }
       ]
-    },
-    {
-      "matchFileNames": [
-        "charts/**"
-      ],
-      "pinDigests": true
     }
   ]
 }
