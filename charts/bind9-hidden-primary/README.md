@@ -88,7 +88,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L240">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L243">affinity</a></td>
 			<td>
 object
 </td>
@@ -102,7 +102,7 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L216">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L219">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -121,7 +121,7 @@ object
 			<td>This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/</td>
 		</tr>
 		<tr>
-			<td id="env"><a href="./values.yaml#L106">env</a></td>
+			<td id="env"><a href="./values.yaml#L109">env</a></td>
 			<td>
 object
 </td>
@@ -138,7 +138,7 @@ object
 			<td>This configures the TSIG Key HMAC algo and Key Name which will be used within the configuration of bind9. Usually, you won't need to change these defaults. General details about the TSIG implementation could be found at: https://www.isc.org/docs/2021-bind-mgmt-05-webinar.pdf</td>
 		</tr>
 		<tr>
-			<td id="existingConfigMap"><a href="./values.yaml#L178">existingConfigMap</a></td>
+			<td id="existingConfigMap"><a href="./values.yaml#L181">existingConfigMap</a></td>
 			<td>
 object
 </td>
@@ -157,7 +157,7 @@ object
 			<td>Provide your own includes.d/, named.conf and/or entrypoint configMap to override chart-included configurations.</td>
 		</tr>
 		<tr>
-			<td id="fullnameOverride"><a href="./values.yaml#L41">fullnameOverride</a></td>
+			<td id="fullnameOverride"><a href="./values.yaml#L44">fullnameOverride</a></td>
 			<td>
 string
 </td>
@@ -171,7 +171,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="image"><a href="./values.yaml#L25">image</a></td>
+			<td id="image"><a href="./values.yaml#L26">image</a></td>
 			<td>
 object
 </td>
@@ -179,6 +179,7 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
+  "digest": "",
   "pullPolicy": "IfNotPresent",
   "repository": "internetsystemsconsortium/bind9",
   "tag": ""
@@ -186,10 +187,10 @@ object
 </pre>
 </div>
 			</td>
-			<td>This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ Override the image tag, whose default is the chart appVersion.</td>
+			<td>This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ Override the image tag, whose default is the chart appVersion. If you'd like to reference the image by digest, override the image digest.</td>
 		</tr>
 		<tr>
-			<td id="imagePullSecrets"><a href="./values.yaml#L37">imagePullSecrets</a></td>
+			<td id="imagePullSecrets"><a href="./values.yaml#L40">imagePullSecrets</a></td>
 			<td>
 list
 </td>
@@ -203,7 +204,7 @@ list
 			<td>This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/</td>
 		</tr>
 		<tr>
-			<td id="jobImage"><a href="./values.yaml#L32">jobImage</a></td>
+			<td id="jobImage"><a href="./values.yaml#L34">jobImage</a></td>
 			<td>
 object
 </td>
@@ -211,6 +212,7 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
+  "digest": "",
   "repository": "ghcr.io/codeadminde/bind9-kubectl",
   "tag": "latest"
 }
@@ -220,7 +222,7 @@ object
 			<td>This sets the job container image to use. The image needs kubectl and bind9 already present in order to fullfill it's job and to be used with a restricted namespace policy.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L200">livenessProbe</a></td>
+			<td id="livenessProbe"><a href="./values.yaml#L203">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -240,7 +242,7 @@ object
 			<td>This is to setup the liveness probe. By default, we're using the tcpSocket to provide the liveness state. More information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/</td>
 		</tr>
 		<tr>
-			<td id="nameOverride"><a href="./values.yaml#L40">nameOverride</a></td>
+			<td id="nameOverride"><a href="./values.yaml#L43">nameOverride</a></td>
 			<td>
 string
 </td>
@@ -254,7 +256,7 @@ string
 			<td>This is to override the chart name.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L236">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L239">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -268,7 +270,7 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="persistence"><a href="./values.yaml#L165">persistence</a></td>
+			<td id="persistence"><a href="./values.yaml#L168">persistence</a></td>
 			<td>
 object
 </td>
@@ -291,7 +293,7 @@ object
 			<td>This configures the persistens of your release. The bind9 service uses persistent storage to save it's current zone database and to ensure all running containers does share the same details. See values.yaml for a detailed sample.</td>
 		</tr>
 		<tr>
-			<td id="podAnnotations"><a href="./values.yaml#L57">podAnnotations</a></td>
+			<td id="podAnnotations"><a href="./values.yaml#L60">podAnnotations</a></td>
 			<td>
 object
 </td>
@@ -305,7 +307,7 @@ object
 			<td>This is for setting Kubernetes Annotations to a Pod. For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/</td>
 		</tr>
 		<tr>
-			<td id="podLabels"><a href="./values.yaml#L60">podLabels</a></td>
+			<td id="podLabels"><a href="./values.yaml#L63">podLabels</a></td>
 			<td>
 object
 </td>
@@ -319,7 +321,7 @@ object
 			<td>This is for setting Kubernetes Labels to a Pod. For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/</td>
 		</tr>
 		<tr>
-			<td id="podSecurityContext"><a href="./values.yaml#L64">podSecurityContext</a></td>
+			<td id="podSecurityContext"><a href="./values.yaml#L67">podSecurityContext</a></td>
 			<td>
 object
 </td>
@@ -335,7 +337,7 @@ object
 			<td>This is for the pod-level security attributes and common container settings. More information: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/</td>
 		</tr>
 		<tr>
-			<td id="providerPrimaryAclIpList"><a href="./values.yaml#L116">providerPrimaryAclIpList</a></td>
+			<td id="providerPrimaryAclIpList"><a href="./values.yaml#L119">providerPrimaryAclIpList</a></td>
 			<td>
 string
 </td>
@@ -349,7 +351,7 @@ string
 			<td>List of upstream dns servers that are allowed to query the hidden primary (AXFR requests) (Separator: ";"). Provide your providers upstream IP and/or IPs.</td>
 		</tr>
 		<tr>
-			<td id="providerPrimaryIpList"><a href="./values.yaml#L112">providerPrimaryIpList</a></td>
+			<td id="providerPrimaryIpList"><a href="./values.yaml#L115">providerPrimaryIpList</a></td>
 			<td>
 string
 </td>
@@ -363,7 +365,7 @@ string
 			<td>List of upstream dns servers which gets notified (Separator: ";"). Provide your providers upstream IP and/or IPs.</td>
 		</tr>
 		<tr>
-			<td id="proxyv2"><a href="./values.yaml#L123">proxyv2</a></td>
+			<td id="proxyv2"><a href="./values.yaml#L126">proxyv2</a></td>
 			<td>
 object
 </td>
@@ -380,7 +382,7 @@ object
 			<td>EXPERIMENTAL => This feature is untested and / or unstable. Enable / Disable usage of proxyv2 protocol. WARNING: You should apply a custom NetworkPolicy to avoid spoofing, when using this feature! more details: https://kb.isc.org/docs/proxyv2-support-in-bind-9 <= EXPERIMENTAL</td>
 		</tr>
 		<tr>
-			<td id="proxyv2--allowProxyIpList"><a href="./values.yaml#L127">proxyv2.allowProxyIpList</a></td>
+			<td id="proxyv2--allowProxyIpList"><a href="./values.yaml#L130">proxyv2.allowProxyIpList</a></td>
 			<td>
 string
 </td>
@@ -394,7 +396,7 @@ string
 			<td>List of addresses / networks which are allowed to send PROXYv2 headers. (Separator: ";") Provide your cluster ingress ips / range.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe"><a href="./values.yaml#L209">readinessProbe</a></td>
+			<td id="readinessProbe"><a href="./values.yaml#L212">readinessProbe</a></td>
 			<td>
 object
 </td>
@@ -428,7 +430,7 @@ int
 			<td>This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/ (Only replicaCount 1 supported)</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L185">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L188">resources</a></td>
 			<td>
 object
 </td>
@@ -442,7 +444,7 @@ object
 			<td>Specify default resources for the</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L96">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L99">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -472,7 +474,7 @@ object
 </td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--jobs"><a href="./values.yaml#L100">runtimeClass.jobs</a></td>
+			<td id="runtimeClass--jobs"><a href="./values.yaml#L103">runtimeClass.jobs</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -486,7 +488,7 @@ object
 			<td>Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--pods"><a href="./values.yaml#L98">runtimeClass.pods</a></td>
+			<td id="runtimeClass--pods"><a href="./values.yaml#L101">runtimeClass.pods</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -500,7 +502,7 @@ object
 			<td>Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--tests"><a href="./values.yaml#L102">runtimeClass.tests</a></td>
+			<td id="runtimeClass--tests"><a href="./values.yaml#L105">runtimeClass.tests</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -514,7 +516,7 @@ object
 			<td>Sets the runtimeClass for the containers which gets executed by the test hook. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="securityContext"><a href="./values.yaml#L70">securityContext</a></td>
+			<td id="securityContext"><a href="./values.yaml#L73">securityContext</a></td>
 			<td>
 object
 </td>
@@ -559,7 +561,7 @@ object
 			<td>This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/</td>
 		</tr>
 		<tr>
-			<td id="serviceAccount"><a href="./values.yaml#L44">serviceAccount</a></td>
+			<td id="serviceAccount"><a href="./values.yaml#L47">serviceAccount</a></td>
 			<td>
 object
 </td>
@@ -597,7 +599,7 @@ object
 			<td>The statistics channel provides a XML and JSON (/json) HTTP endpoint to monitor bind. It is not protected. Use a reverse-proxy with basic-auth and ssl, if you want to expose it externally.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L238">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L241">tolerations</a></td>
 			<td>
 list
 </td>
@@ -611,7 +613,7 @@ list
 			<td></td>
 		</tr>
 		<tr>
-			<td id="volumeMounts"><a href="./values.yaml#L231">volumeMounts</a></td>
+			<td id="volumeMounts"><a href="./values.yaml#L234">volumeMounts</a></td>
 			<td>
 list
 </td>
@@ -625,7 +627,7 @@ list
 			<td>Additional volumeMounts on the output Deployment definition.</td>
 		</tr>
 		<tr>
-			<td id="volumes"><a href="./values.yaml#L224">volumes</a></td>
+			<td id="volumes"><a href="./values.yaml#L227">volumes</a></td>
 			<td>
 list
 </td>
@@ -639,7 +641,7 @@ list
 			<td>Additional volumes on the output Deployment definition.</td>
 		</tr>
 		<tr>
-			<td id="zone"><a href="./values.yaml#L150">zone</a></td>
+			<td id="zone"><a href="./values.yaml#L153">zone</a></td>
 			<td>
 object
 </td>
