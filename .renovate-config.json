@@ -48,7 +48,7 @@
           "matchStrings": [
             "#\\s?renovate: bumpVersion\\s?(appVersion|version):\\s?\\\"?(?<version>[\\w+\\.\\-]*)\"?"
           ],
-          "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
+          "bumpType": "{{#if isMajor}}major{{else}}{{#if isPatch}}patch{{else}}minor{{/if}}{{/if}}"
         }
       ]
     },
