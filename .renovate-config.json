@@ -54,7 +54,6 @@
       "matchFileNames": [
         "charts/**"
       ],
-      "pinDigests": true,
       "bumpVersions": [
         {
           "filePatterns": [
