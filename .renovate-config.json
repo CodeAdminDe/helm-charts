@@ -12,8 +12,7 @@
       ],
       "matchStrings": [
         "image:\\s?\\s?\\s?repository:\\s?\"?(?<depName>[\\w+\\.\\-\/]*)\"?\\s?\\s?\\s?pullPolicy:\\s?\\w+\\s?\\s?\\s?tag:\\s?\"?(?<currentValue>[\\w+\\.\\-]*)\"?\\s?\\s?\\s?digest:\\s?\"?(?<currentDigest>sha256:[A-Fa-f0-9]{64})\"?"
-      ],
-      "currentValueTemplate": "latest"
+      ]
     },
     {
       "customType": "regex",
