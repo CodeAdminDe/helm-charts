@@ -65,6 +65,19 @@
         "minor"
       ],
       "enabled": false
+    },
+    {
+      "matchFileNames": [
+        "charts/**"
+      ],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "digest"
+      ],
+      "groupName": "Update {{depName}} Docker tag to {{newValue}} and digest to {{newDigestShort}}"
     }
   ]
 }
