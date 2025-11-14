@@ -21,6 +21,6 @@ To uninstall the chart:
 
 ### Collection
 
-> Please note that this is a private Helm chart repository and neither my work nor I am directly or indirectly affiliated with the packaged applications or their authors.
+> Please note that this is a private Helm chart repository and neither my work nor I am directly or indirectly affiliated with the packaged applications or their authors, unless otherwise stated.
 
 The following charts are currently available:
