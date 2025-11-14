@@ -174,7 +174,7 @@ object
   "digest": "sha256:f3445fc138801ded415998d1cc4ab6dd7591a7102e16dccd091791c1c12b1b91",
   "pullPolicy": "IfNotPresent",
   "repository": "ghcr.io/codeadminde/webfinger",
-  "tag": "0.1.6"
+  "tag": ""
 }
 </pre>
 </div>
