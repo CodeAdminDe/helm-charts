@@ -11,6 +11,16 @@
         "(^|/)Chart\\.yaml$"
       ],
       "matchStrings": [
+        "#\\s?renovate: registry=(?<registryUrl>.*?)\\s?image=(?<depName>.*?)\\s?(appVersion|version):\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\"?"
+      ]
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "docker",
+      "fileMatch": [
+        "(^|/)Chart\\.yaml$"
+      ],
+      "matchStrings": [
         "#\\s?renovate: image=(?<depName>.*?)\\s?(appVersion|version):\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\"?"
       ]
     },
