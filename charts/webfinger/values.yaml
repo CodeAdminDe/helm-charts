@@ -1,0 +1,203 @@
+# Default values for webfinger.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# -- This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+replicaCount: 1
+
+
+# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # -- This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: ClusterIP
+  # -- This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  port: 80
+  targetPort: 8080
+
+# -- This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+# Override the image tag, whose default is the chart appVersion.
+# If you'd like to reference the image by digest, override the image digest.
+image:
+  repository: ghcr.io/codeadminde/webfinger
+  pullPolicy: IfNotPresent
+  tag: ""
+  digest: "sha256:f3445fc138801ded415998d1cc4ab6dd7591a7102e16dccd091791c1c12b1b91"
+
+# -- This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets: []
+
+# -- This is to override the chart name.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# -- This is for setting Kubernetes Annotations to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+# -- This is for setting Kubernetes Labels to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+# -- This is for the pod-level security attributes and common container settings.
+# More information: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+podSecurityContext:
+  fsGroup: 1001
+
+# -- This is for the scurityContext at container level.
+# Note that container settings do not affect the Pod's Volumes.
+# More information: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  runAsUser: 1001
+  seccompProfile:
+    type: RuntimeDefault
+
+
+# -- Set a RuntimeClass to execute the containers with a custom runtime configuration.
+# Register a runtimeClass within your cluster beforehand.
+# @raw
+#
+# <details>
+# <summary>Motivation (Expand)</summary>
+#
+# > The container runtime configuration is used to run a Pod's containers. . . .
+# > For example, if part of your workload deserves a high level of information security assurance, you might choose to schedule those Pods so that they run in a container runtime that uses hardware virtualization.
+# > You'd then benefit from the extra isolation of the alternative runtime, at the expense of some additional overhead. . . .
+#
+# <i>Source and more informations: https://kubernetes.io/docs/concepts/containers/runtime-class/ </i>
+#
+# </details>
+runtimeClass:
+  # -- (string/runtimeClassName) Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).
+  pods: ""
+  # -- (string/runtimeClassName) Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).
+  jobs: ""
+  # -- (string/runtimeClassName) Sets the runtimeClass for the containers which gets executed by the test hook. Takes the runtimeClass name, or "" (default).
+  tests: ""
+
+# -- The following minimal required env vars are necessary to deploy the webfinger image successfully.
+# See the upstream docs for further informations. You'll find these here: https://github.com/CodeAdminDe/webfinger
+webfingerIssuerUrl: "example.org"
+webfingerRessource: "acct:user@example.org"
+webfingerAllowDomainWildcard: "false"
+
+# -- Provide env vars to the deployment.
+# Do not add secretes here... use additionalEnvSecrets instead!
+env:
+  # ADDITIONAL_CONFIG_KEY: "value you want to provide"
+
+
+# -- Provide additonal env vars via one or more secretes... useful for OIDC setup, or any other secret that you want to provide via env etc...
+# Specifiy the ENV key used by webfinger as KEY and the secret name as VALUE.
+# The secret should contain the ENV key and the encrypted value:
+# Sample secret
+# ...
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: your-secret-env-secrets
+#   type: Opaque
+# stringData:
+#   SOME_ENV_KEY: "key-value-goes-here"
+#   SOME_SECRET: "some-secret-value-goes-here"
+additionalEnvSecrets:
+  # SOME_ENV_KEY: "your-secret-env-secrets" # you could add more env vars via secret/s
+  # SOME_SECRET: "your-secret-env-secrets"
+  # OTHER_ENV: "your-secret-env-secrets-two" # this env var would be populated with content of the `your-secret-env-secrets-two` secret.
+
+
+# -- This block is for setting up the webfinger ingress. More information about ingress in general can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+# To get a better understanding and some more explanation, take a look into the values.yaml provided with the chart.
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /.well-known/webfinger
+          pathType: ImplementationSpecific
+        ## It is possible to add another service under the same ingress host by providing an additional path together with the desired backend configuration.
+        # The "backend:" block gets proxied through the tmpl, if used.
+        # - path: /another-service
+        #   pathType: ImplementationSpecific
+        #   backend:
+        #     service:
+        #       name: another-service
+        #       port:
+        #         number: 8080
+  #tls:
+  tls:
+    - hosts:
+        - chart-example.local
+      #secretName: chart-example-tls
+      # -- secretName of the certificate to use.
+      # When providing an empty string as secretNmae, the key will be skipped. That allowes to use the default ingress-nginx certificate for this ingress object.
+      secretName: "" #When providing an empty string as secretName, the key will be skipped. That allowes to use the default ingress-nginx certificate for this ingress object.
+
+# -- Specify default resources (not recommended, see values.yaml)
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# -- This is to setup the startup, liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+startupProbe:
+  httpGet:
+    path: /_healthz
+    port: 8080
+  failureThreshold: 3
+  periodSeconds: 5
+livenessProbe:
+  httpGet:
+    path: /_healthz
+    port: 8080
+  failureThreshold: 3
+  periodSeconds: 10
+  initialDelaySeconds: 5
+readinessProbe:
+  httpGet:
+    path: /_healthz
+    port: 8080
+  failureThreshold: 3
+  periodSeconds: 10
+  initialDelaySeconds: 5
+
+# -- This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

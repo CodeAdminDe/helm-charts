@@ -1,0 +1,18 @@
+apiVersion: v2
+name: webfinger
+description: A Helm chart for an easy webfinger deployment at kubernetes.
+type: application
+# renovate: bumpVersion
+version: 0.1.0
+# renovate: registry=ghcr.io image=codeadminde/webfinger
+appVersion: "0.1.6"
+home: https://github.com/CodeAdminDe/helm-charts
+keywords:
+  - webfinger
+  - go
+  - web
+  - oidc
+maintainers:
+  - name: Frederic Roggon
+    email: frederic.roggon@codeadmin.de
+    url: https://github.com/CodeAdminDe
