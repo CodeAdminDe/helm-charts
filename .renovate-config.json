@@ -67,7 +67,7 @@
       "enabled": false
     },
     {
-      "matchPackages": [
+      "matchPackageNames": [
         "ghcr.io/codeadminde/webfinger"
       ],
       "matchUpdateTypes": [
