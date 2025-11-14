@@ -58,8 +58,7 @@
         "**/bind9-hidden-primary/Chart.yaml"
       ],
       "matchDatasources": [
-        "docker",
-        "helm"
+        "docker"
       ],
       "matchUpdateTypes": [
         "major",
@@ -72,7 +71,8 @@
         "charts/**"
       ],
       "matchDatasources": [
-        "docker"
+        "docker",
+        "helm"
       ],
       "matchUpdateTypes": [
         "minor",
