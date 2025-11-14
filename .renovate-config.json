@@ -14,7 +14,8 @@
         "image:\\s?\\s?\\s?repository:\\s?\"?(?<depName>[\\w+\\.\\-\/]*)\"?\\s?\\s?\\s?pullPolicy:\\s?\\w+\\s?\\s?\\s?tag:\\s?\"?(?<currentValue>[\\w+\\.\\-]*)\"?\\s?\\s?\\s?digest:\\s?\"?(?<currentDigest>sha256:[A-Fa-f0-9]{64})\"?"
       ],
       "currentValueTemplate": "latest",
-      "registryUrlTemplate": "{{#if (containsString depName 'ghcr.io')}}https://{{depName}}{{/if}}"
+      "registryUrlTemplate": "{{#if (containsString depName 'ghcr.io')}}https://{{depName}}{{/if}}",
+      "depNameTemplate": "{{#if (containsString depName 'ghcr.io')}}{{{replace 'ghcr\\.io/' '' depName}}}{{else}}{{depName}}{{/if}}"
     },
     {
       "customType": "regex",
