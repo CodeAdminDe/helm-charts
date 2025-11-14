@@ -63,6 +63,17 @@
             "#\\s?renovate: bumpVersion\\s?(appVersion|version):\\s?\\\"?(?<version>[\\w+\\.\\-]*)\"?"
           ],
           "bumpType": "{{#if isMajor}}major{{else}}{{#if isPatch}}patch{{else}}minor{{/if}}{{/if}}"
+        },
+        {
+          "matchFileNames": [
+            "**/bind9-hidden-primary/Chart.yaml"
+          ],
+          "matchDatasources": ["docker"],
+          "matchUpdateTypes": [
+            "major",
+            "minor"
+          ],
+          "enabled": false
         }
       ]
     }
