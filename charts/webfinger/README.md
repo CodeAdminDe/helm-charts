@@ -2,7 +2,7 @@
 
 # webfinger
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.6](https://img.shields.io/badge/AppVersion-0.1.6-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.6](https://img.shields.io/badge/AppVersion-0.1.6-informational?style=flat-square)
 
 A Helm chart for an easy webfinger deployment at kubernetes.
 
@@ -171,7 +171,7 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
-  "digest": "sha256:f3445fc138801ded415998d1cc4ab6dd7591a7102e16dccd091791c1c12b1b91",
+  "digest": "sha256:e838beac3048b3f591d637a029d2e74c86d474440d8f9407e43ff9e5fe8b6495",
   "pullPolicy": "IfNotPresent",
   "repository": "ghcr.io/codeadminde/webfinger",
   "tag": ""
