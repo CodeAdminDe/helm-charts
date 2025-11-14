@@ -27,7 +27,7 @@ The following charts are currently available:
 
 | Name | Version | AppVersion | Description |
 |------|---------|------------|-------------|
-| bind9-hidden-primary | 0.4.2 | 9.20 | A Helm chart for bind9 to use as hidden primary, based on the offical Docker Image by InternetSystemsConsortium (ISC) |
+| bind9-hidden-primary | 0.4.3 | 9.20 | A Helm chart for bind9 to use as hidden primary, based on the offical Docker Image by InternetSystemsConsortium (ISC) |
 | ollama | 0.12.11 | 0.12.10 | A Helm chart for an easier ollama (https://ollama.com) deployment on k8s. Please note that this is a private helm chart and not directly or indirectly affiliated with ollama or its authors. |
 | outline | 1.0.8 | 1.0.1 | A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes. |
 | redis | 0.2.7 | 8.2.3 | A Helm chart for Redis k8s deployment, based on library/redis |
