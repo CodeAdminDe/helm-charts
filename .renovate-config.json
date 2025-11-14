@@ -11,8 +11,9 @@
         "(^|/)Chart\\.yaml$"
       ],
       "matchStrings": [
-        "#\\s?renovate: registry=(?<registryUrl>.*?)\\s?image=(?<depName>.*?)\\s?(appVersion|version):\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\"?"
-      ]
+        "#\\s?renovate: registry=ghcr\\.io\\s?image=(?<depName>.*?)\\s?(appVersion|version):\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\"?"
+      ],
+      "registryUrlTemplate": "https://ghcr.io/{{depName}}"
     },
     {
       "customType": "regex",
