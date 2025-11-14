@@ -22,17 +22,6 @@
         "/(^|/)Chart\\.yaml$/"
       ],
       "matchStrings": [
-        "#\\s?renovate: registry=ghcr\\.io\\s?image=(?<depName>.*?)\\s?(appVersion|version):\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\"?"
-      ],
-      "registryUrlTemplate": "https://ghcr.io/{{depName}}"
-    },
-    {
-      "customType": "regex",
-      "datasourceTemplate": "docker",
-      "managerFilePatterns": [
-        "/(^|/)Chart\\.yaml$/"
-      ],
-      "matchStrings": [
         "#\\s?renovate: image=(?<depName>.*?)\\s?(appVersion|version):\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\"?"
       ]
     },
@@ -60,7 +49,7 @@
           "matchStrings": [
             "#\\s?renovate: bumpVersion\\s?(appVersion|version):\\s?\\\"?(?<version>[\\w+\\.\\-]*)\"?"
           ],
-          "bumpType": "{{#if isMajor}}major{{else}}{{#if isPatch}}patch{{else}}minor{{/if}}{{/if}}"
+          "bumpType": "{{#if isMajor}}major{{else}}{{#if isMinor}}minor{{else}}patch{{/if}}{{/if}}"
         }
       ]
     },
