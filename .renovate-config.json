@@ -64,16 +64,6 @@
         "minor"
       ],
       "enabled": false
-    },
-    {
-      "matchFileNames": [
-        "**/webfinger/*.yaml"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "digest"
-      ],
-      "groupName": "Update {{depName}} Docker tag to {{newValue}} and digest to {{newDigestShort}}"
     }
   ]
 }
