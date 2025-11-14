@@ -21,7 +21,7 @@ To uninstall the chart:
 
 ### Collection
 
-> Please note that this is a private Helm chart repository and neither my work nor I am directly or indirectly affiliated with the packaged applications or their authors.
+> Please note that this is a private Helm chart repository and neither my work nor I am directly or indirectly affiliated with the packaged applications or their authors, unless otherwise stated.
 
 The following charts are currently available:
 
@@ -32,4 +32,5 @@ The following charts are currently available:
 | outline | 1.0.8 | 1.0.1 | A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes. |
 | redis | 0.2.7 | 8.2.3 | A Helm chart for Redis k8s deployment, based on library/redis |
 | supabase | 0.4.3 | 0.4.3 | A proxy chart for an easier supabase deployment at kubernetes. Take a look at the dependency chart values.yaml and update at least security related values!! |
+| webfinger | 0.1.0 | 0.1.6 | A Helm chart for an easy webfinger deployment at kubernetes. |
 
