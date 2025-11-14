@@ -8,6 +8,18 @@
       "customType": "regex",
       "datasourceTemplate": "docker",
       "fileMatch": [
+        "(^|/)values\\.yaml$"
+      ],
+      "matchStrings": [
+        "image:\\s?repository:\\s?\\\"?(?<depName>[\\w+\\.\\-/]*)\\\"?.*digest:\\s?\\\"?(?<currentDigest>.*?)\"?"
+      ],
+      "currentValueTemplate": "latest",
+      "registryUrlTemplate": "{{#if (containsString depName 'ghcr.io')}}https://{{depName}}{{/if}}"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "docker",
+      "fileMatch": [
         "(^|/)Chart\\.yaml$"
       ],
       "matchStrings": [
