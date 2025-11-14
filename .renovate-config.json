@@ -67,7 +67,7 @@
     },
     {
       "matchFileNames": [
-        "**/bind9-hidden-primary/Chart.yaml"
+        "charts/**"
       ],
       "pinDigests": true
     }
