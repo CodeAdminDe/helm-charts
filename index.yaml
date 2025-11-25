@@ -1275,6 +1275,44 @@ entries:
   outline:
   - apiVersion: v2
     appVersion: 1.1.0
+    created: "2025-11-25T13:55:26.590504123Z"
+    dependencies:
+    - alias: postgresql
+      condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 18.1.13
+    - alias: redis
+      condition: redis.enabled
+      name: redis
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.3.0
+    description: A Helm chart for an easier outline (https://getoutline.com) deployment
+      at kubernetes.
+    digest: 537ef187f839f04a7b0a8ed6532cde50d44310979eaecd7ffbc2f0859225da57
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - outline
+    - app
+    - docs
+    - wiki
+    - sso
+    - helm
+    - postgresql
+    - cnpg
+    - cloud-native
+    - cnpg-cluster
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: outline
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/outline-1.2.3/outline-1.2.3.tgz
+    version: 1.2.3
+  - apiVersion: v2
+    appVersion: 1.1.0
     created: "2025-11-25T09:14:00.091722407Z"
     dependencies:
     - alias: postgresql
@@ -6489,4 +6527,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-25T09:14:00.092079765Z"
+generated: "2025-11-25T13:55:26.590922153Z"
