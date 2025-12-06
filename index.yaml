@@ -523,6 +523,31 @@ entries:
     version: 0.1.0
   ollama:
   - apiVersion: v2
+    appVersion: 0.13.1
+    created: "2025-12-06T07:47:29.615549434Z"
+    description: A Helm chart for an easier ollama (https://ollama.com) deployment
+      on k8s. Please note that this is a private helm chart and not directly or indirectly
+      affiliated with ollama or its authors.
+    digest: 7f6542a7f7a53bd8735f74a5fd528e20dbdb0173ee7c80c2323ef86bd9dddf43
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - ollama
+    - ai
+    - ki
+    - llm
+    - backend
+    - helm
+    - cloud-native
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: ollama
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/ollama-0.13.1/ollama-0.13.1.tgz
+    version: 0.13.1
+  - apiVersion: v2
     appVersion: 0.13.0
     created: "2025-11-20T17:49:38.790956919Z"
     description: A Helm chart for an easier ollama (https://ollama.com) deployment
@@ -6527,4 +6552,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-25T13:55:26.590922153Z"
+generated: "2025-12-06T07:47:29.616075744Z"
