@@ -1,0 +1,18 @@
+{{- define "libchart-cnps.CiliumNetworkPolicy.01-namespace--internal-traffic-allow.tpl" -}}
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ .Release.Name | printf "%s-%s--01-namespace--internal-traffic-allow" .Chart.Name }}
+spec:
+  endpointSelector:
+    matchLabels: {}
+  ingress:
+  - fromEndpoints:
+    - {}
+  egress:
+  - toEndpoints:
+    - {}
+{{- end -}}
+{{- define "libchart-cnps.CiliumNetworkPolicy.01-namespace--internal-traffic-allow" -}}
+{{- include "libchart-cnps.util.merge" (append . "libchart-cnps.CiliumNetworkPolicy.01-namespace--internal-traffic-allow.tpl") -}}
+{{- end -}}

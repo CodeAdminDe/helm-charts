@@ -1,0 +1,14 @@
+{{- /*
+Returns the default baseline for namespace-wide policies. Note that when you're overriding within your app chart:
+- the override applies for all resources - e.g
+  - adding a non-existing label would be added to all CNPs listed.
+  - overriding spec: is not recommended because it would set the same spec for all rules.
+Therefore: Use overrides for this library (part) with extrem attention and only when you know what you're doing!
+*/}}
+{{ define "libchart-cnps.CiliumNetworkPolicies-NamespaceSet" }}
+{{ include "libchart-cnps.util.merge" (append . "libchart-cnps.CiliumNetworkPolicy.00-namespace--all-ingress-egress-deny.tpl") }}
+---
+{{ include "libchart-cnps.util.merge" (append . "libchart-cnps.CiliumNetworkPolicy.01-namespace--internal-traffic-allow.tpl") }}
+---
+{{ include "libchart-cnps.util.merge" (append . "libchart-cnps.CiliumNetworkPolicy.02-namespace--egress-traffic.tpl") }}
+{{ end }}

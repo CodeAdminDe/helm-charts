@@ -1,0 +1,19 @@
+{{- /*
+Returns a full set of rules to allow communication between the CNPG operator and database cluster within the applications namespace.
+Note that when you're overriding within your app chart:
+- the override applies for all resources - e.g
+  - adding a non-existing label would be added to all CNPs listed.
+  - overriding spec: is not recommended because it would set the same spec for all rules.
+Therefore: Use overrides for this library (part) with extrem attention and only when you know what you're doing!
+*/}}
+{{ define "libchart-cnps.CiliumNetworkPolicies-CnpgSet" }}
+{{ include "libchart-cnps.util.merge" (append . "libchart-cnps.CiliumNetworkPolicy.99-ruleset---cnpg-join-traffic.tpl") }}
+---
+{{ include "libchart-cnps.util.merge" (append . "libchart-cnps.CiliumNetworkPolicy.99-ruleset---cnpg-initdb-traffic.tpl") }}
+---
+{{ include "libchart-cnps.util.merge" (append . "libchart-cnps.CiliumNetworkPolicy.99-ruleset---cnpg-import-traffic.tpl") }}
+---
+{{ include "libchart-cnps.util.merge" (append . "libchart-cnps.CiliumNetworkPolicy.99-ruleset---cnpg-instance-traffic.tpl") }}
+---
+{{ include "libchart-cnps.util.merge" (append . "libchart-cnps.CiliumNetworkPolicy.99-ruleset---cnpg-major-upgrade-traffic.tpl") }}
+{{ end }}

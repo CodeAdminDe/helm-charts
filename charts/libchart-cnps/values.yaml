@@ -1,0 +1,2 @@
+# This file isn't used by the chart, just by helm-docs to generate library related docs.
+extraSpecificsFromchartAtomOpinionated: true
