@@ -1,6 +1,17 @@
 {{- define "extra.templates.parts.footer" -}}
 
+{{- $hasLibchartCnps := false }}
+{{- range .Values }}
+{{- if (eq .Key "libchartCnps") }}
+{{- $hasLibchartCnps = true }}
+{{- end }}
+{{- end }}
+
+{{- if (eq true $hasLibchartCnps) }}
+{{ template "extra.atom.experimental-cilium-networkpolicies-provided" . }}
+{{- else }}
 {{ template "extra.atom.no-networkpolicies-provided" . }}
+{{- end }}
 
 {{ template "extra.atom.opinionated" . }}
 

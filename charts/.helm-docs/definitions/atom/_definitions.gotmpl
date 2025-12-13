@@ -133,6 +133,18 @@ Therefore, I recommend the implementation of network policies before using in pr
 
 {{- end -}}
 
+{{- define "extra.atom.experimental-cilium-networkpolicies-provided" -}}
+## Chart with experimental support for CiliumNetworkPolicies
+
+Please note that this chart does not provide any production ready network policies itself.
+Therefore, I recommend the implementation of network policies before using in prod environments.
+
+> **If you're using Cilium CNI**: I've added experimental support for CNPs.
+> Note that these are highly oppinionated and you should review them carefully before using.
+> E.g. it's required that each release gets deployed within a separate namespace.
+
+{{- end -}}
+
 {{- define "extra.atom.opinionated" -}}
 ## Opinionated & Non-standard
 
