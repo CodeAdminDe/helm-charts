@@ -1,0 +1,19 @@
+{{- define "extra.templates.parts.libmain" -}}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.homepageLine" . }}
+
+{{ template "chart.maintainersSection" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "extra.atom.tldrLib" . }}
+
+{{ template "extra.atom.installLib" . }}
+
+{{ template "extra.atom.uninstallLib" . }}
+
+{{- end -}}

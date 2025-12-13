@@ -39,6 +39,15 @@ helm install {{ template "chart.name" . }} {{ template "extra.atom.helm.path" . 
 > I'd recommend to read trough the docs. Skip them at your own risk. ;-)
 {{- end -}}
 
+{{- define "extra.atom.tldrLib" -}}
+## TL;DR
+
+This is a library chart.
+Library charts cannot be installed via `helm install`, instead they're used within application charts to provide default / common configurations.
+
+> If the application you'd like to install depends on this library, you'd find more info about it inside the related application chart.
+{{- end -}}
+
 {{- define "extra.atom.repo" -}}
 ## Repository
 
@@ -63,6 +72,15 @@ helm install {{ template "chart.name" . }} {{ template "extra.atom.helm.path" . 
 
 {{- end -}}
 
+{{- define "extra.atom.installLib" -}}
+
+## Installation
+
+To install the library chart you'd have to install a application which depends on it.
+Library charts cannot be installed standalone.
+
+{{- end -}}
+
 {{- define "extra.atom.uninstall" -}}
 ## Uninstallation
 
@@ -74,6 +92,12 @@ helm uninstall {{ template "chart.name" . }}
 {{ template "extra.atom.helm.namespace" . }}
 
 The command removes all the Kubernetes components associated with the chart **including persistent volumes** and deletes the release.
+{{- end -}}
+
+{{- define "extra.atom.uninstallLib" -}}
+## Uninstallation
+
+To uninstall the chart you'd have to uninstall the application chart which depends on it.
 {{- end -}}
 
 {{- define "extra.atom.configsection" -}}
@@ -119,7 +143,15 @@ but at the same time I strongly advise you to take a close look at it and adapt 
 
 If you would like to return any helpful changes, I would also be happy to receive a pull request or two ;-)
 
+
+{{- range .Values }}
+{{- if (eq .Key "extraSpecificsFromchartAtomOpinionated") }}
+
+{{ template "extra.specifics.fromchart.atom.opinionated" . }}
+{{- end }}
+{{- end }}
 {{- end -}}
+
 
 {{- define "extra.atom.feedbackandsecurity" -}}
 ## Feedback & Security
