@@ -5,5 +5,8 @@ dependencies:
 - name: redis
   repository: https://codeadminde.github.io/helm-charts
   version: 0.3.0
-digest: sha256:da70a9d8b958ae8ef0a9b7cab9a240c574707c1e99057af7eee969f9fef86909
-generated: "2025-12-13T17:51:45.062231361Z"
+- name: libchart-cnps
+  repository: https://codeadminde.github.io/helm-charts
+  version: 0.1.1
+digest: sha256:7fa1b8ad8340d4a5eaaf78699474307827afd08a41b5c79fb359654977222605
+generated: "2025-12-14T11:55:38.421389+01:00"
