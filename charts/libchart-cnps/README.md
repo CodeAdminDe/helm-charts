@@ -2,7 +2,7 @@
 
 # libchart-cnps
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
 
 A (experimental) Helm chart of cilium network policies for usage as a library chart.
 
@@ -52,6 +52,12 @@ Note that when you're overriding within your app chart:
 * the override applies for all resources - e.g
   * adding a non-existing label would be added to all CNPs listed.
   * overriding spec: is not recommended because it would set the same spec for all rules.
+
+#### CiliumNetworkPolicies-AppSet
+
+Returns an app-specific policy. This need to be overriden by the application chart.
+It's here to provide a scaffold for your application-specific chart.
+Therefore, it would block ingress/egress traffic when unconfigured.
 
 ## Feedback & Security
 

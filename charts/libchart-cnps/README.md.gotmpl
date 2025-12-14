@@ -22,6 +22,12 @@ Note that when you're overriding within your app chart:
   * adding a non-existing label would be added to all CNPs listed.
   * overriding spec: is not recommended because it would set the same spec for all rules.
 
+#### CiliumNetworkPolicies-AppSet
+
+Returns an app-specific policy. This need to be overriden by the application chart.
+It's here to provide a scaffold for your application-specific chart.
+Therefore, it would block ingress/egress traffic when unconfigured.
+
 {{- end -}}
 
 {{ template "extra.templates.readme.lib" . }}

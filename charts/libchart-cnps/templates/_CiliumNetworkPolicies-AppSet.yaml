@@ -1,5 +1,5 @@
 {{- /*
-Returns a App specific policy. This need to be overriden by the application chart.
+Returns an app-specific policy. This need to be overriden by the application chart.
 It's here to provide a scaffold for your application-specific chart.
 Therefore, it would block ingress/egress traffic when unconfigured.
 */}}
