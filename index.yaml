@@ -524,6 +524,17 @@ entries:
   libchart-cnps:
   - apiVersion: v2
     appVersion: 0.1.0
+    created: "2025-12-14T10:49:37.557961746Z"
+    description: A (experimental) Helm chart of cilium network policies for usage
+      as a library chart.
+    digest: cfaa0a7d973b7d6151ef3933cb89f1696803b676d49e63df4b2b24c43cd1099e
+    name: libchart-cnps
+    type: library
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/libchart-cnps-0.1.1/libchart-cnps-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 0.1.0
     created: "2025-12-14T10:36:33.471408586Z"
     description: A (experimental) Helm chart of cilium network policies for usage
       as a library chart.
@@ -6683,4 +6694,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-14T10:45:17.959826716Z"
+generated: "2025-12-14T10:49:37.558313243Z"
