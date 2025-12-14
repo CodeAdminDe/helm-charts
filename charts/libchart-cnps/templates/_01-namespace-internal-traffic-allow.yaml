@@ -2,7 +2,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: {{ .Release.Name | printf "%s-%s--01-namespace--internal-traffic-allow" .Chart.Name }}
+  name: {{ .Release.Name | printf "%s-%s--01-namespace--internal-traffic-allow" .Chart.Name | trunc 63 | trimSuffix "-" }}
 spec:
   endpointSelector:
     matchLabels: {}

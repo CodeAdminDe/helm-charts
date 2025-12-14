@@ -2,7 +2,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: {{ .Release.Name | printf "%s-%s--99-ruleset---cnpg-initdb-traffic" .Chart.Name }}
+  name: {{ .Release.Name | printf "%s-%s--99-ruleset---cnpg-initdb-traffic" .Chart.Name | trunc 63 | trimSuffix "-" }}
 spec:
   endpointSelector:
     matchLabels:
@@ -22,7 +22,7 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: {{ .Release.Name | printf "%s-%s--99-ruleset---cnpg-import-traffic" .Chart.Name }}
+  name: {{ .Release.Name | printf "%s-%s--99-ruleset---cnpg-import-traffic" .Chart.Name | trunc 63 | trimSuffix "-" }}
 spec:
   endpointSelector:
     matchLabels:
@@ -42,7 +42,7 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: {{ .Release.Name | printf "%s-%s--99-ruleset---cnpg-instance-traffic" .Chart.Name }}
+  name: {{ .Release.Name | printf "%s-%s--99-ruleset---cnpg-instance-traffic" .Chart.Name | trunc 63 | trimSuffix "-" }}
 spec:
   endpointSelector:
     matchLabels:
@@ -76,7 +76,7 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: {{ .Release.Name | printf "%s-%s--99-ruleset---cnpg-join-traffic" .Chart.Name }}
+  name: {{ .Release.Name | printf "%s-%s--99-ruleset---cnpg-join-traffic" .Chart.Name | trunc 63 | trimSuffix "-" }}
 spec:
   endpointSelector:
     matchLabels:
@@ -96,7 +96,7 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: {{ .Release.Name | printf "%s-%s--99-ruleset---cnpg-major-upgrade-traffic" .Chart.Name }}
+  name: {{ .Release.Name | printf "%s-%s--99-ruleset---cnpg-major-upgrade-traffic" .Chart.Name | trunc 63 | trimSuffix "-" }}
 spec:
   endpointSelector:
     matchLabels:

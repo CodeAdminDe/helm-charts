@@ -2,7 +2,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: {{ .Release.Name | printf "%s-%s--02-namespace--egress-traffic" .Chart.Name }}
+  name: {{ .Release.Name | printf "%s-%s--02-namespace--egress-traffic" .Chart.Name | trunc 63 | trimSuffix "-" }}
 spec:
   endpointSelector:
     matchLabels: {}
