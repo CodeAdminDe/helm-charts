@@ -9,6 +9,7 @@ spec:
     - {}
   egress:
     - {}
+{{- end -}}
 {{- define "libchart-cnps.CiliumNetworkPolicy.03-app-traffic" -}}
 {{- include "libchart-cnps.util.merge" (append . "libchart-cnps.CiliumNetworkPolicy.03-app-traffic.tpl") -}}
 {{- end -}}
