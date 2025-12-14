@@ -521,6 +521,18 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/bind9-hidden-primary-0.1.0/bind9-hidden-primary-0.1.0.tgz
     version: 0.1.0
+  libchart-cnps:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2025-12-14T10:36:33.471408586Z"
+    description: A (experimental) Helm chart of cilium network policies for usage
+      as a library chart.
+    digest: 860999c8c3e8894a893d088b9803835b446176239b085b5308e46983c3635d82
+    name: libchart-cnps
+    type: library
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/libchart-cnps-0.1.0/libchart-cnps-0.1.0.tgz
+    version: 0.1.0
   ollama:
   - apiVersion: v2
     appVersion: 0.13.3
@@ -6640,4 +6652,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-13T20:23:35.404676848Z"
+generated: "2025-12-14T10:36:33.471884451Z"
