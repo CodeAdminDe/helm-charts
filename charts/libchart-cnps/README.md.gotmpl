@@ -1,0 +1,27 @@
+{{- define "extra.specifics.fromchart.atom.opinionated" -}}
+
+### About libchart-cnpg provided policies
+
+> The Cilium network policies included reflect my personal deployment preferences.
+> It is likely that they do not meet your cluster and/or security requirements.
+> Therefore, you must review them yourself, and I accept no responsibility for any (security) issues or other challenges that may arise when using this chart, either directly or indirectly.
+
+#### CiliumNetworkPolicies-NamespaceSet
+
+Returns the default baseline for namespace-wide policies.
+Note that when you're overriding within your app chart:
+* the override applies for all resources - e.g
+  * adding a non-existing label would be added to all CNPs listed.
+  * overriding spec: is not recommended because it would set the same spec for all rules.
+
+#### CiliumNetworkPolicies-CnpgSet
+
+Returns a full set of rules to allow communication between the CNPG operator and database clusters within the applications namespace.
+Note that when you're overriding within your app chart:
+* the override applies for all resources - e.g
+  * adding a non-existing label would be added to all CNPs listed.
+  * overriding spec: is not recommended because it would set the same spec for all rules.
+
+{{- end -}}
+
+{{ template "extra.templates.readme.lib" . }}

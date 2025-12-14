@@ -1,0 +1,15 @@
+{{- define "libchart-cnps.CiliumNetworkPolicy.00-namespace--all-ingress-egress-deny.tpl" -}}
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ .Release.Name | printf "%s-%s--00-namespace--all-ingress-egress-deny" .Chart.Name | trunc 63 | trimSuffix "-" }}
+spec:
+  endpointSelector: {}
+  ingress:
+    - {}
+  egress:
+    - {}
+{{- end -}}
+{{- define "libchart-cnps.CiliumNetworkPolicy.00-namespace--all-ingress-egress-deny" -}}
+{{- include "libchart-cnps.util.merge" (append . "libchart-cnps.CiliumNetworkPolicy.00-namespace--all-ingress-egress-deny.tpl") -}}
+{{- end -}}

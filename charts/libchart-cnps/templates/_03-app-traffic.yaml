@@ -1,0 +1,15 @@
+{{- define "libchart-cnps.CiliumNetworkPolicy.03-app-traffic.tpl" -}}
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ .Release.Name | printf "%s-%s--03-app-traffic" .Chart.Name  | trunc 63 | trimSuffix "-" }}
+spec:
+  endpointSelector: {}
+  ingress:
+    - {}
+  egress:
+    - {}
+{{- end -}}
+{{- define "libchart-cnps.CiliumNetworkPolicy.03-app-traffic" -}}
+{{- include "libchart-cnps.util.merge" (append . "libchart-cnps.CiliumNetworkPolicy.03-app-traffic.tpl") -}}
+{{- end -}}
