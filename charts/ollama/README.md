@@ -2,7 +2,7 @@
 
 # ollama
 
-![Version: 0.13.3](https://img.shields.io/badge/Version-0.13.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.13.3](https://img.shields.io/badge/AppVersion-0.13.3-informational?style=flat-square)
+![Version: 0.14.0](https://img.shields.io/badge/Version-0.14.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.13.3](https://img.shields.io/badge/AppVersion-0.13.3-informational?style=flat-square)
 
 A Helm chart for an easier ollama (https://ollama.com) deployment on k8s. Please note that this is a private helm chart and not directly or indirectly affiliated with ollama or its authors.
 
@@ -13,6 +13,12 @@ A Helm chart for an easier ollama (https://ollama.com) deployment on k8s. Please
 | Name | Email | Url |
 | ---- | ------ | --- |
 | Frederic Roggon | <frederic.roggon@codeadmin.de> | <https://github.com/CodeAdminDe> |
+
+## Requirements
+
+| Repository | Name | Version |
+|------------|------|---------|
+| https://codeadminde.github.io/helm-charts | libchart-cnps(libchart-cnps) | 0.1.0 |
 
 ## TL;DR
 
@@ -88,7 +94,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="additionalEnvSecrets"><a href="./values.yaml#L152">additionalEnvSecrets</a></td>
+			<td id="additionalEnvSecrets"><a href="./values.yaml#L177">additionalEnvSecrets</a></td>
 			<td>
 string
 </td>
@@ -102,7 +108,7 @@ null
 			<td>Provide additonal env vars via one or more secretes... useful for API keys etc... Specifiy the ENV key used by ollama as KEY and the secret name as VALUE. The secret should contain the ENV key and the encrypted value: Sample secret ... apiVersion: v1 kind: Secret metadata: name: your-secret-name-to-slack-oidc-secrets type: Opaque stringData:   SLACK_KEY: "slack-key-value-goes-here"   SLACK_SECRET: "slack-secret-value-goes-here"</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L243">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L268">affinity</a></td>
 			<td>
 object
 </td>
@@ -116,7 +122,7 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L219">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L244">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -135,7 +141,33 @@ object
 			<td>This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/</td>
 		</tr>
 		<tr>
-			<td id="env"><a href="./values.yaml#L135">env</a></td>
+			<td id="cnps"><a href="./values.yaml#L81">cnps</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "appTraffic": {
+    "egress": {
+      "allow": true,
+      "matchLabels": {},
+      "toEntities": []
+    },
+    "ingress": {
+      "allow": true,
+      "matchLabels": {}
+    }
+  }
+}
+</pre>
+</div>
+			</td>
+			<td>Configure app-specific ingress policy. Note: Requires oppinionated CiliumNetworkPolicies. Otherwise these settings will be ignored. These settings are directly related to the application. This will not influence the namespace-wide policies (e.g. to allow egress dns traffic).</td>
+		</tr>
+		<tr>
+			<td id="env"><a href="./values.yaml#L160">env</a></td>
 			<td>
 string
 </td>
@@ -195,7 +227,7 @@ list
 			<td>This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/</td>
 		</tr>
 		<tr>
-			<td id="ingress"><a href="./values.yaml#L160">ingress</a></td>
+			<td id="ingress"><a href="./values.yaml#L185">ingress</a></td>
 			<td>
 object
 </td>
@@ -232,7 +264,7 @@ object
 			<td>This block is for setting up the ollama ingress. More information about ingress in general can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/ To get a better understanding and some more explanation, take a look into the values.yaml provided with the chart. WARNING: You should not expose ollama externally, without an additional layer of protection (e.g. mTLS / OIDC-auth, etc...).</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls[0]--secretName"><a href="./values.yaml#L187">ingress.tls[0].secretName</a></td>
+			<td id="ingress--tls[0]--secretName"><a href="./values.yaml#L212">ingress.tls[0].secretName</a></td>
 			<td>
 string
 </td>
@@ -246,7 +278,24 @@ string
 			<td>secretName of the certificate to use. When providing an empty string as secretNmae, the key will be skipped. That allowes to use the default ingress-nginx certificate for this ingress object.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L203">livenessProbe</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L73">libchartCnps</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "deployAndYesIUnderstandAndAccceptTheRisk": false,
+  "includeCnpgPolicies": false
+}
+</pre>
+</div>
+			</td>
+			<td>Enable / Disable the installation of oppinionated CiliumNetworkPolicies. These are provided via dependency chart: libchart-cnps. Therefore you should *really* take a look into that chart and understand what will happen. And review if these are usable within your env.</td>
+		</tr>
+		<tr>
+			<td id="livenessProbe"><a href="./values.yaml#L228">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -282,7 +331,7 @@ string
 			<td>This is to override the chart name.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L239">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L264">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -296,7 +345,7 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="ollama"><a href="./values.yaml#L92">ollama</a></td>
+			<td id="ollama"><a href="./values.yaml#L117">ollama</a></td>
 			<td>
 object
 </td>
@@ -317,7 +366,7 @@ object
 			<td>This configures the logging level, context length, and keep-alive duration for the Ollama service. These are the default values at the moment.</td>
 		</tr>
 		<tr>
-			<td id="persistence"><a href="./values.yaml#L112">persistence</a></td>
+			<td id="persistence"><a href="./values.yaml#L137">persistence</a></td>
 			<td>
 object
 </td>
@@ -341,7 +390,7 @@ object
 			<td>This configures the persistens of your release. Note that ollama needs a writeable data directory to store its models, furthermore a writeable home directory to store its temporary files.</td>
 		</tr>
 		<tr>
-			<td id="persistence--accessModes"><a href="./values.yaml#L127">persistence.accessModes</a></td>
+			<td id="persistence--accessModes"><a href="./values.yaml#L152">persistence.accessModes</a></td>
 			<td>
 list
 </td>
@@ -357,7 +406,7 @@ list
 			<td>Define the accessModes to use when not providing a already existing PVC claim.</td>
 		</tr>
 		<tr>
-			<td id="persistence--cacheDirHomeSizeLimit"><a href="./values.yaml#L121">persistence.cacheDirHomeSizeLimit</a></td>
+			<td id="persistence--cacheDirHomeSizeLimit"><a href="./values.yaml#L146">persistence.cacheDirHomeSizeLimit</a></td>
 			<td>
 string
 </td>
@@ -371,7 +420,7 @@ string
 			<td>Define the max directory size for the /home directory. We need to use an emptyDir, when require securtyContext.readOnlyRootFilesystem: true.</td>
 		</tr>
 		<tr>
-			<td id="persistence--cacheDirTmpSizeLimit"><a href="./values.yaml#L119">persistence.cacheDirTmpSizeLimit</a></td>
+			<td id="persistence--cacheDirTmpSizeLimit"><a href="./values.yaml#L144">persistence.cacheDirTmpSizeLimit</a></td>
 			<td>
 string
 </td>
@@ -385,7 +434,7 @@ string
 			<td>Define the max directory size for the /tmp directory. We need to use an emptyDir, when require securtyContext.readOnlyRootFilesystem: true.</td>
 		</tr>
 		<tr>
-			<td id="persistence--emptyDirSizeLimit"><a href="./values.yaml#L117">persistence.emptyDirSizeLimit</a></td>
+			<td id="persistence--emptyDirSizeLimit"><a href="./values.yaml#L142">persistence.emptyDirSizeLimit</a></td>
 			<td>
 string
 </td>
@@ -399,7 +448,7 @@ string
 			<td>Define the max directory size when using persistence.enabled: false</td>
 		</tr>
 		<tr>
-			<td id="persistence--enabled"><a href="./values.yaml#L115">persistence.enabled</a></td>
+			<td id="persistence--enabled"><a href="./values.yaml#L140">persistence.enabled</a></td>
 			<td>
 bool
 </td>
@@ -413,7 +462,7 @@ true
 			<td>false -> app uses emptyDir (with persistence.emptyDirSizeLimit) // true -> app uses pvc created by helm. (or existingClaim, if provided). Important: If you're using persistence.enabled: false, you'd loose your stored models as soon as the container restarts.</td>
 		</tr>
 		<tr>
-			<td id="persistence--size"><a href="./values.yaml#L123">persistence.size</a></td>
+			<td id="persistence--size"><a href="./values.yaml#L148">persistence.size</a></td>
 			<td>
 string
 </td>
@@ -427,7 +476,7 @@ string
 			<td>Define the size of the PV when using persistence.enabled: true</td>
 		</tr>
 		<tr>
-			<td id="persistence--storageClass"><a href="./values.yaml#L125">persistence.storageClass</a></td>
+			<td id="persistence--storageClass"><a href="./values.yaml#L150">persistence.storageClass</a></td>
 			<td>
 string
 </td>
@@ -485,7 +534,7 @@ object
 			<td>This is for the pod-level security attributes and common container settings. More information: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/</td>
 		</tr>
 		<tr>
-			<td id="prePullModelList"><a href="./values.yaml#L101">prePullModelList</a></td>
+			<td id="prePullModelList"><a href="./values.yaml#L126">prePullModelList</a></td>
 			<td>
 list
 </td>
@@ -499,7 +548,7 @@ list
 			<td>This configures the models that ollama should pre-pull while starting the container. Note that this feature will increase the startup time of the container.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L214">readinessProbe.failureThreshold</a></td>
+			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L239">readinessProbe.failureThreshold</a></td>
 			<td>
 int
 </td>
@@ -513,7 +562,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--httpGet--path"><a href="./values.yaml#L212">readinessProbe.httpGet.path</a></td>
+			<td id="readinessProbe--httpGet--path"><a href="./values.yaml#L237">readinessProbe.httpGet.path</a></td>
 			<td>
 string
 </td>
@@ -527,7 +576,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--httpGet--port"><a href="./values.yaml#L213">readinessProbe.httpGet.port</a></td>
+			<td id="readinessProbe--httpGet--port"><a href="./values.yaml#L238">readinessProbe.httpGet.port</a></td>
 			<td>
 string
 </td>
@@ -541,7 +590,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L216">readinessProbe.initialDelaySeconds</a></td>
+			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L241">readinessProbe.initialDelaySeconds</a></td>
 			<td>
 int
 </td>
@@ -555,7 +604,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L215">readinessProbe.periodSeconds</a></td>
+			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L240">readinessProbe.periodSeconds</a></td>
 			<td>
 int
 </td>
@@ -583,7 +632,7 @@ int
 			<td>This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L190">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L215">resources</a></td>
 			<td>
 object
 </td>
@@ -597,7 +646,7 @@ object
 			<td>Specify default resources (not recommended, see values.yaml)</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L85">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L110">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -625,7 +674,7 @@ object
 </details></td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--pods"><a href="./values.yaml#L87">runtimeClass.pods</a></td>
+			<td id="runtimeClass--pods"><a href="./values.yaml#L112">runtimeClass.pods</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -639,7 +688,7 @@ object
 			<td>Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--tests"><a href="./values.yaml#L89">runtimeClass.tests</a></td>
+			<td id="runtimeClass--tests"><a href="./values.yaml#L114">runtimeClass.tests</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -742,7 +791,7 @@ object
 			<td>This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L241">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L266">tolerations</a></td>
 			<td>
 list
 </td>
@@ -756,7 +805,7 @@ list
 			<td></td>
 		</tr>
 		<tr>
-			<td id="volumeMounts"><a href="./values.yaml#L234">volumeMounts</a></td>
+			<td id="volumeMounts"><a href="./values.yaml#L259">volumeMounts</a></td>
 			<td>
 list
 </td>
@@ -770,7 +819,7 @@ list
 			<td>Additional volumeMounts on the output Deployment definition.</td>
 		</tr>
 		<tr>
-			<td id="volumes"><a href="./values.yaml#L227">volumes</a></td>
+			<td id="volumes"><a href="./values.yaml#L252">volumes</a></td>
 			<td>
 list
 </td>
@@ -805,10 +854,14 @@ Take a look at [https://katacontainers.io](https://katacontainers.io) to get an 
 Also take a look at the HowTo-Section within the kata-container GitHub Repository,
 e.g. to learn [how to create a runtime class](https://github.com/kata-containers/kata-containers/blob/main/docs/how-to/run-kata-with-k8s.md#create-runtime-class-for-kata-containers)_
 
-## Chart without NetworkPolicies
+## Chart with experimental support for CiliumNetworkPolicies
 
-Please note that this chart does not provide any network policies itself.
+Please note that this chart does not provide any production ready network policies itself.
 Therefore, I recommend the implementation of network policies before using in prod environments.
+
+> **If you're using Cilium CNI**: I've added experimental support for CNPs.
+> Note that these are highly oppinionated and you should review them carefully before using.
+> E.g. it's required that each release gets deployed within a separate namespace.
 
 ## Opinionated & Non-standard
 

@@ -67,6 +67,31 @@ securityContext:
   seccompProfile:
     type: RuntimeDefault
 
+# -- Enable / Disable the installation of oppinionated CiliumNetworkPolicies.
+# These are provided via dependency chart: libchart-cnps. Therefore you should *really* take a look into that chart and understand what will happen.
+# And review if these are usable within your env.
+libchartCnps:
+  deployAndYesIUnderstandAndAccceptTheRisk: false
+  includeCnpgPolicies: false
+
+# -- Configure app-specific ingress policy.
+# Note: Requires oppinionated CiliumNetworkPolicies. Otherwise these settings will be ignored.
+# These settings are directly related to the application. This will not influence the namespace-wide
+# policies (e.g. to allow egress dns traffic).
+cnps:
+  appTraffic:
+    ingress:
+      allow: true
+      matchLabels: {}
+        #app.kubernetes.io/name: ingress-nginx
+        #io.kubernetes.pod.namespace: ingress-nginx
+    egress:
+      allow: true
+      matchLabels: {}
+        #app.kubernetes.io/name: ingress-nginx
+        #io.kubernetes.pod.namespace: ingress-nginx
+      toEntities: []
+        #- world
 
 # -- Set a RuntimeClass to execute the containers with a custom runtime configuration.
 # Register a runtimeClass within your cluster beforehand.
