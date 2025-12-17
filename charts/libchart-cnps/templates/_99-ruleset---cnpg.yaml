@@ -63,17 +63,15 @@ spec:
         - ports:
             - port: "8000"
               protocol: TCP
+{{- with .Values.cnps.cnpgTraffic.instanceExtraEgress }}
   egress:
+    {{ toYaml . | nindent 4 }}
     - toEntities:
         - kube-apiserver
       toPorts:
         - ports:
             - port: "6443"
               protocol: TCP
-{{- with .Values.cnps.cnpgTraffic.instanceExtraEgress }}
-{{- range . }}
-    - {{ toYaml . | nindent 4 }}
-{{- end }}
 {{- end }}
 {{- end -}}
 ---
