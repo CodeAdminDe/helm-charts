@@ -70,6 +70,11 @@ spec:
         - ports:
             - port: "6443"
               protocol: TCP
+{{- with .Values.cnps.cnpgTraffic.instanceExtraEgress }}
+{{- range . }}
+    - {{ toYaml . | nindent 4 }}
+{{- end }}
+{{- end }}
 {{- end -}}
 ---
 {{- define "libchart-cnps.CiliumNetworkPolicy.99-ruleset---cnpg-join-traffic.tpl"}}
