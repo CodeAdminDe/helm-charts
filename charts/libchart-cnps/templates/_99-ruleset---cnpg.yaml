@@ -63,16 +63,16 @@ spec:
         - ports:
             - port: "8000"
               protocol: TCP
-{{- with .Values.cnps.cnpgTraffic.instanceExtraEgress }}
   egress:
+{{- with .Values.cnps.cnpgTraffic.instanceExtraEgress }}
     {{ toYaml . | nindent 4 }}
+{{- end }}
     - toEntities:
         - kube-apiserver
       toPorts:
         - ports:
             - port: "6443"
               protocol: TCP
-{{- end }}
 {{- end -}}
 ---
 {{- define "libchart-cnps.CiliumNetworkPolicy.99-ruleset---cnpg-join-traffic.tpl"}}
