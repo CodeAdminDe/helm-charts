@@ -1435,49 +1435,6 @@ entries:
   outline:
   - apiVersion: v2
     appVersion: 1.1.0
-    created: "2025-12-14T10:57:51.481338321Z"
-    dependencies:
-    - alias: postgresql
-      condition: postgresql.enabled
-      name: postgresql
-      repository: https://charts.bitnami.com/bitnami
-      version: 18.1.14
-    - alias: redis
-      condition: redis.enabled
-      name: redis
-      repository: https://codeadminde.github.io/helm-charts
-      version: 0.3.0
-    - alias: libchart-cnps
-      condition: libchartCnps.deployAndYesIUnderstandAndAccceptTheRisk
-      name: libchart-cnps
-      repository: https://codeadminde.github.io/helm-charts
-      version: 0.1.1
-    description: A Helm chart for an easier outline (https://getoutline.com) deployment
-      at kubernetes.
-    digest: 600dab540204298a97de1483b141cf7e821c3c88485370701af2a069ad95b08c
-    home: https://github.com/CodeAdminDe/helm-charts
-    keywords:
-    - outline
-    - app
-    - docs
-    - wiki
-    - sso
-    - helm
-    - postgresql
-    - cnpg
-    - cloud-native
-    - cnpg-cluster
-    maintainers:
-    - email: frederic.roggon@codeadmin.de
-      name: Frederic Roggon
-      url: https://github.com/CodeAdminDe
-    name: outline
-    type: application
-    urls:
-    - https://github.com/CodeAdminDe/helm-charts/releases/download/outline-1.3.4/outline-1.3.4.tgz
-    version: 1.3.4
-  - apiVersion: v2
-    appVersion: 1.1.0
     created: "2025-12-14T11:00:35.769353925Z"
     dependencies:
     - alias: postgresql
