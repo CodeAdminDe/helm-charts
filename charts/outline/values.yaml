@@ -91,6 +91,23 @@ cnps:
         #io.kubernetes.pod.namespace: ingress-nginx
       toEntities: []
         #- world
+  cnpgTraffic:
+    instanceExtraEgress: [] # add rule as desired, to allow access to external backup services
+      # - toFQDNs:
+      #   - matchName: s3.storage.example.org
+      #   toPorts:
+      #     - ports:
+      #         - port: "443"
+      #           protocol: TCP
+      # ## OR ##
+      # - toEntities:
+      #   - world
+      #   toPorts:
+      #     - ports:
+      #         - port: "8443"
+      #           protocol: TCP
+      # ## OR ##
+      # ...
 
 # -- Set a RuntimeClass to execute the containers with a custom runtime configuration.
 # Register a runtimeClass within your cluster beforehand.

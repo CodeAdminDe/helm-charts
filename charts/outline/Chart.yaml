@@ -3,7 +3,7 @@ name: outline
 description: A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes.
 type: application
 # renovate: bumpVersion
-version: 1.3.1
+version: 1.3.2
 # renovate: image=outlinewiki/outline
 appVersion: "1.1.0"
 home: https://github.com/CodeAdminDe/helm-charts
@@ -34,7 +34,7 @@ dependencies:
     alias: redis
     condition: redis.enabled
   - name: libchart-cnps
-    version: 0.1.1
+    version: 0.2.0
     repository: https://codeadminde.github.io/helm-charts
     alias: libchart-cnps
     condition: libchartCnps.deployAndYesIUnderstandAndAccceptTheRisk
