@@ -18,7 +18,7 @@ A Helm chart for an easier ollama (https://ollama.com) deployment on k8s. Please
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://codeadminde.github.io/helm-charts | libchart-cnps(libchart-cnps) | 0.2.1 |
+| https://codeadminde.github.io/helm-charts | libchart-cnps(libchart-cnps) | 0.14.2 |
 
 ## TL;DR
 
