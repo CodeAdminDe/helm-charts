@@ -1,6 +1,6 @@
 dependencies:
 - name: libchart-cnps
   repository: https://codeadminde.github.io/helm-charts
-  version: 0.2.1
-digest: sha256:838269ebfa2806d57571f033f0c5aed1dc3a9c6141278455485057c6bfbe8c87
-generated: "2025-12-17T18:13:50.00334455Z"
+  version: 0.14.2
+digest: sha256:128c2ceb3f4fd118f0628869627030af994213bedfed725c72d70fe4ec37df41
+generated: "2025-12-21T07:51:21.568207205Z"

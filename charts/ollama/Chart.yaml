@@ -21,7 +21,7 @@ maintainers:
     url: https://github.com/CodeAdminDe
 dependencies:
 - name: libchart-cnps
-  version: 0.2.1
+  version: 0.14.2
   repository: https://codeadminde.github.io/helm-charts
   alias: libchart-cnps
   condition: libchartCnps.deployAndYesIUnderstandAndAccceptTheRisk
