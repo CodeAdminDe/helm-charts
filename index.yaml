@@ -523,61 +523,6 @@ entries:
     version: 0.1.0
   libchart-cnps:
   - apiVersion: v2
-    appVersion: 0.2.0
-    created: "2025-12-17T10:02:22.746398502Z"
-    description: A (experimental) Helm chart of cilium network policies for usage
-      as a library chart.
-    digest: f0df51350dc6ed04c7be0bdf821f6df463fc4665fca3621fa8df675dbe917423
-    name: libchart-cnps
-    type: library
-    urls:
-    - https://github.com/CodeAdminDe/helm-charts/releases/download/libchart-cnps-0.2.1/libchart-cnps-0.2.1.tgz
-    version: 0.2.1
-  - apiVersion: v2
-    appVersion: 0.2.0
-    created: "2025-12-17T09:04:04.024715407Z"
-    description: A (experimental) Helm chart of cilium network policies for usage
-      as a library chart.
-    digest: 266793c66a6d5c90de6b10e2f3e9bcd272c64f6df667ba6d8b8c74a559568139
-    name: libchart-cnps
-    type: library
-    urls:
-    - https://github.com/CodeAdminDe/helm-charts/releases/download/libchart-cnps-0.2.0/libchart-cnps-0.2.0.tgz
-    version: 0.2.0
-  - apiVersion: v2
-    appVersion: 0.1.2
-    created: "2025-12-17T07:58:42.120795937Z"
-    description: A (experimental) Helm chart of cilium network policies for usage
-      as a library chart.
-    digest: 6f463a0a51be49c96633cb1b8466a150f1cc1f7e1733a7846eea19851a21a7cb
-    name: libchart-cnps
-    type: library
-    urls:
-    - https://github.com/CodeAdminDe/helm-charts/releases/download/libchart-cnps-0.1.2/libchart-cnps-0.1.2.tgz
-    version: 0.1.2
-  - apiVersion: v2
-    appVersion: 0.1.0
-    created: "2025-12-14T10:49:37.557961746Z"
-    description: A (experimental) Helm chart of cilium network policies for usage
-      as a library chart.
-    digest: cfaa0a7d973b7d6151ef3933cb89f1696803b676d49e63df4b2b24c43cd1099e
-    name: libchart-cnps
-    type: library
-    urls:
-    - https://github.com/CodeAdminDe/helm-charts/releases/download/libchart-cnps-0.1.1/libchart-cnps-0.1.1.tgz
-    version: 0.1.1
-  - apiVersion: v2
-    appVersion: 0.1.0
-    created: "2025-12-14T10:36:33.471408586Z"
-    description: A (experimental) Helm chart of cilium network policies for usage
-      as a library chart.
-    digest: 860999c8c3e8894a893d088b9803835b446176239b085b5308e46983c3635d82
-    name: libchart-cnps
-    type: library
-    urls:
-    - https://github.com/CodeAdminDe/helm-charts/releases/download/libchart-cnps-0.1.0/libchart-cnps-0.1.0.tgz
-    version: 0.1.0
-  - apiVersion: v2
     appVersion: 0.13.4
     created: "2025-12-17T09:52:55.561631419Z"
     dependencies:
@@ -1495,6 +1440,93 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/ollama-0.9.3/ollama-0.9.3.tgz
     version: 0.9.3
+  - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2025-12-17T10:02:22.746398502Z"
+    description: A (experimental) Helm chart of cilium network policies for usage
+      as a library chart.
+    digest: f0df51350dc6ed04c7be0bdf821f6df463fc4665fca3621fa8df675dbe917423
+    name: libchart-cnps
+    type: library
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/libchart-cnps-0.2.1/libchart-cnps-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2025-12-17T09:04:04.024715407Z"
+    description: A (experimental) Helm chart of cilium network policies for usage
+      as a library chart.
+    digest: 266793c66a6d5c90de6b10e2f3e9bcd272c64f6df667ba6d8b8c74a559568139
+    name: libchart-cnps
+    type: library
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/libchart-cnps-0.2.0/libchart-cnps-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 0.1.2
+    created: "2025-12-17T07:58:42.120795937Z"
+    description: A (experimental) Helm chart of cilium network policies for usage
+      as a library chart.
+    digest: 6f463a0a51be49c96633cb1b8466a150f1cc1f7e1733a7846eea19851a21a7cb
+    name: libchart-cnps
+    type: library
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/libchart-cnps-0.1.2/libchart-cnps-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2025-12-14T10:49:37.557961746Z"
+    description: A (experimental) Helm chart of cilium network policies for usage
+      as a library chart.
+    digest: cfaa0a7d973b7d6151ef3933cb89f1696803b676d49e63df4b2b24c43cd1099e
+    name: libchart-cnps
+    type: library
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/libchart-cnps-0.1.1/libchart-cnps-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2025-12-14T10:36:33.471408586Z"
+    description: A (experimental) Helm chart of cilium network policies for usage
+      as a library chart.
+    digest: 860999c8c3e8894a893d088b9803835b446176239b085b5308e46983c3635d82
+    name: libchart-cnps
+    type: library
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/libchart-cnps-0.1.0/libchart-cnps-0.1.0.tgz
+    version: 0.1.0
+  ollama:
+  - apiVersion: v2
+    appVersion: 0.13.5
+    created: "2025-12-21T07:50:27.039989448Z"
+    dependencies:
+    - alias: libchart-cnps
+      condition: libchartCnps.deployAndYesIUnderstandAndAccceptTheRisk
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for an easier ollama (https://ollama.com) deployment
+      on k8s. Please note that this is a private helm chart and not directly or indirectly
+      affiliated with ollama or its authors.
+    digest: bb36069971da856e27d095f63a51f1eddddf790b9fa6953d2c7952a2961b66bd
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - ollama
+    - ai
+    - ki
+    - llm
+    - backend
+    - helm
+    - cloud-native
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: ollama
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/ollama-0.15.1/ollama-0.15.1.tgz
+    version: 0.15.1
   outline:
   - apiVersion: v2
     appVersion: 1.1.0
@@ -7003,4 +7035,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-21T07:38:59.122633813Z"
+generated: "2025-12-21T07:50:27.040322128Z"
