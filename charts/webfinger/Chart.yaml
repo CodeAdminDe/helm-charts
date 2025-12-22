@@ -3,9 +3,9 @@ name: webfinger
 description: A Helm chart for an easy webfinger deployment at kubernetes.
 type: application
 # renovate: bumpVersion
-version: 0.2.0
+version: 0.2.1
 # renovate: image=ghcr.io/codeadminde/webfinger
-appVersion: "0.7.0"
+appVersion: "0.7.1"
 home: https://github.com/CodeAdminDe/helm-charts
 keywords:
   - webfinger
