@@ -1,0 +1,24 @@
+{{- if .Values.relay.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "netbird-management.fullname" . }}-relay
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+    app.kubernetes.io/component: relay
+spec:
+  type: ClusterIP
+  ports:
+  - port: {{ .Values.relay.service.port }}
+    targetPort: relay
+    protocol: TCP
+    name: relay
+  - port: {{ .Values.relay.service.metricsPort }}
+    targetPort: metrics
+    protocol: TCP
+    name: metrics
+  selector:
+    {{- include "netbird-management.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: relay
+{{- end }}

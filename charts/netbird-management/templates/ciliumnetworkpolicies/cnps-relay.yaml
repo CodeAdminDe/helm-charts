@@ -1,0 +1,83 @@
+{{- define "netbird-management.CiliumNetworkPolicies-AppSet.relay" -}}
+metadata:
+  name: "{{ .Release.Name }}-relay"
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+    app.kubernetes.io/component: relay
+spec:
+  endpointSelector:
+    matchLabels:
+    {{- include "netbird-management.labels" . | nindent 6 }}
+      app.kubernetes.io/component: relay
+  {{- if .Values.cnps.appTraffic.ingress.allow }}
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+          {{- if $.Values.cnps.appTraffic.ingress.matchLabels }}
+          {{- range $key, $val := $.Values.cnps.appTraffic.ingress.matchLabels }}
+            {{ $key }}: {{ $val }}
+          {{- end }}
+          {{- else }}
+            app.kubernetes.io/name: ingress-nginx
+            io.kubernetes.pod.namespace: ingress-nginx
+          {{- end }}
+      toPorts:
+        - ports:
+            - port: "{{ .Values.relay.port }}"
+              protocol: TCP
+  {{- end }}
+  {{- if and .Values.cnps.appTraffic.ingress.allow .Values.monitoring.enabled }}
+    - fromEndpoints:
+        - matchLabels:
+          {{- if $.Values.cnps.appTraffic.ingress.metrics.matchLabels }}
+          {{- range $key, $val := $.Values.cnps.appTraffic.ingress.metrics.matchLabels }}
+            {{ $key }}: {{ $val }}
+          {{- end }}
+          {{- else }}
+            app.kubernetes.io/name: prometheus
+            app.kubernetes.io/instance: kube-prometheus-stack-prometheus
+            io.kubernetes.pod.namespace: monitoring--kube-prometheus-stack
+          {{- end }}
+      toPorts:
+        - ports:
+            - port: "{{ .Values.relay.metricsPort }}"
+              protocol: TCP
+  {{- end }}
+  {{- if .Values.cnps.appTraffic.egress.allow }}
+  egress:
+    - toEndpoints:
+        - matchLabels:
+          {{- if $.Values.cnps.appTraffic.egress.matchLabels }}
+          {{- range $key, $val := $.Values.cnps.appTraffic.egress.matchLabels }}
+            {{ $key }}: {{ $val }}
+          {{- end }}
+          {{- else }}
+            app.kubernetes.io/name: ingress-nginx
+            io.kubernetes.pod.namespace: ingress-nginx
+          {{- end }}
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
+    - toEntities:
+      {{- if $.Values.cnps.appTraffic.egress.toEntities }}
+        {{- with $.Values.cnps.appTraffic.egress.toEntities }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- else }}
+        - world
+      {{- end }}
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
+  {{- end }}
+{{- end }}
+
+{{- if .Values.libchartCnps.enabled -}}
+---
+{{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "netbird-management.CiliumNetworkPolicies-AppSet.relay") }}
+{{ end -}}

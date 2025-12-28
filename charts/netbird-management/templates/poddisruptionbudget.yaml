@@ -1,0 +1,15 @@
+{{- if .Values.management.podDisruptionBudget.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "netbird-management.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+spec:
+  minAvailable: {{ .Values.management.podDisruptionBudget.minAvailable }}
+  selector:
+    matchLabels:
+      {{- include "netbird-management.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: management
+{{- end }}

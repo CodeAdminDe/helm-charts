@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "netbird-smoke-test"
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  {{- if .Values.runtimeClass.tests }}
+  runtimeClassName: {{ .Values.runtimeClass.tests }}
+  {{- end }}
+  containers:
+    - name: wget
+      image: busybox:1.35
+      command: ["sh", "-c"]
+      args:
+        - |
+          wget -qO- {{ include "netbird-management.fullname" . }}:{{ .Values.management.service.port }}/health && echo "Management OK"
+          wget -qO- {{ include "netbird-management.fullname" . }}-dashboard:{{ .Values.dashboard.service.port }}/ && echo "Dashboard OK"
+  restartPolicy: Never

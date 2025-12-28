@@ -1,0 +1,124 @@
+{{- if .Values.signal.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "netbird-management.fullname" . }}-signal
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+    app.kubernetes.io/component: signal
+spec:
+  replicas: {{ .Values.signal.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      {{- include "netbird-management.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: signal
+  template:
+    metadata:
+      labels:
+        {{- include "netbird-management.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: signal
+      annotations:
+        prometheus.io/scrape: "true"
+    spec:
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
+
+      serviceAccountName: {{ include "netbird-management.serviceAccountName" . }}
+
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - {{ include "netbird-management.name" . }}
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                  - signal
+              topologyKey: kubernetes.io/hostname
+
+      containers:
+      - name: signal
+        image: "{{ .Values.signal.image.repository }}:{{ .Values.signal.image.tag }}"
+        imagePullPolicy: {{ .Values.signal.image.pullPolicy }}
+
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1001
+          capabilities:
+            drop:
+            - ALL
+
+        ports:
+        - name: signal
+          containerPort: {{ .Values.signal.port }}
+          protocol: TCP
+        - name: metrics
+          containerPort: {{ .Values.signal.metricsPort }}
+          protocol: TCP
+
+        readinessProbe:
+          tcpSocket:
+            port: signal
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 2
+
+        livenessProbe:
+          tcpSocket:
+            port: signal
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+        resources:
+          requests:
+            cpu: {{ .Values.signal.resources.requests.cpu }}
+            memory: {{ .Values.signal.resources.requests.memory }}
+          limits:
+            cpu: {{ .Values.signal.resources.limits.cpu }}
+            memory: {{ .Values.signal.resources.limits.memory }}
+
+        env:
+        - name: NB_LOG_LEVEL
+          value: "info"
+        - name: NB_LOG_FORMAT
+          value: "json"
+
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: cache
+          mountPath: /var/cache/netbird
+
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: cache
+        emptyDir: {}
+
+      terminationGracePeriodSeconds: 30
+{{- end }}

@@ -1,0 +1,26 @@
+{{- define "netbird-management.CiliumNetworkPolicies-NamespaceSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-NamespaceSet" (list . "netbird-management.CiliumNetworkPolicies-NamespaceSet") }}
+---
+{{ end -}}
+{{- define "netbird-management.CiliumNetworkPolicies-CnpgSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if and .Values.libchartCnps.includeCnpgPolicies .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-CnpgSet" (list . "netbird-management.CiliumNetworkPolicies-CnpgSet") }}
+---
+{{ end -}}

@@ -1,0 +1,35 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "netbird-management.fullname" . }}-http
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+    app.kubernetes.io/component: http
+  annotations:
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.tls.issuer.name }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  tls:
+    - hosts: ["{{ .Values.global.domain }}"]
+      secretName: {{ include "netbird-management.fullname" . }}-tls
+  rules:
+    - host: {{ .Values.global.domain }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "netbird-management.fullname" . }}-dashboard
+                port:
+                  number: {{ .Values.dashboard.service.port }}
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "netbird-management.fullname" . }}-management
+                port:
+                  number: {{ .Values.management.service.port }}
+{{- end }}

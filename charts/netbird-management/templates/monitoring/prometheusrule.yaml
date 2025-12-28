@@ -1,0 +1,26 @@
+{{- if .Values.monitoring.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ include "netbird-management.fullname" . }}-alerts
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+spec:
+  groups:
+    - name: netbird.rules
+      rules:
+        - alert: NetBirdManagementDown
+          expr: up{job=~"netbird-management.*"} == 0
+          for: 5m
+        - alert: NetBirdHighRelayUsage
+          expr: rate(container_cpu_usage_seconds_total{job=~"netbird-relay.*"}[5m]) > 0.8
+          for: 10m
+          annotations:
+            summary: "NetBird Relay CPU usage high"
+        - alert: NetBirdSignalHighLatency
+          expr: netbird_peer_latency_ms > 200
+          for: 5m
+          annotations:
+            summary: "NetBird peer latency exceeding 200ms"
+{{- end }}

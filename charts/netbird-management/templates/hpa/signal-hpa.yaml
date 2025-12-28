@@ -1,0 +1,24 @@
+{{- if .Values.signal.hpa.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "netbird-management.fullname" . }}-signal
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+    app.kubernetes.io/component: signal
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "netbird-management.fullname" . }}-signal
+  minReplicas: {{ .Values.signal.hpa.minReplicas }}
+  maxReplicas: {{ .Values.signal.hpa.maxReplicas }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: {{ .Values.signal.hpa.targetCPUUtilizationPercentage }}
+{{- end }}

@@ -1,0 +1,44 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "netbird-management.fullname" . }}-websocket
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+    app.kubernetes.io/component: websocket
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.tls.issuer.name }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  tls:
+    - hosts: ["{{ .Values.global.domain }}"]
+      secretName: {{ include "netbird-management.fullname" . }}-tls
+  rules:
+    - host: {{ .Values.global.domain }}
+      http:
+        paths:
+          - path: /ws-proxy/signal
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "netbird-management.fullname" . }}-signal
+                port:
+                  number: {{ .Values.signal.service.port }}
+          - path: /ws-proxy/management
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "netbird-management.fullname" . }}-management
+                port:
+                  number: {{ .Values.management.service.port }}
+          - path: /relay
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "netbird-management.fullname" . }}-relay
+                port:
+                  number: {{ .Values.relay.service.port }}
+{{- end }}

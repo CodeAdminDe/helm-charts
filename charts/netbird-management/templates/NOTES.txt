@@ -1,0 +1,10 @@
+🎉 NetBird v1.1.0 erfolgreich installiert!
+
+🔍 Verify:
+$ kubectl get ingress -n {{ .Release.Namespace }}
+$ kubectl port-forward svc/{{ include "netbird-management.fullname" . }}-management 8080:{{ .Values.management.service.port }}
+$ curl localhost:8080/health
+
+🚨 Troubleshooting:
+gRPC: kubectl logs deployment/{{ include "netbird-management.fullname" . }} | grep grpc
+WS: kubectl logs -n ingress-nginx pod/ingress-*

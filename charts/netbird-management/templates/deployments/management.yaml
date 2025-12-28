@@ -1,0 +1,380 @@
+{{- if .Values.management.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "netbird-management.fullname" . }}-management
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+    app.kubernetes.io/component: management
+spec:
+  replicas: {{ .Values.management.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      {{- include "netbird-management.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: management
+  template:
+    metadata:
+      labels:
+        {{- include "netbird-management.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: management
+      annotations:
+        prometheus.io/scrape: "true"
+    spec:
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      securityContext:
+        runAsNonRoot: {{ .Values.management.securityContext.runAsNonRoot }}
+        runAsUser: {{ .Values.management.securityContext.runAsUser }}
+        runAsGroup: {{ .Values.management.securityContext.runAsUser }}
+        fsGroup: {{ .Values.management.securityContext.fsGroup }}
+        seccompProfile:
+          type: RuntimeDefault
+
+      serviceAccountName: {{ include "netbird-management.serviceAccountName" . }}
+
+      initContainers:
+      - name: init-config
+        image: "{{ .Values.management.initConfig.image.repository }}:{{ .Values.management.initConfig.image.tag }}"
+        imagePullPolicy: {{ .Values.management.initConfig.image.pullPolicy }}
+
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: {{ .Values.management.securityContext.readOnlyRootFilesystem }}
+          runAsNonRoot: true
+          runAsUser: {{ .Values.management.securityContext.runAsUser }}
+          capabilities:
+            drop:
+            - ALL
+
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          set -e
+
+          # OIDC Discovery
+          echo "Discovering OIDC from $NETBIRD_AUTH_OIDC_CONFIGURATION_ENDPOINT"
+          OIDC_CONFIG=$(curl -s "$NETBIRD_AUTH_OIDC_CONFIGURATION_ENDPOINT")
+          if [ -z "$OIDC_CONFIG" ]; then
+            echo "Failed to fetch OIDC config"
+            exit 1
+          fi
+
+          if [[ ("{" != $(echo "$OIDC_CONFIG" | head -n 1)) || ("}" != $(echo "$OIDC_CONFIG" | tail -n 1)) ]]; then
+            echo "Failed to fetch valid json-formatted OIDC config."
+            exit 1
+          fi
+
+          if [[ "false" == "$CA_NETBIRD_AUTH_OIDC_CONFIGURATION_ENDPOINT_ADD_TO_MGMT_JSON" ]]; then
+            echo "WARN: You have changed a developer flag. Please ensure that you know what you are doing and that it is intended."
+            echo "WARN: You should not change the CA_NETBIRD_AUTH_OIDC_CONFIGURATION_ENDPOINT_ADD_TO_MGMT_JSON flag to avoid removing OIDCConfigEndpoint value."
+            echo "Remove OIDCConfigEndpoint env value."
+            unset NETBIRD_AUTH_OIDC_CONFIGURATION_ENDPOINT
+          fi
+
+          export NETBIRD_AUTH_AUTHORITY=$(echo $OIDC_CONFIG | jq -r '.issuer')
+          export NETBIRD_AUTH_JWT_CERTS=$(echo $OIDC_CONFIG | jq -r '.jwks_uri')
+          export NETBIRD_AUTH_TOKEN_ENDPOINT=$(echo $OIDC_CONFIG | jq -r '.token_endpoint')
+          export NETBIRD_AUTH_DEVICE_AUTH_ENDPOINT=$(echo $OIDC_CONFIG | jq -r '.device_authorization_endpoint')
+          export NETBIRD_AUTH_PKCE_AUTHORIZATION_ENDPOINT=$(echo $OIDC_CONFIG | jq -r '.authorization_endpoint')
+
+          if [[ "true" == $USE_AUTH0 ]]; then
+            # Auth0 Domain was used within previous versions of netbird and is set to false by default for backwards compatibility.
+            # Added this to be as compatible as possible with the netbird approach.
+            export NETBIRD_AUTH0_DOMAIN=$(echo $NETBIRD_AUTH_AUTHORITY | sed 's/https/\/\///')
+          fi
+
+          # Construct Extra Config for Authentik from secret values
+          export NETBIRD_IDP_MGMT_EXTRA_CONFIG=$(jq -n --arg user "$NB_SERVICE_ACCOUNT_USERNAME" --arg pass "$NB_SERVICE_ACCOUNT_PASSWORD" \
+            '{Username: $user, Password: $pass}')
+
+          # Generate management.json
+          echo "Generating management.json..."
+          envsubst < /etc/netbird-template/management.json.tmpl | jq . > /etc/netbird/management.json
+
+          echo "Generated configuration:"
+          cat /etc/netbird/management.json
+
+        env:
+        - name: NETBIRD_DOMAIN
+          value: "{{ .Values.global.domain }}"
+        - name: NETBIRD_RELAY_ENDPOINT
+          value: "rels://{{ .Values.global.domain }}:443/relay"
+        - name: TURN_DOMAIN
+          value: "{{ .Values.global.domain }}"
+        - name: TURN_USER
+          value: "self"
+        - name: TURN_USE_TIMEBASED_CREDS
+          value: "{{ .Values.turn.useTimebasedSecrets }}"
+        {{- if .Values.turn.useTimebasedSecrets }}
+        - name: TURN_PASSWORD
+          value: ""
+        - name: TURN_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.existingTurnSecret | default "turn-creds-and-secret" }}
+              key: secret
+        {{- else }}
+        - name: TURN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.existingTurnSecret | default "turn-creds-and-secret" }}
+              key: password
+        - name: TURN_SECRET
+          value: ""
+        {{- end }}
+        - name: NETBIRD_SIGNAL_PROTOCOL
+          value: "https"
+        - name: NETBIRD_SIGNAL_PORT
+          value: "443"
+        - name: NETBIRD_MGMT_API_PORT
+          value: "{{ .Values.management.port }}"
+        - name: NETBIRD_STORE_CONFIG_ENGINE
+          value: "postgres"
+        - name: NETBIRD_MGMT_DISABLE_DEFAULT_POLICY
+          value: "false"
+        - name: NETBIRD_AUTH_USER_ID_CLAIM
+          value: "sub"
+        - name: NETBIRD_MGMT_IDP_SIGNKEY_REFRESH
+          value: "true"
+        - name: NETBIRD_MGMT_IDP
+          value: "authentik"
+        - name: NETBIRD_AUTH_OIDC_CONFIGURATION_ENDPOINT
+          value: "{{ .Values.authentik.domain }}/application/o/{{ .Values.authentik.appSlug }}/.well-known/openid-configuration"
+        - name: CA_NETBIRD_AUTH_OIDC_CONFIGURATION_ENDPOINT_ADD_TO_MGMT_JSON
+          value: "true"
+        - name: USE_AUTH0
+          value: "false"
+        - name: NETBIRD_AUTH_PKCE_REDIRECT_URLS
+          value: "\"http://localhost:53000\""
+        - name: NETBIRD_AUTH_PKCE_USE_ID_TOKEN
+          value: "{{ .Values.authentik.useIdToken }}"
+        - name: NETBIRD_AUTH_PKCE_DISABLE_PROMPT_LOGIN
+          value: "true"
+        - name: NETBIRD_AUTH_PKCE_LOGIN_FLAG
+          value: "0"
+        - name: NETBIRD_AUTH_DEVICE_AUTH_PROVIDER
+          value: {{ .Values.authentik.device.type | default "none" }}
+        - name: NETBIRD_AUTH_DEVICE_AUTH_USE_ID_TOKEN
+          value: "{{ .Values.authentik.device.useIdToken }}"
+        - name: NETBIRD_AUTH_DEVICE_AUTH_SCOPE
+          value: "{{ .Values.authentik.device.scopes }}"
+        - name: NETBIRD_MGMT_API_CERT_FILE
+          value: "" # Assuming no letsencrypt for now, can be configured if needed
+        - name: NETBIRD_MGMT_API_CERT_KEY_FILE
+          value: "" # Assuming no letsencrypt for now, can be configured if needed
+
+        # Values from Secrets
+        - name: NETBIRD_DATASTORE_ENC_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.existingEncryptionKeySecret | default "netbird-datasrc-encryption" }}
+              key: encryptionKey
+        - name: NETBIRD_RELAY_AUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.existingRelayAuthSecret | default "netbird-relay-auth-secret" }}
+              key: secret
+        - name: NB_SERVICE_ACCOUNT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
+              key: service-account-password
+        - name: NB_SERVICE_ACCOUNT_USERNAME
+          value: "{{ .Values.authentik.serviceAccount.username }}"
+        - name: NETBIRD_IDP_MGMT_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
+              key: client-id
+        - name: NETBIRD_IDP_MGMT_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
+              key: client-secret
+        - name: NETBIRD_AUTH_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
+              key: client-id
+        - name: NETBIRD_AUTH_CLIENT_SECRET
+          {{- if .Values.authentik.isPublicClient }}
+          value: ""
+          {{- else }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
+              key: client-secret
+          {{- end }}
+        - name: NETBIRD_AUTH_AUDIENCE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
+              key: client-id
+        - name: NETBIRD_AUTH_SUPPORTED_SCOPES
+          value: "{{ .Values.authentik.scopes }}"
+        - name: NETBIRD_AUTH_PKCE_AUDIENCE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
+              key: client-id
+        - name: NETBIRD_AUTH_DEVICE_AUTH_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.existingAuthentikDeviceOidcSecret | default "netbird-authentik-device-oidc" }}
+              key: client-id
+        - name: NETBIRD_AUTH_DEVICE_AUTH_CLIENT_SECRET
+          {{- if .Values.authentik.device.isPublicClient }}
+          value: ""
+          {{- else }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.existingAuthentikDeviceOidcSecret | default "netbird-authentik-device-oidc" }}
+              key: client-secret
+          {{- end }}
+        - name: NETBIRD_AUTH_DEVICE_AUTH_AUDIENCE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.existingAuthentikDeviceOidcSecret | default "netbird-authentik-device-oidc" }}
+              key: client-id
+
+        volumeMounts:
+        - name: config
+          mountPath: /etc/netbird
+        - name: config-template
+          mountPath: /etc/netbird-template
+
+      affinity:
+        podAntiAffinity:
+          {{- if eq .Values.management.affinity.podAntiAffinity "preferred" }}
+          preferredDuringSchedulingIgnoredDuringExecution:
+          {{- else }}
+          requiredDuringSchedulingIgnoredDuringExecution:
+          {{- end }}
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - {{ include "netbird-management.name" . }}
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                  - management
+              topologyKey: kubernetes.io/hostname
+
+      containers:
+      - name: management
+        image: "{{ .Values.management.image.repository }}:{{ .Values.management.image.tag }}"
+        imagePullPolicy: {{ .Values.management.image.pullPolicy }}
+
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: {{ .Values.management.securityContext.readOnlyRootFilesystem }}
+          runAsNonRoot: true
+          runAsUser: {{ .Values.management.securityContext.runAsUser }}
+          capabilities:
+            drop:
+            - ALL
+
+        ports:
+        - name: http
+          containerPort: {{ .Values.management.port }}
+          protocol: TCP
+        - name: metrics
+          containerPort: {{ .Values.management.metricsPort }}
+          protocol: TCP
+
+        {{- if .Values.management.probes.liveness.enabled }}
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: metrics
+          initialDelaySeconds: {{ .Values.management.probes.liveness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.management.probes.liveness.periodSeconds }}
+          timeoutSeconds: {{ .Values.management.probes.liveness.timeoutSeconds }}
+          failureThreshold: {{ .Values.management.probes.liveness.failureThreshold }}
+        {{- end }}
+
+        {{- if .Values.management.probes.readiness.enabled }}
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: metrics
+          initialDelaySeconds: {{ .Values.management.probes.readiness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.management.probes.readiness.periodSeconds }}
+          timeoutSeconds: {{ .Values.management.probes.readiness.timeoutSeconds }}
+          failureThreshold: {{ .Values.management.probes.readiness.failureThreshold }}
+        {{- end }}
+
+        resources:
+          requests:
+            cpu: {{ .Values.management.resources.requests.cpu }}
+            memory: {{ .Values.management.resources.requests.memory }}
+          limits:
+            cpu: {{ .Values.management.resources.limits.cpu }}
+            memory: {{ .Values.management.resources.limits.memory }}
+
+        command: [ "/go/bin/netbird-mgmt" ]
+        args: [
+          "management",
+          "--log-file", "console",
+          "--port", "{{ .Values.management.port }}",
+          "--disable-anonymous-metrics={{ .Values.global.disableAnonMetrics }}",
+          "--single-account-mode-domain={{ .Values.global.domain }}",
+          "--dns-domain={{ .Values.global.nbDnsDomain }}"
+        ]
+
+        env:
+        - name: NETBIRD_STORE_ENGINE_POSTGRES_DSN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.postgresql.cnpgCluster.appConnectionSecretName }}
+              key: uri
+        - name: NB_ACTIVITY_EVENT_STORE_ENGINE
+          value: "postgres"
+        - name: NB_ACTIVITY_EVENT_POSTGRES_DSN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.postgresql.cnpgCluster.appConnectionSecretName }}
+              key: uri
+        - name: NB_LOG_LEVEL
+          value: "info"
+        - name: NB_LOG_FORMAT
+          value: "json"
+
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: cache
+          mountPath: /var/cache/netbird
+        - name: datadir
+          mountPath: /var/lib/netbird
+        - name: config
+          mountPath: /etc/netbird
+          readOnly: true
+
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: cache
+        emptyDir: {}
+      - name: datadir
+        emptyDir: {}
+      - name: config
+        emptyDir: {}
+      - name: config-template
+        configMap:
+          name: netbird-management-config
+          defaultMode: 0644
+
+      terminationGracePeriodSeconds: 30
+{{- end }}

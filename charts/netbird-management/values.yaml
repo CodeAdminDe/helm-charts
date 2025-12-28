@@ -1,0 +1,435 @@
+# -- Global Configuration
+global:
+  # -- Domain for the deployment
+  domain: "nb.example.com"
+  # -- Environment (production, staging, development)
+  environment: production
+  # -- Timezone for the deployment
+  timezone: UTC
+  # -- Image pull secrets for private registries
+  imagePullSecrets: []
+  # -- Enable / Disable anonymous metrics collection
+  disableAnonMetrics: false
+  # -- DNS domain inside the NetBird VPN
+  nbDnsDomain: "netbird.selfhosted"
+
+# -- Management Server - Control Plane
+management:
+  # -- Enable Management server
+  enabled: true
+  # -- Number of Management server replicas
+  replicaCount: 1
+  # -- Management image repository, tag and pullPolicy
+  image:
+    repository: netbirdio/management
+    tag: "0.60.9"
+    pullPolicy: IfNotPresent
+  # -- Init container for dynamic management.json generation
+  initConfig:
+    # -- Management initContainer image repository, tag and pullPolicy
+    image:
+      repository: ghcr.io/codeadminde/alpine-toolbox
+      tag: latest
+      pullPolicy: Always
+  # -- Management server port
+  port: 33073
+  # -- Management server metrics port
+  metricsPort: 9090
+  service:
+    # -- Service type
+    type: ClusterIP
+    # -- Service port
+    port: 33073
+    # -- Service metrics port
+    metricsPort: 9090
+  # -- Resource requests and limits
+  resources:
+    requests:
+      # -- CPU request
+      cpu: 200m
+      # -- Memory request
+      memory: 256Mi
+    limits:
+      # -- CPU limit
+      cpu: 1000m
+      # -- Memory limit
+      memory: 1Gi
+  # -- Health probes configuration
+  probes:
+    # -- Liveness probe settings
+    liveness:
+      # -- Enable liveness probe
+      enabled: true
+      # -- Initial delay before first liveness probe
+      initialDelaySeconds: 30
+      # -- Liveness probe interval
+      periodSeconds: 10
+      # -- Liveness probe timeout
+      timeoutSeconds: 5
+      # -- Liveness probe failure threshold
+      failureThreshold: 3
+    # -- Readiness probe settings
+    readiness:
+      # -- Enable readiness probe
+      enabled: true
+      # -- Initial delay before first readiness probe
+      initialDelaySeconds: 10
+      # -- Readiness probe interval
+      periodSeconds: 5
+      # -- Readiness probe timeout
+      timeoutSeconds: 3
+      # -- Readiness probe failure threshold
+      failureThreshold: 2
+  # -- Pod affinity settings
+  affinity:
+    # -- Pod anti-affinity strategy (required, preferred)
+    podAntiAffinity: preferred
+  # -- Pod security context
+  securityContext:
+    # -- Run container as non-root user
+    runAsNonRoot: true
+    # -- User ID for running container
+    runAsUser: 1001
+    # -- File system group
+    fsGroup: 1001
+    # -- Use read-only root filesystem
+    readOnlyRootFilesystem: true
+  # -- Pod Disruption Budget
+  podDisruptionBudget:
+    # -- Enable Pod Disruption Budget
+    enabled: true
+    # -- Minimum available replicas
+    minAvailable: 1
+
+# -- Signal Server
+signal:
+  # -- Enable Signal server
+  enabled: true
+  # -- Number of Signal server replicas
+  replicaCount: 2
+  # -- Signal image repository, tag and pullPolicy
+  image:
+    repository: netbirdio/signal
+    tag: "0.60.9"
+    pullPolicy: IfNotPresent
+  # -- Signal server port
+  port: 10000
+  # -- Signal server metrics port
+  metricsPort: 9090
+  service:
+    # -- Service type
+    type: ClusterIP
+    # -- Service port
+    port: 10000
+    # -- Service metrics port
+    metricsPort: 9090
+  # -- Resource requests and limits
+  resources:
+    requests:
+      # -- CPU request
+      cpu: 100m
+      # -- Memory request
+      memory: 128Mi
+    limits:
+      # -- CPU limit
+      cpu: 500m
+      # -- Memory limit
+      memory: 512Mi
+  # -- Horizontal Pod Autoscaler configuration
+  hpa:
+    # -- Enable HPA
+    enabled: true
+    # -- Minimum replicas for HPA
+    minReplicas: 2
+    # -- Maximum replicas for HPA
+    maxReplicas: 10
+    # -- Target CPU utilization percentage
+    targetCPUUtilizationPercentage: 70
+
+# -- Relay Server
+relay:
+  # -- Enable Relay server
+  enabled: true
+  # -- Number of Relay server replicas
+  replicaCount: 2
+  # -- Relay image repository, tag and pullPolicy
+  image:
+    repository: netbirdio/relay
+    tag: "0.60.9"
+    pullPolicy: IfNotPresent
+  # -- Relay server port
+  port: 33080
+  # -- Relay server metrics port
+  metricsPort: 9090
+  service:
+    # -- Service type
+    type: ClusterIP
+    # -- Service port
+    port: 33080
+    # -- Service metrics port
+    metricsPort: 9090
+  # -- Resource requests and limits
+  resources:
+    requests:
+      # -- CPU request
+      cpu: 100m
+      # -- Memory request
+      memory: 128Mi
+    limits:
+      # -- CPU limit
+      cpu: 500m
+      # -- Memory limit
+      memory: 512Mi
+  # -- Horizontal Pod Autoscaler configuration
+  hpa:
+    # -- Enable HPA
+    enabled: true
+    # -- Minimum replicas for HPA
+    minReplicas: 2
+    # -- Maximum replicas for HPA
+    maxReplicas: 10
+    # -- Target CPU utilization percentage
+    targetCPUUtilizationPercentage: 70
+
+# -- Dashboard UI
+dashboard:
+  # -- Enable Dashboard
+  enabled: true
+  # -- Number of Dashboard replicas
+  replicaCount: 1
+  # -- Dashboard image repository, tag and pullPolicy
+  image:
+    repository: netbirdio/dashboard
+    tag: "v2.23.1"
+    pullPolicy: IfNotPresent
+  # -- Dashboard port
+  port: 80
+  # -- Dashboard metrics port
+  metricsPort: 9090
+  service:
+    # -- Service type
+    type: ClusterIP
+    # -- Service port
+    port: 80
+    # -- Service metrics port
+    metricsPort: 9090
+  # -- Resource requests and limits
+  resources:
+    requests:
+      # -- CPU request
+      cpu: 50m
+      # -- Memory request
+      memory: 64Mi
+    limits:
+      # -- CPU limit
+      cpu: 200m
+      # -- Memory limit
+      memory: 256Mi
+  # -- Horizontal Pod Autoscaler configuration
+  hpa:
+    # -- Enable HPA
+    enabled: false
+    # -- Minimum replicas for HPA
+    minReplicas: 2
+    # -- Maximum replicas for HPA
+    maxReplicas: 10
+    # -- Target CPU utilization percentage
+    targetCPUUtilizationPercentage: 70
+
+# -- PostgreSQL configuration
+postgresql:
+  # -- Use CNPG Cluster for PostgreSQL
+  useCnpgCluster: true
+  # -- CNPG Cluster settings
+  cnpgCluster:
+    # -- CNPG Cluster name
+    clusterName: "cnpg-cluster"
+    # -- CNPG application connection secret name
+    appConnectionSecretName: "cnpg-cluster-app"
+    # -- CNPG cluster port
+    port: 5432
+
+# -- Existing encryption key secret
+# @description Generate a secret with `openssl rand -base64 32` and pre-deploy a secret containing the value with key `encryptionKey`. If not provided, Helm creates it automatically on first install. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.
+existingEncryptionKeySecret: ""
+
+# -- Existing relay authentication secret
+# @description If not provided, Helm creates it automatically on first install. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.
+existingRelayAuthSecret: ""
+
+# -- Existing TURN (Coturn) credentials secret
+# @description If not provided, Helm creates it automatically on first install. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.
+existingTurnSecret: ""
+
+# -- Existing Authentik OIDC secret
+# @description If not provided, Helm creates it automatically on first install based on provided values. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.
+existingAuthentikOidcSecret: ""
+
+# -- Existing Authentik device OIDC secret
+# @description If not provided, Helm creates it automatically on first install based on provided values. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.
+existingAuthentikDeviceOidcSecret: ""
+
+# -- Authentik OIDC configuration
+authentik:
+  # -- Enable Authentik OIDC
+  enabled: true
+  # -- Authentik domain URL
+  domain: "https://auth.example.com"
+  # -- Authentik application slug
+  appSlug: "de_example_nb"
+  # -- Authentik issuer URL
+  issuer: "https://auth.example.com"
+  # -- Authentik client is public (no client secret required)
+  isPublicClient: true
+  # -- Authentik client ID
+  clientId: "your-client-id"
+  # -- Authentik client secret (only required for confidential clients)
+  clientSecret: ""
+  # -- OIDC scopes to request
+  scopes: "openid profile email offline_access api"
+  # -- Use ID token instead of access token
+  useIdToken: false
+  # -- Service account configuration
+  serviceAccount:
+    # -- Service account username
+    username: "netbird"
+    # -- Service account password
+    password: ""
+  # -- Device code flow configuration
+  device:
+    # -- Device code flow type (hosted or none to disable)
+    type: "hosted"
+    # -- Device code flow client is public
+    isPublicClient: true
+    # -- Device code flow client ID
+    clientId: "your-client-id"
+    # -- Device code flow client secret (only required for confidential clients)
+    clientSecret: ""
+    # -- Device code flow OIDC scopes
+    scopes: "openid"
+    # -- Use ID token instead of access token for device flow
+    useIdToken: false
+
+# -- TURN (Coturn) configuration
+# @description Currently Coturn is not part of the deployment, but NetBird uses these values
+turn:
+  # -- Use time-based secrets for TURN
+  useTimebasedSecrets: true
+
+# -- Ingress configuration
+ingress:
+  # -- Enable Ingress
+  enabled: true
+  # -- Ingress class name
+  className: nginx
+  # -- HTTP/2 consolidation mode
+  consolidationMode: "http2"
+  # -- TLS configuration
+  tls:
+    # -- Enable TLS
+    enabled: true
+    # -- Certificate issuer configuration
+    issuer:
+      # -- Issuer name
+      name: letsencrypt-prod
+      # -- Issuer kind (Issuer or ClusterIssuer)
+      kind: ClusterIssuer
+
+# -- Set a RuntimeClass to execute the containers with a custom runtime configuration.
+# Register a runtimeClass within your cluster beforehand.
+# @raw
+#
+# <details>
+# <summary>Motivation (Expand)</summary>
+#
+# > The container runtime configuration is used to run a Pod's containers. . . .
+# > For example, if part of your workload deserves a high level of information security assurance, you might choose to schedule those Pods so that they run in a container runtime that uses hardware virtualization.
+# > You'd then benefit from the extra isolation of the alternative runtime, at the expense of some additional overhead. . . .
+#
+# <i>Source and more informations: https://kubernetes.io/docs/concepts/containers/runtime-class/ </i>
+#
+# </details>
+runtimeClass:
+  # -- (string/runtimeClassName) Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).
+  pods: ""
+  # -- (string/runtimeClassName) Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).
+  jobs: ""
+  # -- (string/runtimeClassName) Sets the runtimeClass for the containers which gets executed by the test hook. Takes the runtimeClass name, or "" (default).
+  tests: ""
+
+# -- Cilium Network Policies configuration
+libchartCnps:
+  # -- Enable Cilium Network Policies
+  enabled: false
+  # -- Include CNPG-specific policies
+  includeCnpgPolicies: false
+
+# -- Application-specific Cilium Network Policies configuration
+# @description Requires CiliumNetworkPolicies library-chart. These settings will be ignored if the library-chart is not available. These settings are directly related to the application and will not influence namespace-wide policies (e.g., for DNS egress traffic).
+cnps:
+  # -- Application traffic policies
+  appTraffic:
+    # -- Ingress traffic configuration
+    ingress:
+      # -- Allow ingress traffic
+      allow: true
+      # -- Labels to match ingress controller pods
+      # @description Allows overriding default to match your ingress deployment.
+      #   app.kubernetes.io/name: ingress-nginx
+      #   io.kubernetes.pod.namespace: ingress-nginx
+      matchLabels: {}
+      # -- Metrics scraper configuration
+      metrics:
+        # -- Labels to match Prometheus pods
+        # @description Allows overriding default to match your prometheus deployment
+        #   app.kubernetes.io/name: prometheus
+        #   app.kubernetes.io/instance: kube-prometheus-stack-prometheus
+        #   io.kubernetes.pod.namespace: monitoring--kube-prometheus-stack
+        matchLabels: {}
+    # -- Egress traffic configuration
+    egress:
+      # -- Allow egress traffic
+      allow: true
+      # -- Labels to match egress destinations
+      # @description Allows overriding default egress labels to match your security requirements.
+      matchLabels: {}
+      # -- Entities to allow egress to (e.g., world)
+      # @description Allows overriding default egress entities to match your security requirements.
+      #   - world
+      toEntities: []
+  # -- CNPG traffic policies
+  cnpgTraffic:
+    # -- Additional instance egress rules for external services (e.g., backup services)
+    # @description Add additional rule(s) as desired, to allow access to external backup services
+    # - toFQDNs:
+    #   - matchName: s3.storage.example.org
+    #   toPorts:
+    #     - ports:
+    #         - port: "443"
+    #           protocol: TCP
+    # ## OR ##
+    # - toEntities:
+    #   - world
+    #   toPorts:
+    #     - ports:
+    #         - port: "8443"
+    #           protocol: TCP
+    # ## OR ##
+    # ...
+    instanceExtraEgress: []
+
+# -- Role-Based Access Control configuration
+rbac:
+  # -- Create RBAC resources
+  create: true
+  # -- Service account configuration
+  serviceAccount:
+    # -- Create service account
+    create: true
+    # -- Service account name
+    name: netbird-management
+
+# -- Monitoring configuration
+monitoring:
+  # -- Enable monitoring
+  enabled: false

@@ -1,0 +1,239 @@
+{{- if .Values.dashboard.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "netbird-management.fullname" . }}-dashboard
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+    app.kubernetes.io/component: dashboard
+spec:
+  replicas: {{ .Values.dashboard.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      {{- include "netbird-management.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: dashboard
+  template:
+    metadata:
+      labels:
+        {{- include "netbird-management.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: dashboard
+      annotations:
+        prometheus.io/scrape: "true"
+    spec:
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1001
+        fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
+
+      serviceAccountName: {{ include "netbird-management.serviceAccountName" . }}
+
+      containers:
+        - name: dashboard
+          image: "{{ .Values.dashboard.image.repository }}:{{ .Values.dashboard.image.tag }}"
+          imagePullPolicy: {{ .Values.dashboard.image.pullPolicy }}
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 100
+            runAsGroup: 101
+            capabilities:
+              drop:
+              - ALL
+
+          ports:
+          - name: http
+            containerPort: {{ .Values.dashboard.port }}
+            protocol: TCP
+          - name: metrics
+            containerPort: {{ .Values.dashboard.metricsPort }}
+            protocol: TCP
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          resources:
+            requests:
+              cpu: {{ .Values.dashboard.resources.requests.cpu }}
+              memory: {{ .Values.dashboard.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.dashboard.resources.limits.cpu }}
+              memory: {{ .Values.dashboard.resources.limits.memory }}
+
+          env:
+            - name: NETBIRD_MGMT_API_ENDPOINT
+              value: "https://{{ .Values.global.domain }}"
+            - name: NETBIRD_MGMT_GRPC_API_ENDPOINT
+              value: "https://{{ .Values.global.domain }}"
+            {{- if .Values.authentik.useIdToken }}
+            - name: NETBIRD_TOKEN_SOURCE
+              value: "idToken"
+            - name: AUTH_PKCE_USE_ID_TOKEN
+              value: "true"
+            {{- else }}
+            - name: NETBIRD_TOKEN_SOURCE
+              value: "accessToken"
+            - name: AUTH_PKCE_USE_ID_TOKEN
+              value: "false"
+            {{- end }}
+            - name: AUTH_AUTHORITY
+              value: "{{ .Values.authentik.issuer }}"
+            - name: USE_AUTH0
+              value: "false"
+            - name: AUTH_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
+                  key: client-id
+            - name: AUTH_AUDIENCE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
+                  key: client-id
+            - name: AUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
+                  key: client-secret
+            - name: AUTH_SUPPORTED_SCOPES
+              value: "{{ .Values.authentik.scopes }}"
+            - name: AUTH_REDIRECT_URI
+              value: "/auth"
+            - name: AUTH_SILENT_REDIRECT_URI
+              value: "/silent-auth"
+
+          command: ["/usr/sbin/nginx"]
+          args: ["-g", "pid /tmp/nginx.pid;"]
+
+          volumeMounts:
+            - name: nginx-logs
+              mountPath: /var/lib/nginx/logs
+            - name: html
+              mountPath: /usr/share/nginx/html
+            - name: nginx-tmp
+              mountPath: /var/lib/nginx/tmp
+            - name: tmp
+              mountPath: /tmp
+
+      initContainers:
+        - name: init-dashboard
+          image: "{{ .Values.dashboard.image.repository }}:{{ .Values.dashboard.image.tag }}"
+          command: ["/bin/sh", "-c"]
+          args:
+          - |
+            # 1. Init-Scripts as non-root and new dir
+            #not used - using reverseproxy -- /usr/local/init_cert.sh || echo "init_cert skipped"
+
+            # 2. copy envs script to editable location & update html dir location
+            cp /usr/local/init_react_envs.sh /tmp/init_react_envs.sh
+            sed -i 's/usr\/share\/nginx\/html/rootless-html/g' /tmp/init_react_envs.sh
+            chmod ug+x /tmp/init_react_envs.sh
+
+            # 3. Copy html to rootless location & automatically set current user / group as owner.
+            cp -R /usr/share/nginx/html/* /rootless-html
+
+            # 4. Exec env replace script and cleanup
+            ok="true"
+            /tmp/init_react_envs.sh || ok="react envs skipped or failed"
+            rm /tmp/init_react_envs.sh || ok="cleanup failed"
+            if [[ $ok != "true" ]]; then
+              echo "$ok" && exit 1
+            fi
+            echo "Non-root init complete"
+
+          env:
+            - name: NETBIRD_MGMT_API_ENDPOINT
+              value: "https://{{ .Values.global.domain }}"
+            - name: NETBIRD_MGMT_GRPC_API_ENDPOINT
+              value: "https://{{ .Values.global.domain }}"
+
+            {{- if .Values.authentik.useIdToken }}
+            - name: NETBIRD_TOKEN_SOURCE
+              value: "idToken"
+            - name: AUTH_PKCE_USE_ID_TOKEN
+              value: "true"
+            {{- else }}
+            - name: NETBIRD_TOKEN_SOURCE
+              value: "accessToken"
+            - name: AUTH_PKCE_USE_ID_TOKEN
+              value: "false"
+            {{- end }}
+            - name: AUTH_AUTHORITY
+              value: "{{ .Values.authentik.issuer }}"
+            - name: USE_AUTH0
+              value: "false"
+            - name: AUTH_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
+                  key: client-id
+            - name: AUTH_AUDIENCE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
+                  key: client-id
+            - name: AUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
+                  key: client-secret
+            - name: AUTH_SUPPORTED_SCOPES
+              value: "{{ .Values.authentik.scopes }}"
+            - name: AUTH_REDIRECT_URI
+              value: "/auth"
+            - name: AUTH_SILENT_REDIRECT_URI
+              value: "/silent-auth"
+
+          volumeMounts:
+            - name: html
+              mountPath: /rootless-html
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+            capabilities:
+              drop:
+              - ALL
+
+      volumes:
+      - name: nginx-logs
+        emptyDir: {}
+      - name: nginx-tmp
+        emptyDir: {}
+      - name: html
+        emptyDir: {}
+      - name: tmp
+        emptyDir: {}
+      terminationGracePeriodSeconds: 30
+{{- end }}

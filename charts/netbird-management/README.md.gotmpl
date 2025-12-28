@@ -1,0 +1,54 @@
+{{- define "extra.specifics.fromchart.atom.opinionated" -}}
+<hr /><hr />
+
+## Appendix - Chart-specifics
+
+### Implementation details
+
+I've tried to implement best-practices for deploying within cloud-native environments.
+Therefore the chart provides personal baseline config for:
+
+* Security: Cilium Network Policies, RBAC, Security Context: runAsNonRoot, readOnlyRootFilesystem, seccomp
+* HA: Pod Anti-Affinity, PDB, HPA, ClusterIP Services
+* Monitoring: Prometheus-ready, Health Checks, JSON Logging
+* Operations: Full Probes, Resource Limits, Ingress
+
+The current implemented deployments and integrations:
+
+* **Management Server** (Deployment) - Control Plane
+* **Signal Server** (Deployment) - P2P signaling
+* **Relay Server** (Deployment) - traffic relaying
+* **Dashboard** (Deployment) - Management UI
+* **PostgreSQL Integration** - via CloudNativePG; requires CNPG Operator
+* **Authentik OIDC** - SSO IdP integration configured to allow zero trust auth via authentik
+
+#### Port exposure and additional notes
+
+| Port | Protocol | Purpose | Type/Ingress | Note |
+|------|----------|---------|---------|---------|
+| 80 | TCP | HTTP→HTTPS | ClusterIP w/ Ingress | Implemented |
+| 443 | TCP | **All Services** | ClusterIP w/ Ingress | Implemented |
+| 3478 | UDP | Coturn (STUN) | LoadBalancer w/o Ingress | Not implemented |
+
+```mermaid
+graph LR
+  WWW["WWW 80/443 TCP"] --> Ingress["Nginx Ingress"]
+  Ingress -->|gRPC| Mgmt["Management:33073"]
+  Ingress -->|gRPC| Signal["Signal:10000"]
+  Ingress -->|WS| Relay["Relay:33080"]
+  Ingress -->|HTTP| Dash["Dashboard:80"]
+```
+
+> **Note about QUIC relay & Coturn**
+>
+> NetBird allows to use two different relay transport types:
+> * **WebSocket** via 443/TCP (Ingress-compatible, `/relay`)
+> * **QUIC** via UDP 33080 (L4 LoadBalancer necessary)
+>
+> This chart currently implementes the **WebSocket** implementation, to allow minimal additional port-exposure.
+> QUIC could be implemented at a later time to benefit of a better performance.
+
+{{- end -}}
+
+{{ template "extra.templates.readme.complexvalues" . }}
+{{ template "extra.specifics.fromchart.atom.opinionated" . }}

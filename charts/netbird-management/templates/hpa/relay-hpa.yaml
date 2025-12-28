@@ -1,0 +1,24 @@
+{{- if .Values.relay.hpa.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "netbird-management.fullname" . }}-relay
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+    app.kubernetes.io/component: relay
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "netbird-management.fullname" . }}-relay
+  minReplicas: {{ .Values.relay.hpa.minReplicas }}
+  maxReplicas: {{ .Values.relay.hpa.maxReplicas }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: {{ .Values.relay.hpa.targetCPUUtilizationPercentage }}
+{{- end }}

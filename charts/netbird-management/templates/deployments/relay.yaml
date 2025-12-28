@@ -1,0 +1,133 @@
+{{- if .Values.relay.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "netbird-management.fullname" . }}-relay
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+    app.kubernetes.io/component: relay
+spec:
+  replicas: {{ .Values.relay.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      {{- include "netbird-management.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: relay
+  template:
+    metadata:
+      labels:
+        {{- include "netbird-management.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: relay
+      annotations:
+        prometheus.io/scrape: "true"
+    spec:
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
+
+      serviceAccountName: {{ include "netbird-management.serviceAccountName" . }}
+
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - {{ include "netbird-management.name" . }}
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                  - relay
+              topologyKey: kubernetes.io/hostname
+
+      containers:
+      - name: relay
+        image: "{{ .Values.relay.image.repository }}:{{ .Values.relay.image.tag }}"
+        imagePullPolicy: {{ .Values.relay.image.pullPolicy }}
+
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1001
+          capabilities:
+            drop:
+            - ALL
+
+        ports:
+        - name: relay
+          containerPort: {{ .Values.relay.port }}
+          protocol: TCP
+        - name: metrics
+          containerPort: {{ .Values.relay.metricsPort }}
+          protocol: TCP
+
+        readinessProbe:
+          tcpSocket:
+            port: relay
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 2
+
+        livenessProbe:
+          tcpSocket:
+            port: relay
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+        resources:
+          requests:
+            cpu: {{ .Values.relay.resources.requests.cpu }}
+            memory: {{ .Values.relay.resources.requests.memory }}
+          limits:
+            cpu: {{ .Values.relay.resources.limits.cpu }}
+            memory: {{ .Values.relay.resources.limits.memory }}
+
+        env:
+        - name: NB_LISTEN_ADDRESS
+          value: ":{{ .Values.relay.port }}"
+        - name: NB_EXPOSED_ADDRESS
+          value: "rels://{{ .Values.global.domain }}:443/relay"
+        - name: NB_AUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.existingRelayAuthSecret | default "netbird-relay-auth-secret" }}
+              key: secret
+        - name: NB_LOG_LEVEL
+          value: "info"
+        - name: NB_LOG_FORMAT
+          value: "json"
+
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: cache
+          mountPath: /var/cache/netbird
+
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: cache
+        emptyDir: {}
+
+      terminationGracePeriodSeconds: 30
+{{- end }}
