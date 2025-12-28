@@ -187,7 +187,10 @@ spec:
               name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
               key: service-account-password
         - name: NB_SERVICE_ACCOUNT_USERNAME
-          value: "{{ .Values.authentik.serviceAccount.username }}"
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
+              key: service-account-username
         - name: NETBIRD_IDP_MGMT_CLIENT_ID
           valueFrom:
             secretKeyRef:
