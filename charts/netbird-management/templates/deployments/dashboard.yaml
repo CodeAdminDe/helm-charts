@@ -134,13 +134,13 @@ spec:
           args: ["-g", "pid /tmp/nginx.pid;"]
 
           volumeMounts:
-            - name: nginx-logs
+            - name: {{ .Release.Name }}-dash-nginx-logs
               mountPath: /var/lib/nginx/logs
-            - name: html
+            - name: {{ .Release.Name }}-dash-html
               mountPath: /usr/share/nginx/html
-            - name: nginx-tmp
+            - name: {{ .Release.Name }}-dash-nginx-tmp
               mountPath: /var/lib/nginx/tmp
-            - name: tmp
+            - name: {{ .Release.Name }}-dash-tmp
               mountPath: /tmp
 
       initContainers:
@@ -213,9 +213,9 @@ spec:
               value: "/silent-auth"
 
           volumeMounts:
-            - name: html
+            - name: {{ .Release.Name }}-dash-html
               mountPath: /rootless-html
-            - name: tmp
+            - name: {{ .Release.Name }}-dash-tmp
               mountPath: /tmp
           securityContext:
             allowPrivilegeEscalation: false
@@ -227,13 +227,13 @@ spec:
               - ALL
 
       volumes:
-      - name: nginx-logs
+      - name: {{ .Release.Name }}-dash-nginx-logs
         emptyDir: {}
-      - name: nginx-tmp
+      - name: {{ .Release.Name }}-dash-nginx-tmp
         emptyDir: {}
-      - name: html
+      - name: {{ .Release.Name }}-dash-html
         emptyDir: {}
-      - name: tmp
+      - name: {{ .Release.Name }}-dash-tmp
         emptyDir: {}
       terminationGracePeriodSeconds: 30
 {{- end }}

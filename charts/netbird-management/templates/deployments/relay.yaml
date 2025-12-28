@@ -118,15 +118,15 @@ spec:
           value: "json"
 
         volumeMounts:
-        - name: tmp
+        - name: {{ .Release.Name }}-relay-tmp
           mountPath: /tmp
-        - name: cache
+        - name: {{ .Release.Name }}-relay-cache
           mountPath: /var/cache/netbird
 
       volumes:
-      - name: tmp
+      - name: {{ .Release.Name }}-relay-tmp
         emptyDir: {}
-      - name: cache
+      - name: {{ .Release.Name }}-relay-cache
         emptyDir: {}
 
       terminationGracePeriodSeconds: 30

@@ -109,16 +109,19 @@ spec:
           value: "json"
 
         volumeMounts:
-        - name: tmp
-          mountPath: /tmp
-        - name: cache
-          mountPath: /var/cache/netbird
+          - name: {{ .Release.Name }}-signal-data
+            mountPath: /var/lib/netbird
+          - name: {{ .Release.Name }}-signal-tmp
+            mountPath: /tmp
+          - name: {{ .Release.Name }}-signal-cache
+            mountPath: /var/cache/netbird
 
       volumes:
-      - name: tmp
-        emptyDir: {}
-      - name: cache
-        emptyDir: {}
+        {{- include "common.app.signal.pvc" . | nindent 8 }}
+        - name: {{ .Release.Name }}-signal-tmp
+          emptyDir: {}
+        - name: {{ .Release.Name }}-signal-cache
+          emptyDir: {}
 
       terminationGracePeriodSeconds: 30
 {{- end }}

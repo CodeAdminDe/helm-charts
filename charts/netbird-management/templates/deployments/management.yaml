@@ -245,9 +245,9 @@ spec:
               key: client-id
 
         volumeMounts:
-        - name: config
+        - name: {{ .Release.Name }}-management-config
           mountPath: /etc/netbird
-        - name: config-template
+        - name: {{ .Release.Name }}-management-config-template
           mountPath: /etc/netbird-template
 
       affinity:
@@ -352,29 +352,28 @@ spec:
           value: "json"
 
         volumeMounts:
-        - name: tmp
-          mountPath: /tmp
-        - name: cache
-          mountPath: /var/cache/netbird
-        - name: datadir
-          mountPath: /var/lib/netbird
-        - name: config
-          mountPath: /etc/netbird
-          readOnly: true
+          - name: {{ .Release.Name }}-management-tmp
+            mountPath: /tmp
+          - name: {{ .Release.Name }}-management-cache
+            mountPath: /var/cache/netbird
+          - name: {{ .Release.Name }}-management-data
+            mountPath: /var/lib/netbird
+          - name: {{ .Release.Name }}-management-config
+            mountPath: /etc/netbird
+            readOnly: true
 
       volumes:
-      - name: tmp
-        emptyDir: {}
-      - name: cache
-        emptyDir: {}
-      - name: datadir
-        emptyDir: {}
-      - name: config
-        emptyDir: {}
-      - name: config-template
-        configMap:
-          name: netbird-management-config
-          defaultMode: 0644
+        {{- include "common.app.management.pvc" . | nindent 8 }}
+        - name: {{ .Release.Name }}-management-tmp
+          emptyDir: {}
+        - name: {{ .Release.Name }}-management-cache
+          emptyDir: {}
+        - name: {{ .Release.Name }}-management-config
+          emptyDir: {}
+        - name: {{ .Release.Name }}-management-config-template
+          configMap:
+            name: netbird-management-config
+            defaultMode: 0644
 
       terminationGracePeriodSeconds: 30
 {{- end }}

@@ -54,6 +54,22 @@ management:
       cpu: 1000m
       # -- Memory limit
       memory: 1Gi
+  # -- Management server persistence configuration.
+  persistence:
+    # If persistence.enabled: false, you'd loose your stored data as soon as the container restarts.
+    enabled: true
+    # -- Define the max directory size when using persistence.enabled: false
+    emptyDirSizeLimit: 100Mi
+    # -- Define the size of the PV when using persistence.enabled: true
+    size: 500Mi
+    # -- Define the storageClass to use when not providing an already existing PVC claim. Provide your cluster storageclass or leave it empty to use the default one.
+    storageClass: "longhorn"
+    # -- Define the accessModes to use when not providing an already existing PVC claim.
+    accessModes:
+    - ReadWriteOnce
+    # -- Define an already existing PVC claim.
+    # The following values will be ignored when providing an existingClaim: persistence.{size, storageClass, accessModes}
+    # existingClaim: "my-pvc"
   # -- Health probes configuration
   probes:
     # -- Liveness probe settings
@@ -145,6 +161,23 @@ signal:
     maxReplicas: 10
     # -- Target CPU utilization percentage
     targetCPUUtilizationPercentage: 70
+  # -- Signal server persistence configuration.
+  persistence:
+    # If persistence.enabled: false, you'd loose your stored data as soon as the container restarts.
+    enabled: true
+    # -- Define the max directory size when using persistence.enabled: false
+    emptyDirSizeLimit: 100Mi
+    # -- Define the size of the PV when using persistence.enabled: true
+    size: 500Mi
+    # -- Define the storageClass to use when not providing an already existing PVC claim. Provide your cluster storageclass or leave it empty to use the default one.
+    storageClass: "longhorn"
+    # -- Define the accessModes to use when not providing an already existing PVC claim.
+    accessModes:
+    - ReadWriteOnce
+    # -- Define an already existing PVC claim.
+    # The following values will be ignored when providing an existingClaim: persistence.{size, storageClass, accessModes}
+    # existingClaim: "my-pvc"
+
 
 # -- Relay Server
 relay:

@@ -40,3 +40,40 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- default "default" .Values.rbac.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+
+{{/* PVC definition for existingClaim, shipped or emptyDir*/}}
+{{- define "common.app.management.pvc" -}}
+{{- if .Values.management.persistence.enabled -}}
+{{- if .Values.management.persistence.existingClaim -}}
+- name: {{ .Release.Name }}-management-data
+  persistentVolumeClaim:
+      claimName: {{ .Values.management.persistence.existingClaim -}}
+{{- else -}}
+- name: {{ .Release.Name }}-management-data
+  persistentVolumeClaim:
+    claimName: {{ .Release.Name }}-management-data
+{{- end -}}
+{{- else -}}
+- name: {{ .Release.Name }}-management-data
+  emptyDir:
+    sizeLimit: {{ .Values.management.persistence.emptyDirSizeLimit }}
+{{- end -}}
+{{- end -}}
+{{- define "common.app.signal.pvc" -}}
+{{- if .Values.signal.persistence.enabled -}}
+{{- if .Values.signal.persistence.existingClaim -}}
+- name: {{ .Release.Name }}-signal-data
+  persistentVolumeClaim:
+      claimName: {{ .Values.signal.persistence.existingClaim -}}
+{{- else -}}
+- name: {{ .Release.Name }}-signal-data
+  persistentVolumeClaim:
+    claimName: {{ .Release.Name }}-signal-data
+{{- end -}}
+{{- else -}}
+- name: {{ .Release.Name }}-signal-data
+  emptyDir:
+    sizeLimit: {{ .Values.signal.persistence.emptyDirSizeLimit }}
+{{- end -}}
+{{- end -}}
