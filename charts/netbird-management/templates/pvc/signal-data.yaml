@@ -1,0 +1,24 @@
+{{- if and .Values.signal.persistence.enabled (not .Values.signal.persistence.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-signal-data
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+    app.kubernetes.io/component: signal
+spec:
+  accessModes:
+    {{- range .Values.signal.persistence.accessModes }}
+    - {{ . | quote }}
+    {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.signal.persistence.size }}
+  {{- if empty .Values.signal.persistence.storageClass }}
+  storageClassName: ""
+  {{- else }}
+  storageClassName: {{ .Values.signal.persistence.storageClass }}
+  {{- end }}
+{{- end }}
