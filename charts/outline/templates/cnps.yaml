@@ -34,7 +34,7 @@ metadata:
 spec:
   endpointSelector:
     matchLabels:
-    {{- include "outline.labels" . | nindent 6 }}
+    {{- include "outline.selectorLabels" . | nindent 6 }}
   {{- if .Values.cnps.appTraffic.ingress.allow }}
   ingress:
     - fromEndpoints:
