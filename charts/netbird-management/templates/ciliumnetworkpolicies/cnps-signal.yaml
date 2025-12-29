@@ -10,7 +10,7 @@ metadata:
 spec:
   endpointSelector:
     matchLabels:
-    {{- include "netbird-management.labels" . | nindent 6 }}
+    {{- include "netbird-management.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: signal
   {{- if .Values.cnps.appTraffic.ingress.allow }}
   ingress:
