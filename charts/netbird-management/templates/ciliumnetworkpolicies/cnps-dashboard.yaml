@@ -1,6 +1,6 @@
 {{- define "netbird-management.CiliumNetworkPolicies-AppSet.dashboard" -}}
 metadata:
-  name: "{{ .Release.Name }}-dashboard"
+  name: {{ .Release.Name | printf "%s-%s--03-app-traffic-dashboard" .Chart.Name  | trunc 63 | trimSuffix "-" }}
   namespace: {{ .Release.Namespace }}
   annotations:
     checksum/values: {{ print .Values | sha256sum }}

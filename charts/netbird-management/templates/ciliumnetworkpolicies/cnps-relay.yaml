@@ -1,6 +1,6 @@
 {{- define "netbird-management.CiliumNetworkPolicies-AppSet.relay" -}}
 metadata:
-  name: "{{ .Release.Name }}-relay"
+  name: {{ .Release.Name | printf "%s-%s--03-app-traffic-relay" .Chart.Name  | trunc 63 | trimSuffix "-" }}
   namespace: {{ .Release.Namespace }}
   annotations:
     checksum/values: {{ print .Values | sha256sum }}
