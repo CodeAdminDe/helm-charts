@@ -164,7 +164,7 @@ signal:
   # -- Signal server persistence configuration.
   persistence:
     # If persistence.enabled: false, you'd loose your stored data as soon as the container restarts.
-    enabled: true
+    enabled: false
     # -- Define the max directory size when using persistence.enabled: false
     emptyDirSizeLimit: 100Mi
     # -- Define the size of the PV when using persistence.enabled: true
