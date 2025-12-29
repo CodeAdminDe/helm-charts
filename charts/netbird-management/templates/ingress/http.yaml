@@ -9,6 +9,9 @@ metadata:
     app.kubernetes.io/component: http
   annotations:
     cert-manager.io/cluster-issuer: {{ .Values.ingress.tls.issuer.name }}
+    {{- with .Values.ingress.additionalAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   ingressClassName: {{ .Values.ingress.className }}
   tls:

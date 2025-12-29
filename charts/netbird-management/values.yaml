@@ -370,7 +370,8 @@ ingress:
       name: letsencrypt-prod
       # -- Issuer kind (Issuer or ClusterIssuer)
       kind: ClusterIssuer
-
+  # -- Optional annotations for Ingress configuration
+  additionalAnnotations: {}
 # -- Set a RuntimeClass to execute the containers with a custom runtime configuration.
 # Register a runtimeClass within your cluster beforehand.
 # @raw

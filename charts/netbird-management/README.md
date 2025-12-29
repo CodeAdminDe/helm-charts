@@ -2,7 +2,7 @@
 
 # netbird-management
 
-![Version: 1.2.7](https://img.shields.io/badge/Version-1.2.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.60.9](https://img.shields.io/badge/AppVersion-0.60.9-informational?style=flat-square)
+![Version: 1.2.8](https://img.shields.io/badge/Version-1.2.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.60.9](https://img.shields.io/badge/AppVersion-0.60.9-informational?style=flat-square)
 
 A Helm chart for an easier netbird management stack (https://netbird.io) deployment at kubernetes.
 
@@ -406,7 +406,7 @@ false
 			<td>Use ID token instead of access token</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L405">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L406">cnps</a></td>
 			<td>
 object
 </td>
@@ -438,7 +438,7 @@ object
 			<td>Application-specific Cilium Network Policies configuration @description Requires CiliumNetworkPolicies library-chart. These settings will be ignored if the library-chart is not available. These settings are directly related to the application and will not influence namespace-wide policies (e.g., for DNS egress traffic).</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic"><a href="./values.yaml#L407">cnps.appTraffic</a></td>
+			<td id="cnps--appTraffic"><a href="./values.yaml#L408">cnps.appTraffic</a></td>
 			<td>
 object
 </td>
@@ -465,7 +465,7 @@ object
 			<td>Application traffic policies</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress"><a href="./values.yaml#L426">cnps.appTraffic.egress</a></td>
+			<td id="cnps--appTraffic--egress"><a href="./values.yaml#L427">cnps.appTraffic.egress</a></td>
 			<td>
 object
 </td>
@@ -483,7 +483,7 @@ object
 			<td>Egress traffic configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L428">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L429">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -497,7 +497,7 @@ true
 			<td>Allow egress traffic</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--matchLabels"><a href="./values.yaml#L431">cnps.appTraffic.egress.matchLabels</a></td>
+			<td id="cnps--appTraffic--egress--matchLabels"><a href="./values.yaml#L432">cnps.appTraffic.egress.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -511,7 +511,7 @@ object
 			<td>Labels to match egress destinations @description Allows overriding default egress labels to match your security requirements.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L435">cnps.appTraffic.egress.toEntities</a></td>
+			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L436">cnps.appTraffic.egress.toEntities</a></td>
 			<td>
 list
 </td>
@@ -525,7 +525,7 @@ list
 			<td>Entities to allow egress to (e.g., world) @description Allows overriding default egress entities to match your security requirements.   - world</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress"><a href="./values.yaml#L409">cnps.appTraffic.ingress</a></td>
+			<td id="cnps--appTraffic--ingress"><a href="./values.yaml#L410">cnps.appTraffic.ingress</a></td>
 			<td>
 object
 </td>
@@ -545,7 +545,7 @@ object
 			<td>Ingress traffic configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L411">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L412">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -559,7 +559,7 @@ true
 			<td>Allow ingress traffic</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L416">cnps.appTraffic.ingress.matchLabels</a></td>
+			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L417">cnps.appTraffic.ingress.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -573,7 +573,7 @@ object
 			<td>Labels to match ingress controller pods @description Allows overriding default to match your ingress deployment.   app.kubernetes.io/name: ingress-nginx   io.kubernetes.pod.namespace: ingress-nginx</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--metrics"><a href="./values.yaml#L418">cnps.appTraffic.ingress.metrics</a></td>
+			<td id="cnps--appTraffic--ingress--metrics"><a href="./values.yaml#L419">cnps.appTraffic.ingress.metrics</a></td>
 			<td>
 object
 </td>
@@ -589,7 +589,7 @@ object
 			<td>Metrics scraper configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--metrics--matchLabels"><a href="./values.yaml#L424">cnps.appTraffic.ingress.metrics.matchLabels</a></td>
+			<td id="cnps--appTraffic--ingress--metrics--matchLabels"><a href="./values.yaml#L425">cnps.appTraffic.ingress.metrics.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -603,7 +603,7 @@ object
 			<td>Labels to match Prometheus pods @description Allows overriding default to match your prometheus deployment   app.kubernetes.io/name: prometheus   app.kubernetes.io/instance: kube-prometheus-stack-prometheus   io.kubernetes.pod.namespace: monitoring--kube-prometheus-stack</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L437">cnps.cnpgTraffic</a></td>
+			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L438">cnps.cnpgTraffic</a></td>
 			<td>
 object
 </td>
@@ -619,7 +619,7 @@ object
 			<td>CNPG traffic policies</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L455">cnps.cnpgTraffic.instanceExtraEgress</a></td>
+			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L456">cnps.cnpgTraffic.instanceExtraEgress</a></td>
 			<td>
 list
 </td>
@@ -1146,6 +1146,7 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
+  "additionalAnnotations": {},
   "className": "nginx",
   "consolidationMode": "http2",
   "enabled": true,
@@ -1161,6 +1162,20 @@ object
 </div>
 			</td>
 			<td>Ingress configuration</td>
+		</tr>
+		<tr>
+			<td id="ingress--additionalAnnotations"><a href="./values.yaml#L374">ingress.additionalAnnotations</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>Optional annotations for Ingress configuration</td>
 		</tr>
 		<tr>
 			<td id="ingress--className"><a href="./values.yaml#L360">ingress.className</a></td>
@@ -1284,7 +1299,7 @@ string
 			<td>Issuer name</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L397">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L398">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -1301,7 +1316,7 @@ object
 			<td>Cilium Network Policies configuration</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--enabled"><a href="./values.yaml#L399">libchartCnps.enabled</a></td>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L400">libchartCnps.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1315,7 +1330,7 @@ false
 			<td>Enable Cilium Network Policies</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L401">libchartCnps.includeCnpgPolicies</a></td>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L402">libchartCnps.includeCnpgPolicies</a></td>
 			<td>
 bool
 </td>
@@ -2085,7 +2100,7 @@ string
 			<td>Service type</td>
 		</tr>
 		<tr>
-			<td id="monitoring"><a href="./values.yaml#L469">monitoring</a></td>
+			<td id="monitoring"><a href="./values.yaml#L470">monitoring</a></td>
 			<td>
 object
 </td>
@@ -2101,7 +2116,7 @@ object
 			<td>Monitoring configuration</td>
 		</tr>
 		<tr>
-			<td id="monitoring--enabled"><a href="./values.yaml#L471">monitoring.enabled</a></td>
+			<td id="monitoring--enabled"><a href="./values.yaml#L472">monitoring.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2210,7 +2225,7 @@ true
 			<td>Use CNPG Cluster for PostgreSQL</td>
 		</tr>
 		<tr>
-			<td id="rbac"><a href="./values.yaml#L458">rbac</a></td>
+			<td id="rbac"><a href="./values.yaml#L459">rbac</a></td>
 			<td>
 object
 </td>
@@ -2230,7 +2245,7 @@ object
 			<td>Role-Based Access Control configuration</td>
 		</tr>
 		<tr>
-			<td id="rbac--create"><a href="./values.yaml#L460">rbac.create</a></td>
+			<td id="rbac--create"><a href="./values.yaml#L461">rbac.create</a></td>
 			<td>
 bool
 </td>
@@ -2244,7 +2259,7 @@ true
 			<td>Create RBAC resources</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount"><a href="./values.yaml#L462">rbac.serviceAccount</a></td>
+			<td id="rbac--serviceAccount"><a href="./values.yaml#L463">rbac.serviceAccount</a></td>
 			<td>
 object
 </td>
@@ -2261,7 +2276,7 @@ object
 			<td>Service account configuration</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount--create"><a href="./values.yaml#L464">rbac.serviceAccount.create</a></td>
+			<td id="rbac--serviceAccount--create"><a href="./values.yaml#L465">rbac.serviceAccount.create</a></td>
 			<td>
 bool
 </td>
@@ -2275,7 +2290,7 @@ true
 			<td>Create service account</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount--name"><a href="./values.yaml#L466">rbac.serviceAccount.name</a></td>
+			<td id="rbac--serviceAccount--name"><a href="./values.yaml#L467">rbac.serviceAccount.name</a></td>
 			<td>
 string
 </td>
@@ -2604,7 +2619,7 @@ string
 			<td>Service type</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L388">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L389">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -2633,7 +2648,7 @@ object
 </details></td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--jobs"><a href="./values.yaml#L392">runtimeClass.jobs</a></td>
+			<td id="runtimeClass--jobs"><a href="./values.yaml#L393">runtimeClass.jobs</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -2647,7 +2662,7 @@ object
 			<td>Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--pods"><a href="./values.yaml#L390">runtimeClass.pods</a></td>
+			<td id="runtimeClass--pods"><a href="./values.yaml#L391">runtimeClass.pods</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -2661,7 +2676,7 @@ object
 			<td>Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--tests"><a href="./values.yaml#L394">runtimeClass.tests</a></td>
+			<td id="runtimeClass--tests"><a href="./values.yaml#L395">runtimeClass.tests</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
