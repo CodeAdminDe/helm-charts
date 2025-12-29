@@ -191,7 +191,7 @@ relay:
   # -- Relay image repository, tag and pullPolicy
   image:
     repository: netbirdio/relay
-    tag: "0.60.9"
+    tag: "0.61.0"
     pullPolicy: IfNotPresent
   # -- Relay server port
   port: 33080
