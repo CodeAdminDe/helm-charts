@@ -123,6 +123,7 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
                   key: client-secret
+                  optional: true
             - name: AUTH_SUPPORTED_SCOPES
               value: "{{ .Values.authentik.scopes }}"
             - name: AUTH_REDIRECT_URI
@@ -205,6 +206,7 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
                   key: client-secret
+                  optional: true
             - name: AUTH_SUPPORTED_SCOPES
               value: "{{ .Values.authentik.scopes }}"
             - name: AUTH_REDIRECT_URI

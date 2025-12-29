@@ -201,7 +201,8 @@ spec:
             secretKeyRef:
               name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
               key: client-secret
-        - name: NETBIRD_AUTH_CLIENT_ID
+              optional: true
+            - name: NETBIRD_AUTH_CLIENT_ID
           valueFrom:
             secretKeyRef:
               name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
@@ -214,6 +215,7 @@ spec:
             secretKeyRef:
               name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
               key: client-secret
+              optional: true
           {{- end }}
         - name: NETBIRD_AUTH_AUDIENCE
           valueFrom:
@@ -240,6 +242,7 @@ spec:
             secretKeyRef:
               name: {{ .Values.existingAuthentikDeviceOidcSecret | default "netbird-authentik-device-oidc" }}
               key: client-secret
+              optional: true
           {{- end }}
         - name: NETBIRD_AUTH_DEVICE_AUTH_AUDIENCE
           valueFrom:
