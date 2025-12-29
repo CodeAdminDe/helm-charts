@@ -98,10 +98,16 @@ spec:
           echo "Generating management.json..."
           envsubst < /etc/netbird-template/management.json.tmpl | jq . > /etc/netbird/management.json
 
-          echo "Generated configuration:"
-          cat /etc/netbird/management.json
+
+          if [[ "true" == $CA_DEBUG_OUTPUT ]]; then
+            echo "Generated configuration:"
+            cat /etc/netbird/management.json
+          fi
+          echo "Init process finished."
 
         env:
+        - name: CA_DEBUG_OUTPUT
+          value: "{{ .Values.global.caDebugOutput }}"
         - name: NETBIRD_DOMAIN
           value: "{{ .Values.global.domain }}"
         - name: NETBIRD_RELAY_ENDPOINT

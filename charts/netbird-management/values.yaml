@@ -12,6 +12,9 @@ global:
   disableAnonMetrics: false
   # -- DNS domain inside the NetBird VPN
   nbDnsDomain: "netbird.selfhosted"
+  # -- Enable / Disable debug output.
+  # @description WARN: When enabled, debug output will leak credentials and/or secrets into logs. Do not enable in prod envs!
+  caDebugOutput: false
 
 # -- Management Server - Control Plane
 management:
