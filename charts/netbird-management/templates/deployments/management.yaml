@@ -202,7 +202,7 @@ spec:
               name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
               key: client-secret
               optional: true
-            - name: NETBIRD_AUTH_CLIENT_ID
+        - name: NETBIRD_AUTH_CLIENT_ID
           valueFrom:
             secretKeyRef:
               name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
