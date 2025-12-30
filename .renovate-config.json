@@ -39,7 +39,7 @@
     {
       "groupName": "netbirdio/netbird",
       "matchPackageNames": [
-        "@netbirdio/**"
+        "netbirdio/**"
       ]
     },
     {
