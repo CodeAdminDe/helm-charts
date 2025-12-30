@@ -25,7 +25,7 @@ management:
   # -- Management image repository, tag and pullPolicy
   image:
     repository: netbirdio/management
-    tag: "0.60.9"
+    tag: "0.61.0"
     pullPolicy: IfNotPresent
   # -- Init container for dynamic management.json generation
   initConfig:
