@@ -129,7 +129,7 @@ signal:
   # -- Signal image repository, tag and pullPolicy
   image:
     repository: netbirdio/signal
-    tag: "0.60.9"
+    tag: "0.61.0"
     pullPolicy: IfNotPresent
   # -- Signal server port
   port: 10000
