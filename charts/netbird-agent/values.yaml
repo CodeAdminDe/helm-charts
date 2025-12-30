@@ -1,0 +1,281 @@
+# Default values for netbird-agent.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: netbirdio/netbird
+  tag: "" # Overrides the image tag whose default is the chart appVersion.
+  pullPolicy: IfNotPresent
+
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # --- Specifies whether a service account should be created
+  create: true
+  # --- Annotations to add to the service account
+  annotations: {}
+  # --- The name of the service account to use.
+  # @description If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# --- Pod annnotations to add to the deployment pods
+podAnnotations: {}
+
+# -- Pod security context
+podSecurityContext:
+  runAsUser: 10001
+  runAsGroup: 10001
+  fsGroup: 10001
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- Container security context
+securityContext:
+  runAsNonRoot: true
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+
+# -- Set a RuntimeClass to execute the containers with a custom runtime configuration.
+# Register a runtimeClass within your cluster beforehand.
+# @raw
+#
+# <details>
+# <summary>Motivation (Expand)</summary>
+#
+# > The container runtime configuration is used to run a Pod's containers. . . .
+# > For example, if part of your workload deserves a high level of information security assurance, you might choose to schedule those Pods so that they run in a container runtime that uses hardware virtualization.
+# > You'd then benefit from the extra isolation of the alternative runtime, at the expense of some additional overhead. . . .
+#
+# <i>Source and more informations: https://kubernetes.io/docs/concepts/containers/runtime-class/ </i>
+#
+# </details>
+runtimeClass:
+  # -- (string/runtimeClassName) Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).
+  pods: ""
+  # -- (string/runtimeClassName) Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).
+  jobs: ""
+  # -- (string/runtimeClassName) Sets the runtimeClass for the containers which gets executed by the test hook. Takes the runtimeClass name, or "" (default).
+  tests: ""
+
+# --- Deployment service configuration
+service:
+  enabled: false
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+  metricsPort:
+
+# --- NetBird agent configuration
+agent:
+  # --- Management URL
+  # @description Provide the management URL if you want to connect the agent with your self-hosted instance.
+  # If not provided, it defaults to https://api.netbird.io:443.
+  managementUrl: ""
+  # --- Log level (default: info)
+  logLevel: ""
+  # --- Log format (default: json)
+  logFormat: ""
+  # --- Enable / Disable rootless mode
+  # @description Please note, that this flag won't change the used image to netbird:*-rootless and instead configures the default image to allow rootless usage.
+  # When enabled, the deployment will configure the agent to use NETSTACK_MODE to provide a socks5 proxy.
+  # When disabled, the agent pod will require additional permissions, more details: https://docs.netbird.io/use-cases/netbird-on-faas#docker
+  caEnableRootless: true
+  # --- SOCKS5 Listener Port
+  # @description Allowes to override the used listener port of SOCKS5 proxy provided by NetBird agent when running in rootless mode (default: 1080).
+  socksPort:
+
+# -- Additional env vars
+# @description Do not add secretes here... use additionalEnvSecrets instead!
+env: {}
+  # SLACK_KEY: "slack key in slack oidc context"
+  # SLACK_SECRET: "slack secret in slack oidc context"
+
+# -- Additional env vars provided via one or more secret(s).
+# @description Specifiy the ENV key used as KEY and the secret name as VALUE.
+# The secret should contain the ENV key and the encrypted value:
+# Sample secret
+# ...
+# apiVersion: v1
+# kind: Secret
+# metadata:
+# name: your-secret-name-to-slack-oidc-secrets
+# type: Opaque
+# stringData:
+#   SLACK_KEY: "slack-key-value-goes-here"
+#   SLACK_SECRET: "slack-secret-value-goes-here"
+additionalEnvSecrets: {}
+  # SLACK_KEY: "your-secret-name-to-slack-oidc-secrets" # you could add more env vars via secret/s
+  # SLACK_SECRET: "your-secret-name-to-slack-oidc-secrets"
+  # SLACK_ENDPOINT: "my-slack-endpoint-secret" # this env var would be populated with content of the `my-slack-endpoint-secret` secret.
+
+
+# -- Cilium Network Policies configuration
+libchartCnps:
+  # -- Enable Cilium Network Policies
+  enabled: false
+  # -- Include CNPG-specific policies
+  includeCnpgPolicies: false
+
+# -- Application-specific Cilium Network Policies configuration
+# @description Requires CiliumNetworkPolicies library-chart. These settings will be ignored if the library-chart is not available. These settings are directly related to the application and will not influence namespace-wide policies (e.g., for DNS egress traffic).
+cnps:
+  # -- Application traffic policies
+  appTraffic:
+    # -- Ingress traffic configuration
+    ingress:
+      # -- Allow ingress traffic
+      allow: false
+      # -- Labels to match ingress controller pods
+      # @description Allows overriding default to match your ingress deployment.
+      #   app.kubernetes.io/name: ingress-nginx
+      #   io.kubernetes.pod.namespace: ingress-nginx
+      matchLabels: {}
+    # -- Metrics (ingress) traffic configuration
+    metrics:
+      # -- Allow ingress metrics traffic
+      # @description Enable / Disable rules to allow metrics reachability.
+      # Note: Requires monitoring.enabled set to true.
+      allow: false
+      # -- Labels to match Prometheus pods
+      # @description Allows overriding default to match your prometheus deployment
+      #   app.kubernetes.io/name: prometheus
+      #   app.kubernetes.io/instance: kube-prometheus-stack-prometheus
+      #   io.kubernetes.pod.namespace: monitoring--kube-prometheus-stack
+      matchLabels: {}
+    # -- Egress traffic configuration
+    egress:
+      # -- Allow egress traffic
+      allow: true
+      # -- Rules which are applied when egress allow eq true.
+      # @description Allows overriding default egress rules to match your security requirements.
+      egressRules:
+        - toEntities:
+            - world
+          toPorts:
+            - ports:
+                - port: "443"
+                  protocol: TCP
+        # - toEndpoints:
+        #     - matchLabels:
+        #         app.kubernetes.io/name: ingress-nginx
+        #         io.kubernetes.pod.namespace: ingress-nginx
+        #   toPorts:
+        #     - ports:
+        #         - port: "443"
+        #           protocol: TCP
+
+  # -- CNPG traffic policies
+  cnpgTraffic:
+    # -- Additional instance egress rules for external services (e.g., backup services)
+    # @description Add additional rule(s) as desired, to allow access to external backup services
+    # - toFQDNs:
+    #   - matchName: s3.storage.example.org
+    #   toPorts:
+    #     - ports:
+    #         - port: "443"
+    #           protocol: TCP
+    # ## OR ##
+    # - toEntities:
+    #   - world
+    #   toPorts:
+    #     - ports:
+    #         - port: "8443"
+    #           protocol: TCP
+    # ## OR ##
+    # ...
+    instanceExtraEgress: []
+
+# -- NetBird agent persistence configuration.
+persistence:
+  # If persistence.enabled: false, you'd loose your stored data as soon as the container restarts.
+  enabled: false
+  # -- Define the max directory size when using persistence.enabled: false
+  emptyDirSizeLimit: 50Mi
+  # -- Define the size of the PV when using persistence.enabled: true
+  size: 250Mi
+  # -- Define the storageClass to use when not providing an already existing PVC claim. Provide your cluster storageclass or leave it empty to use the default one.
+  storageClass: "longhorn"
+  # -- Define the accessModes to use when not providing an already existing PVC claim.
+  accessModes:
+  - ReadWriteOnce
+  # -- Define an already existing PVC claim.
+  # The following values will be ignored when providing an existingClaim: persistence.{size, storageClass, accessModes}
+  # existingClaim: "my-pvc"
+
+# -- Monitoring configuration
+# @description Provided monitoring rules are not valid and only used as a placeholder for future implementation.
+# There you should NOT ENABLE the monitoring until this notice got removed.
+# Implementation will follow when upstream support available. Upstream issue: https://github.com/netbirdio/netbird/issues/1762
+monitoring:
+  # -- Enable monitoring (DO NOT ENABLE; see desc above for details)
+  enabled: false
+  # -- ServiceMonitor configuration
+  serviceMonitor:
+    # -- Annotations
+    # @description Add Annotations to the service monitor resource.
+    annotations: {}
+    # -- Additional labels
+    # @description Provide additional labels to the service monitor resource, e.g. for auto-provisioning.
+    additionalLabels: {}
+
+# -- Resource requests and limits
+resources:
+  # -- Requested resources
+  requests:
+    # -- CPU request
+    cpu: 50m
+    # -- Memory request
+    memory: 128Mi
+  # -- Resource limits
+  limits:
+    # -- CPU limit
+    cpu: 100m
+    # -- Memory limit
+    memory: 256Mi
+
+# -- Horizontal Pod Autoscaler configuration
+hpa:
+  # -- Enable HPA
+  enabled: false
+  # -- Minimum replicas for HPA
+  minReplicas: 2
+  # -- Maximum replicas for HPA
+  maxReplicas: 10
+  # -- Target CPU utilization percentage
+  targetCPUUtilizationPercentage: 70
+
+# -- Health probes configuration for startup, liveness and readiness probes
+startupProbe: {}
+  # exec:
+  #   command: ["netbird status | grep 'NetBird'"]
+  # failureThreshold: 3
+  # periodSeconds: 10
+livenessProbe:
+  exec:
+    command: ["netbird status | grep 'NetBird IP: 100'"]
+  failureThreshold: 12
+  periodSeconds: 10
+  initialDelaySeconds: 10
+readinessProbe:
+  exec:
+    command: ["netbird status | grep 'NetBird IP: 100'"]
+  failureThreshold: 6
+  periodSeconds: 10
+  initialDelaySeconds: 10
+
+# -- Node selector configuration
+nodeSelector: {}
+
+# -- Tolerations configuration
+tolerations: []
+
+# -- Affinity configuration
+affinity: {}

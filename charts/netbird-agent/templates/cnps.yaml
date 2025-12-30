@@ -1,0 +1,81 @@
+{{- define "netbird-agent.CiliumNetworkPolicies-NamespaceSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+  labels:
+    {{- include "netbird-agent.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-NamespaceSet" (list . "netbird-agent.CiliumNetworkPolicies-NamespaceSet") }}
+---
+{{ end -}}
+{{- define "netbird-agent.CiliumNetworkPolicies-CnpgSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+  labels:
+    {{- include "netbird-agent.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if and .Values.libchartCnps.includeCnpgPolicies .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-CnpgSet" (list . "netbird-agent.CiliumNetworkPolicies-CnpgSet") }}
+---
+{{ end -}}
+{{- define "netbird-agent.CiliumNetworkPolicies-AppSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+  labels:
+    {{- include "netbird-agent.labels" . | nindent 4 }}
+spec:
+  endpointSelector:
+    matchLabels:
+    {{- include "netbird-agent.selectorLabels" . | nindent 6 }}
+  {{- if or .Values.cnps.appTraffic.ingress.allow .Values.cnps.appTraffic.metrics.allow }}
+  ingress:
+  {{- end }}
+  {{- if .Values.cnps.appTraffic.ingress.allow }}
+    - fromEndpoints:
+        - matchLabels:
+          {{- if $.Values.cnps.appTraffic.ingress.matchLabels }}
+          {{- range $key, $val := $.Values.cnps.appTraffic.ingress.matchLabels }}
+            {{ $key }}: {{ $val }}
+          {{- end }}
+          {{- else }}
+            app.kubernetes.io/name: ingress-nginx
+            io.kubernetes.pod.namespace: ingress-nginx
+          {{- end }}
+      toPorts:
+        - ports:
+            - port: "{{ .Values.service.targetPort }}"
+              protocol: {{ .Values.service.targetProtocol | default "TCP" }}
+  {{- end }}
+  {{- if and .Values.cnps.appTraffic.metrics.allow .Values.monitoring.enabled }}
+    - fromEndpoints:
+        - matchLabels:
+          {{- if $.Values.cnps.appTraffic.metrics.matchLabels }}
+          {{- range $key, $val := $.Values.cnps.appTraffic.metrics.matchLabels }}
+            {{ $key }}: {{ $val }}
+          {{- end }}
+          {{- else }}
+            app.kubernetes.io/name: prometheus
+            app.kubernetes.io/instance: kube-prometheus-stack-prometheus
+            io.kubernetes.pod.namespace: monitoring--kube-prometheus-stack
+          {{- end }}
+      toPorts:
+        - ports:
+            - port: "{{ .Values.service.metricsPort | default .Values.service.targetPort }}"
+              protocol: TCP
+  {{- end }}
+  {{- if .Values.cnps.appTraffic.egress.allow }}
+  egress:
+    {{ toYaml .Values.cnps.appTraffic.egress.egressRules | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- if .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "netbird-agent.CiliumNetworkPolicies-AppSet") }}
+{{ end -}}

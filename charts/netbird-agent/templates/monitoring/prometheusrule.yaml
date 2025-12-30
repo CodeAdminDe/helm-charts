@@ -1,0 +1,26 @@
+{{- if .Values.monitoring.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ include "netbird-agent.fullname" . }}-alerts
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-agent.labels" . | nindent 4 }}
+spec:
+  groups:
+    - name: netbird-agent.rules
+      rules:
+        - alert: NetBirdAgentDown
+          expr: up{job=~"netbird-agent.*"} == 0
+          for: 5m
+        - alert: NetBirdAgentHighCpuUsage
+          expr: rate(container_cpu_usage_seconds_total{job=~"netbird-agent.*"}[5m]) > 0.8
+          for: 10m
+          annotations:
+            summary: "NetBird agent CPU usage high"
+        - alert: NetBirdAgentHighLatency
+          expr: netbird_peer_latency_ms > 200
+          for: 5m
+          annotations:
+            summary: "NetBird peer latency exceeding 200ms"
+{{- end }}

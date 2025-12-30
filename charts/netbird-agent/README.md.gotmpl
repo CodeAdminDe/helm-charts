@@ -1,0 +1,29 @@
+{{- define "extra.specifics.fromchart.atom.opinionated" -}}
+<hr /><hr />
+
+## Appendix - This chart expects an existing secret
+
+### NetBird setup key requirement
+
+Please note that the agent requires a netbird-setup-key in order to join your network.
+
+A sample secret:
+
+```
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: netbird-setup-key
+type: Opaque
+stringData:
+  key: "CHANGE_ME__I_AM_A_SAMPLE"
+```
+
+> **IMPORTANT**: Never push unencrypted secrets into repositories.
+> Encrypt them beforehand or provide secrets via external provisioning logic.
+
+{{- end -}}
+
+{{ template "extra.templates.readme.complexvalues" . }}
+{{ template "extra.specifics.fromchart.atom.opinionated" . }}
