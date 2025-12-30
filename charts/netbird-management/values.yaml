@@ -458,7 +458,7 @@ cnps:
 # -- Role-Based Access Control configuration
 rbac:
   # -- Create RBAC resources
-  create: true
+  create: false
   # -- Service account configuration
   serviceAccount:
     # -- Create service account

@@ -2,7 +2,7 @@
 
 # netbird-management
 
-![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.60.9](https://img.shields.io/badge/AppVersion-0.60.9-informational?style=flat-square)
+![Version: 1.3.1](https://img.shields.io/badge/Version-1.3.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.60.9](https://img.shields.io/badge/AppVersion-0.60.9-informational?style=flat-square)
 
 A Helm chart for an easier netbird management stack (https://netbird.io) deployment at kubernetes.
 
@@ -2233,7 +2233,7 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
-  "create": true,
+  "create": false,
   "serviceAccount": {
     "create": true,
     "name": "netbird-management"
@@ -2252,7 +2252,7 @@ bool
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-true
+false
 </pre>
 </div>
 			</td>
