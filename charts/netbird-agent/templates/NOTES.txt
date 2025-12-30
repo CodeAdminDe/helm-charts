@@ -1,0 +1,7 @@
+Welcome to {{ include "netbird-agent.fullname" . }}!
+
+export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "netbird-agent.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+echo "* Check the status via: kubectl get --namespace {{ .Release.Namespace }} pod/$POD_NAME"
+echo "* Check the logs via: kubectl logs --namespace {{ .Release.Namespace }} $POD_NAME"
+
+echo "Happy networking!"
