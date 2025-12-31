@@ -81,7 +81,7 @@ agent:
   managementUrl: ""
   # --- Log level (default: info)
   logLevel: ""
-  # --- Log format (default: json)
+  # --- Log format (default: console; alt: json)
   logFormat: ""
   # --- Enable / Disable rootless mode
   # @description Please note, that this flag won't change the used image to netbird:*-rootless and instead configures the default image to allow rootless usage.

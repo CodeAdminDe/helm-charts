@@ -78,7 +78,7 @@ spec:
             - name: NB_LOG_LEVEL
               value: {{ .Values.agent.logLevel | default "info" }}
             - name: NB_LOG_FORMAT
-              value: {{ .Values.agent.logFormat | default "json" }}
+              value: {{ .Values.agent.logFormat | default "console" }}
             - name: NB_HOSTNAME
               valueFrom:
                 fieldRef:
