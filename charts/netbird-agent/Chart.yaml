@@ -2,7 +2,7 @@ apiVersion: v2
 name: netbird-agent
 description: A Helm chart for an easier netbird agent (https://netbird.io) deployment at kubernetes.
 type: application
-version: 0.3.2
+version: 0.3.3
 appVersion: "0.61.0"
 home: https://github.com/CodeAdminDe/helm-charts
 keywords:
