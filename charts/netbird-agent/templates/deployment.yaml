@@ -90,11 +90,11 @@ spec:
                   key: key
           {{- if .Values.agent.caEnableRootless }}
             - name: NB_USE_NETSTACK_MODE
-              value: true
+              value: "true"
             - name: NB_ENABLE_NETSTACK_LOCAL_FORWARDING
-              value: true
+              value: "true"
             - name: NB_DISABLE_DNS
-              value: true
+              value: "true"
             - name: NB_DAEMON_ADDR
               value: "unix://netbird.sock"
             - name: NB_SOCKS5_LISTENER_PORT
