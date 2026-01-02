@@ -88,7 +88,7 @@ spec:
                 secretKeyRef:
                   name: netbird-setup-key
                   key: key
-          {{- if .Values.caEnableRootless }}
+          {{- if .Values.agent.caEnableRootless }}
             - name: NB_USE_NETSTACK_MODE
               value: true
             - name: NB_ENABLE_NETSTACK_LOCAL_FORWARDING
