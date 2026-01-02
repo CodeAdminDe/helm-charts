@@ -2,7 +2,7 @@
 
 # netbird-agent
 
-![Version: 0.3.5](https://img.shields.io/badge/Version-0.3.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.61.0](https://img.shields.io/badge/AppVersion-0.61.0-informational?style=flat-square)
+![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.61.0](https://img.shields.io/badge/AppVersion-0.61.0-informational?style=flat-square)
 
 A Helm chart for an easier netbird agent (https://netbird.io) deployment at kubernetes.
 
@@ -153,7 +153,7 @@ true
 </pre>
 </div>
 			</td>
-			<td>- Enable / Disable rootless mode @description Please note, that this flag won't change the used image to netbird:*-rootless and instead configures the default image to allow rootless usage. When enabled, the deployment will configure the agent to use NETSTACK_MODE to provide a socks5 proxy. When disabled, the agent pod will require additional permissions, more details: https://docs.netbird.io/use-cases/netbird-on-faas#docker</td>
+			<td>- Enable / Disable rootless mode @description Please note, that this flag will change the used image to netbird:*-rootless. When enabled, the deployment will configure the agent to use NETSTACK_MODE to provide a socks5 proxy. When disabled, the agent pod will require additional permissions, more details: https://docs.netbird.io/use-cases/netbird-on-faas#docker</td>
 		</tr>
 		<tr>
 			<td id="agent--logFormat"><a href="./values.yaml#L90">agent.logFormat</a></td>
@@ -184,7 +184,7 @@ string
 			<td>- Log level (default: info)</td>
 		</tr>
 		<tr>
-			<td id="agent--managementUrl"><a href="./values.yaml#L85">agent.managementUrl</a></td>
+			<td id="agent--managementUrl"><a href="./values.yaml#L81">agent.managementUrl</a></td>
 			<td>
 string
 </td>
@@ -198,7 +198,7 @@ string
 			<td>- Management URL @description Provide the management URL if you want to connect the agent with your self-hosted instance. If not provided, it defaults to NetBird cloud endpoint.</td>
 		</tr>
 		<tr>
-			<td id="agent--managementUrl"><a href="./values.yaml#L81">agent.managementUrl</a></td>
+			<td id="agent--managementUrl"><a href="./values.yaml#L85">agent.managementUrl</a></td>
 			<td>
 string
 </td>
@@ -659,6 +659,20 @@ string
 			<td></td>
 		</tr>
 		<tr>
+			<td id="image--tagSuffixRootless"><a href="./values.yaml#L11">image.tagSuffixRootless</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"-rootless"
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td id="imagePullSecrets"><a href="./values.yaml#L13">imagePullSecrets</a></td>
 			<td>
 list
@@ -983,9 +997,9 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
-  "fsGroup": 10001,
-  "runAsGroup": 10001,
-  "runAsUser": 10001,
+  "fsGroup": 1000,
+  "runAsGroup": 1000,
+  "runAsUser": 1000,
   "seccompProfile": {
     "type": "RuntimeDefault"
   }

@@ -8,7 +8,7 @@ image:
   repository: netbirdio/netbird
   tag: "" # Overrides the image tag whose default is the chart appVersion.
   pullPolicy: IfNotPresent
-
+  tagSuffixRootless: "-rootless"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -28,9 +28,9 @@ podAnnotations: {}
 
 # -- Pod security context
 podSecurityContext:
-  runAsUser: 10001
-  runAsGroup: 10001
-  fsGroup: 10001
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
   seccompProfile:
     type: RuntimeDefault
 
@@ -89,7 +89,7 @@ agent:
   # @description The log format setting will be ignored and the console format will be forced.
   logFormat: ""
   # --- Enable / Disable rootless mode
-  # @description Please note, that this flag won't change the used image to netbird:*-rootless and instead configures the default image to allow rootless usage.
+  # @description Please note, that this flag will change the used image to netbird:*-rootless.
   # When enabled, the deployment will configure the agent to use NETSTACK_MODE to provide a socks5 proxy.
   # When disabled, the agent pod will require additional permissions, more details: https://docs.netbird.io/use-cases/netbird-on-faas#docker
   caEnableRootless: true
