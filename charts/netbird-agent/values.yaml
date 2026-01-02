@@ -77,7 +77,11 @@ service:
 agent:
   # --- Management URL
   # @description Provide the management URL if you want to connect the agent with your self-hosted instance.
-  # If not provided, it defaults to https://api.netbird.io:443.
+  # If not provided, it defaults to NetBird cloud endpoint.
+  managementUrl: ""
+  # --- Management URL
+  # @description Provide the management URL if you want to connect the agent with your self-hosted instance.
+  # If not provided, it defaults to NetBird cloud endpoint.
   managementUrl: ""
   # --- Log level (default: info)
   logLevel: ""

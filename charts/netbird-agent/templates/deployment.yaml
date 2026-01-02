@@ -75,6 +75,8 @@ spec:
           {{- end }}
             - name: NB_MANAGEMENT_URL
               value: {{ .Values.agent.managementUrl | default "https://api.netbird.io:443" }}
+            - name: NB_ADMIN_URL
+              value: {{ .Values.agent.adminUrl | default "https://app.netbird.io:443" }}
             - name: NB_LOG_LEVEL
               value: {{ .Values.agent.logLevel | default "info" }}
             - name: NB_LOG_FORMAT
