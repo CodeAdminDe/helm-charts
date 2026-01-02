@@ -86,6 +86,7 @@ agent:
   # --- Log level (default: info)
   logLevel: ""
   # --- Log format (default: console; alt: json)
+  # @description The log format setting will be ignored and the console format will be forced.
   logFormat: ""
   # --- Enable / Disable rootless mode
   # @description Please note, that this flag won't change the used image to netbird:*-rootless and instead configures the default image to allow rootless usage.

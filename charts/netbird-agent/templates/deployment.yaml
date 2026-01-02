@@ -79,8 +79,6 @@ spec:
               value: {{ .Values.agent.adminUrl | default "https://app.netbird.io:443" }}
             - name: NB_LOG_LEVEL
               value: {{ .Values.agent.logLevel | default "info" }}
-            - name: NB_LOG_FORMAT
-              value: {{ .Values.agent.logFormat | default "console" }}
             - name: NB_HOSTNAME
               valueFrom:
                 fieldRef:
@@ -93,18 +91,25 @@ spec:
           {{- if .Values.caEnableRootless }}
             - name: NB_USE_NETSTACK_MODE
               value: true
+            - name: NB_ENABLE_NETSTACK_LOCAL_FORWARDING
+              value: true
+            - name: NB_DISABLE_DNS
+              value: true
+            - name: NB_DAEMON_ADDR
+              value: "unix://netbird.sock"
             - name: NB_SOCKS5_LISTENER_PORT
               value: {{ .Values.agent.socksPort | default "1080" }}
+            - name: NB_LOG_FILE
+              value: "console,/var/lib/netbird/client.log"
+          {{- else }}
+            - name: NB_LOG_FORMAT
+              value: {{ .Values.agent.logFormat | default "console" }}
           {{- end }}
           volumeMounts:
-             - name: "{{ .Release.Name }}-run-tmp"
-               mountPath: "/var/run"
              - name: "{{ .Release.Name }}-data"
                mountPath: "/var/lib/netbird"
       volumes:
       {{- include "common.app.pvc" . | nindent 8 }}
-        - name: "{{ .Release.Name }}-run-tmp"
-          emptyDir: {}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
