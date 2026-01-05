@@ -46,10 +46,6 @@ spec:
               value: {{ .Values.agent.managementUrl | default "https://api.netbird.io:443" }}
             - name: NB_ADMIN_URL
               value: {{ .Values.agent.adminUrl | default "https://app.netbird.io:443" }}
-            - name: CA_FORCEDSTATE_SERVER_SSH_ALLOWED
-              value: {{ .Values.agent.caInitPreConfig.forcedState.serverSshAllowed | quote }}
-            - name: CA_FORCEDSTATE_ENABLE_SSH_ROOT
-              value: {{ .Values.agent.caInitPreConfig.forcedState.enableSSHRoot | quote }}
           volumeMounts:
             - name: "{{ .Release.Name }}-data"
               mountPath: "/var/lib/netbird"
@@ -111,6 +107,12 @@ spec:
               value: {{ .Values.agent.adminUrl | default "https://app.netbird.io:443" }}
             - name: NB_LOG_LEVEL
               value: {{ .Values.agent.logLevel | default "info" }}
+            - name: NB_ALLOW_SERVER_SSH
+              value: {{ .Values.agent.ssh.allowServer | default "false" | quote }}
+            - name: NB_ENABLE_SSH_ROOT
+              value: {{ .Values.agent.ssh.enableRoot | default "false" | quote }}
+            - name: NB_ENABLE_SSH_SFTP
+              value: {{ .Values.agent.ssh.enableSftp | default "false" | quote }}
             - name: NB_HOSTNAME
               valueFrom:
                 fieldRef:

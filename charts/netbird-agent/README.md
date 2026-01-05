@@ -2,7 +2,7 @@
 
 # netbird-agent
 
-![Version: 0.6.1](https://img.shields.io/badge/Version-0.6.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.61.0](https://img.shields.io/badge/AppVersion-0.61.0-informational?style=flat-square)
+![Version: 0.6.2](https://img.shields.io/badge/Version-0.6.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.61.0](https://img.shields.io/badge/AppVersion-0.61.0-informational?style=flat-square)
 
 A Helm chart for an easier netbird agent (https://netbird.io) deployment at kubernetes.
 
@@ -133,16 +133,17 @@ object
   "adminUrl": "",
   "caEnableRootless": true,
   "caInitPreConfig": {
-    "enabled": true,
-    "forcedState": {
-      "enableSSHRoot": false,
-      "serverSshAllowed": false
-    }
+    "enabled": true
   },
   "logFormat": "",
   "logLevel": "",
   "managementUrl": "",
-  "socksPort": null
+  "socksPort": null,
+  "ssh": {
+    "allowServer": false,
+    "enableRoot": false,
+    "enableSftp": false
+  }
 }
 </pre>
 </div>
@@ -186,11 +187,7 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
-  "enabled": true,
-  "forcedState": {
-    "enableSSHRoot": false,
-    "serverSshAllowed": false
-  }
+  "enabled": true
 }
 </pre>
 </div>
@@ -210,51 +207,6 @@ true
 </div>
 			</td>
 			<td>- Enable / Disable config preperation @description When using the image inside environments which require very strict security configuration, It could be possible, that the automatic configuration of NB_MANAGEMENT_URL and/or NB_ADMIN_URL will fail. To avoid this, i've added an initContainer which pre-puplates a config.json which contains the urls configured within the helm release.</td>
-		</tr>
-		<tr>
-			<td id="agent--caInitPreConfig--forcedState"><a href="./values.yaml#L107">agent.caInitPreConfig.forcedState</a></td>
-			<td>
-object
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-{
-  "enableSSHRoot": false,
-  "serverSshAllowed": false
-}
-</pre>
-</div>
-			</td>
-			<td>- Enable / Disable inital feature flags while config will be generated. @description The rootless container image seems to handle first config creation in a way which enables SSH access via NetBird SSH by default. Therefore we override some flags to force our desired state. Note that this flags only influence the inital config creation.</td>
-		</tr>
-		<tr>
-			<td id="agent--caInitPreConfig--forcedState--enableSSHRoot"><a href="./values.yaml#L113">agent.caInitPreConfig.forcedState.enableSSHRoot</a></td>
-			<td>
-bool
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-false
-</pre>
-</div>
-			</td>
-			<td>- Enable / Disable inital state of root login allowed @description Decide to enable or disable the ability to login as root when using the SSH access via NetBird feature.</td>
-		</tr>
-		<tr>
-			<td id="agent--caInitPreConfig--forcedState--serverSshAllowed"><a href="./values.yaml#L110">agent.caInitPreConfig.forcedState.serverSshAllowed</a></td>
-			<td>
-bool
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-false
-</pre>
-</div>
-			</td>
-			<td>- Enable / Disable inital state of ssh server allowed @description Decide if the netbird-agent should allow the SSH access via NetBird feature.</td>
 		</tr>
 		<tr>
 			<td id="agent--logFormat"><a href="./values.yaml#L90">agent.logFormat</a></td>
@@ -299,7 +251,7 @@ string
 			<td>- Management URL @description Provide the management URL if you want to connect the agent with your self-hosted instance. If not provided, it defaults to NetBird cloud endpoint.</td>
 		</tr>
 		<tr>
-			<td id="agent--socksPort"><a href="./values.yaml#L116">agent.socksPort</a></td>
+			<td id="agent--socksPort"><a href="./values.yaml#L105">agent.socksPort</a></td>
 			<td>
 string
 </td>
@@ -311,6 +263,66 @@ null
 </div>
 			</td>
 			<td>- SOCKS5 Listener Port @description Allowes to override the used listener port of SOCKS5 proxy provided by NetBird agent when running in rootless mode (default: 1080).</td>
+		</tr>
+		<tr>
+			<td id="agent--ssh"><a href="./values.yaml#L107">agent.ssh</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "allowServer": false,
+  "enableRoot": false,
+  "enableSftp": false
+}
+</pre>
+</div>
+			</td>
+			<td>- Configure agent SSH features</td>
+		</tr>
+		<tr>
+			<td id="agent--ssh--allowServer"><a href="./values.yaml#L110">agent.ssh.allowServer</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>- Enable / Disable ssh server feature @description Decide if the netbird-agent should allow the "SSH access via NetBird" feature.</td>
+		</tr>
+		<tr>
+			<td id="agent--ssh--enableRoot"><a href="./values.yaml#L113">agent.ssh.enableRoot</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>- Enable / Disable root login allowed @description Decide to enable or disable the ability to login as root when using the "SSH access via NetBird" feature.</td>
+		</tr>
+		<tr>
+			<td id="agent--ssh--enableSftp"><a href="./values.yaml#L116">agent.ssh.enableSftp</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>- Enable / Disable sftp protocol usage @description Decide to enable or disable the ability to use sftp when using the "SSH access via NetBird" feature.</td>
 		</tr>
 		<tr>
 			<td id="cnps"><a href="./values.yaml#L152">cnps</a></td>

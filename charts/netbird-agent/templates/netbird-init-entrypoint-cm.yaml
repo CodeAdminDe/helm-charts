@@ -57,10 +57,6 @@ data:
         read mgmt_scheme mgmt_host < <(parse_url "$NB_MANAGEMENT_URL")
         read adm_scheme adm_host < <(parse_url "$NB_ADMIN_URL")
 
-        # set more, or less "additional" env vars to ensure desired behaviour
-        local srvSshAllowed="${CA_FORCEDSTATE_SERVER_SSH_ALLOWED}"
-        local enableSshRoot="${CA_FORCEDSTATE_ENABLE_SSH_ROOT}"
-
         # create env based config
         cat > "${config_file}" <<EOF
           {
@@ -73,9 +69,7 @@ data:
                   "Host": "${adm_host}"
               },
               "WgIface": "${wireguard_iface}",
-              "WgPort": ${wireguard_port},
-              "EnableSSHAllowed": ${srvSshAllowed},
-              "EnableSSHRoot": ${enableSshRoot}
+              "WgPort": ${wireguard_port}
           }
     EOF
 

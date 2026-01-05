@@ -100,20 +100,20 @@ agent:
     # It could be possible, that the automatic configuration of NB_MANAGEMENT_URL and/or NB_ADMIN_URL will fail.
     # To avoid this, i've added an initContainer which pre-puplates a config.json which contains the urls configured within the helm release.
     enabled: true
-    # --- Enable / Disable inital feature flags while config will be generated.
-    # @description The rootless container image seems to handle first config creation in a way which enables SSH access via NetBird SSH by default.
-    # Therefore we override some flags to force our desired state.
-    # Note that this flags only influence the inital config creation.
-    forcedState:
-      # --- Enable / Disable inital state of ssh server allowed
-      # @description Decide if the netbird-agent should allow the SSH access via NetBird feature.
-      serverSshAllowed: false
-      # --- Enable / Disable inital state of root login allowed
-      # @description Decide to enable or disable the ability to login as root when using the SSH access via NetBird feature.
-      enableSSHRoot: false
   # --- SOCKS5 Listener Port
   # @description Allowes to override the used listener port of SOCKS5 proxy provided by NetBird agent when running in rootless mode (default: 1080).
   socksPort:
+  # --- Configure agent SSH features
+  ssh:
+    # --- Enable / Disable ssh server feature
+    # @description Decide if the netbird-agent should allow the "SSH access via NetBird" feature.
+    allowServer: false
+    # --- Enable / Disable root login allowed
+    # @description Decide to enable or disable the ability to login as root when using the "SSH access via NetBird" feature.
+    enableRoot: false
+    # --- Enable / Disable sftp protocol usage
+    # @description Decide to enable or disable the ability to use sftp when using the "SSH access via NetBird" feature.
+    enableSftp: false
 
 # -- Additional env vars
 # @description Do not add secretes here... use additionalEnvSecrets instead!
