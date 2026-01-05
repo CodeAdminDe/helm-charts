@@ -9,6 +9,8 @@ metadata:
     app.kubernetes.io/component: signal
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     cert-manager.io/cluster-issuer: {{ .Values.ingress.tls.issuer.name }}
     {{- with .Values.ingress.additionalAnnotations }}
     {{- toYaml . | nindent 4 }}
