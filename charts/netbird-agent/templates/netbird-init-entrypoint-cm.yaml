@@ -81,10 +81,9 @@ data:
     }
 
     main() {
-      trap 'on_exit' SIGTERM SIGINT EXIT
-
       # Fix - Init config file to allow reading of env vars before service runs.
       initialize_config_file
+      exit 0
     }
 
     main "$@"
