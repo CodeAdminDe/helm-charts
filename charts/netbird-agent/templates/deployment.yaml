@@ -30,7 +30,7 @@ spec:
       serviceAccountName: {{ include "netbird-agent.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      {{- if .Values.agent.caEnableInitPreConfig }}
+      {{- if .Values.agent.caInitPreConfig.enabled }}
       initContainers:
         - name: {{ .Chart.Name }}-init-config
           securityContext:
@@ -46,6 +46,10 @@ spec:
               value: {{ .Values.agent.managementUrl | default "https://api.netbird.io:443" }}
             - name: NB_ADMIN_URL
               value: {{ .Values.agent.adminUrl | default "https://app.netbird.io:443" }}
+            - name: CA_FORCEDSTATE_SERVER_SSH_ALLOWED
+              value: {{ .Values.agent.caInitPreConfig.forcedState.serverSshAllowed | quote }}
+            - name: CA_FORCEDSTATE_ENABLE_SSH_ROOT
+              value: {{ .Values.agent.caInitPreConfig.forcedState.enableSSHRoot | quote }}
           volumeMounts:
             - name: "{{ .Release.Name }}-data"
               mountPath: "/var/lib/netbird"
@@ -138,7 +142,7 @@ spec:
               mountPath: "/var/lib/netbird"
       volumes:
       {{- include "common.app.pvc" . | nindent 8 }}
-      {{- if .Values.agent.caEnableInitPreConfig }}
+      {{- if .Values.agent.caInitPreConfig.enabled }}
         - name: {{ .Release.Name }}-init-entrypoint-script
           configMap:
             name: {{ .Release.Name }}-init-entrypoint
