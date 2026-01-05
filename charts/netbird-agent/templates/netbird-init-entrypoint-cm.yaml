@@ -62,7 +62,7 @@ data:
         cat > "${config_file}" <<EOF
           {
               "ManagementURL": {
-                  "Scheme": "${mgmt_scheme}"
+                  "Scheme": "${mgmt_scheme}",
                   "Host": "${mgmt_host}"
               },
               "AdminURL": {
