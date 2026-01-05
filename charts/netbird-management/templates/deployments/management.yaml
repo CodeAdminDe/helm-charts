@@ -140,7 +140,7 @@ spec:
         - name: NETBIRD_SIGNAL_PORT
           value: "443"
         - name: NETBIRD_MGMT_API_PORT
-          value: "{{ .Values.management.port }}"
+          value: "{{ .Values.management.netbirdConfigMgmtPort | default .Values.management.port }}"
         - name: NETBIRD_STORE_CONFIG_ENGINE
           value: "postgres"
         - name: NETBIRD_MGMT_DISABLE_DEFAULT_POLICY

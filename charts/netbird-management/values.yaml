@@ -36,6 +36,11 @@ management:
       pullPolicy: Always
   # -- Management server port
   port: 33073
+  # -- Management server port override for netbird config
+  # @description Leave empty to use default (management.port value).
+  # If you'd get connection issues, you could set this value to fix these.
+  # See here for more details: https://integrations.goauthentik.io/networking/netbird/#troubleshooting
+  netbirdConfigMgmtPort:
   # -- Management server metrics port
   metricsPort: 9090
   service:
