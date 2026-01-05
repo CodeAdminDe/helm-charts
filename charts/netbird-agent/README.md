@@ -2,7 +2,7 @@
 
 # netbird-agent
 
-![Version: 0.4.1](https://img.shields.io/badge/Version-0.4.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.61.0](https://img.shields.io/badge/AppVersion-0.61.0-informational?style=flat-square)
+![Version: 0.4.2](https://img.shields.io/badge/Version-0.4.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.61.0](https://img.shields.io/badge/AppVersion-0.61.0-informational?style=flat-square)
 
 A Helm chart for an easier netbird agent (https://netbird.io) deployment at kubernetes.
 
@@ -130,6 +130,7 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
+  "adminUrl": "",
   "caEnableRootless": true,
   "logFormat": "",
   "logLevel": "",
@@ -140,6 +141,20 @@ object
 </div>
 			</td>
 			<td>- NetBird agent configuration</td>
+		</tr>
+		<tr>
+			<td id="agent--adminUrl"><a href="./values.yaml#L85">agent.adminUrl</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>- Admin URL @description Provide the admin URL if you want to connect the agent with your self-hosted instance. If not provided, it defaults to NetBird cloud endpoint.</td>
 		</tr>
 		<tr>
 			<td id="agent--caEnableRootless"><a href="./values.yaml#L95">agent.caEnableRootless</a></td>
@@ -185,20 +200,6 @@ string
 		</tr>
 		<tr>
 			<td id="agent--managementUrl"><a href="./values.yaml#L81">agent.managementUrl</a></td>
-			<td>
-string
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-""
-</pre>
-</div>
-			</td>
-			<td>- Management URL @description Provide the management URL if you want to connect the agent with your self-hosted instance. If not provided, it defaults to NetBird cloud endpoint.</td>
-		</tr>
-		<tr>
-			<td id="agent--managementUrl"><a href="./values.yaml#L85">agent.managementUrl</a></td>
 			<td>
 string
 </td>

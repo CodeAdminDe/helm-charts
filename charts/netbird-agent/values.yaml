@@ -79,10 +79,10 @@ agent:
   # @description Provide the management URL if you want to connect the agent with your self-hosted instance.
   # If not provided, it defaults to NetBird cloud endpoint.
   managementUrl: ""
-  # --- Management URL
-  # @description Provide the management URL if you want to connect the agent with your self-hosted instance.
+  # --- Admin URL
+  # @description Provide the admin URL if you want to connect the agent with your self-hosted instance.
   # If not provided, it defaults to NetBird cloud endpoint.
-  managementUrl: ""
+  adminUrl: ""
   # --- Log level (default: info)
   logLevel: ""
   # --- Log format (default: console; alt: json)
