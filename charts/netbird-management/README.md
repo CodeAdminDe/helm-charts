@@ -2,7 +2,7 @@
 
 # netbird-management
 
-![Version: 1.4.1](https://img.shields.io/badge/Version-1.4.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.61.2](https://img.shields.io/badge/AppVersion-0.61.2-informational?style=flat-square)
+![Version: 1.4.2](https://img.shields.io/badge/Version-1.4.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.61.2](https://img.shields.io/badge/AppVersion-0.61.2-informational?style=flat-square)
 
 A Helm chart for an easier netbird management stack (https://netbird.io) deployment at kubernetes.
 
@@ -94,7 +94,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="authentik"><a href="./values.yaml#L314">authentik</a></td>
+			<td id="authentik"><a href="./values.yaml#L310">authentik</a></td>
 			<td>
 object
 </td>
@@ -130,7 +130,7 @@ object
 			<td>Authentik OIDC configuration</td>
 		</tr>
 		<tr>
-			<td id="authentik--appSlug"><a href="./values.yaml#L320">authentik.appSlug</a></td>
+			<td id="authentik--appSlug"><a href="./values.yaml#L316">authentik.appSlug</a></td>
 			<td>
 string
 </td>
@@ -144,7 +144,7 @@ string
 			<td>Authentik application slug</td>
 		</tr>
 		<tr>
-			<td id="authentik--clientId"><a href="./values.yaml#L326">authentik.clientId</a></td>
+			<td id="authentik--clientId"><a href="./values.yaml#L322">authentik.clientId</a></td>
 			<td>
 string
 </td>
@@ -158,7 +158,7 @@ string
 			<td>Authentik client ID</td>
 		</tr>
 		<tr>
-			<td id="authentik--clientSecret"><a href="./values.yaml#L328">authentik.clientSecret</a></td>
+			<td id="authentik--clientSecret"><a href="./values.yaml#L324">authentik.clientSecret</a></td>
 			<td>
 string
 </td>
@@ -172,7 +172,7 @@ string
 			<td>Authentik client secret (only required for confidential clients)</td>
 		</tr>
 		<tr>
-			<td id="authentik--device"><a href="./values.yaml#L340">authentik.device</a></td>
+			<td id="authentik--device"><a href="./values.yaml#L336">authentik.device</a></td>
 			<td>
 object
 </td>
@@ -193,7 +193,7 @@ object
 			<td>Device code flow configuration</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--clientId"><a href="./values.yaml#L346">authentik.device.clientId</a></td>
+			<td id="authentik--device--clientId"><a href="./values.yaml#L342">authentik.device.clientId</a></td>
 			<td>
 string
 </td>
@@ -207,7 +207,7 @@ string
 			<td>Device code flow client ID</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--clientSecret"><a href="./values.yaml#L348">authentik.device.clientSecret</a></td>
+			<td id="authentik--device--clientSecret"><a href="./values.yaml#L344">authentik.device.clientSecret</a></td>
 			<td>
 string
 </td>
@@ -221,7 +221,7 @@ string
 			<td>Device code flow client secret (only required for confidential clients)</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--isPublicClient"><a href="./values.yaml#L344">authentik.device.isPublicClient</a></td>
+			<td id="authentik--device--isPublicClient"><a href="./values.yaml#L340">authentik.device.isPublicClient</a></td>
 			<td>
 bool
 </td>
@@ -235,7 +235,7 @@ true
 			<td>Device code flow client is public</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--scopes"><a href="./values.yaml#L350">authentik.device.scopes</a></td>
+			<td id="authentik--device--scopes"><a href="./values.yaml#L346">authentik.device.scopes</a></td>
 			<td>
 string
 </td>
@@ -249,7 +249,7 @@ string
 			<td>Device code flow OIDC scopes</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--type"><a href="./values.yaml#L342">authentik.device.type</a></td>
+			<td id="authentik--device--type"><a href="./values.yaml#L338">authentik.device.type</a></td>
 			<td>
 string
 </td>
@@ -263,7 +263,7 @@ string
 			<td>Device code flow type (hosted or none to disable)</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--useIdToken"><a href="./values.yaml#L352">authentik.device.useIdToken</a></td>
+			<td id="authentik--device--useIdToken"><a href="./values.yaml#L348">authentik.device.useIdToken</a></td>
 			<td>
 bool
 </td>
@@ -277,7 +277,7 @@ false
 			<td>Use ID token instead of access token for device flow</td>
 		</tr>
 		<tr>
-			<td id="authentik--domain"><a href="./values.yaml#L318">authentik.domain</a></td>
+			<td id="authentik--domain"><a href="./values.yaml#L314">authentik.domain</a></td>
 			<td>
 string
 </td>
@@ -291,7 +291,7 @@ string
 			<td>Authentik domain URL</td>
 		</tr>
 		<tr>
-			<td id="authentik--enabled"><a href="./values.yaml#L316">authentik.enabled</a></td>
+			<td id="authentik--enabled"><a href="./values.yaml#L312">authentik.enabled</a></td>
 			<td>
 bool
 </td>
@@ -305,7 +305,7 @@ true
 			<td>Enable Authentik OIDC</td>
 		</tr>
 		<tr>
-			<td id="authentik--isPublicClient"><a href="./values.yaml#L324">authentik.isPublicClient</a></td>
+			<td id="authentik--isPublicClient"><a href="./values.yaml#L320">authentik.isPublicClient</a></td>
 			<td>
 bool
 </td>
@@ -319,7 +319,7 @@ true
 			<td>Authentik client is public (no client secret required)</td>
 		</tr>
 		<tr>
-			<td id="authentik--issuer"><a href="./values.yaml#L322">authentik.issuer</a></td>
+			<td id="authentik--issuer"><a href="./values.yaml#L318">authentik.issuer</a></td>
 			<td>
 string
 </td>
@@ -333,7 +333,7 @@ string
 			<td>Authentik issuer URL</td>
 		</tr>
 		<tr>
-			<td id="authentik--scopes"><a href="./values.yaml#L330">authentik.scopes</a></td>
+			<td id="authentik--scopes"><a href="./values.yaml#L326">authentik.scopes</a></td>
 			<td>
 string
 </td>
@@ -347,7 +347,7 @@ string
 			<td>OIDC scopes to request</td>
 		</tr>
 		<tr>
-			<td id="authentik--serviceAccount"><a href="./values.yaml#L334">authentik.serviceAccount</a></td>
+			<td id="authentik--serviceAccount"><a href="./values.yaml#L330">authentik.serviceAccount</a></td>
 			<td>
 object
 </td>
@@ -364,7 +364,7 @@ object
 			<td>Service account configuration</td>
 		</tr>
 		<tr>
-			<td id="authentik--serviceAccount--password"><a href="./values.yaml#L338">authentik.serviceAccount.password</a></td>
+			<td id="authentik--serviceAccount--password"><a href="./values.yaml#L334">authentik.serviceAccount.password</a></td>
 			<td>
 string
 </td>
@@ -378,7 +378,7 @@ string
 			<td>Service account password</td>
 		</tr>
 		<tr>
-			<td id="authentik--serviceAccount--username"><a href="./values.yaml#L336">authentik.serviceAccount.username</a></td>
+			<td id="authentik--serviceAccount--username"><a href="./values.yaml#L332">authentik.serviceAccount.username</a></td>
 			<td>
 string
 </td>
@@ -392,7 +392,7 @@ string
 			<td>Service account username</td>
 		</tr>
 		<tr>
-			<td id="authentik--useIdToken"><a href="./values.yaml#L332">authentik.useIdToken</a></td>
+			<td id="authentik--useIdToken"><a href="./values.yaml#L328">authentik.useIdToken</a></td>
 			<td>
 bool
 </td>
@@ -406,7 +406,7 @@ false
 			<td>Use ID token instead of access token</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L411">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L401">cnps</a></td>
 			<td>
 object
 </td>
@@ -438,7 +438,7 @@ object
 			<td>Application-specific Cilium Network Policies configuration @description Requires CiliumNetworkPolicies library-chart. These settings will be ignored if the library-chart is not available. These settings are directly related to the application and will not influence namespace-wide policies (e.g., for DNS egress traffic).</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic"><a href="./values.yaml#L413">cnps.appTraffic</a></td>
+			<td id="cnps--appTraffic"><a href="./values.yaml#L403">cnps.appTraffic</a></td>
 			<td>
 object
 </td>
@@ -465,7 +465,7 @@ object
 			<td>Application traffic policies</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress"><a href="./values.yaml#L432">cnps.appTraffic.egress</a></td>
+			<td id="cnps--appTraffic--egress"><a href="./values.yaml#L422">cnps.appTraffic.egress</a></td>
 			<td>
 object
 </td>
@@ -483,7 +483,7 @@ object
 			<td>Egress traffic configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L434">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L424">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -497,7 +497,7 @@ true
 			<td>Allow egress traffic</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--matchLabels"><a href="./values.yaml#L437">cnps.appTraffic.egress.matchLabels</a></td>
+			<td id="cnps--appTraffic--egress--matchLabels"><a href="./values.yaml#L427">cnps.appTraffic.egress.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -511,7 +511,7 @@ object
 			<td>Labels to match egress destinations @description Allows overriding default egress labels to match your security requirements.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L441">cnps.appTraffic.egress.toEntities</a></td>
+			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L431">cnps.appTraffic.egress.toEntities</a></td>
 			<td>
 list
 </td>
@@ -525,7 +525,7 @@ list
 			<td>Entities to allow egress to (e.g., world) @description Allows overriding default egress entities to match your security requirements.   - world</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress"><a href="./values.yaml#L415">cnps.appTraffic.ingress</a></td>
+			<td id="cnps--appTraffic--ingress"><a href="./values.yaml#L405">cnps.appTraffic.ingress</a></td>
 			<td>
 object
 </td>
@@ -545,7 +545,7 @@ object
 			<td>Ingress traffic configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L417">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L407">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -559,7 +559,7 @@ true
 			<td>Allow ingress traffic</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L422">cnps.appTraffic.ingress.matchLabels</a></td>
+			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L412">cnps.appTraffic.ingress.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -573,7 +573,7 @@ object
 			<td>Labels to match ingress controller pods @description Allows overriding default to match your ingress deployment.   app.kubernetes.io/name: ingress-nginx   io.kubernetes.pod.namespace: ingress-nginx</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--metrics"><a href="./values.yaml#L424">cnps.appTraffic.ingress.metrics</a></td>
+			<td id="cnps--appTraffic--ingress--metrics"><a href="./values.yaml#L414">cnps.appTraffic.ingress.metrics</a></td>
 			<td>
 object
 </td>
@@ -589,7 +589,7 @@ object
 			<td>Metrics scraper configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--metrics--matchLabels"><a href="./values.yaml#L430">cnps.appTraffic.ingress.metrics.matchLabels</a></td>
+			<td id="cnps--appTraffic--ingress--metrics--matchLabels"><a href="./values.yaml#L420">cnps.appTraffic.ingress.metrics.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -603,7 +603,7 @@ object
 			<td>Labels to match Prometheus pods @description Allows overriding default to match your prometheus deployment   app.kubernetes.io/name: prometheus   app.kubernetes.io/instance: kube-prometheus-stack-prometheus   io.kubernetes.pod.namespace: monitoring--kube-prometheus-stack</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L443">cnps.cnpgTraffic</a></td>
+			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L433">cnps.cnpgTraffic</a></td>
 			<td>
 object
 </td>
@@ -619,7 +619,7 @@ object
 			<td>CNPG traffic policies</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L461">cnps.cnpgTraffic.instanceExtraEgress</a></td>
+			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L451">cnps.cnpgTraffic.instanceExtraEgress</a></td>
 			<td>
 list
 </td>
@@ -948,7 +948,7 @@ string
 			<td>Service type</td>
 		</tr>
 		<tr>
-			<td id="existingAuthentikDeviceOidcSecret"><a href="./values.yaml#L311">existingAuthentikDeviceOidcSecret</a></td>
+			<td id="existingAuthentikDeviceOidcSecret"><a href="./values.yaml#L307">existingAuthentikDeviceOidcSecret</a></td>
 			<td>
 string
 </td>
@@ -962,7 +962,7 @@ string
 			<td>Existing Authentik device OIDC secret @description If not provided, Helm creates it automatically on first install based on provided values. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.</td>
 		</tr>
 		<tr>
-			<td id="existingAuthentikOidcSecret"><a href="./values.yaml#L307">existingAuthentikOidcSecret</a></td>
+			<td id="existingAuthentikOidcSecret"><a href="./values.yaml#L303">existingAuthentikOidcSecret</a></td>
 			<td>
 string
 </td>
@@ -1002,20 +1002,6 @@ string
 </div>
 			</td>
 			<td>Existing relay authentication secret @description If not provided, Helm creates it automatically on first install. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.</td>
-		</tr>
-		<tr>
-			<td id="existingTurnSecret"><a href="./values.yaml#L303">existingTurnSecret</a></td>
-			<td>
-string
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-""
-</pre>
-</div>
-			</td>
-			<td>Existing TURN (Coturn) credentials secret @description If not provided, Helm creates it automatically on first install. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.</td>
 		</tr>
 		<tr>
 			<td id="global"><a href="./values.yaml#L2">global</a></td>
@@ -1138,7 +1124,7 @@ string
 			<td>Timezone for the deployment</td>
 		</tr>
 		<tr>
-			<td id="ingress"><a href="./values.yaml#L361">ingress</a></td>
+			<td id="ingress"><a href="./values.yaml#L351">ingress</a></td>
 			<td>
 object
 </td>
@@ -1164,7 +1150,7 @@ object
 			<td>Ingress configuration</td>
 		</tr>
 		<tr>
-			<td id="ingress--additionalAnnotations"><a href="./values.yaml#L379">ingress.additionalAnnotations</a></td>
+			<td id="ingress--additionalAnnotations"><a href="./values.yaml#L369">ingress.additionalAnnotations</a></td>
 			<td>
 object
 </td>
@@ -1178,7 +1164,7 @@ object
 			<td>Optional annotations for Ingress configuration</td>
 		</tr>
 		<tr>
-			<td id="ingress--className"><a href="./values.yaml#L365">ingress.className</a></td>
+			<td id="ingress--className"><a href="./values.yaml#L355">ingress.className</a></td>
 			<td>
 string
 </td>
@@ -1192,7 +1178,7 @@ string
 			<td>Ingress class name</td>
 		</tr>
 		<tr>
-			<td id="ingress--consolidationMode"><a href="./values.yaml#L367">ingress.consolidationMode</a></td>
+			<td id="ingress--consolidationMode"><a href="./values.yaml#L357">ingress.consolidationMode</a></td>
 			<td>
 string
 </td>
@@ -1206,7 +1192,7 @@ string
 			<td>HTTP/2 consolidation mode</td>
 		</tr>
 		<tr>
-			<td id="ingress--enabled"><a href="./values.yaml#L363">ingress.enabled</a></td>
+			<td id="ingress--enabled"><a href="./values.yaml#L353">ingress.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1220,7 +1206,7 @@ true
 			<td>Enable Ingress</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls"><a href="./values.yaml#L369">ingress.tls</a></td>
+			<td id="ingress--tls"><a href="./values.yaml#L359">ingress.tls</a></td>
 			<td>
 object
 </td>
@@ -1240,7 +1226,7 @@ object
 			<td>TLS configuration</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls--enabled"><a href="./values.yaml#L371">ingress.tls.enabled</a></td>
+			<td id="ingress--tls--enabled"><a href="./values.yaml#L361">ingress.tls.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1254,7 +1240,7 @@ true
 			<td>Enable TLS</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls--issuer"><a href="./values.yaml#L373">ingress.tls.issuer</a></td>
+			<td id="ingress--tls--issuer"><a href="./values.yaml#L363">ingress.tls.issuer</a></td>
 			<td>
 object
 </td>
@@ -1271,7 +1257,7 @@ object
 			<td>Certificate issuer configuration</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls--issuer--kind"><a href="./values.yaml#L377">ingress.tls.issuer.kind</a></td>
+			<td id="ingress--tls--issuer--kind"><a href="./values.yaml#L367">ingress.tls.issuer.kind</a></td>
 			<td>
 string
 </td>
@@ -1285,7 +1271,7 @@ string
 			<td>Issuer kind (Issuer or ClusterIssuer)</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls--issuer--name"><a href="./values.yaml#L375">ingress.tls.issuer.name</a></td>
+			<td id="ingress--tls--issuer--name"><a href="./values.yaml#L365">ingress.tls.issuer.name</a></td>
 			<td>
 string
 </td>
@@ -1299,7 +1285,7 @@ string
 			<td>Issuer name</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L403">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L393">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -1316,7 +1302,7 @@ object
 			<td>Cilium Network Policies configuration</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--enabled"><a href="./values.yaml#L405">libchartCnps.enabled</a></td>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L395">libchartCnps.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1330,7 +1316,7 @@ false
 			<td>Enable Cilium Network Policies</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L407">libchartCnps.includeCnpgPolicies</a></td>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L397">libchartCnps.includeCnpgPolicies</a></td>
 			<td>
 bool
 </td>
@@ -2115,7 +2101,7 @@ string
 			<td>Service type</td>
 		</tr>
 		<tr>
-			<td id="monitoring"><a href="./values.yaml#L475">monitoring</a></td>
+			<td id="monitoring"><a href="./values.yaml#L465">monitoring</a></td>
 			<td>
 object
 </td>
@@ -2131,7 +2117,7 @@ object
 			<td>Monitoring configuration</td>
 		</tr>
 		<tr>
-			<td id="monitoring--enabled"><a href="./values.yaml#L477">monitoring.enabled</a></td>
+			<td id="monitoring--enabled"><a href="./values.yaml#L467">monitoring.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2240,7 +2226,7 @@ true
 			<td>Use CNPG Cluster for PostgreSQL</td>
 		</tr>
 		<tr>
-			<td id="rbac"><a href="./values.yaml#L464">rbac</a></td>
+			<td id="rbac"><a href="./values.yaml#L454">rbac</a></td>
 			<td>
 object
 </td>
@@ -2260,7 +2246,7 @@ object
 			<td>Role-Based Access Control configuration</td>
 		</tr>
 		<tr>
-			<td id="rbac--create"><a href="./values.yaml#L466">rbac.create</a></td>
+			<td id="rbac--create"><a href="./values.yaml#L456">rbac.create</a></td>
 			<td>
 bool
 </td>
@@ -2274,7 +2260,7 @@ false
 			<td>Create RBAC resources</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount"><a href="./values.yaml#L468">rbac.serviceAccount</a></td>
+			<td id="rbac--serviceAccount"><a href="./values.yaml#L458">rbac.serviceAccount</a></td>
 			<td>
 object
 </td>
@@ -2291,7 +2277,7 @@ object
 			<td>Service account configuration</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount--create"><a href="./values.yaml#L470">rbac.serviceAccount.create</a></td>
+			<td id="rbac--serviceAccount--create"><a href="./values.yaml#L460">rbac.serviceAccount.create</a></td>
 			<td>
 bool
 </td>
@@ -2305,7 +2291,7 @@ true
 			<td>Create service account</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount--name"><a href="./values.yaml#L472">rbac.serviceAccount.name</a></td>
+			<td id="rbac--serviceAccount--name"><a href="./values.yaml#L462">rbac.serviceAccount.name</a></td>
 			<td>
 string
 </td>
@@ -2634,7 +2620,7 @@ string
 			<td>Service type</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L394">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L384">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -2663,7 +2649,7 @@ object
 </details></td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--jobs"><a href="./values.yaml#L398">runtimeClass.jobs</a></td>
+			<td id="runtimeClass--jobs"><a href="./values.yaml#L388">runtimeClass.jobs</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -2677,7 +2663,7 @@ object
 			<td>Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--pods"><a href="./values.yaml#L396">runtimeClass.pods</a></td>
+			<td id="runtimeClass--pods"><a href="./values.yaml#L386">runtimeClass.pods</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -2691,7 +2677,7 @@ object
 			<td>Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--tests"><a href="./values.yaml#L400">runtimeClass.tests</a></td>
+			<td id="runtimeClass--tests"><a href="./values.yaml#L390">runtimeClass.tests</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -3107,36 +3093,6 @@ string
 </div>
 			</td>
 			<td>Service type</td>
-		</tr>
-		<tr>
-			<td id="turn"><a href="./values.yaml#L356">turn</a></td>
-			<td>
-object
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-{
-  "useTimebasedSecrets": true
-}
-</pre>
-</div>
-			</td>
-			<td>TURN (Coturn) configuration @description Currently Coturn is not part of the deployment, but NetBird uses these values</td>
-		</tr>
-		<tr>
-			<td id="turn--useTimebasedSecrets"><a href="./values.yaml#L358">turn.useTimebasedSecrets</a></td>
-			<td>
-bool
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-true
-</pre>
-</div>
-			</td>
-			<td>Use time-based secrets for TURN</td>
 		</tr>
 	</tbody>
 </table>

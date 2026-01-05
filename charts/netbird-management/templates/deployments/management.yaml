@@ -114,27 +114,6 @@ spec:
           value: "rels://{{ .Values.global.domain }}:443/relay"
         - name: TURN_DOMAIN
           value: "{{ .Values.global.domain }}"
-        - name: TURN_USER
-          value: "self"
-        - name: TURN_USE_TIMEBASED_CREDS
-          value: "{{ .Values.turn.useTimebasedSecrets }}"
-        {{- if .Values.turn.useTimebasedSecrets }}
-        - name: TURN_PASSWORD
-          value: ""
-        - name: TURN_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.existingTurnSecret | default "turn-creds-and-secret" }}
-              key: secret
-        {{- else }}
-        - name: TURN_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.existingTurnSecret | default "turn-creds-and-secret" }}
-              key: password
-        - name: TURN_SECRET
-          value: ""
-        {{- end }}
         - name: NETBIRD_SIGNAL_PROTOCOL
           value: "https"
         - name: NETBIRD_SIGNAL_PORT

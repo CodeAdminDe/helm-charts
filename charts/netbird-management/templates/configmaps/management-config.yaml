@@ -17,19 +17,6 @@ data:
                 "Password": null
             }
         ],
-        "TURNConfig": {
-            "Turns": [
-                {
-                    "Proto": "udp",
-                    "URI": "turn:$TURN_DOMAIN:3478",
-                    "Username": "$TURN_USER",
-                    "Password": "$TURN_PASSWORD"
-                }
-            ],
-            "CredentialsTTL": "12h",
-            "Secret": "$TURN_SECRET",
-            "TimeBasedCredentials": $TURN_USE_TIMEBASED_CREDS
-        },
         "Relay": {
             "Addresses": ["$NETBIRD_RELAY_ENDPOINT"],
             "CredentialsTTL": "24h",
