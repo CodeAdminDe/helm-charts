@@ -1,0 +1,91 @@
+
+{{- if .Values.agent.caEnableInitPreConfig }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-init-entrypoint
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-agent.labels" . | nindent 4 }}
+data:
+  netbird-entrypoint.sh: |
+    #!/usr/bin/env bash
+    set -eEuo pipefail
+
+    # _log(), info(), and warn() are borrowed on the offical entrypoint script which you'll find
+    # at https://github.com/netbirdio/netbird/blob/08b782d6ba6b05da04923e95f6f0931fda51bb12/client/netbird-entrypoint.sh
+    # That way we'll match the overall log output.
+    _log() {
+      # mimic Go logger's output for easier parsing
+      # 2025-04-15T21:32:00+08:00 INFO client/internal/config.go:495: setting notifications to disabled by default
+      printf "$(date -Isec) ${1} ${BASH_SOURCE[1]}:${BASH_LINENO[1]}: ${2}\n" "${@:3}" >&2
+    }
+
+    info() {
+      _log INFO "$@"
+    }
+
+    warn() {
+      _log WARN "$@"
+    }
+
+    initialize_config_file() {
+      local config_file="${NB_CONFIG:-/var/lib/netbird/config.json}"
+
+      # Create config dir if not exist
+      local config_dir="$(dirname "${config_file}")"
+      if [[ ! -d "${config_dir}" ]]; then
+        mkdir -p "${config_dir}" 2>/dev/null || true
+      fi
+
+      # Create config file if not exist, otherwise use existing one.
+      if [[ ! -f "${config_file}" ]]; then
+        info "Initializing NetBird configuration file at ${config_file@Q}..."
+
+        # Helper function
+        parse_url() {
+          local url=$1
+          local scheme="${url%%://*}"
+          local host="${url#*://}"
+          echo "$scheme" "$host"
+        }
+
+        # Set all necessary env vars. This is a bare-minimum and could be extended.
+        local management_url="${NB_MANAGEMENT_URL}"
+        local admin_url="${NB_ADMIN_URL}"
+        local wireguard_iface="${NB_WIREGUARD_IFACE:-wt0}"
+        local wireguard_port="${NB_WIREGUARD_PORT:-51820}"
+        read mgmt_scheme mgmt_host < <(parse_url "$NB_MANAGEMENT_URL")
+        read adm_scheme adm_host < <(parse_url "$NB_ADMIN_URL")
+
+        # create env based config
+        cat > "${config_file}" <<EOF
+          {
+              "ManagementURL": {
+                  "Scheme": "${mgmt_scheme}"
+                  "Host": "${mgmt_host}"
+              },
+              "AdminURL": {
+                  "Scheme": "${adm_scheme}",
+                  "Host": "${adm_host}"
+              },
+              "WgIface": "${wireguard_iface}",
+              "WgPort": ${wireguard_port}
+          }
+    EOF
+
+        info "NetBird configuration file created with managementUrl=${management_url@Q} and adminUrl=${admin_url@Q}"
+      else
+        info "Using existing NetBird configuration file at ${config_file@Q}"
+      fi
+    }
+
+    main() {
+      trap 'on_exit' SIGTERM SIGINT EXIT
+
+      # Fix - Init config file to allow reading of env vars before service runs.
+      initialize_config_file
+    }
+
+    main "$@"
+{{- end }}

@@ -93,6 +93,11 @@ agent:
   # When enabled, the deployment will configure the agent to use NETSTACK_MODE to provide a socks5 proxy.
   # When disabled, the agent pod will require additional permissions, more details: https://docs.netbird.io/use-cases/netbird-on-faas#docker
   caEnableRootless: true
+  # --- Enable / Disable config preperation
+  # @description When using the image inside environments which require very strict security configuration,
+  # It could be possible, that the automatic configuration of NB_MANAGEMENT_URL and/or NB_ADMIN_URL will fail.
+  # To avoid this, i've added an initContainer which pre-puplates a config.json which contains the urls configured within the helm release.
+  caEnableInitPreConfig: true
   # --- SOCKS5 Listener Port
   # @description Allowes to override the used listener port of SOCKS5 proxy provided by NetBird agent when running in rootless mode (default: 1080).
   socksPort:

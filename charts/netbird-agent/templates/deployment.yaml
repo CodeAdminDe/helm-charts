@@ -30,6 +30,30 @@ spec:
       serviceAccountName: {{ include "netbird-agent.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.agent.caEnableInitPreConfig }}
+      initContainers:
+        - name: {{ .Chart.Name }}-init-config
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- if .Values.agent.caEnableRootless }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}{{ .Values.image.tagSuffixRootless }}"
+          {{- else }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          {{- end }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: NB_MANAGEMENT_URL
+              value: {{ .Values.agent.managementUrl | default "https://api.netbird.io:443" }}
+            - name: NB_ADMIN_URL
+              value: {{ .Values.agent.adminUrl | default "https://app.netbird.io:443" }}
+          volumeMounts:
+            - name: "{{ .Release.Name }}-data"
+              mountPath: "/var/lib/netbird"
+            - name: {{ .Release.Name }}-init-entrypoint-script
+              mountPath: /usr/local/bin/netbird-entrypoint.sh
+              subPath: netbird-entrypoint.sh
+              readOnly: true
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -114,6 +138,12 @@ spec:
               mountPath: "/var/lib/netbird"
       volumes:
       {{- include "common.app.pvc" . | nindent 8 }}
+      {{- if .Values.agent.caEnableInitPreConfig }}
+        - name: {{ .Release.Name }}-init-entrypoint-script
+          configMap:
+            name: {{ .Release.Name }}-init-entrypoint
+            defaultMode: 0555
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
