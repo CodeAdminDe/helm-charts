@@ -2,7 +2,7 @@
 
 # netbird-agent
 
-![Version: 0.6.0](https://img.shields.io/badge/Version-0.6.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.61.0](https://img.shields.io/badge/AppVersion-0.61.0-informational?style=flat-square)
+![Version: 0.6.1](https://img.shields.io/badge/Version-0.6.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.61.0](https://img.shields.io/badge/AppVersion-0.61.0-informational?style=flat-square)
 
 A Helm chart for an easier netbird agent (https://netbird.io) deployment at kubernetes.
 
@@ -826,6 +826,34 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
+"/bin/sh"
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td id="livenessProbe--exec--command[1]"><a href="./values.yaml#L286">livenessProbe.exec.command[1]</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"-c"
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td id="livenessProbe--exec--command[2]"><a href="./values.yaml#L286">livenessProbe.exec.command[2]</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
 "netbird status | grep 'NetBird IP: 100'"
 </pre>
 </div>
@@ -1098,6 +1126,34 @@ object
 		</tr>
 		<tr>
 			<td id="readinessProbe--exec--command[0]"><a href="./values.yaml#L292">readinessProbe.exec.command[0]</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"/bin/sh"
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td id="readinessProbe--exec--command[1]"><a href="./values.yaml#L292">readinessProbe.exec.command[1]</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"-c"
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td id="readinessProbe--exec--command[2]"><a href="./values.yaml#L292">readinessProbe.exec.command[2]</a></td>
 			<td>
 string
 </td>

@@ -283,13 +283,13 @@ startupProbe: {}
   # periodSeconds: 10
 livenessProbe:
   exec:
-    command: ["netbird status | grep 'NetBird IP: 100'"]
+    command: ["/bin/sh", "-c", "netbird status | grep 'NetBird IP: 100'"]
   failureThreshold: 12
   periodSeconds: 10
   initialDelaySeconds: 10
 readinessProbe:
   exec:
-    command: ["netbird status | grep 'NetBird IP: 100'"]
+    command: ["/bin/sh", "-c", "netbird status | grep 'NetBird IP: 100'"]
   failureThreshold: 6
   periodSeconds: 10
   initialDelaySeconds: 10
