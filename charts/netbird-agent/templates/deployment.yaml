@@ -137,7 +137,7 @@ spec:
               value: "console,/var/lib/netbird/client.log"
           {{- else }}
             - name: NB_LOG_FILE
-              value: "{{ .Values.agent.logFormat }}:{{ .Values.agent.logFilePath }}"
+              value: "{{ .Values.agent.logFormat }},{{ .Values.agent.logFilePath }}"
           {{- end }}
           volumeMounts:
             - name: "{{ .Release.Name }}-data"

@@ -87,7 +87,7 @@ agent:
   logLevel: ""
   # --- Log format (default: console; alt: json)
   # @description The log format setting will be ignored and the console format will be forced.
-  logFormat: ""
+  logFormat: "console"
   # --- Log format (default: console; alt: json)
   # @description The log file path needs to be writeable.
   # The path setting will be ignored and the /var/lib/netbird/client.log file will be forced.
