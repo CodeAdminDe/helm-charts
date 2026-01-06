@@ -46,6 +46,10 @@ spec:
               value: {{ .Values.agent.managementUrl | default "https://api.netbird.io:443" }}
             - name: NB_ADMIN_URL
               value: {{ .Values.agent.adminUrl | default "https://app.netbird.io:443" }}
+          {{- if not .Values.agent.caEnableRootless }}
+            - name: CA_NB_CONF_INIT_FILE
+              value: "/var/lib/netbird/default.json"
+          {{- end }}
           volumeMounts:
             - name: "{{ .Release.Name }}-data"
               mountPath: "/var/lib/netbird"
@@ -138,8 +142,6 @@ spec:
           {{- else }}
             - name: NB_LOG_FILE
               value: "{{ .Values.agent.logFormat }},{{ .Values.agent.logFilePath }}"
-            - name: CA_NB_CONF_INIT_FILE
-              value: "/var/lib/netbird/default.json"
           {{- end }}
           volumeMounts:
             - name: "{{ .Release.Name }}-data"
