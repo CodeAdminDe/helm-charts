@@ -26,7 +26,9 @@ serviceAccount:
 # --- Pod annnotations to add to the deployment pods
 podAnnotations: {}
 
-# -- Pod security context
+# -- Pod security context (rootless)
+# @description podSecurityContext when running netbird with rootless (netstack) context.
+# Note: Requires agent.caEnableRootless: true to get applied.
 podSecurityContext:
   runAsUser: 1000
   runAsGroup: 1000
@@ -34,7 +36,9 @@ podSecurityContext:
   seccompProfile:
     type: RuntimeDefault
 
-# -- Container security context
+# -- Container security context (rootless)
+# @description securityContext when running netbird with rootless (netstack) context.
+# Note: Requires agent.caEnableRootless: true to get applied.
 securityContext:
   runAsNonRoot: true
   readOnlyRootFilesystem: true
@@ -42,6 +46,32 @@ securityContext:
   capabilities:
     drop:
     - ALL
+
+# -- Pod security context (root)
+# @description podSecurityContext when running netbird with root context.
+# Note: Requires agent.caEnableRootless: false to get applied.
+rootPodSecurityContext:
+  runAsUser: 0
+  runAsGroup: 0
+  seccompProfile:
+    type: RuntimeDefault
+# -- Container security context (root)
+# @description securityContext when running netbird with root context.
+# Note: Requires agent.caEnableRootless: false to get applied.
+rootSecurityContext:
+  runAsNonRoot: false
+  readOnlyRootFilesystem: false
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+    add:
+    - NET_ADMIN
+    - NET_RAW
+    - BPF
+  sysctls:
+    - name: net.ipv4.conf.all.src_valid_mark
+      value: "1"
 
 # -- Set a RuntimeClass to execute the containers with a custom runtime configuration.
 # Register a runtimeClass within your cluster beforehand.
@@ -93,9 +123,13 @@ agent:
   # The path setting will be ignored and the /var/lib/netbird/client.log file will be forced.
   logFilePath: "/var/lib/netbird/client.log"
   # --- Enable / Disable rootless mode
-  # @description Please note, that this flag will change the used image to netbird:*-rootless.
-  # When enabled, the deployment will configure the agent to use NETSTACK_MODE to provide a socks5 proxy.
-  # When disabled, the agent pod will require additional permissions, more details: https://docs.netbird.io/use-cases/netbird-on-faas#docker
+  # @description Decide if the agent should be deployed as rootless-mode or root-mode with extended permissions.
+  # When enabled, the deployment will configure the agent to use NETSTACK_MODE to provide a socks5 proxy and
+  # tries to use as less permissions as possible. (caEnableRootless: true) (RECOMMENDED)
+  # When disabled, the agent pod will require additional permissions and will be deployed with the
+  # the rootSecurityContext and rootPodSecurityContext values. (caEnableRootless: false) (NOT recommmended)
+  # Please note that i'd not recommend to run pods with extended and/or root permissions within prod envs.
+  # More details about NetBird rootless behaviour: https://docs.netbird.io/use-cases/netbird-on-faas#docker
   caEnableRootless: true
   # --- Config preperation options
   caInitPreConfig:

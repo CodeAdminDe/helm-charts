@@ -29,15 +29,21 @@ spec:
       {{- end }}
       serviceAccountName: {{ include "netbird-agent.serviceAccountName" . }}
       securityContext:
+      {{- if .Values.agent.caEnableRootless }}
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- else }}
+        {{- toYaml .Values.rootPodSecurityContext | nindent 8 }}
+      {{- end }}
       {{- if .Values.agent.caInitPreConfig.enabled }}
       initContainers:
         - name: {{ .Chart.Name }}-init-config
+          {{- if .Values.agent.caEnableRootless }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          {{- if .Values.agent.caEnableRootless }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}{{ .Values.image.tagSuffixRootless }}"
           {{- else }}
+          securityContext:
+            {{- toYaml .Values.rootSecurityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -60,11 +66,13 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
+          {{- if .Values.agent.caEnableRootless }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          {{- if .Values.agent.caEnableRootless }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}{{ .Values.image.tagSuffixRootless }}"
           {{- else }}
+          securityContext:
+            {{- toYaml .Values.rootSecurityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -142,6 +150,8 @@ spec:
           {{- else }}
             - name: NB_LOG_FILE
               value: "{{ .Values.agent.logFormat }},{{ .Values.agent.logFilePath }}"
+            - name: USER
+              value: "netbird-agent"
           {{- end }}
           volumeMounts:
             - name: "{{ .Release.Name }}-data"
