@@ -584,6 +584,42 @@ entries:
       securityContext: required
     apiVersion: v2
     appVersion: 0.61.2
+    created: "2026-01-06T16:37:47.698993043Z"
+    dependencies:
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for an easier netbird agent (https://netbird.io) deployment
+      at kubernetes.
+    digest: 5b4cfa2debacded4808abdf82f2e9cf96a2dc5d5bfbd4156d937780e1c3b1640
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - netbird
+    - vpn
+    - mesh-network
+    - wireguard
+    - zero-trust
+    - sso
+    - postgresql
+    - cnpg
+    - cloud-native
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: netbird-agent
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/netbird-agent-0.6.7/netbird-agent-0.6.7.tgz
+    version: 0.6.7
+  - annotations:
+      category: Networking
+      kubeVersion: '>=1.33.0'
+      securityContext: required
+    apiVersion: v2
+    appVersion: 0.61.2
     created: "2026-01-06T16:15:25.782054697Z"
     dependencies:
     - alias: libchart-cnps
@@ -8607,4 +8643,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-01-06T16:15:25.782538249Z"
+generated: "2026-01-06T16:37:47.699481915Z"
