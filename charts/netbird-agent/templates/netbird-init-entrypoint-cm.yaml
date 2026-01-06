@@ -29,7 +29,7 @@ data:
     }
 
     initialize_config_file() {
-      local config_file="${NB_CONFIG:-/var/lib/netbird/config.json}"
+      local config_file="${CA_NB_CONF_INIT_FILE:-/var/lib/netbird/config.json}"
 
       # Create config dir if not exist
       local config_dir="$(dirname "${config_file}")"

@@ -138,6 +138,8 @@ spec:
           {{- else }}
             - name: NB_LOG_FILE
               value: "{{ .Values.agent.logFormat }},{{ .Values.agent.logFilePath }}"
+            - name: CA_NB_CONF_INIT_FILE
+              value: "/var/lib/netbird/default.json"
           {{- end }}
           volumeMounts:
             - name: "{{ .Release.Name }}-data"
