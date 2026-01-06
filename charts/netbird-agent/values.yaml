@@ -88,6 +88,10 @@ agent:
   # --- Log format (default: console; alt: json)
   # @description The log format setting will be ignored and the console format will be forced.
   logFormat: ""
+  # --- Log format (default: console; alt: json)
+  # @description The log file path needs to be writeable.
+  # The path setting will be ignored and the /var/lib/netbird/client.log file will be forced.
+  logFilePath: "/var/lib/netbird/client.log"
   # --- Enable / Disable rootless mode
   # @description Please note, that this flag will change the used image to netbird:*-rootless.
   # When enabled, the deployment will configure the agent to use NETSTACK_MODE to provide a socks5 proxy.

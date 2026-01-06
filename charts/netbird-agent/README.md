@@ -2,7 +2,7 @@
 
 # netbird-agent
 
-![Version: 0.6.4](https://img.shields.io/badge/Version-0.6.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.61.2](https://img.shields.io/badge/AppVersion-0.61.2-informational?style=flat-square)
+![Version: 0.6.5](https://img.shields.io/badge/Version-0.6.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.61.2](https://img.shields.io/badge/AppVersion-0.61.2-informational?style=flat-square)
 
 A Helm chart for an easier netbird agent (https://netbird.io) deployment at kubernetes.
 
@@ -94,7 +94,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="additionalEnvSecrets"><a href="./values.yaml#L137">additionalEnvSecrets</a></td>
+			<td id="additionalEnvSecrets"><a href="./values.yaml#L141">additionalEnvSecrets</a></td>
 			<td>
 object
 </td>
@@ -108,7 +108,7 @@ object
 			<td>Additional env vars provided via one or more secret(s). @description Specifiy the ENV key used as KEY and the secret name as VALUE. The secret should contain the ENV key and the encrypted value: Sample secret ... apiVersion: v1 kind: Secret metadata: name: your-secret-name-to-slack-oidc-secrets type: Opaque stringData:   SLACK_KEY: "slack-key-value-goes-here"   SLACK_SECRET: "slack-secret-value-goes-here"</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L304">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L308">affinity</a></td>
 			<td>
 object
 </td>
@@ -135,6 +135,7 @@ object
   "caInitPreConfig": {
     "enabled": true
   },
+  "logFilePath": "/var/lib/netbird/client.log",
   "logFormat": "",
   "logLevel": "",
   "managementUrl": "",
@@ -165,7 +166,7 @@ string
 			<td>- Admin URL @description Provide the admin URL if you want to connect the agent with your self-hosted instance. If not provided, it defaults to NetBird cloud endpoint.</td>
 		</tr>
 		<tr>
-			<td id="agent--caEnableRootless"><a href="./values.yaml#L95">agent.caEnableRootless</a></td>
+			<td id="agent--caEnableRootless"><a href="./values.yaml#L99">agent.caEnableRootless</a></td>
 			<td>
 bool
 </td>
@@ -179,7 +180,7 @@ true
 			<td>- Enable / Disable rootless mode @description Please note, that this flag will change the used image to netbird:*-rootless. When enabled, the deployment will configure the agent to use NETSTACK_MODE to provide a socks5 proxy. When disabled, the agent pod will require additional permissions, more details: https://docs.netbird.io/use-cases/netbird-on-faas#docker</td>
 		</tr>
 		<tr>
-			<td id="agent--caInitPreConfig"><a href="./values.yaml#L97">agent.caInitPreConfig</a></td>
+			<td id="agent--caInitPreConfig"><a href="./values.yaml#L101">agent.caInitPreConfig</a></td>
 			<td>
 object
 </td>
@@ -195,7 +196,7 @@ object
 			<td>- Config preperation options</td>
 		</tr>
 		<tr>
-			<td id="agent--caInitPreConfig--enabled"><a href="./values.yaml#L102">agent.caInitPreConfig.enabled</a></td>
+			<td id="agent--caInitPreConfig--enabled"><a href="./values.yaml#L106">agent.caInitPreConfig.enabled</a></td>
 			<td>
 bool
 </td>
@@ -207,6 +208,20 @@ true
 </div>
 			</td>
 			<td>- Enable / Disable config preperation @description When using the image inside environments which require very strict security configuration, It could be possible, that the automatic configuration of NB_MANAGEMENT_URL and/or NB_ADMIN_URL will fail. To avoid this, i've added an initContainer which pre-puplates a config.json which contains the urls configured within the helm release.</td>
+		</tr>
+		<tr>
+			<td id="agent--logFilePath"><a href="./values.yaml#L94">agent.logFilePath</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"/var/lib/netbird/client.log"
+</pre>
+</div>
+			</td>
+			<td>- Log format (default: console; alt: json) @description The log file path needs to be writeable. The path setting will be ignored and the /var/lib/netbird/client.log file will be forced.</td>
 		</tr>
 		<tr>
 			<td id="agent--logFormat"><a href="./values.yaml#L90">agent.logFormat</a></td>
@@ -251,7 +266,7 @@ string
 			<td>- Management URL @description Provide the management URL if you want to connect the agent with your self-hosted instance. If not provided, it defaults to NetBird cloud endpoint.</td>
 		</tr>
 		<tr>
-			<td id="agent--socksPort"><a href="./values.yaml#L105">agent.socksPort</a></td>
+			<td id="agent--socksPort"><a href="./values.yaml#L109">agent.socksPort</a></td>
 			<td>
 string
 </td>
@@ -265,7 +280,7 @@ null
 			<td>- SOCKS5 Listener Port @description Allowes to override the used listener port of SOCKS5 proxy provided by NetBird agent when running in rootless mode (default: 1080).</td>
 		</tr>
 		<tr>
-			<td id="agent--ssh"><a href="./values.yaml#L107">agent.ssh</a></td>
+			<td id="agent--ssh"><a href="./values.yaml#L111">agent.ssh</a></td>
 			<td>
 object
 </td>
@@ -283,7 +298,7 @@ object
 			<td>- Configure agent SSH features</td>
 		</tr>
 		<tr>
-			<td id="agent--ssh--allowServer"><a href="./values.yaml#L110">agent.ssh.allowServer</a></td>
+			<td id="agent--ssh--allowServer"><a href="./values.yaml#L114">agent.ssh.allowServer</a></td>
 			<td>
 bool
 </td>
@@ -297,7 +312,7 @@ false
 			<td>- Enable / Disable ssh server feature @description Decide if the netbird-agent should allow the "SSH access via NetBird" feature.</td>
 		</tr>
 		<tr>
-			<td id="agent--ssh--enableRoot"><a href="./values.yaml#L113">agent.ssh.enableRoot</a></td>
+			<td id="agent--ssh--enableRoot"><a href="./values.yaml#L117">agent.ssh.enableRoot</a></td>
 			<td>
 bool
 </td>
@@ -311,7 +326,7 @@ false
 			<td>- Enable / Disable root login allowed @description Decide to enable or disable the ability to login as root when using the "SSH access via NetBird" feature.</td>
 		</tr>
 		<tr>
-			<td id="agent--ssh--enableSftp"><a href="./values.yaml#L116">agent.ssh.enableSftp</a></td>
+			<td id="agent--ssh--enableSftp"><a href="./values.yaml#L120">agent.ssh.enableSftp</a></td>
 			<td>
 bool
 </td>
@@ -325,7 +340,7 @@ false
 			<td>- Enable / Disable sftp protocol usage @description Decide to enable or disable the ability to use sftp when using the "SSH access via NetBird" feature.</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L152">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L156">cnps</a></td>
 			<td>
 object
 </td>
@@ -373,7 +388,7 @@ object
 			<td>Application-specific Cilium Network Policies configuration @description Requires CiliumNetworkPolicies library-chart. These settings will be ignored if the library-chart is not available. These settings are directly related to the application and will not influence namespace-wide policies (e.g., for DNS egress traffic).</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic"><a href="./values.yaml#L154">cnps.appTraffic</a></td>
+			<td id="cnps--appTraffic"><a href="./values.yaml#L158">cnps.appTraffic</a></td>
 			<td>
 object
 </td>
@@ -416,7 +431,7 @@ object
 			<td>Application traffic policies</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress"><a href="./values.yaml#L177">cnps.appTraffic.egress</a></td>
+			<td id="cnps--appTraffic--egress"><a href="./values.yaml#L181">cnps.appTraffic.egress</a></td>
 			<td>
 object
 </td>
@@ -449,7 +464,7 @@ object
 			<td>Egress traffic configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L179">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L183">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -463,7 +478,7 @@ true
 			<td>Allow egress traffic</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--egressRules"><a href="./values.yaml#L182">cnps.appTraffic.egress.egressRules</a></td>
+			<td id="cnps--appTraffic--egress--egressRules"><a href="./values.yaml#L186">cnps.appTraffic.egress.egressRules</a></td>
 			<td>
 list
 </td>
@@ -493,7 +508,7 @@ list
 			<td>Rules which are applied when egress allow eq true. @description Allows overriding default egress rules to match your security requirements.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress"><a href="./values.yaml#L156">cnps.appTraffic.ingress</a></td>
+			<td id="cnps--appTraffic--ingress"><a href="./values.yaml#L160">cnps.appTraffic.ingress</a></td>
 			<td>
 object
 </td>
@@ -510,7 +525,7 @@ object
 			<td>Ingress traffic configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L158">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L162">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -524,7 +539,7 @@ false
 			<td>Allow ingress traffic</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L163">cnps.appTraffic.ingress.matchLabels</a></td>
+			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L167">cnps.appTraffic.ingress.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -538,7 +553,7 @@ object
 			<td>Labels to match ingress controller pods @description Allows overriding default to match your ingress deployment.   app.kubernetes.io/name: ingress-nginx   io.kubernetes.pod.namespace: ingress-nginx</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--metrics"><a href="./values.yaml#L165">cnps.appTraffic.metrics</a></td>
+			<td id="cnps--appTraffic--metrics"><a href="./values.yaml#L169">cnps.appTraffic.metrics</a></td>
 			<td>
 object
 </td>
@@ -555,7 +570,7 @@ object
 			<td>Metrics (ingress) traffic configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--metrics--allow"><a href="./values.yaml#L169">cnps.appTraffic.metrics.allow</a></td>
+			<td id="cnps--appTraffic--metrics--allow"><a href="./values.yaml#L173">cnps.appTraffic.metrics.allow</a></td>
 			<td>
 bool
 </td>
@@ -569,7 +584,7 @@ false
 			<td>Allow ingress metrics traffic @description Enable / Disable rules to allow metrics reachability. Note: Requires monitoring.enabled set to true.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--metrics--matchLabels"><a href="./values.yaml#L175">cnps.appTraffic.metrics.matchLabels</a></td>
+			<td id="cnps--appTraffic--metrics--matchLabels"><a href="./values.yaml#L179">cnps.appTraffic.metrics.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -583,7 +598,7 @@ object
 			<td>Labels to match Prometheus pods @description Allows overriding default to match your prometheus deployment   app.kubernetes.io/name: prometheus   app.kubernetes.io/instance: kube-prometheus-stack-prometheus   io.kubernetes.pod.namespace: monitoring--kube-prometheus-stack</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L199">cnps.cnpgTraffic</a></td>
+			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L203">cnps.cnpgTraffic</a></td>
 			<td>
 object
 </td>
@@ -599,7 +614,7 @@ object
 			<td>CNPG traffic policies</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L217">cnps.cnpgTraffic.instanceExtraEgress</a></td>
+			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L221">cnps.cnpgTraffic.instanceExtraEgress</a></td>
 			<td>
 list
 </td>
@@ -613,7 +628,7 @@ list
 			<td>Additional instance egress rules for external services (e.g., backup services) @description Add additional rule(s) as desired, to allow access to external backup services - toFQDNs:   - matchName: s3.storage.example.org   toPorts:     - ports:         - port: "443"           protocol: TCP ## OR ## - toEntities:   - world   toPorts:     - ports:         - port: "8443"           protocol: TCP ## OR ## ...</td>
 		</tr>
 		<tr>
-			<td id="env"><a href="./values.yaml#L120">env</a></td>
+			<td id="env"><a href="./values.yaml#L124">env</a></td>
 			<td>
 object
 </td>
@@ -641,7 +656,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="hpa"><a href="./values.yaml#L268">hpa</a></td>
+			<td id="hpa"><a href="./values.yaml#L272">hpa</a></td>
 			<td>
 object
 </td>
@@ -660,7 +675,7 @@ object
 			<td>Horizontal Pod Autoscaler configuration</td>
 		</tr>
 		<tr>
-			<td id="hpa--enabled"><a href="./values.yaml#L270">hpa.enabled</a></td>
+			<td id="hpa--enabled"><a href="./values.yaml#L274">hpa.enabled</a></td>
 			<td>
 bool
 </td>
@@ -674,7 +689,7 @@ false
 			<td>Enable HPA</td>
 		</tr>
 		<tr>
-			<td id="hpa--maxReplicas"><a href="./values.yaml#L274">hpa.maxReplicas</a></td>
+			<td id="hpa--maxReplicas"><a href="./values.yaml#L278">hpa.maxReplicas</a></td>
 			<td>
 int
 </td>
@@ -688,7 +703,7 @@ int
 			<td>Maximum replicas for HPA</td>
 		</tr>
 		<tr>
-			<td id="hpa--minReplicas"><a href="./values.yaml#L272">hpa.minReplicas</a></td>
+			<td id="hpa--minReplicas"><a href="./values.yaml#L276">hpa.minReplicas</a></td>
 			<td>
 int
 </td>
@@ -702,7 +717,7 @@ int
 			<td>Minimum replicas for HPA</td>
 		</tr>
 		<tr>
-			<td id="hpa--targetCPUUtilizationPercentage"><a href="./values.yaml#L276">hpa.targetCPUUtilizationPercentage</a></td>
+			<td id="hpa--targetCPUUtilizationPercentage"><a href="./values.yaml#L280">hpa.targetCPUUtilizationPercentage</a></td>
 			<td>
 int
 </td>
@@ -786,7 +801,7 @@ list
 			<td></td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L144">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L148">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -803,7 +818,7 @@ object
 			<td>Cilium Network Policies configuration</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--enabled"><a href="./values.yaml#L146">libchartCnps.enabled</a></td>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L150">libchartCnps.enabled</a></td>
 			<td>
 bool
 </td>
@@ -817,7 +832,7 @@ false
 			<td>Enable Cilium Network Policies</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L148">libchartCnps.includeCnpgPolicies</a></td>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L152">libchartCnps.includeCnpgPolicies</a></td>
 			<td>
 bool
 </td>
@@ -831,7 +846,7 @@ false
 			<td>Include CNPG-specific policies</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--exec--command[0]"><a href="./values.yaml#L286">livenessProbe.exec.command[0]</a></td>
+			<td id="livenessProbe--exec--command[0]"><a href="./values.yaml#L290">livenessProbe.exec.command[0]</a></td>
 			<td>
 string
 </td>
@@ -845,7 +860,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--exec--command[1]"><a href="./values.yaml#L286">livenessProbe.exec.command[1]</a></td>
+			<td id="livenessProbe--exec--command[1]"><a href="./values.yaml#L290">livenessProbe.exec.command[1]</a></td>
 			<td>
 string
 </td>
@@ -859,7 +874,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--exec--command[2]"><a href="./values.yaml#L286">livenessProbe.exec.command[2]</a></td>
+			<td id="livenessProbe--exec--command[2]"><a href="./values.yaml#L290">livenessProbe.exec.command[2]</a></td>
 			<td>
 string
 </td>
@@ -873,7 +888,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--failureThreshold"><a href="./values.yaml#L287">livenessProbe.failureThreshold</a></td>
+			<td id="livenessProbe--failureThreshold"><a href="./values.yaml#L291">livenessProbe.failureThreshold</a></td>
 			<td>
 int
 </td>
@@ -887,7 +902,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--initialDelaySeconds"><a href="./values.yaml#L289">livenessProbe.initialDelaySeconds</a></td>
+			<td id="livenessProbe--initialDelaySeconds"><a href="./values.yaml#L293">livenessProbe.initialDelaySeconds</a></td>
 			<td>
 int
 </td>
@@ -901,7 +916,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--periodSeconds"><a href="./values.yaml#L288">livenessProbe.periodSeconds</a></td>
+			<td id="livenessProbe--periodSeconds"><a href="./values.yaml#L292">livenessProbe.periodSeconds</a></td>
 			<td>
 int
 </td>
@@ -915,7 +930,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="monitoring"><a href="./values.yaml#L240">monitoring</a></td>
+			<td id="monitoring"><a href="./values.yaml#L244">monitoring</a></td>
 			<td>
 object
 </td>
@@ -935,7 +950,7 @@ object
 			<td>Monitoring configuration @description Provided monitoring rules are not valid and only used as a placeholder for future implementation. There you should NOT ENABLE the monitoring until this notice got removed. Implementation will follow when upstream support available. Upstream issue: https://github.com/netbirdio/netbird/issues/1762</td>
 		</tr>
 		<tr>
-			<td id="monitoring--enabled"><a href="./values.yaml#L242">monitoring.enabled</a></td>
+			<td id="monitoring--enabled"><a href="./values.yaml#L246">monitoring.enabled</a></td>
 			<td>
 bool
 </td>
@@ -949,7 +964,7 @@ false
 			<td>Enable monitoring (DO NOT ENABLE; see desc above for details)</td>
 		</tr>
 		<tr>
-			<td id="monitoring--serviceMonitor"><a href="./values.yaml#L244">monitoring.serviceMonitor</a></td>
+			<td id="monitoring--serviceMonitor"><a href="./values.yaml#L248">monitoring.serviceMonitor</a></td>
 			<td>
 object
 </td>
@@ -966,7 +981,7 @@ object
 			<td>ServiceMonitor configuration</td>
 		</tr>
 		<tr>
-			<td id="monitoring--serviceMonitor--additionalLabels"><a href="./values.yaml#L250">monitoring.serviceMonitor.additionalLabels</a></td>
+			<td id="monitoring--serviceMonitor--additionalLabels"><a href="./values.yaml#L254">monitoring.serviceMonitor.additionalLabels</a></td>
 			<td>
 object
 </td>
@@ -980,7 +995,7 @@ object
 			<td>Additional labels @description Provide additional labels to the service monitor resource, e.g. for auto-provisioning.</td>
 		</tr>
 		<tr>
-			<td id="monitoring--serviceMonitor--annotations"><a href="./values.yaml#L247">monitoring.serviceMonitor.annotations</a></td>
+			<td id="monitoring--serviceMonitor--annotations"><a href="./values.yaml#L251">monitoring.serviceMonitor.annotations</a></td>
 			<td>
 object
 </td>
@@ -1008,7 +1023,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L298">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L302">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -1022,7 +1037,7 @@ object
 			<td>Node selector configuration</td>
 		</tr>
 		<tr>
-			<td id="persistence"><a href="./values.yaml#L220">persistence</a></td>
+			<td id="persistence"><a href="./values.yaml#L224">persistence</a></td>
 			<td>
 object
 </td>
@@ -1044,7 +1059,7 @@ object
 			<td>NetBird agent persistence configuration.</td>
 		</tr>
 		<tr>
-			<td id="persistence--accessModes"><a href="./values.yaml#L230">persistence.accessModes</a></td>
+			<td id="persistence--accessModes"><a href="./values.yaml#L234">persistence.accessModes</a></td>
 			<td>
 list
 </td>
@@ -1060,7 +1075,7 @@ list
 			<td>Define the accessModes to use when not providing an already existing PVC claim.</td>
 		</tr>
 		<tr>
-			<td id="persistence--emptyDirSizeLimit"><a href="./values.yaml#L224">persistence.emptyDirSizeLimit</a></td>
+			<td id="persistence--emptyDirSizeLimit"><a href="./values.yaml#L228">persistence.emptyDirSizeLimit</a></td>
 			<td>
 string
 </td>
@@ -1074,7 +1089,7 @@ string
 			<td>Define the max directory size when using persistence.enabled: false</td>
 		</tr>
 		<tr>
-			<td id="persistence--size"><a href="./values.yaml#L226">persistence.size</a></td>
+			<td id="persistence--size"><a href="./values.yaml#L230">persistence.size</a></td>
 			<td>
 string
 </td>
@@ -1088,7 +1103,7 @@ string
 			<td>Define the size of the PV when using persistence.enabled: true</td>
 		</tr>
 		<tr>
-			<td id="persistence--storageClass"><a href="./values.yaml#L228">persistence.storageClass</a></td>
+			<td id="persistence--storageClass"><a href="./values.yaml#L232">persistence.storageClass</a></td>
 			<td>
 string
 </td>
@@ -1137,7 +1152,7 @@ object
 			<td>Pod security context</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--exec--command[0]"><a href="./values.yaml#L292">readinessProbe.exec.command[0]</a></td>
+			<td id="readinessProbe--exec--command[0]"><a href="./values.yaml#L296">readinessProbe.exec.command[0]</a></td>
 			<td>
 string
 </td>
@@ -1151,7 +1166,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--exec--command[1]"><a href="./values.yaml#L292">readinessProbe.exec.command[1]</a></td>
+			<td id="readinessProbe--exec--command[1]"><a href="./values.yaml#L296">readinessProbe.exec.command[1]</a></td>
 			<td>
 string
 </td>
@@ -1165,7 +1180,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--exec--command[2]"><a href="./values.yaml#L292">readinessProbe.exec.command[2]</a></td>
+			<td id="readinessProbe--exec--command[2]"><a href="./values.yaml#L296">readinessProbe.exec.command[2]</a></td>
 			<td>
 string
 </td>
@@ -1179,7 +1194,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L293">readinessProbe.failureThreshold</a></td>
+			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L297">readinessProbe.failureThreshold</a></td>
 			<td>
 int
 </td>
@@ -1193,7 +1208,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L295">readinessProbe.initialDelaySeconds</a></td>
+			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L299">readinessProbe.initialDelaySeconds</a></td>
 			<td>
 int
 </td>
@@ -1207,7 +1222,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L294">readinessProbe.periodSeconds</a></td>
+			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L298">readinessProbe.periodSeconds</a></td>
 			<td>
 int
 </td>
@@ -1235,7 +1250,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L253">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L257">resources</a></td>
 			<td>
 object
 </td>
@@ -1258,7 +1273,7 @@ object
 			<td>Resource requests and limits</td>
 		</tr>
 		<tr>
-			<td id="resources--limits"><a href="./values.yaml#L261">resources.limits</a></td>
+			<td id="resources--limits"><a href="./values.yaml#L265">resources.limits</a></td>
 			<td>
 object
 </td>
@@ -1275,7 +1290,7 @@ object
 			<td>Resource limits</td>
 		</tr>
 		<tr>
-			<td id="resources--limits--cpu"><a href="./values.yaml#L263">resources.limits.cpu</a></td>
+			<td id="resources--limits--cpu"><a href="./values.yaml#L267">resources.limits.cpu</a></td>
 			<td>
 string
 </td>
@@ -1289,7 +1304,7 @@ string
 			<td>CPU limit</td>
 		</tr>
 		<tr>
-			<td id="resources--limits--memory"><a href="./values.yaml#L265">resources.limits.memory</a></td>
+			<td id="resources--limits--memory"><a href="./values.yaml#L269">resources.limits.memory</a></td>
 			<td>
 string
 </td>
@@ -1303,7 +1318,7 @@ string
 			<td>Memory limit</td>
 		</tr>
 		<tr>
-			<td id="resources--requests"><a href="./values.yaml#L255">resources.requests</a></td>
+			<td id="resources--requests"><a href="./values.yaml#L259">resources.requests</a></td>
 			<td>
 object
 </td>
@@ -1320,7 +1335,7 @@ object
 			<td>Requested resources</td>
 		</tr>
 		<tr>
-			<td id="resources--requests--cpu"><a href="./values.yaml#L257">resources.requests.cpu</a></td>
+			<td id="resources--requests--cpu"><a href="./values.yaml#L261">resources.requests.cpu</a></td>
 			<td>
 string
 </td>
@@ -1334,7 +1349,7 @@ string
 			<td>CPU request</td>
 		</tr>
 		<tr>
-			<td id="resources--requests--memory"><a href="./values.yaml#L259">resources.requests.memory</a></td>
+			<td id="resources--requests--memory"><a href="./values.yaml#L263">resources.requests.memory</a></td>
 			<td>
 string
 </td>
@@ -1504,7 +1519,7 @@ string
 			<td>- The name of the service account to use. @description If not set and create is true, a name is generated using the fullname template</td>
 		</tr>
 		<tr>
-			<td id="startupProbe"><a href="./values.yaml#L279">startupProbe</a></td>
+			<td id="startupProbe"><a href="./values.yaml#L283">startupProbe</a></td>
 			<td>
 object
 </td>
@@ -1518,7 +1533,7 @@ object
 			<td>Health probes configuration for startup, liveness and readiness probes</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L301">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L305">tolerations</a></td>
 			<td>
 list
 </td>
