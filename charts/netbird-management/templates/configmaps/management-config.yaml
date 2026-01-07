@@ -21,7 +21,7 @@ data:
             "Turns": [
                 {
                     "Proto": "udp",
-                    "URI": "turn:$TURN_DOMAIN:3478",
+                    "URI": "turn:$TURN_DOMAIN:$TURN_PORT",
                     "Username": "$TURN_USER",
                     "Password": "$TURN_PASSWORD"
                 }
