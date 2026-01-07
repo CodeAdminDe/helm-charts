@@ -12,7 +12,7 @@ data:
         "Stuns": [
             {
                 "Proto": "udp",
-                "URI": "stun:$TURN_DOMAIN:3478",
+                "URI": "stun:$TURN_DOMAIN:$TURN_PORT",
                 "Username": "",
                 "Password": null
             }

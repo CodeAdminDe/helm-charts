@@ -2,6 +2,10 @@
 global:
   # -- Domain for the deployment
   domain: "nb.example.com"
+  # -- Domain for turn/stun server (optional, defaults to global.domain value if not provided)
+  turnDomain: ""
+  # -- Port for turn/stun server (optional, defaults to 3478 if not provided)
+  turnPort:
   # -- Environment (production, staging, development)
   environment: production
   # -- Timezone for the deployment

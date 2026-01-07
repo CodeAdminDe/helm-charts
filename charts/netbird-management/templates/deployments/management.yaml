@@ -113,7 +113,9 @@ spec:
         - name: NETBIRD_RELAY_ENDPOINT
           value: "rels://{{ .Values.global.domain }}:443/relay"
         - name: TURN_DOMAIN
-          value: "{{ .Values.global.domain }}"
+          value: "{{ .Values.global.turnDomain | default .Values.global.domain }}"
+        - name: TURN_PORT
+          value: "{{ .Values.global.turnPort | default 3478 }}"
         - name: NETBIRD_SIGNAL_PROTOCOL
           value: "https"
         - name: NETBIRD_SIGNAL_PORT
