@@ -302,6 +302,10 @@ existingEncryptionKeySecret: ""
 # @description If not provided, Helm creates it automatically on first install. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.
 existingRelayAuthSecret: ""
 
+# -- Existing TURN (Coturn) credentials secret
+# @description If not provided, Helm creates it automatically on first install. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.
+existingTurnSecret: ""
+
 # -- Existing Authentik OIDC secret
 # @description If not provided, Helm creates it automatically on first install based on provided values. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.
 existingAuthentikOidcSecret: ""
@@ -350,6 +354,12 @@ authentik:
     scopes: "openid"
     # -- Use ID token instead of access token for device flow
     useIdToken: false
+
+# -- TURN (Coturn) configuration
+# @description Currently Coturn is not part of the deployment, but NetBird uses these values
+turn:
+  # -- Use time-based secrets for TURN
+  useTimebasedSecrets: true
 
 # -- Ingress configuration
 ingress:
