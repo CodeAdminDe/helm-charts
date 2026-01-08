@@ -53,7 +53,7 @@ data:
         local management_url="${NB_MANAGEMENT_URL}"
         local admin_url="${NB_ADMIN_URL}"
         local wireguard_iface="${NB_WIREGUARD_IFACE:-wt0}"
-        local wireguard_port="${NB_WIREGUARD_PORT:-51820}"
+        local wireguard_port="${NB_WIREGUARD_PORT:-0}"
         read mgmt_scheme mgmt_host < <(parse_url "$NB_MANAGEMENT_URL")
         read adm_scheme adm_host < <(parse_url "$NB_ADMIN_URL")
 
