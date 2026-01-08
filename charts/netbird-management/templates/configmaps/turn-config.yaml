@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/component: turn
 data:
   turnserver.conf.tmpl: |-
+    listening-ip=0.0.0.0
     listening-port=${TURN_PORT}
     {{- if .Values.turn.extIp }}
     external-ip=${TURN_EXT_IP}
@@ -24,8 +25,8 @@ data:
     log-file=stdout
     pidfile="/etc/coturn/tmp/turnserver.pid"
     stale-nonce=600
-    #cert=/etc/coturn/data/certs/cert.pem
-    #pkey=/etc/coturn/data/private/privkey.pem
+    cert=/etc/coturn/data/certs/cert.pem
+    pkey=/etc/coturn/data/private/privkey.pem
     no-tls
     no-tcp
     no-software-attribute
