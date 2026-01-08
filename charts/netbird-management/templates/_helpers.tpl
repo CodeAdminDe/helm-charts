@@ -77,21 +77,3 @@ app.kubernetes.io/instance: {{ .Release.Name }}
     sizeLimit: {{ .Values.signal.persistence.emptyDirSizeLimit }}
 {{- end -}}
 {{- end -}}
-
-{{- define "common.app.turn.pvc" -}}
-{{- if .Values.turn.persistence.enabled -}}
-{{- if .Values.turn.persistence.existingClaim -}}
-- name: {{ .Release.Name }}-turn-data
-  persistentVolumeClaim:
-      claimName: {{ .Values.turn.persistence.existingClaim -}}
-{{- else -}}
-- name: {{ .Release.Name }}-turn-data
-  persistentVolumeClaim:
-    claimName: {{ .Release.Name }}-turn-data
-{{- end -}}
-{{- else -}}
-- name: {{ .Release.Name }}-turn-data
-  emptyDir:
-    sizeLimit: {{ .Values.turn.persistence.emptyDirSizeLimit }}
-{{- end -}}
-{{- end -}}

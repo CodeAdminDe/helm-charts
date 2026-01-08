@@ -298,10 +298,6 @@ existingEncryptionKeySecret: ""
 # @description If not provided, Helm creates it automatically on first install. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.
 existingRelayAuthSecret: ""
 
-# -- Existing TURN (Coturn) credentials secret
-# @description If not provided, Helm creates it automatically on first install. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.
-existingTurnSecret: ""
-
 # -- Existing Authentik OIDC secret
 # @description If not provided, Helm creates it automatically on first install based on provided values. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.
 existingAuthentikOidcSecret: ""
@@ -351,122 +347,13 @@ authentik:
     # -- Use ID token instead of access token for device flow
     useIdToken: false
 
-# -- TURN (Coturn) configuration
-# @description Coturn configuration to provide STUN/TURN. Note that you need to configure your ingress / gatewayAPI to allow UDP traffic to pass.
+# -- TURN (STUN) configuration
+# @description Configure an external STUN server for better connectivity between your clients (NAT traversal).
 turn:
-  # -- Enable coturn server deployment
-  enabled: true
-  # -- Number of replicas
-  replicaCount: 1
-  # -- Coturn image repository, tag and pullPolicy
-  image:
-    repository: ghcr.io/coturn/coturn
-    tag: "4.8"
-    pullPolicy: IfNotPresent
-  # -- Init container for dynamic management.json generation
-  initConfig:
-    # -- Management initContainer image repository, tag and pullPolicy
-    image:
-      repository: ghcr.io/codeadminde/alpine-toolbox
-      tag: latest
-      pullPolicy: Always
-  # -- External IP under which the turn service will be reachable. ( )
-  # @description Provide the public IP under which your clients will reach the coturn server. It is recommended, but optional.
-  # If empty, coturn provided autodiscover script will be used. Note that this requires external 53/UDP access for coturn.
-  # If you're using the cnps-lib chart together with allowed egress appTraffic, the CNP policy will than be extended to
-  # allow these access to the used dns servers of the autodiscover script. Ref.: https://github.com/coturn/coturn/blob/48fb3dd287a10e91d6c9843a53758fd6103dbe51/docker/coturn/rootfs/usr/local/bin/detect-external-ip.sh
-  extIp: ""
   # -- Domain for coturn server to provide STUN/TURN (UDP) (optional, defaults to global.domain value if not provided)
   domain: ""
   # -- Port for coturn server to provide STUN/TURN (UDP) (optional, defaults to 3478 if not provided)
   port:
-  # -- Coturn metrics port (default turnserver.conf 9641/tcp /metrics)
-  metricsPort: 9641
-  # -- Service config
-  service:
-    # -- Service type
-    type: ClusterIP
-    # -- Service port (optional, defaults to 3478 if not provided)
-    port:
-    # -- Service metrics port
-    metricsPort: 9641
-  # -- Resource requests and limits
-  resources:
-    requests:
-      # -- CPU request
-      cpu: 100m
-      # -- Memory request
-      memory: 128Mi
-    limits:
-      # -- CPU limit
-      cpu: 500m
-      # -- Memory limit
-      memory: 256Mi
-  # -- Management server persistence configuration.
-  persistence:
-    # If persistence.enabled: false, you'd loose your stored data as soon as the container restarts.
-    enabled: false
-    # -- Define the max directory size when using persistence.enabled: false
-    emptyDirSizeLimit: 10Mi
-    # -- Define the size of the PV when using persistence.enabled: true
-    size: 50Mi
-    # -- Define the storageClass to use when not providing an already existing PVC claim. Provide your cluster storageclass or leave it empty to use the default one.
-    storageClass: "longhorn"
-    # -- Define the accessModes to use when not providing an already existing PVC claim.
-    accessModes:
-    - ReadWriteOnce
-    # -- Define an already existing PVC claim.
-    # The following values will be ignored when providing an existingClaim: persistence.{size, storageClass, accessModes}
-    # existingClaim: "my-pvc"
-
-  # -- Health probes configuration
-  probes:
-    # -- Liveness probe settings
-    liveness:
-      # -- Enable liveness probe
-      enabled: true
-      # -- Initial delay before first liveness probe
-      initialDelaySeconds: 30
-      # -- Liveness probe interval
-      periodSeconds: 10
-      # -- Liveness probe timeout
-      timeoutSeconds: 5
-      # -- Liveness probe failure threshold
-      failureThreshold: 3
-    # -- Readiness probe settings
-    readiness:
-      # -- Enable readiness probe
-      enabled: true
-      # -- Initial delay before first readiness probe
-      initialDelaySeconds: 10
-      # -- Readiness probe interval
-      periodSeconds: 5
-      # -- Readiness probe timeout
-      timeoutSeconds: 3
-      # -- Readiness probe failure threshold
-      failureThreshold: 2
-  # -- Pod affinity settings
-  affinity:
-    # -- Pod anti-affinity strategy (required, preferred)
-    podAntiAffinity: preferred
-  # -- Pod security context
-  securityContext:
-    # -- Run container as non-root user
-    runAsNonRoot: true
-    # -- User ID for running container
-    runAsUser: 65534
-    # -- File system group
-    fsGroup: 65534
-    # -- Use read-only root filesystem
-    readOnlyRootFilesystem: true
-  # -- Pod Disruption Budget
-  podDisruptionBudget:
-    # -- Enable Pod Disruption Budget
-    enabled: true
-    # -- Minimum available replicas
-    minAvailable: 1
-
-
 
 # -- Ingress configuration
 ingress:

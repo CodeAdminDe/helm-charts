@@ -2,7 +2,7 @@
 
 # netbird-management
 
-![Version: 1.7.7](https://img.shields.io/badge/Version-1.7.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.62.1](https://img.shields.io/badge/AppVersion-0.62.1-informational?style=flat-square)
+![Version: 1.8.0](https://img.shields.io/badge/Version-1.8.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.62.1](https://img.shields.io/badge/AppVersion-0.62.1-informational?style=flat-square)
 
 A Helm chart for an easier netbird management stack (https://netbird.io) deployment at kubernetes.
 
@@ -94,7 +94,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="authentik"><a href="./values.yaml#L314">authentik</a></td>
+			<td id="authentik"><a href="./values.yaml#L310">authentik</a></td>
 			<td>
 object
 </td>
@@ -130,7 +130,7 @@ object
 			<td>Authentik OIDC configuration</td>
 		</tr>
 		<tr>
-			<td id="authentik--appSlug"><a href="./values.yaml#L320">authentik.appSlug</a></td>
+			<td id="authentik--appSlug"><a href="./values.yaml#L316">authentik.appSlug</a></td>
 			<td>
 string
 </td>
@@ -144,7 +144,7 @@ string
 			<td>Authentik application slug</td>
 		</tr>
 		<tr>
-			<td id="authentik--clientId"><a href="./values.yaml#L326">authentik.clientId</a></td>
+			<td id="authentik--clientId"><a href="./values.yaml#L322">authentik.clientId</a></td>
 			<td>
 string
 </td>
@@ -158,7 +158,7 @@ string
 			<td>Authentik client ID</td>
 		</tr>
 		<tr>
-			<td id="authentik--clientSecret"><a href="./values.yaml#L328">authentik.clientSecret</a></td>
+			<td id="authentik--clientSecret"><a href="./values.yaml#L324">authentik.clientSecret</a></td>
 			<td>
 string
 </td>
@@ -172,7 +172,7 @@ string
 			<td>Authentik client secret (only required for confidential clients)</td>
 		</tr>
 		<tr>
-			<td id="authentik--device"><a href="./values.yaml#L340">authentik.device</a></td>
+			<td id="authentik--device"><a href="./values.yaml#L336">authentik.device</a></td>
 			<td>
 object
 </td>
@@ -193,7 +193,7 @@ object
 			<td>Device code flow configuration</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--clientId"><a href="./values.yaml#L346">authentik.device.clientId</a></td>
+			<td id="authentik--device--clientId"><a href="./values.yaml#L342">authentik.device.clientId</a></td>
 			<td>
 string
 </td>
@@ -207,7 +207,7 @@ string
 			<td>Device code flow client ID</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--clientSecret"><a href="./values.yaml#L348">authentik.device.clientSecret</a></td>
+			<td id="authentik--device--clientSecret"><a href="./values.yaml#L344">authentik.device.clientSecret</a></td>
 			<td>
 string
 </td>
@@ -221,7 +221,7 @@ string
 			<td>Device code flow client secret (only required for confidential clients)</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--isPublicClient"><a href="./values.yaml#L344">authentik.device.isPublicClient</a></td>
+			<td id="authentik--device--isPublicClient"><a href="./values.yaml#L340">authentik.device.isPublicClient</a></td>
 			<td>
 bool
 </td>
@@ -235,7 +235,7 @@ true
 			<td>Device code flow client is public</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--scopes"><a href="./values.yaml#L350">authentik.device.scopes</a></td>
+			<td id="authentik--device--scopes"><a href="./values.yaml#L346">authentik.device.scopes</a></td>
 			<td>
 string
 </td>
@@ -249,7 +249,7 @@ string
 			<td>Device code flow OIDC scopes</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--type"><a href="./values.yaml#L342">authentik.device.type</a></td>
+			<td id="authentik--device--type"><a href="./values.yaml#L338">authentik.device.type</a></td>
 			<td>
 string
 </td>
@@ -263,7 +263,7 @@ string
 			<td>Device code flow type (hosted or none to disable)</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--useIdToken"><a href="./values.yaml#L352">authentik.device.useIdToken</a></td>
+			<td id="authentik--device--useIdToken"><a href="./values.yaml#L348">authentik.device.useIdToken</a></td>
 			<td>
 bool
 </td>
@@ -277,7 +277,7 @@ false
 			<td>Use ID token instead of access token for device flow</td>
 		</tr>
 		<tr>
-			<td id="authentik--domain"><a href="./values.yaml#L318">authentik.domain</a></td>
+			<td id="authentik--domain"><a href="./values.yaml#L314">authentik.domain</a></td>
 			<td>
 string
 </td>
@@ -291,7 +291,7 @@ string
 			<td>Authentik domain URL</td>
 		</tr>
 		<tr>
-			<td id="authentik--enabled"><a href="./values.yaml#L316">authentik.enabled</a></td>
+			<td id="authentik--enabled"><a href="./values.yaml#L312">authentik.enabled</a></td>
 			<td>
 bool
 </td>
@@ -305,7 +305,7 @@ true
 			<td>Enable Authentik OIDC</td>
 		</tr>
 		<tr>
-			<td id="authentik--isPublicClient"><a href="./values.yaml#L324">authentik.isPublicClient</a></td>
+			<td id="authentik--isPublicClient"><a href="./values.yaml#L320">authentik.isPublicClient</a></td>
 			<td>
 bool
 </td>
@@ -319,7 +319,7 @@ true
 			<td>Authentik client is public (no client secret required)</td>
 		</tr>
 		<tr>
-			<td id="authentik--issuer"><a href="./values.yaml#L322">authentik.issuer</a></td>
+			<td id="authentik--issuer"><a href="./values.yaml#L318">authentik.issuer</a></td>
 			<td>
 string
 </td>
@@ -333,7 +333,7 @@ string
 			<td>Authentik issuer URL</td>
 		</tr>
 		<tr>
-			<td id="authentik--scopes"><a href="./values.yaml#L330">authentik.scopes</a></td>
+			<td id="authentik--scopes"><a href="./values.yaml#L326">authentik.scopes</a></td>
 			<td>
 string
 </td>
@@ -347,7 +347,7 @@ string
 			<td>OIDC scopes to request</td>
 		</tr>
 		<tr>
-			<td id="authentik--serviceAccount"><a href="./values.yaml#L334">authentik.serviceAccount</a></td>
+			<td id="authentik--serviceAccount"><a href="./values.yaml#L330">authentik.serviceAccount</a></td>
 			<td>
 object
 </td>
@@ -364,7 +364,7 @@ object
 			<td>Service account configuration</td>
 		</tr>
 		<tr>
-			<td id="authentik--serviceAccount--password"><a href="./values.yaml#L338">authentik.serviceAccount.password</a></td>
+			<td id="authentik--serviceAccount--password"><a href="./values.yaml#L334">authentik.serviceAccount.password</a></td>
 			<td>
 string
 </td>
@@ -378,7 +378,7 @@ string
 			<td>Service account password</td>
 		</tr>
 		<tr>
-			<td id="authentik--serviceAccount--username"><a href="./values.yaml#L336">authentik.serviceAccount.username</a></td>
+			<td id="authentik--serviceAccount--username"><a href="./values.yaml#L332">authentik.serviceAccount.username</a></td>
 			<td>
 string
 </td>
@@ -392,7 +392,7 @@ string
 			<td>Service account username</td>
 		</tr>
 		<tr>
-			<td id="authentik--useIdToken"><a href="./values.yaml#L332">authentik.useIdToken</a></td>
+			<td id="authentik--useIdToken"><a href="./values.yaml#L328">authentik.useIdToken</a></td>
 			<td>
 bool
 </td>
@@ -406,7 +406,7 @@ false
 			<td>Use ID token instead of access token</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L522">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L409">cnps</a></td>
 			<td>
 object
 </td>
@@ -438,7 +438,7 @@ object
 			<td>Application-specific Cilium Network Policies configuration @description Requires CiliumNetworkPolicies library-chart. These settings will be ignored if the library-chart is not available. These settings are directly related to the application and will not influence namespace-wide policies (e.g., for DNS egress traffic).</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic"><a href="./values.yaml#L524">cnps.appTraffic</a></td>
+			<td id="cnps--appTraffic"><a href="./values.yaml#L411">cnps.appTraffic</a></td>
 			<td>
 object
 </td>
@@ -465,7 +465,7 @@ object
 			<td>Application traffic policies</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress"><a href="./values.yaml#L543">cnps.appTraffic.egress</a></td>
+			<td id="cnps--appTraffic--egress"><a href="./values.yaml#L430">cnps.appTraffic.egress</a></td>
 			<td>
 object
 </td>
@@ -483,7 +483,7 @@ object
 			<td>Egress traffic configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L545">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L432">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -497,7 +497,7 @@ true
 			<td>Allow egress traffic</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--matchLabels"><a href="./values.yaml#L548">cnps.appTraffic.egress.matchLabels</a></td>
+			<td id="cnps--appTraffic--egress--matchLabels"><a href="./values.yaml#L435">cnps.appTraffic.egress.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -511,7 +511,7 @@ object
 			<td>Labels to match egress destinations @description Allows overriding default egress labels to match your security requirements.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L552">cnps.appTraffic.egress.toEntities</a></td>
+			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L439">cnps.appTraffic.egress.toEntities</a></td>
 			<td>
 list
 </td>
@@ -525,7 +525,7 @@ list
 			<td>Entities to allow egress to (e.g., world) @description Allows overriding default egress entities to match your security requirements.   - world</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress"><a href="./values.yaml#L526">cnps.appTraffic.ingress</a></td>
+			<td id="cnps--appTraffic--ingress"><a href="./values.yaml#L413">cnps.appTraffic.ingress</a></td>
 			<td>
 object
 </td>
@@ -545,7 +545,7 @@ object
 			<td>Ingress traffic configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L528">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L415">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -559,7 +559,7 @@ true
 			<td>Allow ingress traffic</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L533">cnps.appTraffic.ingress.matchLabels</a></td>
+			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L420">cnps.appTraffic.ingress.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -573,7 +573,7 @@ object
 			<td>Labels to match ingress controller pods @description Allows overriding default to match your ingress deployment.   app.kubernetes.io/name: ingress-nginx   io.kubernetes.pod.namespace: ingress-nginx</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--metrics"><a href="./values.yaml#L535">cnps.appTraffic.ingress.metrics</a></td>
+			<td id="cnps--appTraffic--ingress--metrics"><a href="./values.yaml#L422">cnps.appTraffic.ingress.metrics</a></td>
 			<td>
 object
 </td>
@@ -589,7 +589,7 @@ object
 			<td>Metrics scraper configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--metrics--matchLabels"><a href="./values.yaml#L541">cnps.appTraffic.ingress.metrics.matchLabels</a></td>
+			<td id="cnps--appTraffic--ingress--metrics--matchLabels"><a href="./values.yaml#L428">cnps.appTraffic.ingress.metrics.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -603,7 +603,7 @@ object
 			<td>Labels to match Prometheus pods @description Allows overriding default to match your prometheus deployment   app.kubernetes.io/name: prometheus   app.kubernetes.io/instance: kube-prometheus-stack-prometheus   io.kubernetes.pod.namespace: monitoring--kube-prometheus-stack</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L554">cnps.cnpgTraffic</a></td>
+			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L441">cnps.cnpgTraffic</a></td>
 			<td>
 object
 </td>
@@ -619,7 +619,7 @@ object
 			<td>CNPG traffic policies</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L572">cnps.cnpgTraffic.instanceExtraEgress</a></td>
+			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L459">cnps.cnpgTraffic.instanceExtraEgress</a></td>
 			<td>
 list
 </td>
@@ -948,7 +948,7 @@ string
 			<td>Service type</td>
 		</tr>
 		<tr>
-			<td id="existingAuthentikDeviceOidcSecret"><a href="./values.yaml#L311">existingAuthentikDeviceOidcSecret</a></td>
+			<td id="existingAuthentikDeviceOidcSecret"><a href="./values.yaml#L307">existingAuthentikDeviceOidcSecret</a></td>
 			<td>
 string
 </td>
@@ -962,7 +962,7 @@ string
 			<td>Existing Authentik device OIDC secret @description If not provided, Helm creates it automatically on first install based on provided values. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.</td>
 		</tr>
 		<tr>
-			<td id="existingAuthentikOidcSecret"><a href="./values.yaml#L307">existingAuthentikOidcSecret</a></td>
+			<td id="existingAuthentikOidcSecret"><a href="./values.yaml#L303">existingAuthentikOidcSecret</a></td>
 			<td>
 string
 </td>
@@ -1002,20 +1002,6 @@ string
 </div>
 			</td>
 			<td>Existing relay authentication secret @description If not provided, Helm creates it automatically on first install. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.</td>
-		</tr>
-		<tr>
-			<td id="existingTurnSecret"><a href="./values.yaml#L303">existingTurnSecret</a></td>
-			<td>
-string
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-""
-</pre>
-</div>
-			</td>
-			<td>Existing TURN (Coturn) credentials secret @description If not provided, Helm creates it automatically on first install. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.</td>
 		</tr>
 		<tr>
 			<td id="global"><a href="./values.yaml#L2">global</a></td>
@@ -1138,7 +1124,7 @@ string
 			<td>Timezone for the deployment</td>
 		</tr>
 		<tr>
-			<td id="ingress"><a href="./values.yaml#L472">ingress</a></td>
+			<td id="ingress"><a href="./values.yaml#L359">ingress</a></td>
 			<td>
 object
 </td>
@@ -1164,7 +1150,7 @@ object
 			<td>Ingress configuration</td>
 		</tr>
 		<tr>
-			<td id="ingress--additionalAnnotations"><a href="./values.yaml#L490">ingress.additionalAnnotations</a></td>
+			<td id="ingress--additionalAnnotations"><a href="./values.yaml#L377">ingress.additionalAnnotations</a></td>
 			<td>
 object
 </td>
@@ -1178,7 +1164,7 @@ object
 			<td>Optional annotations for Ingress configuration</td>
 		</tr>
 		<tr>
-			<td id="ingress--className"><a href="./values.yaml#L476">ingress.className</a></td>
+			<td id="ingress--className"><a href="./values.yaml#L363">ingress.className</a></td>
 			<td>
 string
 </td>
@@ -1192,7 +1178,7 @@ string
 			<td>Ingress class name</td>
 		</tr>
 		<tr>
-			<td id="ingress--consolidationMode"><a href="./values.yaml#L478">ingress.consolidationMode</a></td>
+			<td id="ingress--consolidationMode"><a href="./values.yaml#L365">ingress.consolidationMode</a></td>
 			<td>
 string
 </td>
@@ -1206,7 +1192,7 @@ string
 			<td>HTTP/2 consolidation mode</td>
 		</tr>
 		<tr>
-			<td id="ingress--enabled"><a href="./values.yaml#L474">ingress.enabled</a></td>
+			<td id="ingress--enabled"><a href="./values.yaml#L361">ingress.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1220,7 +1206,7 @@ true
 			<td>Enable Ingress</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls"><a href="./values.yaml#L480">ingress.tls</a></td>
+			<td id="ingress--tls"><a href="./values.yaml#L367">ingress.tls</a></td>
 			<td>
 object
 </td>
@@ -1240,7 +1226,7 @@ object
 			<td>TLS configuration</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls--enabled"><a href="./values.yaml#L482">ingress.tls.enabled</a></td>
+			<td id="ingress--tls--enabled"><a href="./values.yaml#L369">ingress.tls.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1254,7 +1240,7 @@ true
 			<td>Enable TLS</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls--issuer"><a href="./values.yaml#L484">ingress.tls.issuer</a></td>
+			<td id="ingress--tls--issuer"><a href="./values.yaml#L371">ingress.tls.issuer</a></td>
 			<td>
 object
 </td>
@@ -1271,7 +1257,7 @@ object
 			<td>Certificate issuer configuration</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls--issuer--kind"><a href="./values.yaml#L488">ingress.tls.issuer.kind</a></td>
+			<td id="ingress--tls--issuer--kind"><a href="./values.yaml#L375">ingress.tls.issuer.kind</a></td>
 			<td>
 string
 </td>
@@ -1285,7 +1271,7 @@ string
 			<td>Issuer kind (Issuer or ClusterIssuer)</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls--issuer--name"><a href="./values.yaml#L486">ingress.tls.issuer.name</a></td>
+			<td id="ingress--tls--issuer--name"><a href="./values.yaml#L373">ingress.tls.issuer.name</a></td>
 			<td>
 string
 </td>
@@ -1299,7 +1285,7 @@ string
 			<td>Issuer name</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L514">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L401">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -1316,7 +1302,7 @@ object
 			<td>Cilium Network Policies configuration</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--enabled"><a href="./values.yaml#L516">libchartCnps.enabled</a></td>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L403">libchartCnps.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1330,7 +1316,7 @@ false
 			<td>Enable Cilium Network Policies</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L518">libchartCnps.includeCnpgPolicies</a></td>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L405">libchartCnps.includeCnpgPolicies</a></td>
 			<td>
 bool
 </td>
@@ -2115,7 +2101,7 @@ string
 			<td>Service type</td>
 		</tr>
 		<tr>
-			<td id="monitoring"><a href="./values.yaml#L586">monitoring</a></td>
+			<td id="monitoring"><a href="./values.yaml#L473">monitoring</a></td>
 			<td>
 object
 </td>
@@ -2131,7 +2117,7 @@ object
 			<td>Monitoring configuration</td>
 		</tr>
 		<tr>
-			<td id="monitoring--enabled"><a href="./values.yaml#L588">monitoring.enabled</a></td>
+			<td id="monitoring--enabled"><a href="./values.yaml#L475">monitoring.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2240,7 +2226,7 @@ true
 			<td>Use CNPG Cluster for PostgreSQL</td>
 		</tr>
 		<tr>
-			<td id="rbac"><a href="./values.yaml#L575">rbac</a></td>
+			<td id="rbac"><a href="./values.yaml#L462">rbac</a></td>
 			<td>
 object
 </td>
@@ -2260,7 +2246,7 @@ object
 			<td>Role-Based Access Control configuration</td>
 		</tr>
 		<tr>
-			<td id="rbac--create"><a href="./values.yaml#L577">rbac.create</a></td>
+			<td id="rbac--create"><a href="./values.yaml#L464">rbac.create</a></td>
 			<td>
 bool
 </td>
@@ -2274,7 +2260,7 @@ false
 			<td>Create RBAC resources</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount"><a href="./values.yaml#L579">rbac.serviceAccount</a></td>
+			<td id="rbac--serviceAccount"><a href="./values.yaml#L466">rbac.serviceAccount</a></td>
 			<td>
 object
 </td>
@@ -2291,7 +2277,7 @@ object
 			<td>Service account configuration</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount--create"><a href="./values.yaml#L581">rbac.serviceAccount.create</a></td>
+			<td id="rbac--serviceAccount--create"><a href="./values.yaml#L468">rbac.serviceAccount.create</a></td>
 			<td>
 bool
 </td>
@@ -2305,7 +2291,7 @@ true
 			<td>Create service account</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount--name"><a href="./values.yaml#L583">rbac.serviceAccount.name</a></td>
+			<td id="rbac--serviceAccount--name"><a href="./values.yaml#L470">rbac.serviceAccount.name</a></td>
 			<td>
 string
 </td>
@@ -2634,7 +2620,7 @@ string
 			<td>Service type</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L505">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L392">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -2663,7 +2649,7 @@ object
 </details></td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--jobs"><a href="./values.yaml#L509">runtimeClass.jobs</a></td>
+			<td id="runtimeClass--jobs"><a href="./values.yaml#L396">runtimeClass.jobs</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -2677,7 +2663,7 @@ object
 			<td>Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--pods"><a href="./values.yaml#L507">runtimeClass.pods</a></td>
+			<td id="runtimeClass--pods"><a href="./values.yaml#L394">runtimeClass.pods</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -2691,7 +2677,7 @@ object
 			<td>Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--tests"><a href="./values.yaml#L511">runtimeClass.tests</a></td>
+			<td id="runtimeClass--tests"><a href="./values.yaml#L398">runtimeClass.tests</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -3109,7 +3095,7 @@ string
 			<td>Service type</td>
 		</tr>
 		<tr>
-			<td id="turn"><a href="./values.yaml#L356">turn</a></td>
+			<td id="turn"><a href="./values.yaml#L352">turn</a></td>
 			<td>
 object
 </td>
@@ -3117,115 +3103,16 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
-  "affinity": {
-    "podAntiAffinity": "preferred"
-  },
   "domain": "",
-  "enabled": true,
-  "extIp": "",
-  "image": {
-    "pullPolicy": "IfNotPresent",
-    "repository": "ghcr.io/coturn/coturn",
-    "tag": "4.8"
-  },
-  "initConfig": {
-    "image": {
-      "pullPolicy": "Always",
-      "repository": "ghcr.io/codeadminde/alpine-toolbox",
-      "tag": "latest"
-    }
-  },
-  "metricsPort": 9641,
-  "persistence": {
-    "accessModes": [
-      "ReadWriteOnce"
-    ],
-    "emptyDirSizeLimit": "10Mi",
-    "enabled": false,
-    "size": "50Mi",
-    "storageClass": "longhorn"
-  },
-  "podDisruptionBudget": {
-    "enabled": true,
-    "minAvailable": 1
-  },
-  "port": null,
-  "probes": {
-    "liveness": {
-      "enabled": true,
-      "failureThreshold": 3,
-      "initialDelaySeconds": 30,
-      "periodSeconds": 10,
-      "timeoutSeconds": 5
-    },
-    "readiness": {
-      "enabled": true,
-      "failureThreshold": 2,
-      "initialDelaySeconds": 10,
-      "periodSeconds": 5,
-      "timeoutSeconds": 3
-    }
-  },
-  "replicaCount": 1,
-  "resources": {
-    "limits": {
-      "cpu": "500m",
-      "memory": "256Mi"
-    },
-    "requests": {
-      "cpu": "100m",
-      "memory": "128Mi"
-    }
-  },
-  "securityContext": {
-    "fsGroup": 65534,
-    "readOnlyRootFilesystem": true,
-    "runAsNonRoot": true,
-    "runAsUser": 65534
-  },
-  "service": {
-    "metricsPort": 9641,
-    "port": null,
-    "type": "ClusterIP"
-  }
+  "port": null
 }
 </pre>
 </div>
 			</td>
-			<td>TURN (Coturn) configuration @description Coturn configuration to provide STUN/TURN. Note that you need to configure your ingress / gatewayAPI to allow UDP traffic to pass.</td>
+			<td>TURN (STUN) configuration @description Configure an external STUN server for better connectivity between your clients (NAT traversal).</td>
 		</tr>
 		<tr>
-			<td id="turn--affinity"><a href="./values.yaml#L449">turn.affinity</a></td>
-			<td>
-object
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-{
-  "podAntiAffinity": "preferred"
-}
-</pre>
-</div>
-			</td>
-			<td>Pod affinity settings</td>
-		</tr>
-		<tr>
-			<td id="turn--affinity--podAntiAffinity"><a href="./values.yaml#L451">turn.affinity.podAntiAffinity</a></td>
-			<td>
-string
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-"preferred"
-</pre>
-</div>
-			</td>
-			<td>Pod anti-affinity strategy (required, preferred)</td>
-		</tr>
-		<tr>
-			<td id="turn--domain"><a href="./values.yaml#L380">turn.domain</a></td>
+			<td id="turn--domain"><a href="./values.yaml#L354">turn.domain</a></td>
 			<td>
 string
 </td>
@@ -3239,230 +3126,7 @@ string
 			<td>Domain for coturn server to provide STUN/TURN (UDP) (optional, defaults to global.domain value if not provided)</td>
 		</tr>
 		<tr>
-			<td id="turn--enabled"><a href="./values.yaml#L358">turn.enabled</a></td>
-			<td>
-bool
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-true
-</pre>
-</div>
-			</td>
-			<td>Enable coturn server deployment</td>
-		</tr>
-		<tr>
-			<td id="turn--extIp"><a href="./values.yaml#L378">turn.extIp</a></td>
-			<td>
-string
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-""
-</pre>
-</div>
-			</td>
-			<td>External IP under which the turn service will be reachable. ( ) @description Provide the public IP under which your clients will reach the coturn server. It is recommended, but optional. If empty, coturn provided autodiscover script will be used. Note that this requires external 53/UDP access for coturn. If you're using the cnps-lib chart together with allowed egress appTraffic, the CNP policy will than be extended to allow these access to the used dns servers of the autodiscover script. Ref.: https://github.com/coturn/coturn/blob/48fb3dd287a10e91d6c9843a53758fd6103dbe51/docker/coturn/rootfs/usr/local/bin/detect-external-ip.sh</td>
-		</tr>
-		<tr>
-			<td id="turn--image"><a href="./values.yaml#L362">turn.image</a></td>
-			<td>
-object
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-{
-  "pullPolicy": "IfNotPresent",
-  "repository": "ghcr.io/coturn/coturn",
-  "tag": "4.8"
-}
-</pre>
-</div>
-			</td>
-			<td>Coturn image repository, tag and pullPolicy</td>
-		</tr>
-		<tr>
-			<td id="turn--initConfig"><a href="./values.yaml#L367">turn.initConfig</a></td>
-			<td>
-object
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-{
-  "image": {
-    "pullPolicy": "Always",
-    "repository": "ghcr.io/codeadminde/alpine-toolbox",
-    "tag": "latest"
-  }
-}
-</pre>
-</div>
-			</td>
-			<td>Init container for dynamic management.json generation</td>
-		</tr>
-		<tr>
-			<td id="turn--initConfig--image"><a href="./values.yaml#L369">turn.initConfig.image</a></td>
-			<td>
-object
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-{
-  "pullPolicy": "Always",
-  "repository": "ghcr.io/codeadminde/alpine-toolbox",
-  "tag": "latest"
-}
-</pre>
-</div>
-			</td>
-			<td>Management initContainer image repository, tag and pullPolicy</td>
-		</tr>
-		<tr>
-			<td id="turn--metricsPort"><a href="./values.yaml#L384">turn.metricsPort</a></td>
-			<td>
-int
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-9641
-</pre>
-</div>
-			</td>
-			<td>Coturn metrics port (default turnserver.conf 9641/tcp /metrics)</td>
-		</tr>
-		<tr>
-			<td id="turn--persistence"><a href="./values.yaml#L406">turn.persistence</a></td>
-			<td>
-object
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-{
-  "accessModes": [
-    "ReadWriteOnce"
-  ],
-  "emptyDirSizeLimit": "10Mi",
-  "enabled": false,
-  "size": "50Mi",
-  "storageClass": "longhorn"
-}
-</pre>
-</div>
-			</td>
-			<td>Management server persistence configuration.</td>
-		</tr>
-		<tr>
-			<td id="turn--persistence--accessModes"><a href="./values.yaml#L416">turn.persistence.accessModes</a></td>
-			<td>
-list
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-[
-  "ReadWriteOnce"
-]
-</pre>
-</div>
-			</td>
-			<td>Define the accessModes to use when not providing an already existing PVC claim.</td>
-		</tr>
-		<tr>
-			<td id="turn--persistence--emptyDirSizeLimit"><a href="./values.yaml#L410">turn.persistence.emptyDirSizeLimit</a></td>
-			<td>
-string
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-"10Mi"
-</pre>
-</div>
-			</td>
-			<td>Define the max directory size when using persistence.enabled: false</td>
-		</tr>
-		<tr>
-			<td id="turn--persistence--size"><a href="./values.yaml#L412">turn.persistence.size</a></td>
-			<td>
-string
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-"50Mi"
-</pre>
-</div>
-			</td>
-			<td>Define the size of the PV when using persistence.enabled: true</td>
-		</tr>
-		<tr>
-			<td id="turn--persistence--storageClass"><a href="./values.yaml#L414">turn.persistence.storageClass</a></td>
-			<td>
-string
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-"longhorn"
-</pre>
-</div>
-			</td>
-			<td>Define the storageClass to use when not providing an already existing PVC claim. Provide your cluster storageclass or leave it empty to use the default one.</td>
-		</tr>
-		<tr>
-			<td id="turn--podDisruptionBudget"><a href="./values.yaml#L463">turn.podDisruptionBudget</a></td>
-			<td>
-object
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-{
-  "enabled": true,
-  "minAvailable": 1
-}
-</pre>
-</div>
-			</td>
-			<td>Pod Disruption Budget</td>
-		</tr>
-		<tr>
-			<td id="turn--podDisruptionBudget--enabled"><a href="./values.yaml#L465">turn.podDisruptionBudget.enabled</a></td>
-			<td>
-bool
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-true
-</pre>
-</div>
-			</td>
-			<td>Enable Pod Disruption Budget</td>
-		</tr>
-		<tr>
-			<td id="turn--podDisruptionBudget--minAvailable"><a href="./values.yaml#L467">turn.podDisruptionBudget.minAvailable</a></td>
-			<td>
-int
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-1
-</pre>
-</div>
-			</td>
-			<td>Minimum available replicas</td>
-		</tr>
-		<tr>
-			<td id="turn--port"><a href="./values.yaml#L382">turn.port</a></td>
+			<td id="turn--port"><a href="./values.yaml#L356">turn.port</a></td>
 			<td>
 string
 </td>
@@ -3474,443 +3138,6 @@ null
 </div>
 			</td>
 			<td>Port for coturn server to provide STUN/TURN (UDP) (optional, defaults to 3478 if not provided)</td>
-		</tr>
-		<tr>
-			<td id="turn--probes"><a href="./values.yaml#L423">turn.probes</a></td>
-			<td>
-object
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-{
-  "liveness": {
-    "enabled": true,
-    "failureThreshold": 3,
-    "initialDelaySeconds": 30,
-    "periodSeconds": 10,
-    "timeoutSeconds": 5
-  },
-  "readiness": {
-    "enabled": true,
-    "failureThreshold": 2,
-    "initialDelaySeconds": 10,
-    "periodSeconds": 5,
-    "timeoutSeconds": 3
-  }
-}
-</pre>
-</div>
-			</td>
-			<td>Health probes configuration</td>
-		</tr>
-		<tr>
-			<td id="turn--probes--liveness"><a href="./values.yaml#L425">turn.probes.liveness</a></td>
-			<td>
-object
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-{
-  "enabled": true,
-  "failureThreshold": 3,
-  "initialDelaySeconds": 30,
-  "periodSeconds": 10,
-  "timeoutSeconds": 5
-}
-</pre>
-</div>
-			</td>
-			<td>Liveness probe settings</td>
-		</tr>
-		<tr>
-			<td id="turn--probes--liveness--enabled"><a href="./values.yaml#L427">turn.probes.liveness.enabled</a></td>
-			<td>
-bool
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-true
-</pre>
-</div>
-			</td>
-			<td>Enable liveness probe</td>
-		</tr>
-		<tr>
-			<td id="turn--probes--liveness--failureThreshold"><a href="./values.yaml#L435">turn.probes.liveness.failureThreshold</a></td>
-			<td>
-int
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-3
-</pre>
-</div>
-			</td>
-			<td>Liveness probe failure threshold</td>
-		</tr>
-		<tr>
-			<td id="turn--probes--liveness--initialDelaySeconds"><a href="./values.yaml#L429">turn.probes.liveness.initialDelaySeconds</a></td>
-			<td>
-int
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-30
-</pre>
-</div>
-			</td>
-			<td>Initial delay before first liveness probe</td>
-		</tr>
-		<tr>
-			<td id="turn--probes--liveness--periodSeconds"><a href="./values.yaml#L431">turn.probes.liveness.periodSeconds</a></td>
-			<td>
-int
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-10
-</pre>
-</div>
-			</td>
-			<td>Liveness probe interval</td>
-		</tr>
-		<tr>
-			<td id="turn--probes--liveness--timeoutSeconds"><a href="./values.yaml#L433">turn.probes.liveness.timeoutSeconds</a></td>
-			<td>
-int
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-5
-</pre>
-</div>
-			</td>
-			<td>Liveness probe timeout</td>
-		</tr>
-		<tr>
-			<td id="turn--probes--readiness"><a href="./values.yaml#L437">turn.probes.readiness</a></td>
-			<td>
-object
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-{
-  "enabled": true,
-  "failureThreshold": 2,
-  "initialDelaySeconds": 10,
-  "periodSeconds": 5,
-  "timeoutSeconds": 3
-}
-</pre>
-</div>
-			</td>
-			<td>Readiness probe settings</td>
-		</tr>
-		<tr>
-			<td id="turn--probes--readiness--enabled"><a href="./values.yaml#L439">turn.probes.readiness.enabled</a></td>
-			<td>
-bool
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-true
-</pre>
-</div>
-			</td>
-			<td>Enable readiness probe</td>
-		</tr>
-		<tr>
-			<td id="turn--probes--readiness--failureThreshold"><a href="./values.yaml#L447">turn.probes.readiness.failureThreshold</a></td>
-			<td>
-int
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-2
-</pre>
-</div>
-			</td>
-			<td>Readiness probe failure threshold</td>
-		</tr>
-		<tr>
-			<td id="turn--probes--readiness--initialDelaySeconds"><a href="./values.yaml#L441">turn.probes.readiness.initialDelaySeconds</a></td>
-			<td>
-int
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-10
-</pre>
-</div>
-			</td>
-			<td>Initial delay before first readiness probe</td>
-		</tr>
-		<tr>
-			<td id="turn--probes--readiness--periodSeconds"><a href="./values.yaml#L443">turn.probes.readiness.periodSeconds</a></td>
-			<td>
-int
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-5
-</pre>
-</div>
-			</td>
-			<td>Readiness probe interval</td>
-		</tr>
-		<tr>
-			<td id="turn--probes--readiness--timeoutSeconds"><a href="./values.yaml#L445">turn.probes.readiness.timeoutSeconds</a></td>
-			<td>
-int
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-3
-</pre>
-</div>
-			</td>
-			<td>Readiness probe timeout</td>
-		</tr>
-		<tr>
-			<td id="turn--replicaCount"><a href="./values.yaml#L360">turn.replicaCount</a></td>
-			<td>
-int
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-1
-</pre>
-</div>
-			</td>
-			<td>Number of replicas</td>
-		</tr>
-		<tr>
-			<td id="turn--resources"><a href="./values.yaml#L394">turn.resources</a></td>
-			<td>
-object
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-{
-  "limits": {
-    "cpu": "500m",
-    "memory": "256Mi"
-  },
-  "requests": {
-    "cpu": "100m",
-    "memory": "128Mi"
-  }
-}
-</pre>
-</div>
-			</td>
-			<td>Resource requests and limits</td>
-		</tr>
-		<tr>
-			<td id="turn--resources--limits--cpu"><a href="./values.yaml#L402">turn.resources.limits.cpu</a></td>
-			<td>
-string
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-"500m"
-</pre>
-</div>
-			</td>
-			<td>CPU limit</td>
-		</tr>
-		<tr>
-			<td id="turn--resources--limits--memory"><a href="./values.yaml#L404">turn.resources.limits.memory</a></td>
-			<td>
-string
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-"256Mi"
-</pre>
-</div>
-			</td>
-			<td>Memory limit</td>
-		</tr>
-		<tr>
-			<td id="turn--resources--requests--cpu"><a href="./values.yaml#L397">turn.resources.requests.cpu</a></td>
-			<td>
-string
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-"100m"
-</pre>
-</div>
-			</td>
-			<td>CPU request</td>
-		</tr>
-		<tr>
-			<td id="turn--resources--requests--memory"><a href="./values.yaml#L399">turn.resources.requests.memory</a></td>
-			<td>
-string
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-"128Mi"
-</pre>
-</div>
-			</td>
-			<td>Memory request</td>
-		</tr>
-		<tr>
-			<td id="turn--securityContext"><a href="./values.yaml#L453">turn.securityContext</a></td>
-			<td>
-object
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-{
-  "fsGroup": 65534,
-  "readOnlyRootFilesystem": true,
-  "runAsNonRoot": true,
-  "runAsUser": 65534
-}
-</pre>
-</div>
-			</td>
-			<td>Pod security context</td>
-		</tr>
-		<tr>
-			<td id="turn--securityContext--fsGroup"><a href="./values.yaml#L459">turn.securityContext.fsGroup</a></td>
-			<td>
-int
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-65534
-</pre>
-</div>
-			</td>
-			<td>File system group</td>
-		</tr>
-		<tr>
-			<td id="turn--securityContext--readOnlyRootFilesystem"><a href="./values.yaml#L461">turn.securityContext.readOnlyRootFilesystem</a></td>
-			<td>
-bool
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-true
-</pre>
-</div>
-			</td>
-			<td>Use read-only root filesystem</td>
-		</tr>
-		<tr>
-			<td id="turn--securityContext--runAsNonRoot"><a href="./values.yaml#L455">turn.securityContext.runAsNonRoot</a></td>
-			<td>
-bool
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-true
-</pre>
-</div>
-			</td>
-			<td>Run container as non-root user</td>
-		</tr>
-		<tr>
-			<td id="turn--securityContext--runAsUser"><a href="./values.yaml#L457">turn.securityContext.runAsUser</a></td>
-			<td>
-int
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-65534
-</pre>
-</div>
-			</td>
-			<td>User ID for running container</td>
-		</tr>
-		<tr>
-			<td id="turn--service"><a href="./values.yaml#L386">turn.service</a></td>
-			<td>
-object
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-{
-  "metricsPort": 9641,
-  "port": null,
-  "type": "ClusterIP"
-}
-</pre>
-</div>
-			</td>
-			<td>Service config</td>
-		</tr>
-		<tr>
-			<td id="turn--service--metricsPort"><a href="./values.yaml#L392">turn.service.metricsPort</a></td>
-			<td>
-int
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-9641
-</pre>
-</div>
-			</td>
-			<td>Service metrics port</td>
-		</tr>
-		<tr>
-			<td id="turn--service--port"><a href="./values.yaml#L390">turn.service.port</a></td>
-			<td>
-string
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-null
-</pre>
-</div>
-			</td>
-			<td>Service port (optional, defaults to 3478 if not provided)</td>
-		</tr>
-		<tr>
-			<td id="turn--service--type"><a href="./values.yaml#L388">turn.service.type</a></td>
-			<td>
-string
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-"ClusterIP"
-</pre>
-</div>
-			</td>
-			<td>Service type</td>
 		</tr>
 	</tbody>
 </table>
