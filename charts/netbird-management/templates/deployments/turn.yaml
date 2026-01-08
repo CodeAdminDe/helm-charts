@@ -59,8 +59,7 @@ spec:
           set -e
           # Generate turnserver.conf.
           echo "Generating turnserver.conf...."
-          envsubst < /etc/coturn-template/turnserver.conf.tmpl | cat > /etc/coturn/config/turnserver.conf
-
+          envsubst < /etc/coturn-config-template/turnserver.conf.tmpl | cat > /etc/coturn/config/turnserver.conf
 
           if [[ "true" == $CA_DEBUG_OUTPUT ]]; then
             echo "Generated configuration:"
