@@ -226,6 +226,9 @@ cnps:
                   protocol: TCP
                 - port: "3478"
                   protocol: UDP
+                - port: "49152"
+                  endPort: "65535"
+                  protocol: UDP
         # - toEndpoints:
         #     - matchLabels:
         #         app.kubernetes.io/name: ingress-nginx
