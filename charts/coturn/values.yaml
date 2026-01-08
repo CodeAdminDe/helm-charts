@@ -1,0 +1,212 @@
+# -- Global Configuration
+global:
+  # -- Domain for the deployment
+  domain: "relay.example.com"
+  # -- Image pull secrets for private registries
+  imagePullSecrets: []
+  # -- Enable / Disable debug output.
+  # @description WARN: When enabled, debug output will leak credentials and/or secrets into logs. Do not enable in prod envs!
+  caDebugOutput: false
+
+# -- TURN (Coturn) configuration
+# @description Coturn configuration to provide STUN/TURN.
+turn:
+  # -- Enable coturn server deployment
+  enabled: true
+  # -- Number of replicas
+  replicaCount: 1
+  # -- Coturn image repository, tag and pullPolicy
+  image:
+    repository: ghcr.io/coturn/coturn
+    tag: "4.8.0"
+    pullPolicy: IfNotPresent
+  # -- Init container for dynamic management.json generation
+  initConfig:
+    # -- Management initContainer image repository, tag and pullPolicy
+    image:
+      repository: ghcr.io/codeadminde/alpine-toolbox
+      tag: latest
+      pullPolicy: Always
+  # -- External IP under which the turn service will be reachable. ( )
+  # @description Provide the public IP under which your clients will reach the coturn server. It is recommended, but optional.
+  # If empty, coturn provided autodiscover script will be used. Note that this requires external 53/UDP access for coturn.
+  # If you're using the cnps-lib chart together with allowed egress appTraffic, the CNP policy will than be extended to
+  # allow these access to the used dns servers of the autodiscover script. Ref.: https://github.com/coturn/coturn/blob/48fb3dd287a10e91d6c9843a53758fd6103dbe51/docker/coturn/rootfs/usr/local/bin/detect-external-ip.sh
+  extIp: ""
+  # -- Domain for coturn server to provide STUN/TURN (UDP) (optional, defaults to global.domain value if not provided)
+  domain: ""
+  # -- Port for coturn server to provide STUN/TURN (UDP) (optional, defaults to 3478 if not provided)
+  port:
+  # -- Coturn metrics port (default turnserver.conf 9641/tcp /metrics)
+  metricsPort: 9641
+  # -- Service config (STUN)
+  service:
+    # -- Service type (STUN should be exported via LoadBalancer, instead of ClusterIP)
+    type: LoadBalancer
+    # -- Service port (optional, defaults to 3478 if not provided)
+    port:
+    # -- LoadBalancer externalTrafficPolicy (optional, defaults to Local if not provided)
+    externalTrafficPolicy: ""
+    # -- LoadBalancer internalTrafficPolicy (optional, defaults to Cluster if not provided)
+    internalTrafficPolicy: ""
+  # -- Service config (metrics; fixed type of ClusterIP)
+  metricsService:
+    # -- Service port
+    port: 9641
+  # -- Resource requests and limits
+  resources:
+    requests:
+      # -- CPU request
+      cpu: 100m
+      # -- Memory request
+      memory: 128Mi
+    limits:
+      # -- CPU limit
+      cpu: 500m
+      # -- Memory limit
+      memory: 256Mi
+  # -- Management server persistence configuration.
+  persistence:
+    # If persistence.enabled: false, you'd loose your stored data as soon as the container restarts.
+    enabled: false
+    # -- Define the max directory size when using persistence.enabled: false
+    emptyDirSizeLimit: 10Mi
+    # -- Define the size of the PV when using persistence.enabled: true
+    size: 50Mi
+    # -- Define the storageClass to use when not providing an already existing PVC claim. Provide your cluster storageclass or leave it empty to use the default one.
+    storageClass: "longhorn"
+    # -- Define the accessModes to use when not providing an already existing PVC claim.
+    accessModes:
+    - ReadWriteOnce
+    # -- Define an already existing PVC claim.
+    # The following values will be ignored when providing an existingClaim: persistence.{size, storageClass, accessModes}
+    # existingClaim: "my-pvc"
+
+  # -- Health probes configuration
+  probes:
+    # -- Liveness probe settings
+    liveness:
+      # -- Enable liveness probe
+      enabled: true
+      # -- Initial delay before first liveness probe
+      initialDelaySeconds: 30
+      # -- Liveness probe interval
+      periodSeconds: 10
+      # -- Liveness probe timeout
+      timeoutSeconds: 5
+      # -- Liveness probe failure threshold
+      failureThreshold: 3
+    # -- Readiness probe settings
+    readiness:
+      # -- Enable readiness probe
+      enabled: true
+      # -- Initial delay before first readiness probe
+      initialDelaySeconds: 10
+      # -- Readiness probe interval
+      periodSeconds: 5
+      # -- Readiness probe timeout
+      timeoutSeconds: 3
+      # -- Readiness probe failure threshold
+      failureThreshold: 2
+  # -- Pod affinity settings
+  affinity:
+    # -- Pod anti-affinity strategy (required, preferred)
+    podAntiAffinity: preferred
+  # -- Pod security context
+  securityContext:
+    # -- Run container as non-root user
+    runAsNonRoot: true
+    # -- User ID for running container
+    runAsUser: 65534
+    # -- File system group
+    fsGroup: 65534
+    # -- Use read-only root filesystem
+    readOnlyRootFilesystem: true
+
+# -- Set a RuntimeClass to execute the containers with a custom runtime configuration.
+# Register a runtimeClass within your cluster beforehand.
+# @raw
+#
+# <details>
+# <summary>Motivation (Expand)</summary>
+#
+# > The container runtime configuration is used to run a Pod's containers. . . .
+# > For example, if part of your workload deserves a high level of information security assurance, you might choose to schedule those Pods so that they run in a container runtime that uses hardware virtualization.
+# > You'd then benefit from the extra isolation of the alternative runtime, at the expense of some additional overhead. . . .
+#
+# <i>Source and more informations: https://kubernetes.io/docs/concepts/containers/runtime-class/ </i>
+#
+# </details>
+runtimeClass:
+  # -- (string/runtimeClassName) Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).
+  pods: ""
+  # -- (string/runtimeClassName) Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).
+  jobs: ""
+  # -- (string/runtimeClassName) Sets the runtimeClass for the containers which gets executed by the test hook. Takes the runtimeClass name, or "" (default).
+  tests: ""
+
+# -- Cilium Network Policies configuration
+libchartCnps:
+  # -- Enable Cilium Network Policies
+  enabled: false
+  # -- Include CNPG-specific policies
+  includeCnpgPolicies: false
+
+# -- Application-specific Cilium Network Policies configuration
+# @description Requires CiliumNetworkPolicies library-chart. These settings will be ignored if the library-chart is not available. These settings are directly related to the application and will not influence namespace-wide policies (e.g., for DNS egress traffic).
+cnps:
+  # -- Application traffic policies
+  appTraffic:
+    # -- Ingress traffic configuration
+    ingress:
+      # -- Allow ingress traffic (to coturn UDP port from world)
+      allow: true
+      # -- Metrics scraper configuration
+      metrics:
+        # -- Labels to match Prometheus pods
+        # @description Allows overriding default to match your prometheus deployment
+        #   app.kubernetes.io/name: prometheus
+        #   app.kubernetes.io/instance: kube-prometheus-stack-prometheus
+        #   io.kubernetes.pod.namespace: monitoring--kube-prometheus-stack
+        matchLabels: {}
+    # -- Egress traffic configuration
+    egress:
+      # -- Allow egress traffic (used to allow DNS queries when extIp not defined)
+      allow: true
+
+  # -- CNPG traffic policies
+  cnpgTraffic:
+    # -- Additional instance egress rules for external services (e.g., backup services)
+    # @description Add additional rule(s) as desired, to allow access to external backup services
+    # - toFQDNs:
+    #   - matchName: s3.storage.example.org
+    #   toPorts:
+    #     - ports:
+    #         - port: "443"
+    #           protocol: TCP
+    # ## OR ##
+    # - toEntities:
+    #   - world
+    #   toPorts:
+    #     - ports:
+    #         - port: "8443"
+    #           protocol: TCP
+    # ## OR ##
+    # ...
+    instanceExtraEgress: []
+
+# -- Role-Based Access Control configuration
+rbac:
+  # -- Create RBAC resources
+  create: false
+  # -- Service account configuration
+  serviceAccount:
+    # -- Create service account
+    create: true
+    # -- Service account name
+    name: coturn-server
+
+# -- Monitoring configuration
+monitoring:
+  # -- Enable monitoring
+  enabled: false

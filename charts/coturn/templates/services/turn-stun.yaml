@@ -1,0 +1,24 @@
+{{- if .Values.turn.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "coturn-server.fullname" . }}-turn-stun
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "coturn-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: coturn
+spec:
+  type: {{ .Values.turn.service.type }}
+  {{- if eq .Values.turn.service.type "LoadBalancer" }}
+  externalTrafficPolicy: {{ .Values.turn.service.externalTrafficPolicy | default "Local" | quote }}
+  internalTrafficPolicy: {{ .Values.turn.service.internalTrafficPolicy | default "Cluster" | quote }}
+  {{- end }}
+  ports:
+  - port: {{ .Values.turn.service.port | default 3478 }}
+    targetPort: stun-udp
+    protocol: UDP
+    name: stun-udp
+  selector:
+    {{- include "coturn-server.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: coturn
+{{- end }}

@@ -1,0 +1,29 @@
+apiVersion: v2
+name: coturn-server
+description: A Helm chart for an easier coturn deployment at kubernetes.
+type: application
+# renovate: bumpVersion
+version: 0.1.0
+# renovate image=ghcr.io/coturn/coturn
+appVersion: "4.8.0"
+home: https://github.com/CodeAdminDe/helm-charts
+keywords:
+  - coturn
+  - STUN
+  - relay
+  - nat
+  - cloud-native
+maintainers:
+  - name: Frederic Roggon
+    email: frederic.roggon@codeadmin.de
+    url: https://github.com/CodeAdminDe
+annotations:
+  category: Networking
+  kubeVersion: ">=1.33.0"
+  securityContext: "required"
+dependencies:
+  - name: libchart-cnps
+    version: 0.2.1
+    repository: https://codeadminde.github.io/helm-charts
+    alias: libchart-cnps
+    condition: libchartCnps.enabled

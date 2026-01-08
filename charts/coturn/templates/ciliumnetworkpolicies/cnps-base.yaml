@@ -1,0 +1,26 @@
+{{- define "coturn-server.CiliumNetworkPolicies-NamespaceSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+  labels:
+    {{- include "coturn-server.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-NamespaceSet" (list . "coturn-server.CiliumNetworkPolicies-NamespaceSet") }}
+---
+{{ end -}}
+{{- define "coturn-server.CiliumNetworkPolicies-CnpgSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+  labels:
+    {{- include "coturn-server.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if and .Values.libchartCnps.includeCnpgPolicies .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-CnpgSet" (list . "coturn-server.CiliumNetworkPolicies-CnpgSet") }}
+---
+{{ end -}}

@@ -1,0 +1,20 @@
+{{- if .Values.turn.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "coturn-server.fullname" . }}-turn-metrics
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "coturn-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: coturn
+spec:
+  type: ClusterIP
+  ports:
+  - port: {{ .Values.turn.metricsService.port }}
+    targetPort: metrics
+    protocol: TCP
+    name: metrics
+  selector:
+    {{- include "coturn-server.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: coturn
+{{- end }}
