@@ -2,7 +2,7 @@
 
 # netbird-agent
 
-![Version: 0.7.1](https://img.shields.io/badge/Version-0.7.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.61.2](https://img.shields.io/badge/AppVersion-0.61.2-informational?style=flat-square)
+![Version: 0.7.2](https://img.shields.io/badge/Version-0.7.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.61.2](https://img.shields.io/badge/AppVersion-0.61.2-informational?style=flat-square)
 
 A Helm chart for an easier netbird agent (https://netbird.io) deployment at kubernetes.
 
@@ -108,7 +108,7 @@ object
 			<td>Additional env vars provided via one or more secret(s). @description Specifiy the ENV key used as KEY and the secret name as VALUE. The secret should contain the ENV key and the encrypted value: Sample secret ... apiVersion: v1 kind: Secret metadata: name: your-secret-name-to-slack-oidc-secrets type: Opaque stringData:   SLACK_KEY: "slack-key-value-goes-here"   SLACK_SECRET: "slack-secret-value-goes-here"</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L345">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L344">affinity</a></td>
 			<td>
 object
 </td>
@@ -362,11 +362,7 @@ object
                 {
                   "port": "443",
                   "protocol": "TCP"
-                }
-              ]
-            },
-            {
-              "ports": [
+                },
                 {
                   "port": "3478",
                   "protocol": "UDP"
@@ -417,11 +413,7 @@ object
               {
                 "port": "443",
                 "protocol": "TCP"
-              }
-            ]
-          },
-          {
-            "ports": [
+              },
               {
                 "port": "3478",
                 "protocol": "UDP"
@@ -467,11 +459,7 @@ object
             {
               "port": "443",
               "protocol": "TCP"
-            }
-          ]
-        },
-        {
-          "ports": [
+            },
             {
               "port": "3478",
               "protocol": "UDP"
@@ -520,11 +508,7 @@ list
           {
             "port": "443",
             "protocol": "TCP"
-          }
-        ]
-      },
-      {
-        "ports": [
+          },
           {
             "port": "3478",
             "protocol": "UDP"
@@ -630,7 +614,7 @@ object
 			<td>Labels to match Prometheus pods @description Allows overriding default to match your prometheus deployment   app.kubernetes.io/name: prometheus   app.kubernetes.io/instance: kube-prometheus-stack-prometheus   io.kubernetes.pod.namespace: monitoring--kube-prometheus-stack</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L240">cnps.cnpgTraffic</a></td>
+			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L239">cnps.cnpgTraffic</a></td>
 			<td>
 object
 </td>
@@ -646,7 +630,7 @@ object
 			<td>CNPG traffic policies</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L258">cnps.cnpgTraffic.instanceExtraEgress</a></td>
+			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L257">cnps.cnpgTraffic.instanceExtraEgress</a></td>
 			<td>
 list
 </td>
@@ -688,7 +672,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="hpa"><a href="./values.yaml#L309">hpa</a></td>
+			<td id="hpa"><a href="./values.yaml#L308">hpa</a></td>
 			<td>
 object
 </td>
@@ -707,7 +691,7 @@ object
 			<td>Horizontal Pod Autoscaler configuration</td>
 		</tr>
 		<tr>
-			<td id="hpa--enabled"><a href="./values.yaml#L311">hpa.enabled</a></td>
+			<td id="hpa--enabled"><a href="./values.yaml#L310">hpa.enabled</a></td>
 			<td>
 bool
 </td>
@@ -721,7 +705,7 @@ false
 			<td>Enable HPA</td>
 		</tr>
 		<tr>
-			<td id="hpa--maxReplicas"><a href="./values.yaml#L315">hpa.maxReplicas</a></td>
+			<td id="hpa--maxReplicas"><a href="./values.yaml#L314">hpa.maxReplicas</a></td>
 			<td>
 int
 </td>
@@ -735,7 +719,7 @@ int
 			<td>Maximum replicas for HPA</td>
 		</tr>
 		<tr>
-			<td id="hpa--minReplicas"><a href="./values.yaml#L313">hpa.minReplicas</a></td>
+			<td id="hpa--minReplicas"><a href="./values.yaml#L312">hpa.minReplicas</a></td>
 			<td>
 int
 </td>
@@ -749,7 +733,7 @@ int
 			<td>Minimum replicas for HPA</td>
 		</tr>
 		<tr>
-			<td id="hpa--targetCPUUtilizationPercentage"><a href="./values.yaml#L317">hpa.targetCPUUtilizationPercentage</a></td>
+			<td id="hpa--targetCPUUtilizationPercentage"><a href="./values.yaml#L316">hpa.targetCPUUtilizationPercentage</a></td>
 			<td>
 int
 </td>
@@ -878,7 +862,7 @@ false
 			<td>Include CNPG-specific policies</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--exec--command[0]"><a href="./values.yaml#L327">livenessProbe.exec.command[0]</a></td>
+			<td id="livenessProbe--exec--command[0]"><a href="./values.yaml#L326">livenessProbe.exec.command[0]</a></td>
 			<td>
 string
 </td>
@@ -892,7 +876,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--exec--command[1]"><a href="./values.yaml#L327">livenessProbe.exec.command[1]</a></td>
+			<td id="livenessProbe--exec--command[1]"><a href="./values.yaml#L326">livenessProbe.exec.command[1]</a></td>
 			<td>
 string
 </td>
@@ -906,7 +890,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--exec--command[2]"><a href="./values.yaml#L327">livenessProbe.exec.command[2]</a></td>
+			<td id="livenessProbe--exec--command[2]"><a href="./values.yaml#L326">livenessProbe.exec.command[2]</a></td>
 			<td>
 string
 </td>
@@ -920,7 +904,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--failureThreshold"><a href="./values.yaml#L328">livenessProbe.failureThreshold</a></td>
+			<td id="livenessProbe--failureThreshold"><a href="./values.yaml#L327">livenessProbe.failureThreshold</a></td>
 			<td>
 int
 </td>
@@ -934,7 +918,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--initialDelaySeconds"><a href="./values.yaml#L330">livenessProbe.initialDelaySeconds</a></td>
+			<td id="livenessProbe--initialDelaySeconds"><a href="./values.yaml#L329">livenessProbe.initialDelaySeconds</a></td>
 			<td>
 int
 </td>
@@ -948,7 +932,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--periodSeconds"><a href="./values.yaml#L329">livenessProbe.periodSeconds</a></td>
+			<td id="livenessProbe--periodSeconds"><a href="./values.yaml#L328">livenessProbe.periodSeconds</a></td>
 			<td>
 int
 </td>
@@ -962,7 +946,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="monitoring"><a href="./values.yaml#L281">monitoring</a></td>
+			<td id="monitoring"><a href="./values.yaml#L280">monitoring</a></td>
 			<td>
 object
 </td>
@@ -982,7 +966,7 @@ object
 			<td>Monitoring configuration @description Provided monitoring rules are not valid and only used as a placeholder for future implementation. There you should NOT ENABLE the monitoring until this notice got removed. Implementation will follow when upstream support available. Upstream issue: https://github.com/netbirdio/netbird/issues/1762</td>
 		</tr>
 		<tr>
-			<td id="monitoring--enabled"><a href="./values.yaml#L283">monitoring.enabled</a></td>
+			<td id="monitoring--enabled"><a href="./values.yaml#L282">monitoring.enabled</a></td>
 			<td>
 bool
 </td>
@@ -996,7 +980,7 @@ false
 			<td>Enable monitoring (DO NOT ENABLE; see desc above for details)</td>
 		</tr>
 		<tr>
-			<td id="monitoring--serviceMonitor"><a href="./values.yaml#L285">monitoring.serviceMonitor</a></td>
+			<td id="monitoring--serviceMonitor"><a href="./values.yaml#L284">monitoring.serviceMonitor</a></td>
 			<td>
 object
 </td>
@@ -1013,7 +997,7 @@ object
 			<td>ServiceMonitor configuration</td>
 		</tr>
 		<tr>
-			<td id="monitoring--serviceMonitor--additionalLabels"><a href="./values.yaml#L291">monitoring.serviceMonitor.additionalLabels</a></td>
+			<td id="monitoring--serviceMonitor--additionalLabels"><a href="./values.yaml#L290">monitoring.serviceMonitor.additionalLabels</a></td>
 			<td>
 object
 </td>
@@ -1027,7 +1011,7 @@ object
 			<td>Additional labels @description Provide additional labels to the service monitor resource, e.g. for auto-provisioning.</td>
 		</tr>
 		<tr>
-			<td id="monitoring--serviceMonitor--annotations"><a href="./values.yaml#L288">monitoring.serviceMonitor.annotations</a></td>
+			<td id="monitoring--serviceMonitor--annotations"><a href="./values.yaml#L287">monitoring.serviceMonitor.annotations</a></td>
 			<td>
 object
 </td>
@@ -1055,7 +1039,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L339">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L338">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -1069,7 +1053,7 @@ object
 			<td>Node selector configuration</td>
 		</tr>
 		<tr>
-			<td id="persistence"><a href="./values.yaml#L261">persistence</a></td>
+			<td id="persistence"><a href="./values.yaml#L260">persistence</a></td>
 			<td>
 object
 </td>
@@ -1091,7 +1075,7 @@ object
 			<td>NetBird agent persistence configuration.</td>
 		</tr>
 		<tr>
-			<td id="persistence--accessModes"><a href="./values.yaml#L271">persistence.accessModes</a></td>
+			<td id="persistence--accessModes"><a href="./values.yaml#L270">persistence.accessModes</a></td>
 			<td>
 list
 </td>
@@ -1107,7 +1091,7 @@ list
 			<td>Define the accessModes to use when not providing an already existing PVC claim.</td>
 		</tr>
 		<tr>
-			<td id="persistence--emptyDirSizeLimit"><a href="./values.yaml#L265">persistence.emptyDirSizeLimit</a></td>
+			<td id="persistence--emptyDirSizeLimit"><a href="./values.yaml#L264">persistence.emptyDirSizeLimit</a></td>
 			<td>
 string
 </td>
@@ -1121,7 +1105,7 @@ string
 			<td>Define the max directory size when using persistence.enabled: false</td>
 		</tr>
 		<tr>
-			<td id="persistence--size"><a href="./values.yaml#L267">persistence.size</a></td>
+			<td id="persistence--size"><a href="./values.yaml#L266">persistence.size</a></td>
 			<td>
 string
 </td>
@@ -1135,7 +1119,7 @@ string
 			<td>Define the size of the PV when using persistence.enabled: true</td>
 		</tr>
 		<tr>
-			<td id="persistence--storageClass"><a href="./values.yaml#L269">persistence.storageClass</a></td>
+			<td id="persistence--storageClass"><a href="./values.yaml#L268">persistence.storageClass</a></td>
 			<td>
 string
 </td>
@@ -1184,7 +1168,7 @@ object
 			<td>Pod security context (rootless) @description podSecurityContext when running netbird with rootless (netstack) context. Note: Requires agent.caEnableRootless: true to get applied.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--exec--command[0]"><a href="./values.yaml#L333">readinessProbe.exec.command[0]</a></td>
+			<td id="readinessProbe--exec--command[0]"><a href="./values.yaml#L332">readinessProbe.exec.command[0]</a></td>
 			<td>
 string
 </td>
@@ -1198,7 +1182,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--exec--command[1]"><a href="./values.yaml#L333">readinessProbe.exec.command[1]</a></td>
+			<td id="readinessProbe--exec--command[1]"><a href="./values.yaml#L332">readinessProbe.exec.command[1]</a></td>
 			<td>
 string
 </td>
@@ -1212,7 +1196,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--exec--command[2]"><a href="./values.yaml#L333">readinessProbe.exec.command[2]</a></td>
+			<td id="readinessProbe--exec--command[2]"><a href="./values.yaml#L332">readinessProbe.exec.command[2]</a></td>
 			<td>
 string
 </td>
@@ -1226,7 +1210,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L334">readinessProbe.failureThreshold</a></td>
+			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L333">readinessProbe.failureThreshold</a></td>
 			<td>
 int
 </td>
@@ -1240,7 +1224,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L336">readinessProbe.initialDelaySeconds</a></td>
+			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L335">readinessProbe.initialDelaySeconds</a></td>
 			<td>
 int
 </td>
@@ -1254,7 +1238,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L335">readinessProbe.periodSeconds</a></td>
+			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L334">readinessProbe.periodSeconds</a></td>
 			<td>
 int
 </td>
@@ -1282,7 +1266,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L294">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L293">resources</a></td>
 			<td>
 object
 </td>
@@ -1305,7 +1289,7 @@ object
 			<td>Resource requests and limits</td>
 		</tr>
 		<tr>
-			<td id="resources--limits"><a href="./values.yaml#L302">resources.limits</a></td>
+			<td id="resources--limits"><a href="./values.yaml#L301">resources.limits</a></td>
 			<td>
 object
 </td>
@@ -1322,7 +1306,7 @@ object
 			<td>Resource limits</td>
 		</tr>
 		<tr>
-			<td id="resources--limits--cpu"><a href="./values.yaml#L304">resources.limits.cpu</a></td>
+			<td id="resources--limits--cpu"><a href="./values.yaml#L303">resources.limits.cpu</a></td>
 			<td>
 string
 </td>
@@ -1336,7 +1320,7 @@ string
 			<td>CPU limit</td>
 		</tr>
 		<tr>
-			<td id="resources--limits--memory"><a href="./values.yaml#L306">resources.limits.memory</a></td>
+			<td id="resources--limits--memory"><a href="./values.yaml#L305">resources.limits.memory</a></td>
 			<td>
 string
 </td>
@@ -1350,7 +1334,7 @@ string
 			<td>Memory limit</td>
 		</tr>
 		<tr>
-			<td id="resources--requests"><a href="./values.yaml#L296">resources.requests</a></td>
+			<td id="resources--requests"><a href="./values.yaml#L295">resources.requests</a></td>
 			<td>
 object
 </td>
@@ -1367,7 +1351,7 @@ object
 			<td>Requested resources</td>
 		</tr>
 		<tr>
-			<td id="resources--requests--cpu"><a href="./values.yaml#L298">resources.requests.cpu</a></td>
+			<td id="resources--requests--cpu"><a href="./values.yaml#L297">resources.requests.cpu</a></td>
 			<td>
 string
 </td>
@@ -1381,7 +1365,7 @@ string
 			<td>CPU request</td>
 		</tr>
 		<tr>
-			<td id="resources--requests--memory"><a href="./values.yaml#L300">resources.requests.memory</a></td>
+			<td id="resources--requests--memory"><a href="./values.yaml#L299">resources.requests.memory</a></td>
 			<td>
 string
 </td>
@@ -1605,7 +1589,7 @@ string
 			<td>- The name of the service account to use. @description If not set and create is true, a name is generated using the fullname template</td>
 		</tr>
 		<tr>
-			<td id="startupProbe"><a href="./values.yaml#L320">startupProbe</a></td>
+			<td id="startupProbe"><a href="./values.yaml#L319">startupProbe</a></td>
 			<td>
 object
 </td>
@@ -1619,7 +1603,7 @@ object
 			<td>Health probes configuration for startup, liveness and readiness probes</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L342">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L341">tolerations</a></td>
 			<td>
 list
 </td>
