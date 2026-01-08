@@ -2,7 +2,7 @@
 
 # netbird-management
 
-![Version: 1.7.3](https://img.shields.io/badge/Version-1.7.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.62.0](https://img.shields.io/badge/AppVersion-0.62.0-informational?style=flat-square)
+![Version: 1.7.4](https://img.shields.io/badge/Version-1.7.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.62.0](https://img.shields.io/badge/AppVersion-0.62.0-informational?style=flat-square)
 
 A Helm chart for an easier netbird management stack (https://netbird.io) deployment at kubernetes.
 
@@ -3130,9 +3130,9 @@ object
   },
   "initConfig": {
     "image": {
-      "pullPolicy": "IfNotPresent",
-      "repository": "ghcr.io/coturn/coturn",
-      "tag": "4.8"
+      "pullPolicy": "Always",
+      "repository": "ghcr.io/codeadminde/alpine-toolbox",
+      "tag": "latest"
     }
   },
   "metricsPort": 9641,
@@ -3294,9 +3294,9 @@ object
 <pre lang="json">
 {
   "image": {
-    "pullPolicy": "IfNotPresent",
-    "repository": "ghcr.io/coturn/coturn",
-    "tag": "4.8"
+    "pullPolicy": "Always",
+    "repository": "ghcr.io/codeadminde/alpine-toolbox",
+    "tag": "latest"
   }
 }
 </pre>
@@ -3313,9 +3313,9 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
-  "pullPolicy": "IfNotPresent",
-  "repository": "ghcr.io/coturn/coturn",
-  "tag": "4.8"
+  "pullPolicy": "Always",
+  "repository": "ghcr.io/codeadminde/alpine-toolbox",
+  "tag": "latest"
 }
 </pre>
 </div>

@@ -367,9 +367,9 @@ turn:
   initConfig:
     # -- Management initContainer image repository, tag and pullPolicy
     image:
-      repository: ghcr.io/coturn/coturn
-      tag: "4.8"
-      pullPolicy: IfNotPresent
+      repository: ghcr.io/codeadminde/alpine-toolbox
+      tag: latest
+      pullPolicy: Always
   # -- External IP under which the turn service will be reachable. (recommended, but optional. If empty, coturn provided autodiscover will be used)
   extIp: ""
   # -- Domain for coturn server to provide STUN/TURN (UDP) (optional, defaults to global.domain value if not provided)
