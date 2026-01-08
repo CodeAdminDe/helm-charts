@@ -110,7 +110,7 @@ spec:
                 - key: app.kubernetes.io/component
                   operator: In
                   values:
-                  - turn
+                  - coturn
               topologyKey: kubernetes.io/hostname
 
       containers:
