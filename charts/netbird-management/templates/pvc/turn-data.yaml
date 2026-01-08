@@ -1,0 +1,24 @@
+{{- if and .Values.turn.persistence.enabled (not .Values.turn.persistence.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-turn-data
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+    app.kubernetes.io/component: turn
+spec:
+  accessModes:
+    {{- range .Values.turn.persistence.accessModes }}
+    - {{ . | quote }}
+    {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.turn.persistence.size }}
+  {{- if empty .Values.turn.persistence.storageClass }}
+  storageClassName: ""
+  {{- else }}
+  storageClassName: {{ .Values.turn.persistence.storageClass }}
+  {{- end }}
+{{- end }}

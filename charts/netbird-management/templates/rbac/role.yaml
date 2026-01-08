@@ -15,7 +15,7 @@ rules:
   - {{ .Values.existingEncryptionKeySecret | default "netbird-datasrc-encryption" }}
   - {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
   - {{ .Values.existingAuthentikDeviceOidcSecret | default "netbird-authentik-device-oidc" }}
-  - {{ .Values.existingTurnSecret | default "turn-creds-and-secret" }}
+  - {{ .Values.existingTurnSecret | default "turn-coturn-creds" }}
   - {{ .Values.postgresql.cnpgCluster.appConnectionSecretName }}
 - apiGroups: [""]
   resources: ["configmaps"]
