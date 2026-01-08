@@ -227,7 +227,7 @@ cnps:
                 - port: "3478"
                   protocol: UDP
                 - port: "49152"
-                  endPort: "65535"
+                  endPort: 65535
                   protocol: UDP
         # - toEndpoints:
         #     - matchLabels:
