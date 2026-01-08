@@ -9,7 +9,9 @@ metadata:
 data:
   turnserver.conf.tmpl: |-
     listening-port=${TURN_PORT}
+    {{- if .Values.turn.extIp }}
     external-ip=${TURN_EXT_IP}
+    {{- end }}
     #tls-listening-port=5349
     min-port=49152
     max-port=65535
