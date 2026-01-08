@@ -46,6 +46,23 @@ spec:
             - port: "{{ .Values.turn.metricsPort }}"
               protocol: TCP
   {{- end }}
+  {{- if and .Values.cnps.appTraffic.egress.allow (not .Values.turn.extIp) }}
+  egress:
+    - toFQDNs:
+      - matchName: resolver1.opendns.com
+      - matchName: ns1.google.com
+      - matchName: ns1-1.akamaitech.net
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+    - toCIDR:
+      - 1.1.1.1/32
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+  {{- end }}
 {{- end }}
 
 {{- if .Values.libchartCnps.enabled -}}
