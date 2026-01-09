@@ -38,6 +38,8 @@ turn:
   # Sample: <public-ip>/<private-ip>
   # Note: When using NAT-Mapping, do not use extIp value.
   extIntIpMapping: ""
+  # -- IP which coturn should use to listen on. (optional, defaults to autodiscovered address(es) by coturn if not provided)
+  listeningIp: ""
   # -- Domain for coturn server to provide STUN/TURN (UDP) (optional, defaults to global.domain value if not provided)
   domain: ""
   # -- Port for coturn server to provide STUN/TURN (UDP) (optional, defaults to 3478 if not provided)
@@ -166,6 +168,17 @@ cnps:
     ingress:
       # -- Allow ingress traffic (to coturn UDP port from world)
       allow: true
+      # -- Add additional ingress traffic rules
+      # @description Additional rule sample:
+      #   - fromEndpoints:
+      #       - matchLabels:
+      #           app.kubernetes.io/name: your-app-sample-app-which-needs-stun-access
+      #           io.kubernetes.pod.namespace: your-namespace-sample
+      #     toPorts:
+      #       - ports:
+      #           - port: "3478"
+      #             protocol: UDP
+      extraIngressRules: []
       # -- Metrics scraper configuration
       metrics:
         # -- Labels to match Prometheus pods

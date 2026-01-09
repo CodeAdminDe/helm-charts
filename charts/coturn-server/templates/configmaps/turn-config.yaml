@@ -9,6 +9,9 @@ metadata:
 data:
   turnserver.conf.tmpl: |-
     listening-port=${TURN_PORT}
+    {{- if .Values.turn.listeningIp }}
+    listening-ip={{ .Values.turn.listeningIp }}
+    {{- end }}
     {{- if .Values.turn.extIp }}
     external-ip=${TURN_EXT_IP}
     {{- end }}

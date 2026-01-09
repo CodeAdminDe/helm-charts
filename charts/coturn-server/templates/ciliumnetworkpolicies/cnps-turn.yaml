@@ -20,6 +20,9 @@ spec:
         - ports:
             - port: "{{ .Values.turn.port | default 3478 }}"
               protocol: UDP
+  {{- if .Values.cnps.appTraffic.ingress.extraIngressRules }}
+    {{ toYaml .Values.cnps.appTraffic.ingress.extraIngressRules  | nindent 4 }}
+  {{- end }}
   {{- end }}
   {{- if and .Values.cnps.appTraffic.ingress.allow .Values.monitoring.enabled }}
     - fromEndpoints:
