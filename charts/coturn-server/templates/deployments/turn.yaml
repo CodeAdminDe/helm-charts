@@ -168,7 +168,7 @@ spec:
             memory: {{ .Values.turn.resources.limits.memory }}
 
         command: [ "docker-entrypoint.sh" ]
-        {{- if not .Values.turn.extIp }}
+        {{- if and (not .Values.turn.extIp) (not .Values.turn.extIntIpMapping) }}
         args: [
           "-c",
           "/etc/coturn/config/turnserver.conf",

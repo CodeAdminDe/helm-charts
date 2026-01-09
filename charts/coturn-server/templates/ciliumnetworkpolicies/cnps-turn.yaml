@@ -41,7 +41,7 @@ spec:
             - port: "{{ .Values.turn.metricsPort }}"
               protocol: TCP
   {{- end }}
-  {{- if and .Values.cnps.appTraffic.egress.allow (not .Values.turn.extIp) }}
+  {{- if and .Values.cnps.appTraffic.egress.allow (not .Values.turn.extIp) (not .Values.turn.extIntIpMapping) }}
   egress:
     - toFQDNs:
       - matchName: resolver1.opendns.com
