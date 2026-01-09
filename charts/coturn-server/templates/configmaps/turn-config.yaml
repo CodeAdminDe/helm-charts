@@ -10,7 +10,11 @@ data:
   turnserver.conf.tmpl: |-
     listening-port=${TURN_PORT}
     {{- if .Values.turn.extIp }}
+    {{- if .Values.turn.intIp }}
+    external-ip=${TURN_EXT_IP}/{{ .Values.turn.intIp }}
+    {{- else }}
     external-ip=${TURN_EXT_IP}
+    {{- end }}
     {{- end }}
     #tls-listening-port=5349
     min-port=49152
