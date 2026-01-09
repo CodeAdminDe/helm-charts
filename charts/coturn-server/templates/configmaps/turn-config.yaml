@@ -37,6 +37,6 @@ data:
     no-software-attribute
     no-cli
     no-multicast-peers
-    {{- with .Values.turn.configExtras }}
-    {{- toYaml . | nindent 4 }}
+    {{- if .Values.turn.configExtras }}
+    {{- .Values.turn.configExtras | nindent 4 }}
     {{- end }}

@@ -2,7 +2,7 @@
 
 # coturn-server
 
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.8.0](https://img.shields.io/badge/AppVersion-4.8.0-informational?style=flat-square)
+![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.8.0](https://img.shields.io/badge/AppVersion-4.8.0-informational?style=flat-square)
 
 A Helm chart for an easier coturn deployment at kubernetes.
 
@@ -583,7 +583,7 @@ object
   "affinity": {
     "podAntiAffinity": "preferred"
   },
-  "configExtras": {},
+  "configExtras": "",
   "domain": "",
   "enabled": true,
   "extIntIpMapping": "",
@@ -693,16 +693,16 @@ string
 		<tr>
 			<td id="turn--configExtras"><a href="./values.yaml#L67">turn.configExtras</a></td>
 			<td>
-object
+string
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-{}
+""
 </pre>
 </div>
 			</td>
-			<td>Additional coturn config @description Allows addition of config items which will be merged into the turnserver.conf. Sample: Deny / allow special source addresses configExtras:   allowed-peer-ip=10.10.10.11   allowed-peer-ip=10.10.10.12   denied-peer-ip=0.0.0.0-0.255.255.255   denied-peer-ip=100.64.0.0-100.127.255.255   denied-peer-ip=10.0.0.0-10.255.255.255   denied-peer-ip=172.16.0.0-172.31.255.255   denied-peer-ip=192.168.0.0-192.168.255.255   denied-peer-ip=127.0.0.0-127.255.255.255   denied-peer-ip=169.254.0.0-169.254.255.255   denied-peer-ip=192.0.0.0-192.0.0.255   denied-peer-ip=192.0.2.0-192.0.2.255   denied-peer-ip=::1   denied-peer-ip=::ffff:0.0.0.0-::ffff:255.255.255.255   denied-peer-ip=64:ff9b::-64:ff9b::ffff:ffff   denied-peer-ip=100::-100::ffff:ffff:ffff:ffff   denied-peer-ip=2001::-2001:1ff:ffff:ffff:ffff:ffff:ffff:ffff   denied-peer-ip=2002::-2002:ffff:ffff:ffff:ffff:ffff:ffff:ffff   denied-peer-ip=fc00::-fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff   denied-peer-ip=fe80::-febf:ffff:ffff:ffff:ffff:ffff:ffff:ffff   denied-peer-ip=ff00::-ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff</td>
+			<td>Additional coturn config @description Allows addition of config items which will be merged into the turnserver.conf. Sample: Deny / allow special source addresses configExtras: |-   allowed-peer-ip=10.10.10.11   allowed-peer-ip=10.10.10.12   denied-peer-ip=0.0.0.0-0.255.255.255   denied-peer-ip=100.64.0.0-100.127.255.255   denied-peer-ip=10.0.0.0-10.255.255.255   denied-peer-ip=172.16.0.0-172.31.255.255   denied-peer-ip=192.168.0.0-192.168.255.255   denied-peer-ip=127.0.0.0-127.255.255.255   denied-peer-ip=169.254.0.0-169.254.255.255   denied-peer-ip=192.0.0.0-192.0.0.255   denied-peer-ip=192.0.2.0-192.0.2.255   denied-peer-ip=::1   denied-peer-ip=::ffff:0.0.0.0-::ffff:255.255.255.255   denied-peer-ip=64:ff9b::-64:ff9b::ffff:ffff   denied-peer-ip=100::-100::ffff:ffff:ffff:ffff   denied-peer-ip=2001::-2001:1ff:ffff:ffff:ffff:ffff:ffff:ffff   denied-peer-ip=2002::-2002:ffff:ffff:ffff:ffff:ffff:ffff:ffff   denied-peer-ip=fc00::-fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff   denied-peer-ip=fe80::-febf:ffff:ffff:ffff:ffff:ffff:ffff:ffff   denied-peer-ip=ff00::-ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff</td>
 		</tr>
 		<tr>
 			<td id="turn--domain"><a href="./values.yaml#L69">turn.domain</a></td>

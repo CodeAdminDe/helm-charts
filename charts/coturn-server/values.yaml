@@ -43,7 +43,7 @@ turn:
   # -- Additional coturn config
   # @description Allows addition of config items which will be merged into the turnserver.conf.
   # Sample: Deny / allow special source addresses
-  # configExtras:
+  # configExtras: |-
   #   allowed-peer-ip=10.10.10.11
   #   allowed-peer-ip=10.10.10.12
   #   denied-peer-ip=0.0.0.0-0.255.255.255
@@ -64,7 +64,7 @@ turn:
   #   denied-peer-ip=fc00::-fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff
   #   denied-peer-ip=fe80::-febf:ffff:ffff:ffff:ffff:ffff:ffff:ffff
   #   denied-peer-ip=ff00::-ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff
-  configExtras: {}
+  configExtras: ""
   # -- Domain for coturn server to provide STUN/TURN (UDP) (optional, defaults to global.domain value if not provided)
   domain: ""
   # -- Port for coturn server to provide STUN/TURN (UDP) (optional, defaults to 3478 if not provided)
