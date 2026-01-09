@@ -47,7 +47,7 @@ management:
     # -- Service type
     type: ClusterIP
     # -- Service port
-    port: 33073
+    port: 443
     # -- Service metrics port
     metricsPort: 9090
   # -- Resource requests and limits
@@ -137,7 +137,7 @@ signal:
     tag: "0.62.1"
     pullPolicy: IfNotPresent
   # -- Signal server port
-  port: 10000
+  port: 80
   # -- Signal server metrics port
   metricsPort: 9090
   service:

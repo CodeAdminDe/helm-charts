@@ -2,7 +2,7 @@
 
 # netbird-management
 
-![Version: 1.8.0](https://img.shields.io/badge/Version-1.8.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.62.1](https://img.shields.io/badge/AppVersion-0.62.1-informational?style=flat-square)
+![Version: 1.9.0](https://img.shields.io/badge/Version-1.9.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.62.1](https://img.shields.io/badge/AppVersion-0.62.1-informational?style=flat-square)
 
 A Helm chart for an easier netbird management stack (https://netbird.io) deployment at kubernetes.
 
@@ -1405,7 +1405,7 @@ object
   },
   "service": {
     "metricsPort": 9090,
-    "port": 33073,
+    "port": 443,
     "type": "ClusterIP"
   }
 }
@@ -2080,7 +2080,7 @@ int
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-33073
+443
 </pre>
 </div>
 			</td>
@@ -2721,7 +2721,7 @@ object
     "size": "500Mi",
     "storageClass": "longhorn"
   },
-  "port": 10000,
+  "port": 80,
   "replicaCount": 2,
   "resources": {
     "limits": {
@@ -2953,7 +2953,7 @@ int
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-10000
+80
 </pre>
 </div>
 			</td>
