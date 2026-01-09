@@ -33,6 +33,11 @@ turn:
   # If you're using the cnps-lib chart together with allowed egress appTraffic, the CNP policy will than be extended to
   # allow these access to the used dns servers of the autodiscover script. Ref.: https://github.com/coturn/coturn/blob/48fb3dd287a10e91d6c9843a53758fd6103dbe51/docker/coturn/rootfs/usr/local/bin/detect-external-ip.sh
   extIp: ""
+  # -- External and Internal IP for classic "Amazon-EC2-NAT-Mapping"
+  # @description Provide the public and private IP pair (separated with a "/") to allow returning the public ip when coturn is used behind a NAT and coturn receives pakets on its private address.
+  # Sample: <public-ip>/<private-ip>
+  # Note: When using NAT-Mapping, do not use extIp value.
+  extIntIpMapping: ""
   # -- Domain for coturn server to provide STUN/TURN (UDP) (optional, defaults to global.domain value if not provided)
   domain: ""
   # -- Port for coturn server to provide STUN/TURN (UDP) (optional, defaults to 3478 if not provided)
