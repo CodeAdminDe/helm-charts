@@ -35,7 +35,7 @@ management:
       tag: latest
       pullPolicy: Always
   # -- Management server port
-  port: 33073
+  port: 443
   # -- Management server port override for netbird config
   # @description Leave empty to use default (management.port value).
   # If you'd get connection issues, you could set this value to fix these.
@@ -47,7 +47,7 @@ management:
     # -- Service type
     type: ClusterIP
     # -- Service port
-    port: 443
+    port: 33073
     # -- Service metrics port
     metricsPort: 9090
   # -- Resource requests and limits

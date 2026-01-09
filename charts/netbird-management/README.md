@@ -2,7 +2,7 @@
 
 # netbird-management
 
-![Version: 1.9.0](https://img.shields.io/badge/Version-1.9.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.62.1](https://img.shields.io/badge/AppVersion-0.62.1-informational?style=flat-square)
+![Version: 1.9.1](https://img.shields.io/badge/Version-1.9.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.62.1](https://img.shields.io/badge/AppVersion-0.62.1-informational?style=flat-square)
 
 A Helm chart for an easier netbird management stack (https://netbird.io) deployment at kubernetes.
 
@@ -1369,7 +1369,7 @@ object
     "enabled": true,
     "minAvailable": 1
   },
-  "port": 33073,
+  "port": 443,
   "probes": {
     "liveness": {
       "enabled": true,
@@ -1405,7 +1405,7 @@ object
   },
   "service": {
     "metricsPort": 9090,
-    "port": 443,
+    "port": 33073,
     "type": "ClusterIP"
   }
 }
@@ -1675,7 +1675,7 @@ int
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-33073
+443
 </pre>
 </div>
 			</td>
@@ -2080,7 +2080,7 @@ int
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-443
+33073
 </pre>
 </div>
 			</td>
