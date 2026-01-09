@@ -25,6 +25,8 @@ spec:
         app.kubernetes.io/component: coturn
       annotations:
         prometheus.io/scrape: "true"
+        checksum/values: {{ print .Values | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmaps/turn-config.yaml") . | sha256sum }}
     spec:
       {{- if .Values.runtimeClass.pods }}
       runtimeClassName: {{ .Values.runtimeClass.pods }}
