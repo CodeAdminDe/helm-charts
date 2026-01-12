@@ -77,9 +77,9 @@ turn:
     type: LoadBalancer
     # -- Service port (optional, defaults to 3478 if not provided)
     port:
-    # -- NodePort, when using type: NodePort (optional, defaults to 3478 if not provided)
-    # @description NodePort to allow binding at node level. Note that, based on your security defaults,
-    # it could require to set securityContext.addCapNetBindSrv: true
+    # -- NodePort, when using type: NodePort (optional, defaults to a auto-selected port between 30000 and 32767 if not provided)
+    # @description NodePort between 30000 and 32767 would be auto-selected by k8s. If you want to assign a specific one,
+    # add it here. Note that, based on your security defaults, it could be required to set turn.securityContext.addCapNetBindSrv: true
     nodePort:
     # -- LoadBalancer externalTrafficPolicy (optional, defaults to Local if not provided)
     externalTrafficPolicy: ""

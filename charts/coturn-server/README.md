@@ -2,7 +2,7 @@
 
 # coturn-server
 
-![Version: 0.2.5](https://img.shields.io/badge/Version-0.2.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.8.0](https://img.shields.io/badge/AppVersion-4.8.0-informational?style=flat-square)
+![Version: 0.2.6](https://img.shields.io/badge/Version-0.2.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.8.0](https://img.shields.io/badge/AppVersion-4.8.0-informational?style=flat-square)
 
 A Helm chart for an easier coturn deployment at kubernetes.
 
@@ -1422,7 +1422,7 @@ null
 </pre>
 </div>
 			</td>
-			<td>NodePort, when using type: NodePort (optional, defaults to 3478 if not provided) @description NodePort to allow binding at node level. Note that, based on your security defaults, it could require to set securityContext.addCapNetBindSrv: true</td>
+			<td>NodePort, when using type: NodePort (optional, defaults to a auto-selected port between 30000 and 32767 if not provided) @description NodePort between 30000 and 32767 would be auto-selected by k8s. If you want to assign a specific one, add it here. Note that, based on your security defaults, it could be required to set turn.securityContext.addCapNetBindSrv: true</td>
 		</tr>
 		<tr>
 			<td id="turn--service--port"><a href="./values.yaml#L79">turn.service.port</a></td>
