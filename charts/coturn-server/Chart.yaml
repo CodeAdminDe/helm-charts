@@ -3,7 +3,7 @@ name: coturn-server
 description: A Helm chart for an easier coturn deployment at kubernetes.
 type: application
 # renovate: bumpVersion
-version: 0.2.4
+version: 0.2.5
 # renovate image=ghcr.io/coturn/coturn
 appVersion: "4.8.0"
 home: https://github.com/CodeAdminDe/helm-charts

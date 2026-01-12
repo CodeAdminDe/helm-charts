@@ -78,6 +78,8 @@ turn:
     # -- Service port (optional, defaults to 3478 if not provided)
     port:
     # -- NodePort, when using type: NodePort (optional, defaults to 3478 if not provided)
+    # @description NodePort to allow binding at node level. Note that, based on your security defaults,
+    # it could require to set securityContext.addCapNetBindSrv: true
     nodePort:
     # -- LoadBalancer externalTrafficPolicy (optional, defaults to Local if not provided)
     externalTrafficPolicy: ""
@@ -156,6 +158,8 @@ turn:
     fsGroup: 65534
     # -- Use read-only root filesystem
     readOnlyRootFilesystem: true
+    # -- Allow net-bind-service capability (optional, change to true only, if you really need to)
+    addCapNetBindSrv: false
 
 # -- Set a RuntimeClass to execute the containers with a custom runtime configuration.
 # Register a runtimeClass within your cluster beforehand.
