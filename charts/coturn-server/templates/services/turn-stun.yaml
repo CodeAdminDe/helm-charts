@@ -15,6 +15,9 @@ spec:
   {{- end }}
   ports:
   - port: {{ .Values.turn.service.port | default 3478 }}
+    {{- if eq .Values.turn.service.type "NodePort" }}
+    nodePort: {{ .Values.turn.service.nodePort | default 3478 }}
+    {{- end }}
     targetPort: stun-udp
     protocol: UDP
     name: stun-udp

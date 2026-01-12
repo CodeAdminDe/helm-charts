@@ -77,6 +77,8 @@ turn:
     type: LoadBalancer
     # -- Service port (optional, defaults to 3478 if not provided)
     port:
+    # -- NodePort, when using type: NodePort (optional, defaults to 3478 if not provided)
+    nodePort:
     # -- LoadBalancer externalTrafficPolicy (optional, defaults to Local if not provided)
     externalTrafficPolicy: ""
     # -- LoadBalancer internalTrafficPolicy (optional, defaults to Cluster if not provided)
