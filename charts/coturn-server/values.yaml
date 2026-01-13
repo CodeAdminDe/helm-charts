@@ -88,7 +88,7 @@ turn:
     # -- LoadBalancer internalTallocateLoadBalancerNodePorts
     # @description Optionally disable node port allocation for a svc of type LoadBalancer
     # Defaults to "true", more details: https://kubernetes.io/docs/concepts/services-networking/service/#load-balancer-nodeport-allocation
-    allocateLoadBalancerNodePorts: ""
+    allocateLoadBalancerNodePorts: true
     # -- LoadBalancer externalIPs
     # @description externalIPs are usually provided via infrastructure controllers and it would not be necessary to set these.
     # But sometimes, it could be just that simple. ;-)

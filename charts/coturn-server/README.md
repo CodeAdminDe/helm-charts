@@ -2,7 +2,7 @@
 
 # coturn-server
 
-![Version: 0.2.9](https://img.shields.io/badge/Version-0.2.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.8.0](https://img.shields.io/badge/AppVersion-4.8.0-informational?style=flat-square)
+![Version: 0.2.10](https://img.shields.io/badge/Version-0.2.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.8.0](https://img.shields.io/badge/AppVersion-4.8.0-informational?style=flat-square)
 
 A Helm chart for an easier coturn deployment at kubernetes.
 
@@ -650,7 +650,7 @@ object
     "runAsUser": 65534
   },
   "service": {
-    "allocateLoadBalancerNodePorts": "",
+    "allocateLoadBalancerNodePorts": true,
     "externalIPs": [],
     "externalTrafficPolicy": "",
     "internalTrafficPolicy": "",
@@ -1373,7 +1373,7 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
-  "allocateLoadBalancerNodePorts": "",
+  "allocateLoadBalancerNodePorts": true,
   "externalIPs": [],
   "externalTrafficPolicy": "",
   "internalTrafficPolicy": "",
@@ -1389,12 +1389,12 @@ object
 		<tr>
 			<td id="turn--service--allocateLoadBalancerNodePorts"><a href="./values.yaml#L91">turn.service.allocateLoadBalancerNodePorts</a></td>
 			<td>
-string
+bool
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-""
+true
 </pre>
 </div>
 			</td>
