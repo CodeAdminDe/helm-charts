@@ -2,7 +2,7 @@
 
 # coturn-server
 
-![Version: 0.2.6](https://img.shields.io/badge/Version-0.2.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.8.0](https://img.shields.io/badge/AppVersion-4.8.0-informational?style=flat-square)
+![Version: 0.2.7](https://img.shields.io/badge/Version-0.2.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.8.0](https://img.shields.io/badge/AppVersion-4.8.0-informational?style=flat-square)
 
 A Helm chart for an easier coturn deployment at kubernetes.
 
@@ -94,7 +94,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L195">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L203">cnps</a></td>
 			<td>
 object
 </td>
@@ -124,7 +124,7 @@ object
 			<td>Application-specific Cilium Network Policies configuration @description Requires CiliumNetworkPolicies library-chart. These settings will be ignored if the library-chart is not available. These settings are directly related to the application and will not influence namespace-wide policies (e.g., for DNS egress traffic).</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic"><a href="./values.yaml#L197">cnps.appTraffic</a></td>
+			<td id="cnps--appTraffic"><a href="./values.yaml#L205">cnps.appTraffic</a></td>
 			<td>
 object
 </td>
@@ -149,7 +149,7 @@ object
 			<td>Application traffic policies</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress"><a href="./values.yaml#L222">cnps.appTraffic.egress</a></td>
+			<td id="cnps--appTraffic--egress"><a href="./values.yaml#L230">cnps.appTraffic.egress</a></td>
 			<td>
 object
 </td>
@@ -165,7 +165,7 @@ object
 			<td>Egress traffic configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L224">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L232">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -179,7 +179,7 @@ true
 			<td>Allow egress traffic (used to allow DNS queries when extIp not defined)</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress"><a href="./values.yaml#L199">cnps.appTraffic.ingress</a></td>
+			<td id="cnps--appTraffic--ingress"><a href="./values.yaml#L207">cnps.appTraffic.ingress</a></td>
 			<td>
 object
 </td>
@@ -199,7 +199,7 @@ object
 			<td>Ingress traffic configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L201">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L209">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -213,7 +213,7 @@ true
 			<td>Allow ingress traffic (to coturn UDP port from world)</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--extraIngressRules"><a href="./values.yaml#L212">cnps.appTraffic.ingress.extraIngressRules</a></td>
+			<td id="cnps--appTraffic--ingress--extraIngressRules"><a href="./values.yaml#L220">cnps.appTraffic.ingress.extraIngressRules</a></td>
 			<td>
 list
 </td>
@@ -227,7 +227,7 @@ list
 			<td>Add additional ingress traffic rules @description Additional rule sample:   - fromEndpoints:       - matchLabels:           app.kubernetes.io/name: your-app-sample-app-which-needs-stun-access           io.kubernetes.pod.namespace: your-namespace-sample     toPorts:       - ports:           - port: "3478"             protocol: UDP</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--metrics"><a href="./values.yaml#L214">cnps.appTraffic.ingress.metrics</a></td>
+			<td id="cnps--appTraffic--ingress--metrics"><a href="./values.yaml#L222">cnps.appTraffic.ingress.metrics</a></td>
 			<td>
 object
 </td>
@@ -243,7 +243,7 @@ object
 			<td>Metrics scraper configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--metrics--matchLabels"><a href="./values.yaml#L220">cnps.appTraffic.ingress.metrics.matchLabels</a></td>
+			<td id="cnps--appTraffic--ingress--metrics--matchLabels"><a href="./values.yaml#L228">cnps.appTraffic.ingress.metrics.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -257,7 +257,7 @@ object
 			<td>Labels to match Prometheus pods @description Allows overriding default to match your prometheus deployment   app.kubernetes.io/name: prometheus   app.kubernetes.io/instance: kube-prometheus-stack-prometheus   io.kubernetes.pod.namespace: monitoring--kube-prometheus-stack</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L227">cnps.cnpgTraffic</a></td>
+			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L235">cnps.cnpgTraffic</a></td>
 			<td>
 object
 </td>
@@ -273,7 +273,7 @@ object
 			<td>CNPG traffic policies</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L245">cnps.cnpgTraffic.instanceExtraEgress</a></td>
+			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L253">cnps.cnpgTraffic.instanceExtraEgress</a></td>
 			<td>
 list
 </td>
@@ -347,7 +347,7 @@ list
 			<td>Image pull secrets for private registries</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L187">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L195">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -364,7 +364,7 @@ object
 			<td>Cilium Network Policies configuration</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--enabled"><a href="./values.yaml#L189">libchartCnps.enabled</a></td>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L197">libchartCnps.enabled</a></td>
 			<td>
 bool
 </td>
@@ -378,7 +378,7 @@ false
 			<td>Enable Cilium Network Policies</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L191">libchartCnps.includeCnpgPolicies</a></td>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L199">libchartCnps.includeCnpgPolicies</a></td>
 			<td>
 bool
 </td>
@@ -392,7 +392,7 @@ false
 			<td>Include CNPG-specific policies</td>
 		</tr>
 		<tr>
-			<td id="monitoring"><a href="./values.yaml#L259">monitoring</a></td>
+			<td id="monitoring"><a href="./values.yaml#L267">monitoring</a></td>
 			<td>
 object
 </td>
@@ -408,7 +408,7 @@ object
 			<td>Monitoring configuration</td>
 		</tr>
 		<tr>
-			<td id="monitoring--enabled"><a href="./values.yaml#L261">monitoring.enabled</a></td>
+			<td id="monitoring--enabled"><a href="./values.yaml#L269">monitoring.enabled</a></td>
 			<td>
 bool
 </td>
@@ -422,7 +422,7 @@ false
 			<td>Enable monitoring</td>
 		</tr>
 		<tr>
-			<td id="rbac"><a href="./values.yaml#L248">rbac</a></td>
+			<td id="rbac"><a href="./values.yaml#L256">rbac</a></td>
 			<td>
 object
 </td>
@@ -442,7 +442,7 @@ object
 			<td>Role-Based Access Control configuration</td>
 		</tr>
 		<tr>
-			<td id="rbac--create"><a href="./values.yaml#L250">rbac.create</a></td>
+			<td id="rbac--create"><a href="./values.yaml#L258">rbac.create</a></td>
 			<td>
 bool
 </td>
@@ -456,7 +456,7 @@ false
 			<td>Create RBAC resources</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount"><a href="./values.yaml#L252">rbac.serviceAccount</a></td>
+			<td id="rbac--serviceAccount"><a href="./values.yaml#L260">rbac.serviceAccount</a></td>
 			<td>
 object
 </td>
@@ -473,7 +473,7 @@ object
 			<td>Service account configuration</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount--create"><a href="./values.yaml#L254">rbac.serviceAccount.create</a></td>
+			<td id="rbac--serviceAccount--create"><a href="./values.yaml#L262">rbac.serviceAccount.create</a></td>
 			<td>
 bool
 </td>
@@ -487,7 +487,7 @@ true
 			<td>Create service account</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount--name"><a href="./values.yaml#L256">rbac.serviceAccount.name</a></td>
+			<td id="rbac--serviceAccount--name"><a href="./values.yaml#L264">rbac.serviceAccount.name</a></td>
 			<td>
 string
 </td>
@@ -501,7 +501,7 @@ string
 			<td>Service account name</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L178">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L186">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -530,7 +530,7 @@ object
 </details></td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--jobs"><a href="./values.yaml#L182">runtimeClass.jobs</a></td>
+			<td id="runtimeClass--jobs"><a href="./values.yaml#L190">runtimeClass.jobs</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -544,7 +544,7 @@ object
 			<td>Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--pods"><a href="./values.yaml#L180">runtimeClass.pods</a></td>
+			<td id="runtimeClass--pods"><a href="./values.yaml#L188">runtimeClass.pods</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -558,7 +558,7 @@ object
 			<td>Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--tests"><a href="./values.yaml#L184">runtimeClass.tests</a></td>
+			<td id="runtimeClass--tests"><a href="./values.yaml#L192">runtimeClass.tests</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -650,6 +650,8 @@ object
     "runAsUser": 65534
   },
   "service": {
+    "allocateLoadBalancerNodePorts": "",
+    "externalIPs": [],
     "externalTrafficPolicy": "",
     "internalTrafficPolicy": "",
     "nodePort": null,
@@ -663,7 +665,7 @@ object
 			<td>TURN (Coturn) configuration @description Coturn configuration to provide STUN/TURN.</td>
 		</tr>
 		<tr>
-			<td id="turn--affinity"><a href="./values.yaml#L148">turn.affinity</a></td>
+			<td id="turn--affinity"><a href="./values.yaml#L156">turn.affinity</a></td>
 			<td>
 object
 </td>
@@ -679,7 +681,7 @@ object
 			<td>Pod affinity settings</td>
 		</tr>
 		<tr>
-			<td id="turn--affinity--podAntiAffinity"><a href="./values.yaml#L150">turn.affinity.podAntiAffinity</a></td>
+			<td id="turn--affinity--podAntiAffinity"><a href="./values.yaml#L158">turn.affinity.podAntiAffinity</a></td>
 			<td>
 string
 </td>
@@ -847,7 +849,7 @@ int
 			<td>Coturn metrics port (default turnserver.conf 9641/tcp /metrics)</td>
 		</tr>
 		<tr>
-			<td id="turn--metricsService"><a href="./values.yaml#L89">turn.metricsService</a></td>
+			<td id="turn--metricsService"><a href="./values.yaml#L97">turn.metricsService</a></td>
 			<td>
 object
 </td>
@@ -863,7 +865,7 @@ object
 			<td>Service config (metrics; fixed type of ClusterIP)</td>
 		</tr>
 		<tr>
-			<td id="turn--metricsService--port"><a href="./values.yaml#L91">turn.metricsService.port</a></td>
+			<td id="turn--metricsService--port"><a href="./values.yaml#L99">turn.metricsService.port</a></td>
 			<td>
 int
 </td>
@@ -877,7 +879,7 @@ int
 			<td>Service port</td>
 		</tr>
 		<tr>
-			<td id="turn--persistence"><a href="./values.yaml#L105">turn.persistence</a></td>
+			<td id="turn--persistence"><a href="./values.yaml#L113">turn.persistence</a></td>
 			<td>
 object
 </td>
@@ -899,7 +901,7 @@ object
 			<td>Management server persistence configuration.</td>
 		</tr>
 		<tr>
-			<td id="turn--persistence--accessModes"><a href="./values.yaml#L115">turn.persistence.accessModes</a></td>
+			<td id="turn--persistence--accessModes"><a href="./values.yaml#L123">turn.persistence.accessModes</a></td>
 			<td>
 list
 </td>
@@ -915,7 +917,7 @@ list
 			<td>Define the accessModes to use when not providing an already existing PVC claim.</td>
 		</tr>
 		<tr>
-			<td id="turn--persistence--emptyDirSizeLimit"><a href="./values.yaml#L109">turn.persistence.emptyDirSizeLimit</a></td>
+			<td id="turn--persistence--emptyDirSizeLimit"><a href="./values.yaml#L117">turn.persistence.emptyDirSizeLimit</a></td>
 			<td>
 string
 </td>
@@ -929,7 +931,7 @@ string
 			<td>Define the max directory size when using persistence.enabled: false</td>
 		</tr>
 		<tr>
-			<td id="turn--persistence--size"><a href="./values.yaml#L111">turn.persistence.size</a></td>
+			<td id="turn--persistence--size"><a href="./values.yaml#L119">turn.persistence.size</a></td>
 			<td>
 string
 </td>
@@ -943,7 +945,7 @@ string
 			<td>Define the size of the PV when using persistence.enabled: true</td>
 		</tr>
 		<tr>
-			<td id="turn--persistence--storageClass"><a href="./values.yaml#L113">turn.persistence.storageClass</a></td>
+			<td id="turn--persistence--storageClass"><a href="./values.yaml#L121">turn.persistence.storageClass</a></td>
 			<td>
 string
 </td>
@@ -971,7 +973,7 @@ null
 			<td>Port for coturn server to provide STUN/TURN (UDP) (optional, defaults to 3478 if not provided)</td>
 		</tr>
 		<tr>
-			<td id="turn--probes"><a href="./values.yaml#L122">turn.probes</a></td>
+			<td id="turn--probes"><a href="./values.yaml#L130">turn.probes</a></td>
 			<td>
 object
 </td>
@@ -1000,7 +1002,7 @@ object
 			<td>Health probes configuration</td>
 		</tr>
 		<tr>
-			<td id="turn--probes--liveness"><a href="./values.yaml#L124">turn.probes.liveness</a></td>
+			<td id="turn--probes--liveness"><a href="./values.yaml#L132">turn.probes.liveness</a></td>
 			<td>
 object
 </td>
@@ -1020,7 +1022,7 @@ object
 			<td>Liveness probe settings</td>
 		</tr>
 		<tr>
-			<td id="turn--probes--liveness--enabled"><a href="./values.yaml#L126">turn.probes.liveness.enabled</a></td>
+			<td id="turn--probes--liveness--enabled"><a href="./values.yaml#L134">turn.probes.liveness.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1034,7 +1036,7 @@ true
 			<td>Enable liveness probe</td>
 		</tr>
 		<tr>
-			<td id="turn--probes--liveness--failureThreshold"><a href="./values.yaml#L134">turn.probes.liveness.failureThreshold</a></td>
+			<td id="turn--probes--liveness--failureThreshold"><a href="./values.yaml#L142">turn.probes.liveness.failureThreshold</a></td>
 			<td>
 int
 </td>
@@ -1048,7 +1050,7 @@ int
 			<td>Liveness probe failure threshold</td>
 		</tr>
 		<tr>
-			<td id="turn--probes--liveness--initialDelaySeconds"><a href="./values.yaml#L128">turn.probes.liveness.initialDelaySeconds</a></td>
+			<td id="turn--probes--liveness--initialDelaySeconds"><a href="./values.yaml#L136">turn.probes.liveness.initialDelaySeconds</a></td>
 			<td>
 int
 </td>
@@ -1062,7 +1064,7 @@ int
 			<td>Initial delay before first liveness probe</td>
 		</tr>
 		<tr>
-			<td id="turn--probes--liveness--periodSeconds"><a href="./values.yaml#L130">turn.probes.liveness.periodSeconds</a></td>
+			<td id="turn--probes--liveness--periodSeconds"><a href="./values.yaml#L138">turn.probes.liveness.periodSeconds</a></td>
 			<td>
 int
 </td>
@@ -1076,7 +1078,7 @@ int
 			<td>Liveness probe interval</td>
 		</tr>
 		<tr>
-			<td id="turn--probes--liveness--timeoutSeconds"><a href="./values.yaml#L132">turn.probes.liveness.timeoutSeconds</a></td>
+			<td id="turn--probes--liveness--timeoutSeconds"><a href="./values.yaml#L140">turn.probes.liveness.timeoutSeconds</a></td>
 			<td>
 int
 </td>
@@ -1090,7 +1092,7 @@ int
 			<td>Liveness probe timeout</td>
 		</tr>
 		<tr>
-			<td id="turn--probes--readiness"><a href="./values.yaml#L136">turn.probes.readiness</a></td>
+			<td id="turn--probes--readiness"><a href="./values.yaml#L144">turn.probes.readiness</a></td>
 			<td>
 object
 </td>
@@ -1110,7 +1112,7 @@ object
 			<td>Readiness probe settings</td>
 		</tr>
 		<tr>
-			<td id="turn--probes--readiness--enabled"><a href="./values.yaml#L138">turn.probes.readiness.enabled</a></td>
+			<td id="turn--probes--readiness--enabled"><a href="./values.yaml#L146">turn.probes.readiness.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1124,7 +1126,7 @@ true
 			<td>Enable readiness probe</td>
 		</tr>
 		<tr>
-			<td id="turn--probes--readiness--failureThreshold"><a href="./values.yaml#L146">turn.probes.readiness.failureThreshold</a></td>
+			<td id="turn--probes--readiness--failureThreshold"><a href="./values.yaml#L154">turn.probes.readiness.failureThreshold</a></td>
 			<td>
 int
 </td>
@@ -1138,7 +1140,7 @@ int
 			<td>Readiness probe failure threshold</td>
 		</tr>
 		<tr>
-			<td id="turn--probes--readiness--initialDelaySeconds"><a href="./values.yaml#L140">turn.probes.readiness.initialDelaySeconds</a></td>
+			<td id="turn--probes--readiness--initialDelaySeconds"><a href="./values.yaml#L148">turn.probes.readiness.initialDelaySeconds</a></td>
 			<td>
 int
 </td>
@@ -1152,7 +1154,7 @@ int
 			<td>Initial delay before first readiness probe</td>
 		</tr>
 		<tr>
-			<td id="turn--probes--readiness--periodSeconds"><a href="./values.yaml#L142">turn.probes.readiness.periodSeconds</a></td>
+			<td id="turn--probes--readiness--periodSeconds"><a href="./values.yaml#L150">turn.probes.readiness.periodSeconds</a></td>
 			<td>
 int
 </td>
@@ -1166,7 +1168,7 @@ int
 			<td>Readiness probe interval</td>
 		</tr>
 		<tr>
-			<td id="turn--probes--readiness--timeoutSeconds"><a href="./values.yaml#L144">turn.probes.readiness.timeoutSeconds</a></td>
+			<td id="turn--probes--readiness--timeoutSeconds"><a href="./values.yaml#L152">turn.probes.readiness.timeoutSeconds</a></td>
 			<td>
 int
 </td>
@@ -1194,7 +1196,7 @@ int
 			<td>Number of replicas</td>
 		</tr>
 		<tr>
-			<td id="turn--resources"><a href="./values.yaml#L93">turn.resources</a></td>
+			<td id="turn--resources"><a href="./values.yaml#L101">turn.resources</a></td>
 			<td>
 object
 </td>
@@ -1217,7 +1219,7 @@ object
 			<td>Resource requests and limits</td>
 		</tr>
 		<tr>
-			<td id="turn--resources--limits--cpu"><a href="./values.yaml#L101">turn.resources.limits.cpu</a></td>
+			<td id="turn--resources--limits--cpu"><a href="./values.yaml#L109">turn.resources.limits.cpu</a></td>
 			<td>
 string
 </td>
@@ -1231,7 +1233,7 @@ string
 			<td>CPU limit</td>
 		</tr>
 		<tr>
-			<td id="turn--resources--limits--memory"><a href="./values.yaml#L103">turn.resources.limits.memory</a></td>
+			<td id="turn--resources--limits--memory"><a href="./values.yaml#L111">turn.resources.limits.memory</a></td>
 			<td>
 string
 </td>
@@ -1245,7 +1247,7 @@ string
 			<td>Memory limit</td>
 		</tr>
 		<tr>
-			<td id="turn--resources--requests--cpu"><a href="./values.yaml#L96">turn.resources.requests.cpu</a></td>
+			<td id="turn--resources--requests--cpu"><a href="./values.yaml#L104">turn.resources.requests.cpu</a></td>
 			<td>
 string
 </td>
@@ -1259,7 +1261,7 @@ string
 			<td>CPU request</td>
 		</tr>
 		<tr>
-			<td id="turn--resources--requests--memory"><a href="./values.yaml#L98">turn.resources.requests.memory</a></td>
+			<td id="turn--resources--requests--memory"><a href="./values.yaml#L106">turn.resources.requests.memory</a></td>
 			<td>
 string
 </td>
@@ -1273,7 +1275,7 @@ string
 			<td>Memory request</td>
 		</tr>
 		<tr>
-			<td id="turn--securityContext"><a href="./values.yaml#L152">turn.securityContext</a></td>
+			<td id="turn--securityContext"><a href="./values.yaml#L160">turn.securityContext</a></td>
 			<td>
 object
 </td>
@@ -1293,7 +1295,7 @@ object
 			<td>Pod security context</td>
 		</tr>
 		<tr>
-			<td id="turn--securityContext--addCapNetBindSrv"><a href="./values.yaml#L162">turn.securityContext.addCapNetBindSrv</a></td>
+			<td id="turn--securityContext--addCapNetBindSrv"><a href="./values.yaml#L170">turn.securityContext.addCapNetBindSrv</a></td>
 			<td>
 bool
 </td>
@@ -1307,7 +1309,7 @@ false
 			<td>Allow net-bind-service capability (optional, change to true only, if you really need to)</td>
 		</tr>
 		<tr>
-			<td id="turn--securityContext--fsGroup"><a href="./values.yaml#L158">turn.securityContext.fsGroup</a></td>
+			<td id="turn--securityContext--fsGroup"><a href="./values.yaml#L166">turn.securityContext.fsGroup</a></td>
 			<td>
 int
 </td>
@@ -1321,7 +1323,7 @@ int
 			<td>File system group</td>
 		</tr>
 		<tr>
-			<td id="turn--securityContext--readOnlyRootFilesystem"><a href="./values.yaml#L160">turn.securityContext.readOnlyRootFilesystem</a></td>
+			<td id="turn--securityContext--readOnlyRootFilesystem"><a href="./values.yaml#L168">turn.securityContext.readOnlyRootFilesystem</a></td>
 			<td>
 bool
 </td>
@@ -1335,7 +1337,7 @@ true
 			<td>Use read-only root filesystem</td>
 		</tr>
 		<tr>
-			<td id="turn--securityContext--runAsNonRoot"><a href="./values.yaml#L154">turn.securityContext.runAsNonRoot</a></td>
+			<td id="turn--securityContext--runAsNonRoot"><a href="./values.yaml#L162">turn.securityContext.runAsNonRoot</a></td>
 			<td>
 bool
 </td>
@@ -1349,7 +1351,7 @@ true
 			<td>Run container as non-root user</td>
 		</tr>
 		<tr>
-			<td id="turn--securityContext--runAsUser"><a href="./values.yaml#L156">turn.securityContext.runAsUser</a></td>
+			<td id="turn--securityContext--runAsUser"><a href="./values.yaml#L164">turn.securityContext.runAsUser</a></td>
 			<td>
 int
 </td>
@@ -1371,6 +1373,8 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
+  "allocateLoadBalancerNodePorts": "",
+  "externalIPs": [],
   "externalTrafficPolicy": "",
   "internalTrafficPolicy": "",
   "nodePort": null,
@@ -1381,6 +1385,34 @@ object
 </div>
 			</td>
 			<td>Service config (STUN)</td>
+		</tr>
+		<tr>
+			<td id="turn--service--allocateLoadBalancerNodePorts"><a href="./values.yaml#L91">turn.service.allocateLoadBalancerNodePorts</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>LoadBalancer internalTallocateLoadBalancerNodePorts @description Optionally disable node port allocation for a svc of type LoadBalancer Defaults to "true", more details: https://kubernetes.io/docs/concepts/services-networking/service/#load-balancer-nodeport-allocation</td>
+		</tr>
+		<tr>
+			<td id="turn--service--externalIPs"><a href="./values.yaml#L95">turn.service.externalIPs</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>LoadBalancer externalIPs @description externalIPs are usually provided via infrastructure controllers and it would not be necessary to set these. But sometimes, it could be just that simple. ;-)</td>
 		</tr>
 		<tr>
 			<td id="turn--service--externalTrafficPolicy"><a href="./values.yaml#L85">turn.service.externalTrafficPolicy</a></td>

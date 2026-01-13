@@ -85,6 +85,14 @@ turn:
     externalTrafficPolicy: ""
     # -- LoadBalancer internalTrafficPolicy (optional, defaults to Cluster if not provided)
     internalTrafficPolicy: ""
+    # -- LoadBalancer internalTallocateLoadBalancerNodePorts
+    # @description Optionally disable node port allocation for a svc of type LoadBalancer
+    # Defaults to "true", more details: https://kubernetes.io/docs/concepts/services-networking/service/#load-balancer-nodeport-allocation
+    allocateLoadBalancerNodePorts: ""
+    # -- LoadBalancer externalIPs
+    # @description externalIPs are usually provided via infrastructure controllers and it would not be necessary to set these.
+    # But sometimes, it could be just that simple. ;-)
+    externalIPs: []
   # -- Service config (metrics; fixed type of ClusterIP)
   metricsService:
     # -- Service port

@@ -12,6 +12,11 @@ spec:
   {{- if eq .Values.turn.service.type "LoadBalancer" }}
   externalTrafficPolicy: {{ .Values.turn.service.externalTrafficPolicy | default "Local" | quote }}
   internalTrafficPolicy: {{ .Values.turn.service.internalTrafficPolicy | default "Cluster" | quote }}
+  allocateLoadBalancerNodePorts: {{ .Values.turn.service.allocateLoadBalancerNodePorts | default true | quote }}
+  {{- with .Values.turn.service.externalIPs }}
+  externalIPs:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   {{- end }}
   ports:
   - port: {{ .Values.turn.service.port | default 3478 }}
