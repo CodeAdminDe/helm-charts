@@ -528,6 +528,37 @@ entries:
       securityContext: required
     apiVersion: v2
     appVersion: 4.8.0
+    created: "2026-01-13T20:47:40.196983752Z"
+    dependencies:
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for an easier coturn deployment at kubernetes.
+    digest: 8e65faa8dc88c173d9f6aa06fdbcbd2de5c6b0da64a6aa058665d1671eb50112
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - coturn
+    - STUN
+    - relay
+    - nat
+    - cloud-native
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: coturn-server
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/coturn-server-0.2.9/coturn-server-0.2.9.tgz
+    version: 0.2.9
+  - annotations:
+      category: Networking
+      kubeVersion: '>=1.33.0'
+      securityContext: required
+    apiVersion: v2
+    appVersion: 4.8.0
     created: "2026-01-13T17:36:11.137232176Z"
     dependencies:
     - alias: libchart-cnps
@@ -10029,4 +10060,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-01-13T17:36:11.137996659Z"
+generated: "2026-01-13T20:47:40.197505353Z"
