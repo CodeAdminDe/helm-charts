@@ -25,7 +25,7 @@ management:
   # -- Management image repository, tag and pullPolicy
   image:
     repository: netbirdio/management
-    tag: "0.62.3"
+    tag: "0.63.0"
     pullPolicy: IfNotPresent
   # -- Init container for dynamic management.json generation
   initConfig:
@@ -138,7 +138,7 @@ signal:
   # -- Signal image repository, tag and pullPolicy
   image:
     repository: netbirdio/signal
-    tag: "0.62.3"
+    tag: "0.63.0"
     pullPolicy: IfNotPresent
   # -- Signal server port
   port: 80
@@ -200,7 +200,7 @@ relay:
   # -- Relay image repository, tag and pullPolicy
   image:
     repository: netbirdio/relay
-    tag: "0.62.3"
+    tag: "0.63.0"
     pullPolicy: IfNotPresent
   # -- Relay server port
   port: 33080
@@ -245,7 +245,7 @@ dashboard:
   # -- Dashboard image repository, tag and pullPolicy
   image:
     repository: netbirdio/dashboard
-    tag: "v2.26.1"
+    tag: "v2.27.0"
     pullPolicy: IfNotPresent
   # -- Dashboard port
   port: 80
