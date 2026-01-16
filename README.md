@@ -32,7 +32,7 @@ The following charts are currently available:
 | libchart-cnps | 0.2.1 | 0.2.0 | A (experimental) Helm chart of cilium network policies for usage as a library chart. |
 | netbird-agent | 0.7.8 | 0.62.2 | A Helm chart for an easier netbird agent (https://netbird.io) deployment at kubernetes. |
 | netbird-management | 1.9.4 | 0.62.2 | A Helm chart for an easier netbird management stack (https://netbird.io) deployment at kubernetes. |
-| ollama | 0.15.1 | 0.13.5 | A Helm chart for an easier ollama (https://ollama.com) deployment on k8s. Please note that this is a private helm chart and not directly or indirectly affiliated with ollama or its authors. |
+| ollama | 0.16.0 | 0.14.0 | A Helm chart for an easier ollama (https://ollama.com) deployment on k8s. Please note that this is a private helm chart and not directly or indirectly affiliated with ollama or its authors. |
 | outline | 1.4.1 | 1.1.0 | A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes. |
 | redis | 0.3.0 | 8.4.0 | A Helm chart for Redis k8s deployment, based on library/redis |
 | supabase | 0.4.3 | 0.4.3 | A proxy chart for an easier supabase deployment at kubernetes. Take a look at the dependency chart values.yaml and update at least security related values!! |
