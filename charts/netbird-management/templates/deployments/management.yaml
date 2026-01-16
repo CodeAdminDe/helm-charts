@@ -10,10 +10,12 @@ metadata:
 spec:
   replicas: {{ .Values.management.replicaCount }}
   strategy:
-    type: RollingUpdate
+    type: {{ .Values.management.updateStrategy.type }}
+    {{- if eg .Values.management.updateStrategy.type "RollingUpdate" }}
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 0
+    {{- end}}
   selector:
     matchLabels:
       {{- include "netbird-management.selectorLabels" . | nindent 6 }}

@@ -124,6 +124,10 @@ management:
     enabled: true
     # -- Minimum available replicas
     minAvailable: 1
+  # -- Update management pod configuration
+  updateStrategy:
+    # -- Strategy type (options: RollingUpdate, Recreate)
+    type: "RollingUpdate"
 
 # -- Signal Server
 signal:
