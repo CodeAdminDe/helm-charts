@@ -36,6 +36,10 @@ management:
       pullPolicy: Always
   # -- Management server port
   port: 443
+  # -- Mangagement specific IdP config
+  idp:
+    # -- Timeout for IdP requests (default to NetBird inital default of 10)
+    timeout: 10
   # -- Management server port override for netbird config
   # @description Leave empty to use default (management.port value).
   # If you'd get connection issues, you could set this value to fix these.

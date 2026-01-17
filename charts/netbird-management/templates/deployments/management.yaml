@@ -154,6 +154,8 @@ spec:
           value: "{{ .Values.authentik.device.useIdToken }}"
         - name: NETBIRD_AUTH_DEVICE_AUTH_SCOPE
           value: "{{ .Values.authentik.device.scopes }}"
+        - name: NETBIRD_IDP_TIMEOUT
+          value: "{{ .Values.management.idp.timeout }}"
         - name: NETBIRD_MGMT_API_CERT_FILE
           value: "" # Assuming no letsencrypt for now, can be configured if needed
         - name: NETBIRD_MGMT_API_CERT_KEY_FILE
