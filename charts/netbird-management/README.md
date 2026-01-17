@@ -651,7 +651,7 @@ object
   "image": {
     "pullPolicy": "IfNotPresent",
     "repository": "netbirdio/dashboard",
-    "tag": "v2.27.0"
+    "tag": "v2.27.1"
   },
   "metricsPort": 9090,
   "port": 80,
@@ -777,7 +777,7 @@ object
 {
   "pullPolicy": "IfNotPresent",
   "repository": "netbirdio/dashboard",
-  "tag": "v2.27.0"
+  "tag": "v2.27.1"
 }
 </pre>
 </div>
