@@ -37,9 +37,21 @@
   ],
   "packageRules": [
     {
-      "groupName": "netbirdio/netbird",
+      "groupName": "netbirdio/netbird-agent",
       "matchPackageNames": [
         "netbirdio/**"
+      ],
+      "matchFileNames": [
+        "charts/netbird-agent/**"
+      ]
+    },
+    {
+      "groupName": "netbirdio/netbird-management",
+      "matchPackageNames": [
+        "netbirdio/**"
+      ],
+      "matchFileNames": [
+        "charts/netbird-management/**"
       ]
     },
     {
