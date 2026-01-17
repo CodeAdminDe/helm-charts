@@ -1,4 +1,4 @@
-Welcome to {{ include "netbird-agent.fullname" . }}!
+Welcome to {{ include "netbird-management.fullname" . }}!
 
 export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/component=management,app.kubernetes.io/name={{ include "netbird-management.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
 echo "* Check the status of the management service via: kubectl get --namespace {{ .Release.Namespace }} pod/$POD_NAME"
