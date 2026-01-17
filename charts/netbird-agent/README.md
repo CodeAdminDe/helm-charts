@@ -2,7 +2,7 @@
 
 # netbird-agent
 
-![Version: 0.7.9](https://img.shields.io/badge/Version-0.7.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.62.2](https://img.shields.io/badge/AppVersion-0.62.2-informational?style=flat-square)
+![Version: 0.8.0](https://img.shields.io/badge/Version-0.8.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.63.0](https://img.shields.io/badge/AppVersion-0.63.0-informational?style=flat-square)
 
 A Helm chart for an easier NetBird agent (https://netbird.io) deployment at kubernetes.
 
