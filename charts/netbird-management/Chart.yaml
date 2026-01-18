@@ -5,7 +5,7 @@ type: application
 # renovate: bumpVersion
 version: 1.10.4
 # renovate: image=netbirdio/management
-appVersion: "0.63.0"
+appVersion: "0.63.1"
 home: https://github.com/CodeAdminDe/helm-charts
 keywords:
   - netbird
