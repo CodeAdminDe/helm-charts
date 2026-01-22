@@ -330,12 +330,14 @@ livenessProbe:
   failureThreshold: 12
   periodSeconds: 10
   initialDelaySeconds: 10
+  timeoutSeconds: 5
 readinessProbe:
   exec:
     command: ["/bin/sh", "-c", "netbird status | grep 'NetBird IP: 100'"]
   failureThreshold: 6
   periodSeconds: 10
   initialDelaySeconds: 10
+  timeoutSeconds: 5
 
 # -- Node selector configuration
 nodeSelector: {}

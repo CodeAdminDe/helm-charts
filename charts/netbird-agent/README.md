@@ -2,7 +2,7 @@
 
 # netbird-agent
 
-![Version: 0.8.0](https://img.shields.io/badge/Version-0.8.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.63.0](https://img.shields.io/badge/AppVersion-0.63.0-informational?style=flat-square)
+![Version: 0.8.1](https://img.shields.io/badge/Version-0.8.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.63.0](https://img.shields.io/badge/AppVersion-0.63.0-informational?style=flat-square)
 
 A Helm chart for an easier NetBird agent (https://netbird.io) deployment at kubernetes.
 
@@ -108,7 +108,7 @@ object
 			<td>Additional env vars provided via one or more secret(s). @description Specifiy the ENV key used as KEY and the secret name as VALUE. The secret should contain the ENV key and the encrypted value: Sample secret ... apiVersion: v1 kind: Secret metadata: name: your-secret-name-to-slack-oidc-secrets type: Opaque stringData:   SLACK_KEY: "slack-key-value-goes-here"   SLACK_SECRET: "slack-secret-value-goes-here"</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L347">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L349">affinity</a></td>
 			<td>
 object
 </td>
@@ -966,6 +966,20 @@ int
 			<td></td>
 		</tr>
 		<tr>
+			<td id="livenessProbe--timeoutSeconds"><a href="./values.yaml#L333">livenessProbe.timeoutSeconds</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+5
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td id="monitoring"><a href="./values.yaml#L283">monitoring</a></td>
 			<td>
 object
@@ -1059,7 +1073,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L341">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L343">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -1188,7 +1202,7 @@ object
 			<td>Pod security context (rootless) @description podSecurityContext when running netbird with rootless (netstack) context. Note: Requires agent.caEnableRootless: true to get applied.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--exec--command[0]"><a href="./values.yaml#L335">readinessProbe.exec.command[0]</a></td>
+			<td id="readinessProbe--exec--command[0]"><a href="./values.yaml#L336">readinessProbe.exec.command[0]</a></td>
 			<td>
 string
 </td>
@@ -1202,7 +1216,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--exec--command[1]"><a href="./values.yaml#L335">readinessProbe.exec.command[1]</a></td>
+			<td id="readinessProbe--exec--command[1]"><a href="./values.yaml#L336">readinessProbe.exec.command[1]</a></td>
 			<td>
 string
 </td>
@@ -1216,7 +1230,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--exec--command[2]"><a href="./values.yaml#L335">readinessProbe.exec.command[2]</a></td>
+			<td id="readinessProbe--exec--command[2]"><a href="./values.yaml#L336">readinessProbe.exec.command[2]</a></td>
 			<td>
 string
 </td>
@@ -1230,7 +1244,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L336">readinessProbe.failureThreshold</a></td>
+			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L337">readinessProbe.failureThreshold</a></td>
 			<td>
 int
 </td>
@@ -1244,7 +1258,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L338">readinessProbe.initialDelaySeconds</a></td>
+			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L339">readinessProbe.initialDelaySeconds</a></td>
 			<td>
 int
 </td>
@@ -1258,7 +1272,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L337">readinessProbe.periodSeconds</a></td>
+			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L338">readinessProbe.periodSeconds</a></td>
 			<td>
 int
 </td>
@@ -1266,6 +1280,20 @@ int
 				<div style="max-width: 300px;">
 <pre lang="json">
 10
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td id="readinessProbe--timeoutSeconds"><a href="./values.yaml#L340">readinessProbe.timeoutSeconds</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+5
 </pre>
 </div>
 			</td>
@@ -1623,7 +1651,7 @@ object
 			<td>Health probes configuration for startup, liveness and readiness probes</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L344">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L346">tolerations</a></td>
 			<td>
 list
 </td>
