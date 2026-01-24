@@ -31,7 +31,7 @@ The following charts are currently available:
 | coturn-server | 0.2.10 | 4.8.0 | A Helm chart for an easier coturn deployment at kubernetes. |
 | libchart-cnps | 0.2.1 | 0.2.0 | A (experimental) Helm chart of cilium network policies for usage as a library chart. |
 | netbird-agent | 0.8.1 | 0.63.0 | A Helm chart for an easier NetBird agent (https://netbird.io) deployment at kubernetes. |
-| netbird-management | 1.11.0 | 0.64.0 | A Helm chart for an easier NetBird management stack (https://netbird.io) deployment at kubernetes. |
+| netbird-management | 1.11.1 | 0.64.1 | A Helm chart for an easier NetBird management stack (https://netbird.io) deployment at kubernetes. |
 | ollama | 0.16.1 | 0.14.2 | A Helm chart for an easier ollama (https://ollama.com) deployment on k8s. Please note that this is a private helm chart and not directly or indirectly affiliated with ollama or its authors. |
 | outline | 1.4.1 | 1.1.0 | A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes. |
 | redis | 0.3.0 | 8.4.0 | A Helm chart for Redis k8s deployment, based on library/redis |
