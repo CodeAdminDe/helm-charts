@@ -249,7 +249,7 @@ dashboard:
   # -- Dashboard image repository, tag and pullPolicy
   image:
     repository: netbirdio/dashboard
-    tag: "v2.29.0"
+    tag: "v2.30.0"
     pullPolicy: IfNotPresent
   # -- Dashboard port
   port: 80
