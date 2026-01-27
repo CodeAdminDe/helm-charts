@@ -3,7 +3,7 @@ name: netbird-management
 description: A Helm chart for an easier NetBird management stack (https://netbird.io) deployment at kubernetes.
 type: application
 # renovate: bumpVersion
-version: 1.12.0
+version: 1.11.3
 # renovate: image=netbirdio/management
 appVersion: "0.64.2"
 home: https://github.com/CodeAdminDe/helm-charts
