@@ -4061,6 +4061,37 @@ entries:
     version: 1.0.0
   ollama:
   - apiVersion: v2
+    appVersion: 0.15.2
+    created: "2026-01-29T14:40:35.739350291Z"
+    dependencies:
+    - alias: libchart-cnps
+      condition: libchartCnps.deployAndYesIUnderstandAndAccceptTheRisk
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for an easier ollama (https://ollama.com) deployment
+      on k8s. Please note that this is a private helm chart and not directly or indirectly
+      affiliated with ollama or its authors.
+    digest: c31c25d9c6bba2f0ba31475034b9d489e3cafc772f75659d1a4ed6632388dd48
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - ollama
+    - ai
+    - ki
+    - llm
+    - backend
+    - helm
+    - cloud-native
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: ollama
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/ollama-0.17.1/ollama-0.17.1.tgz
+    version: 0.17.1
+  - apiVersion: v2
     appVersion: 0.15.0
     created: "2026-01-29T14:12:20.154655037Z"
     dependencies:
@@ -10993,4 +11024,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-01-29T14:12:20.155248176Z"
+generated: "2026-01-29T14:40:35.740363274Z"
