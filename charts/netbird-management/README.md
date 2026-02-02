@@ -2,7 +2,7 @@
 
 # netbird-management
 
-![Version: 1.11.5](https://img.shields.io/badge/Version-1.11.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.64.4](https://img.shields.io/badge/AppVersion-0.64.4-informational?style=flat-square)
+![Version: 1.12.0](https://img.shields.io/badge/Version-1.12.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.64.4](https://img.shields.io/badge/AppVersion-0.64.4-informational?style=flat-square)
 
 A Helm chart for an easier NetBird management stack (https://netbird.io) deployment at kubernetes.
 
@@ -651,7 +651,7 @@ object
   "image": {
     "pullPolicy": "IfNotPresent",
     "repository": "netbirdio/dashboard",
-    "tag": "v2.30.1"
+    "tag": "v2.31.0"
   },
   "metricsPort": 9090,
   "port": 80,
@@ -777,7 +777,7 @@ object
 {
   "pullPolicy": "IfNotPresent",
   "repository": "netbirdio/dashboard",
-  "tag": "v2.30.1"
+  "tag": "v2.31.0"
 }
 </pre>
 </div>
