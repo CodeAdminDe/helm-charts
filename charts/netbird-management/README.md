@@ -2,7 +2,7 @@
 
 # netbird-management
 
-![Version: 1.11.6](https://img.shields.io/badge/Version-1.11.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.64.4](https://img.shields.io/badge/AppVersion-0.64.4-informational?style=flat-square)
+![Version: 1.11.7](https://img.shields.io/badge/Version-1.11.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.64.5](https://img.shields.io/badge/AppVersion-0.64.5-informational?style=flat-square)
 
 A Helm chart for an easier NetBird management stack (https://netbird.io) deployment at kubernetes.
 
@@ -1348,7 +1348,7 @@ object
   "image": {
     "pullPolicy": "IfNotPresent",
     "repository": "netbirdio/management",
-    "tag": "0.64.4"
+    "tag": "0.64.5"
   },
   "initConfig": {
     "image": {
@@ -1505,7 +1505,7 @@ object
 {
   "pullPolicy": "IfNotPresent",
   "repository": "netbirdio/management",
-  "tag": "0.64.4"
+  "tag": "0.64.5"
 }
 </pre>
 </div>
@@ -2389,7 +2389,7 @@ object
   "image": {
     "pullPolicy": "IfNotPresent",
     "repository": "netbirdio/relay",
-    "tag": "0.64.4"
+    "tag": "0.64.5"
   },
   "metricsPort": 9090,
   "port": 33080,
@@ -2515,7 +2515,7 @@ object
 {
   "pullPolicy": "IfNotPresent",
   "repository": "netbirdio/relay",
-  "tag": "0.64.4"
+  "tag": "0.64.5"
 }
 </pre>
 </div>
@@ -2775,7 +2775,7 @@ object
   "image": {
     "pullPolicy": "IfNotPresent",
     "repository": "netbirdio/signal",
-    "tag": "0.64.4"
+    "tag": "0.64.5"
   },
   "metricsPort": 9090,
   "persistence": {
@@ -2910,7 +2910,7 @@ object
 {
   "pullPolicy": "IfNotPresent",
   "repository": "netbirdio/signal",
-  "tag": "0.64.4"
+  "tag": "0.64.5"
 }
 </pre>
 </div>
