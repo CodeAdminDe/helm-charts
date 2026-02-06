@@ -1,4 +1,4 @@
-{{- if .Values.ingress.enabled }}
+{{- if and .Values.ingress.enabled (or .Values.dashboard.enabled .Values.management.enabled)}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -21,13 +21,7 @@ spec:
     - host: {{ .Values.global.domain }}
       http:
         paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ include "netbird-management.fullname" . }}-dashboard
-                port:
-                  number: {{ .Values.dashboard.service.port }}
+        {{- if .Values.management.enabled }}
           - path: /api
             pathType: Prefix
             backend:
@@ -35,4 +29,14 @@ spec:
                 name: {{ include "netbird-management.fullname" . }}-management
                 port:
                   number: {{ .Values.management.service.port }}
+        {{- end }}
+        {{- if .Values.dashboard.enabled }}
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "netbird-management.fullname" . }}-dashboard
+                port:
+                  number: {{ .Values.dashboard.service.port }}
+        {{- end }}
 {{- end }}

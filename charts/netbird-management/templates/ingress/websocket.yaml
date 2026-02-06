@@ -1,4 +1,4 @@
-{{- if .Values.ingress.enabled }}
+{{- if and .Values.ingress.enabled (or .Values.signal.enabled .Values.management.enabled .Values.relay.enabled)}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -23,6 +23,7 @@ spec:
     - host: {{ .Values.global.domain }}
       http:
         paths:
+        {{- if .Values.signal.enabled }}
           - path: /ws-proxy/signal
             pathType: Prefix
             backend:
@@ -30,6 +31,8 @@ spec:
                 name: {{ include "netbird-management.fullname" . }}-signal
                 port:
                   number: {{ .Values.signal.service.port }}
+        {{- end }}
+        {{- if .Values.management.enabled }}
           - path: /ws-proxy/management
             pathType: Prefix
             backend:
@@ -37,6 +40,8 @@ spec:
                 name: {{ include "netbird-management.fullname" . }}-management
                 port:
                   number: {{ .Values.management.service.port }}
+        {{- end }}
+        {{- if .Values.relay.enabled }}
           - path: /relay
             pathType: Prefix
             backend:
@@ -44,4 +49,5 @@ spec:
                 name: {{ include "netbird-management.fullname" . }}-relay
                 port:
                   number: {{ .Values.relay.service.port }}
+        {{- end }}
 {{- end }}

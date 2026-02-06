@@ -1,4 +1,5 @@
 {{- if .Values.rbac.create }}
+{{- if or .Values.management.enabled .Values.relay.enabled .Values.dashboard.enabled .Values.useCnpgCluster.enabled }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -14,4 +15,5 @@ subjects:
 - kind: ServiceAccount
   name: {{ include "netbird-management.serviceAccountName" . }}
   namespace: {{ .Release.Namespace }}
+{{- end }}
 {{- end }}

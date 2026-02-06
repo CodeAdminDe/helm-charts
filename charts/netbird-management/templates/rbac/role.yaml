@@ -1,4 +1,5 @@
 {{- if .Values.rbac.create }}
+{{- if or .Values.management.enabled .Values.relay.enabled .Values.dashboard.enabled .Values.useCnpgCluster.enabled }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -11,14 +12,23 @@ rules:
   resources: ["secrets"]
   verbs: ["get"]
   resourceNames:
+  {{- if or .Values.management.enabled .Values.relay.enabled }}
   - {{ .Values.existingRelayAuthSecret | default "netbird-relay-auth-secret" }}
+  {{- end }}
+  {{- if .Values.management.enabled }}
   - {{ .Values.existingEncryptionKeySecret | default "netbird-datasrc-encryption" }}
-  - {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
   - {{ .Values.existingAuthentikDeviceOidcSecret | default "netbird-authentik-device-oidc" }}
+  {{- end }}
+  {{- if or .Values.management.enabled .Values.dashboard.enabled }}
+  - {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
+  {{- end }}
+  {{- if .Values.useCnpgCluster.enabled }}
   - {{ .Values.postgresql.cnpgCluster.appConnectionSecretName }}
+  {{- end }}
 - apiGroups: [""]
   resources: ["configmaps"]
   verbs: ["get"]
   resourceNames:
   - netbird-management-config
+{{- end }}
 {{- end }}
