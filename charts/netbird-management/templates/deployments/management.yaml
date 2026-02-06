@@ -113,7 +113,11 @@ spec:
         - name: NETBIRD_DOMAIN
           value: "{{ .Values.global.domain }}"
         - name: NETBIRD_RELAY_ENDPOINT
-          value: "rels://{{ .Values.global.domain }}:443/relay"
+          value: {{ if .Values.global.relayDomains -}}
+                   {{- .Values.global.relayDomains | toJson | quote -}}
+                 {{- else -}}
+                   {{- (list (printf "rels://%s:443/relay" .Values.global.domain)) | toJson | quote -}}
+                 {{- end }}
         - name: TURN_DOMAIN
           value: "{{ .Values.turn.domain | default .Values.global.domain }}"
         - name: TURN_PORT

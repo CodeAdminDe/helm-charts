@@ -2,6 +2,15 @@
 global:
   # -- Domain for the deployment
   domain: "nb.example.com"
+  # -- Domain list of relay endpoints
+  # @description Allowes to configure one or more replay endpoints.
+  # Leave empty ([]), to use the global.domain (default behavior). If you'd like your clients to connect to
+  # a different and/or multiple relays, provide them as a comma-separated list of strings, including proto, fqdn, port and path.
+  # Sample:
+  # relayDomains:
+  #  - "rels://nb.example.com:443/relay"
+  #  - "rels://relay.example.invalid:443/relay"
+  relayDomains: []
   # -- Environment (production, staging, development)
   environment: production
   # -- Timezone for the deployment
