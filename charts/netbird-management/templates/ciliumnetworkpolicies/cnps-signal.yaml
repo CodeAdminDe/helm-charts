@@ -77,7 +77,7 @@ spec:
   {{- end }}
 {{- end }}
 
-{{- if .Values.libchartCnps.enabled -}}
+{{- if and .Values.libchartCnps.enabled .Values.signal.enabled -}}
 ---
 {{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "netbird-management.CiliumNetworkPolicies-AppSet.signal") }}
 {{ end -}}
