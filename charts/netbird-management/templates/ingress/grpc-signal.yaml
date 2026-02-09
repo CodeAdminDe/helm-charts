@@ -30,5 +30,5 @@ spec:
               service:
                 name: {{ include "netbird-management.fullname" . }}-signal
                 port:
-                  number: {{ .Values.signal.service.port }}
+                  number: {{ .Values.signal.service.grpcPort }}
 {{- end }}

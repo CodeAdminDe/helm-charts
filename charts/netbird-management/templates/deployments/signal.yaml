@@ -74,6 +74,9 @@ spec:
         - name: signal
           containerPort: {{ .Values.signal.port }}
           protocol: TCP
+        - name: grpc
+          containerPort: {{ .Values.signal.grpcPort }}
+          protocol: TCP
         - name: metrics
           containerPort: {{ .Values.signal.metricsPort }}
           protocol: TCP

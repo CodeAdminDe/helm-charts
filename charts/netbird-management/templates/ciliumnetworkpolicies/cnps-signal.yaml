@@ -28,6 +28,9 @@ spec:
         - ports:
             - port: "{{ .Values.signal.port }}"
               protocol: TCP
+        - ports:
+            - port: "{{ .Values.signal.grpcPort }}"
+              protocol: TCP
   {{- end }}
   {{- if and .Values.cnps.appTraffic.ingress.allow .Values.monitoring.enabled }}
     - fromEndpoints:
