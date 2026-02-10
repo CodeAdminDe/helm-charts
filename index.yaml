@@ -11136,6 +11136,24 @@ entries:
     version: 0.1.0
   redis:
   - apiVersion: v2
+    appVersion: 8.6.0
+    created: "2026-02-10T21:13:44.828237984Z"
+    description: A Helm chart for Redis k8s deployment, based on library/redis
+    digest: 2e4a04b9d5c176a18767b8949425394b7136589d964bcd8ff4ebdbe8cfef41c2
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - redis
+    - database
+    - cache
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: redis
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/redis-0.4.0/redis-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
     appVersion: 8.4.0
     created: "2025-11-19T04:31:02.636496826Z"
     description: A Helm chart for Redis k8s deployment, based on library/redis
@@ -11614,4 +11632,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-09T21:06:04.452352165Z"
+generated: "2026-02-10T21:13:44.828809443Z"
