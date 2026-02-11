@@ -119,7 +119,7 @@ spec:
                    {{- (list (printf "rels://%s:443/relay" .Values.global.domain)) | toJson | quote -}}
                  {{- end }}
         - name: NETBIRD_RP_TRUSTED_COUNT
-          value: {{ .Values.management.reverseProxy.trustedProxyCount | default "0" }}
+          value: "{{ .Values.management.reverseProxy.trustedProxyCount | default 0 }}"
         - name: NETBIRD_RP_TRUSTED_PROXIES
           value: {{- .Values.management.reverseProxy.trustedProxyIps | toJson | quote -}}
         - name: NETBIRD_RP_TRUSTED_PEERS
