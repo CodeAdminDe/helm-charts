@@ -121,9 +121,9 @@ spec:
         - name: NETBIRD_RP_TRUSTED_COUNT
           value: "{{ .Values.management.reverseProxy.trustedProxyCount | default 0 }}"
         - name: NETBIRD_RP_TRUSTED_PROXIES
-          value: {{- .Values.management.reverseProxy.trustedProxyIps | toJson | quote }}
+          value: {{ .Values.management.reverseProxy.trustedProxyIps | toJson | quote }}
         - name: NETBIRD_RP_TRUSTED_PEERS
-          value: {{- .Values.management.reverseProxy.trustedPeers | toJson | quote }}
+          value: {{ .Values.management.reverseProxy.trustedPeers | toJson | quote }}
         - name: TURN_DOMAIN
           value: "{{ .Values.turn.domain | default .Values.global.domain }}"
         - name: TURN_PORT
