@@ -30,11 +30,9 @@ data:
             "Password": null
         },
         "ReverseProxy": {
-            "TrustedHTTPProxies": [],
-            "TrustedHTTPProxiesCount": 0,
-            "TrustedPeers": [
-                 "0.0.0.0/0"
-            ]
+            "TrustedHTTPProxies": $NETBIRD_RP_TRUSTED_PROXIES,
+            "TrustedHTTPProxiesCount": $NETBIRD_RP_TRUSTED_COUNT,
+            "TrustedPeers": $NETBIRD_RP_TRUSTED_PEERS
         },
         "DisableDefaultPolicy": $NETBIRD_MGMT_DISABLE_DEFAULT_POLICY,
         "Datadir": "",

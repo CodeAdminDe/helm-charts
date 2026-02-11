@@ -2,7 +2,7 @@
 
 # netbird-management
 
-![Version: 1.12.1](https://img.shields.io/badge/Version-1.12.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.64.5](https://img.shields.io/badge/AppVersion-0.64.5-informational?style=flat-square)
+![Version: 1.12.2](https://img.shields.io/badge/Version-1.12.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.64.5](https://img.shields.io/badge/AppVersion-0.64.5-informational?style=flat-square)
 
 A Helm chart for an easier NetBird management stack (https://netbird.io) deployment at kubernetes.
 
@@ -94,7 +94,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="authentik"><a href="./values.yaml#L331">authentik</a></td>
+			<td id="authentik"><a href="./values.yaml#L339">authentik</a></td>
 			<td>
 object
 </td>
@@ -130,7 +130,7 @@ object
 			<td>Authentik OIDC configuration</td>
 		</tr>
 		<tr>
-			<td id="authentik--appSlug"><a href="./values.yaml#L337">authentik.appSlug</a></td>
+			<td id="authentik--appSlug"><a href="./values.yaml#L345">authentik.appSlug</a></td>
 			<td>
 string
 </td>
@@ -144,7 +144,7 @@ string
 			<td>Authentik application slug</td>
 		</tr>
 		<tr>
-			<td id="authentik--clientId"><a href="./values.yaml#L343">authentik.clientId</a></td>
+			<td id="authentik--clientId"><a href="./values.yaml#L351">authentik.clientId</a></td>
 			<td>
 string
 </td>
@@ -158,7 +158,7 @@ string
 			<td>Authentik client ID</td>
 		</tr>
 		<tr>
-			<td id="authentik--clientSecret"><a href="./values.yaml#L345">authentik.clientSecret</a></td>
+			<td id="authentik--clientSecret"><a href="./values.yaml#L353">authentik.clientSecret</a></td>
 			<td>
 string
 </td>
@@ -172,7 +172,7 @@ string
 			<td>Authentik client secret (only required for confidential clients)</td>
 		</tr>
 		<tr>
-			<td id="authentik--device"><a href="./values.yaml#L357">authentik.device</a></td>
+			<td id="authentik--device"><a href="./values.yaml#L365">authentik.device</a></td>
 			<td>
 object
 </td>
@@ -193,7 +193,7 @@ object
 			<td>Device code flow configuration</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--clientId"><a href="./values.yaml#L363">authentik.device.clientId</a></td>
+			<td id="authentik--device--clientId"><a href="./values.yaml#L371">authentik.device.clientId</a></td>
 			<td>
 string
 </td>
@@ -207,7 +207,7 @@ string
 			<td>Device code flow client ID</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--clientSecret"><a href="./values.yaml#L365">authentik.device.clientSecret</a></td>
+			<td id="authentik--device--clientSecret"><a href="./values.yaml#L373">authentik.device.clientSecret</a></td>
 			<td>
 string
 </td>
@@ -221,7 +221,7 @@ string
 			<td>Device code flow client secret (only required for confidential clients)</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--isPublicClient"><a href="./values.yaml#L361">authentik.device.isPublicClient</a></td>
+			<td id="authentik--device--isPublicClient"><a href="./values.yaml#L369">authentik.device.isPublicClient</a></td>
 			<td>
 bool
 </td>
@@ -235,7 +235,7 @@ true
 			<td>Device code flow client is public</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--scopes"><a href="./values.yaml#L367">authentik.device.scopes</a></td>
+			<td id="authentik--device--scopes"><a href="./values.yaml#L375">authentik.device.scopes</a></td>
 			<td>
 string
 </td>
@@ -249,7 +249,7 @@ string
 			<td>Device code flow OIDC scopes</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--type"><a href="./values.yaml#L359">authentik.device.type</a></td>
+			<td id="authentik--device--type"><a href="./values.yaml#L367">authentik.device.type</a></td>
 			<td>
 string
 </td>
@@ -263,7 +263,7 @@ string
 			<td>Device code flow type (hosted or none to disable)</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--useIdToken"><a href="./values.yaml#L369">authentik.device.useIdToken</a></td>
+			<td id="authentik--device--useIdToken"><a href="./values.yaml#L377">authentik.device.useIdToken</a></td>
 			<td>
 bool
 </td>
@@ -277,7 +277,7 @@ false
 			<td>Use ID token instead of access token for device flow</td>
 		</tr>
 		<tr>
-			<td id="authentik--domain"><a href="./values.yaml#L335">authentik.domain</a></td>
+			<td id="authentik--domain"><a href="./values.yaml#L343">authentik.domain</a></td>
 			<td>
 string
 </td>
@@ -291,7 +291,7 @@ string
 			<td>Authentik domain URL</td>
 		</tr>
 		<tr>
-			<td id="authentik--enabled"><a href="./values.yaml#L333">authentik.enabled</a></td>
+			<td id="authentik--enabled"><a href="./values.yaml#L341">authentik.enabled</a></td>
 			<td>
 bool
 </td>
@@ -305,7 +305,7 @@ true
 			<td>Enable Authentik OIDC</td>
 		</tr>
 		<tr>
-			<td id="authentik--isPublicClient"><a href="./values.yaml#L341">authentik.isPublicClient</a></td>
+			<td id="authentik--isPublicClient"><a href="./values.yaml#L349">authentik.isPublicClient</a></td>
 			<td>
 bool
 </td>
@@ -319,7 +319,7 @@ true
 			<td>Authentik client is public (no client secret required)</td>
 		</tr>
 		<tr>
-			<td id="authentik--issuer"><a href="./values.yaml#L339">authentik.issuer</a></td>
+			<td id="authentik--issuer"><a href="./values.yaml#L347">authentik.issuer</a></td>
 			<td>
 string
 </td>
@@ -333,7 +333,7 @@ string
 			<td>Authentik issuer URL</td>
 		</tr>
 		<tr>
-			<td id="authentik--scopes"><a href="./values.yaml#L347">authentik.scopes</a></td>
+			<td id="authentik--scopes"><a href="./values.yaml#L355">authentik.scopes</a></td>
 			<td>
 string
 </td>
@@ -347,7 +347,7 @@ string
 			<td>OIDC scopes to request</td>
 		</tr>
 		<tr>
-			<td id="authentik--serviceAccount"><a href="./values.yaml#L351">authentik.serviceAccount</a></td>
+			<td id="authentik--serviceAccount"><a href="./values.yaml#L359">authentik.serviceAccount</a></td>
 			<td>
 object
 </td>
@@ -364,7 +364,7 @@ object
 			<td>Service account configuration</td>
 		</tr>
 		<tr>
-			<td id="authentik--serviceAccount--password"><a href="./values.yaml#L355">authentik.serviceAccount.password</a></td>
+			<td id="authentik--serviceAccount--password"><a href="./values.yaml#L363">authentik.serviceAccount.password</a></td>
 			<td>
 string
 </td>
@@ -378,7 +378,7 @@ string
 			<td>Service account password</td>
 		</tr>
 		<tr>
-			<td id="authentik--serviceAccount--username"><a href="./values.yaml#L353">authentik.serviceAccount.username</a></td>
+			<td id="authentik--serviceAccount--username"><a href="./values.yaml#L361">authentik.serviceAccount.username</a></td>
 			<td>
 string
 </td>
@@ -392,7 +392,7 @@ string
 			<td>Service account username</td>
 		</tr>
 		<tr>
-			<td id="authentik--useIdToken"><a href="./values.yaml#L349">authentik.useIdToken</a></td>
+			<td id="authentik--useIdToken"><a href="./values.yaml#L357">authentik.useIdToken</a></td>
 			<td>
 bool
 </td>
@@ -406,7 +406,7 @@ false
 			<td>Use ID token instead of access token</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L430">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L438">cnps</a></td>
 			<td>
 object
 </td>
@@ -438,7 +438,7 @@ object
 			<td>Application-specific Cilium Network Policies configuration @description Requires CiliumNetworkPolicies library-chart. These settings will be ignored if the library-chart is not available. These settings are directly related to the application and will not influence namespace-wide policies (e.g., for DNS egress traffic).</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic"><a href="./values.yaml#L432">cnps.appTraffic</a></td>
+			<td id="cnps--appTraffic"><a href="./values.yaml#L440">cnps.appTraffic</a></td>
 			<td>
 object
 </td>
@@ -465,7 +465,7 @@ object
 			<td>Application traffic policies</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress"><a href="./values.yaml#L451">cnps.appTraffic.egress</a></td>
+			<td id="cnps--appTraffic--egress"><a href="./values.yaml#L459">cnps.appTraffic.egress</a></td>
 			<td>
 object
 </td>
@@ -483,7 +483,7 @@ object
 			<td>Egress traffic configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L453">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L461">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -497,7 +497,7 @@ true
 			<td>Allow egress traffic</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--matchLabels"><a href="./values.yaml#L456">cnps.appTraffic.egress.matchLabels</a></td>
+			<td id="cnps--appTraffic--egress--matchLabels"><a href="./values.yaml#L464">cnps.appTraffic.egress.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -511,7 +511,7 @@ object
 			<td>Labels to match egress destinations @description Allows overriding default egress labels to match your security requirements.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L460">cnps.appTraffic.egress.toEntities</a></td>
+			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L468">cnps.appTraffic.egress.toEntities</a></td>
 			<td>
 list
 </td>
@@ -525,7 +525,7 @@ list
 			<td>Entities to allow egress to (e.g., world) @description Allows overriding default egress entities to match your security requirements.   - world</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress"><a href="./values.yaml#L434">cnps.appTraffic.ingress</a></td>
+			<td id="cnps--appTraffic--ingress"><a href="./values.yaml#L442">cnps.appTraffic.ingress</a></td>
 			<td>
 object
 </td>
@@ -545,7 +545,7 @@ object
 			<td>Ingress traffic configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L436">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L444">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -559,7 +559,7 @@ true
 			<td>Allow ingress traffic</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L441">cnps.appTraffic.ingress.matchLabels</a></td>
+			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L449">cnps.appTraffic.ingress.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -573,7 +573,7 @@ object
 			<td>Labels to match ingress controller pods @description Allows overriding default to match your ingress deployment.   app.kubernetes.io/name: ingress-nginx   io.kubernetes.pod.namespace: ingress-nginx</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--metrics"><a href="./values.yaml#L443">cnps.appTraffic.ingress.metrics</a></td>
+			<td id="cnps--appTraffic--ingress--metrics"><a href="./values.yaml#L451">cnps.appTraffic.ingress.metrics</a></td>
 			<td>
 object
 </td>
@@ -589,7 +589,7 @@ object
 			<td>Metrics scraper configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--metrics--matchLabels"><a href="./values.yaml#L449">cnps.appTraffic.ingress.metrics.matchLabels</a></td>
+			<td id="cnps--appTraffic--ingress--metrics--matchLabels"><a href="./values.yaml#L457">cnps.appTraffic.ingress.metrics.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -603,7 +603,7 @@ object
 			<td>Labels to match Prometheus pods @description Allows overriding default to match your prometheus deployment   app.kubernetes.io/name: prometheus   app.kubernetes.io/instance: kube-prometheus-stack-prometheus   io.kubernetes.pod.namespace: monitoring--kube-prometheus-stack</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L462">cnps.cnpgTraffic</a></td>
+			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L470">cnps.cnpgTraffic</a></td>
 			<td>
 object
 </td>
@@ -619,7 +619,7 @@ object
 			<td>CNPG traffic policies</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L480">cnps.cnpgTraffic.instanceExtraEgress</a></td>
+			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L488">cnps.cnpgTraffic.instanceExtraEgress</a></td>
 			<td>
 list
 </td>
@@ -633,7 +633,7 @@ list
 			<td>Additional instance egress rules for external services (e.g., backup services) @description Add additional rule(s) as desired, to allow access to external backup services - toFQDNs:   - matchName: s3.storage.example.org   toPorts:     - ports:         - port: "443"           protocol: TCP ## OR ## - toEntities:   - world   toPorts:     - ports:         - port: "8443"           protocol: TCP ## OR ## ...</td>
 		</tr>
 		<tr>
-			<td id="dashboard"><a href="./values.yaml#L257">dashboard</a></td>
+			<td id="dashboard"><a href="./values.yaml#L265">dashboard</a></td>
 			<td>
 object
 </td>
@@ -678,7 +678,7 @@ object
 			<td>Dashboard UI</td>
 		</tr>
 		<tr>
-			<td id="dashboard--enabled"><a href="./values.yaml#L259">dashboard.enabled</a></td>
+			<td id="dashboard--enabled"><a href="./values.yaml#L267">dashboard.enabled</a></td>
 			<td>
 bool
 </td>
@@ -692,7 +692,7 @@ true
 			<td>Enable Dashboard</td>
 		</tr>
 		<tr>
-			<td id="dashboard--hpa"><a href="./values.yaml#L291">dashboard.hpa</a></td>
+			<td id="dashboard--hpa"><a href="./values.yaml#L299">dashboard.hpa</a></td>
 			<td>
 object
 </td>
@@ -711,7 +711,7 @@ object
 			<td>Horizontal Pod Autoscaler configuration</td>
 		</tr>
 		<tr>
-			<td id="dashboard--hpa--enabled"><a href="./values.yaml#L293">dashboard.hpa.enabled</a></td>
+			<td id="dashboard--hpa--enabled"><a href="./values.yaml#L301">dashboard.hpa.enabled</a></td>
 			<td>
 bool
 </td>
@@ -725,7 +725,7 @@ false
 			<td>Enable HPA</td>
 		</tr>
 		<tr>
-			<td id="dashboard--hpa--maxReplicas"><a href="./values.yaml#L297">dashboard.hpa.maxReplicas</a></td>
+			<td id="dashboard--hpa--maxReplicas"><a href="./values.yaml#L305">dashboard.hpa.maxReplicas</a></td>
 			<td>
 int
 </td>
@@ -739,7 +739,7 @@ int
 			<td>Maximum replicas for HPA</td>
 		</tr>
 		<tr>
-			<td id="dashboard--hpa--minReplicas"><a href="./values.yaml#L295">dashboard.hpa.minReplicas</a></td>
+			<td id="dashboard--hpa--minReplicas"><a href="./values.yaml#L303">dashboard.hpa.minReplicas</a></td>
 			<td>
 int
 </td>
@@ -753,7 +753,7 @@ int
 			<td>Minimum replicas for HPA</td>
 		</tr>
 		<tr>
-			<td id="dashboard--hpa--targetCPUUtilizationPercentage"><a href="./values.yaml#L299">dashboard.hpa.targetCPUUtilizationPercentage</a></td>
+			<td id="dashboard--hpa--targetCPUUtilizationPercentage"><a href="./values.yaml#L307">dashboard.hpa.targetCPUUtilizationPercentage</a></td>
 			<td>
 int
 </td>
@@ -767,7 +767,7 @@ int
 			<td>Target CPU utilization percentage</td>
 		</tr>
 		<tr>
-			<td id="dashboard--image"><a href="./values.yaml#L263">dashboard.image</a></td>
+			<td id="dashboard--image"><a href="./values.yaml#L271">dashboard.image</a></td>
 			<td>
 object
 </td>
@@ -785,7 +785,7 @@ object
 			<td>Dashboard image repository, tag and pullPolicy</td>
 		</tr>
 		<tr>
-			<td id="dashboard--metricsPort"><a href="./values.yaml#L270">dashboard.metricsPort</a></td>
+			<td id="dashboard--metricsPort"><a href="./values.yaml#L278">dashboard.metricsPort</a></td>
 			<td>
 int
 </td>
@@ -799,7 +799,7 @@ int
 			<td>Dashboard metrics port</td>
 		</tr>
 		<tr>
-			<td id="dashboard--port"><a href="./values.yaml#L268">dashboard.port</a></td>
+			<td id="dashboard--port"><a href="./values.yaml#L276">dashboard.port</a></td>
 			<td>
 int
 </td>
@@ -813,7 +813,7 @@ int
 			<td>Dashboard port</td>
 		</tr>
 		<tr>
-			<td id="dashboard--replicaCount"><a href="./values.yaml#L261">dashboard.replicaCount</a></td>
+			<td id="dashboard--replicaCount"><a href="./values.yaml#L269">dashboard.replicaCount</a></td>
 			<td>
 int
 </td>
@@ -827,7 +827,7 @@ int
 			<td>Number of Dashboard replicas</td>
 		</tr>
 		<tr>
-			<td id="dashboard--resources"><a href="./values.yaml#L279">dashboard.resources</a></td>
+			<td id="dashboard--resources"><a href="./values.yaml#L287">dashboard.resources</a></td>
 			<td>
 object
 </td>
@@ -850,7 +850,7 @@ object
 			<td>Resource requests and limits</td>
 		</tr>
 		<tr>
-			<td id="dashboard--resources--limits--cpu"><a href="./values.yaml#L287">dashboard.resources.limits.cpu</a></td>
+			<td id="dashboard--resources--limits--cpu"><a href="./values.yaml#L295">dashboard.resources.limits.cpu</a></td>
 			<td>
 string
 </td>
@@ -864,7 +864,7 @@ string
 			<td>CPU limit</td>
 		</tr>
 		<tr>
-			<td id="dashboard--resources--limits--memory"><a href="./values.yaml#L289">dashboard.resources.limits.memory</a></td>
+			<td id="dashboard--resources--limits--memory"><a href="./values.yaml#L297">dashboard.resources.limits.memory</a></td>
 			<td>
 string
 </td>
@@ -878,7 +878,7 @@ string
 			<td>Memory limit</td>
 		</tr>
 		<tr>
-			<td id="dashboard--resources--requests--cpu"><a href="./values.yaml#L282">dashboard.resources.requests.cpu</a></td>
+			<td id="dashboard--resources--requests--cpu"><a href="./values.yaml#L290">dashboard.resources.requests.cpu</a></td>
 			<td>
 string
 </td>
@@ -892,7 +892,7 @@ string
 			<td>CPU request</td>
 		</tr>
 		<tr>
-			<td id="dashboard--resources--requests--memory"><a href="./values.yaml#L284">dashboard.resources.requests.memory</a></td>
+			<td id="dashboard--resources--requests--memory"><a href="./values.yaml#L292">dashboard.resources.requests.memory</a></td>
 			<td>
 string
 </td>
@@ -906,7 +906,7 @@ string
 			<td>Memory request</td>
 		</tr>
 		<tr>
-			<td id="dashboard--service--metricsPort"><a href="./values.yaml#L277">dashboard.service.metricsPort</a></td>
+			<td id="dashboard--service--metricsPort"><a href="./values.yaml#L285">dashboard.service.metricsPort</a></td>
 			<td>
 int
 </td>
@@ -920,7 +920,7 @@ int
 			<td>Service metrics port</td>
 		</tr>
 		<tr>
-			<td id="dashboard--service--port"><a href="./values.yaml#L275">dashboard.service.port</a></td>
+			<td id="dashboard--service--port"><a href="./values.yaml#L283">dashboard.service.port</a></td>
 			<td>
 int
 </td>
@@ -934,7 +934,7 @@ int
 			<td>Service port</td>
 		</tr>
 		<tr>
-			<td id="dashboard--service--type"><a href="./values.yaml#L273">dashboard.service.type</a></td>
+			<td id="dashboard--service--type"><a href="./values.yaml#L281">dashboard.service.type</a></td>
 			<td>
 string
 </td>
@@ -948,7 +948,7 @@ string
 			<td>Service type</td>
 		</tr>
 		<tr>
-			<td id="existingAuthentikDeviceOidcSecret"><a href="./values.yaml#L328">existingAuthentikDeviceOidcSecret</a></td>
+			<td id="existingAuthentikDeviceOidcSecret"><a href="./values.yaml#L336">existingAuthentikDeviceOidcSecret</a></td>
 			<td>
 string
 </td>
@@ -962,7 +962,7 @@ string
 			<td>Existing Authentik device OIDC secret @description If not provided, Helm creates it automatically on first install based on provided values. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.</td>
 		</tr>
 		<tr>
-			<td id="existingAuthentikOidcSecret"><a href="./values.yaml#L324">existingAuthentikOidcSecret</a></td>
+			<td id="existingAuthentikOidcSecret"><a href="./values.yaml#L332">existingAuthentikOidcSecret</a></td>
 			<td>
 string
 </td>
@@ -976,7 +976,7 @@ string
 			<td>Existing Authentik OIDC secret @description If not provided, Helm creates it automatically on first install based on provided values. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.</td>
 		</tr>
 		<tr>
-			<td id="existingEncryptionKeySecret"><a href="./values.yaml#L316">existingEncryptionKeySecret</a></td>
+			<td id="existingEncryptionKeySecret"><a href="./values.yaml#L324">existingEncryptionKeySecret</a></td>
 			<td>
 string
 </td>
@@ -990,7 +990,7 @@ string
 			<td>Existing encryption key secret @description Generate a secret with `openssl rand -base64 32` and pre-deploy a secret containing the value with key `encryptionKey`. If not provided, Helm creates it automatically on first install. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.</td>
 		</tr>
 		<tr>
-			<td id="existingRelayAuthSecret"><a href="./values.yaml#L320">existingRelayAuthSecret</a></td>
+			<td id="existingRelayAuthSecret"><a href="./values.yaml#L328">existingRelayAuthSecret</a></td>
 			<td>
 string
 </td>
@@ -1139,7 +1139,7 @@ string
 			<td>Timezone for the deployment</td>
 		</tr>
 		<tr>
-			<td id="ingress"><a href="./values.yaml#L380">ingress</a></td>
+			<td id="ingress"><a href="./values.yaml#L388">ingress</a></td>
 			<td>
 object
 </td>
@@ -1165,7 +1165,7 @@ object
 			<td>Ingress configuration</td>
 		</tr>
 		<tr>
-			<td id="ingress--additionalAnnotations"><a href="./values.yaml#L398">ingress.additionalAnnotations</a></td>
+			<td id="ingress--additionalAnnotations"><a href="./values.yaml#L406">ingress.additionalAnnotations</a></td>
 			<td>
 object
 </td>
@@ -1179,7 +1179,7 @@ object
 			<td>Optional annotations for Ingress configuration</td>
 		</tr>
 		<tr>
-			<td id="ingress--className"><a href="./values.yaml#L384">ingress.className</a></td>
+			<td id="ingress--className"><a href="./values.yaml#L392">ingress.className</a></td>
 			<td>
 string
 </td>
@@ -1193,7 +1193,7 @@ string
 			<td>Ingress class name</td>
 		</tr>
 		<tr>
-			<td id="ingress--consolidationMode"><a href="./values.yaml#L386">ingress.consolidationMode</a></td>
+			<td id="ingress--consolidationMode"><a href="./values.yaml#L394">ingress.consolidationMode</a></td>
 			<td>
 string
 </td>
@@ -1207,7 +1207,7 @@ string
 			<td>HTTP/2 consolidation mode</td>
 		</tr>
 		<tr>
-			<td id="ingress--enabled"><a href="./values.yaml#L382">ingress.enabled</a></td>
+			<td id="ingress--enabled"><a href="./values.yaml#L390">ingress.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1221,7 +1221,7 @@ true
 			<td>Enable Ingress</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls"><a href="./values.yaml#L388">ingress.tls</a></td>
+			<td id="ingress--tls"><a href="./values.yaml#L396">ingress.tls</a></td>
 			<td>
 object
 </td>
@@ -1241,7 +1241,7 @@ object
 			<td>TLS configuration</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls--enabled"><a href="./values.yaml#L390">ingress.tls.enabled</a></td>
+			<td id="ingress--tls--enabled"><a href="./values.yaml#L398">ingress.tls.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1255,7 +1255,7 @@ true
 			<td>Enable TLS</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls--issuer"><a href="./values.yaml#L392">ingress.tls.issuer</a></td>
+			<td id="ingress--tls--issuer"><a href="./values.yaml#L400">ingress.tls.issuer</a></td>
 			<td>
 object
 </td>
@@ -1272,7 +1272,7 @@ object
 			<td>Certificate issuer configuration</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls--issuer--kind"><a href="./values.yaml#L396">ingress.tls.issuer.kind</a></td>
+			<td id="ingress--tls--issuer--kind"><a href="./values.yaml#L404">ingress.tls.issuer.kind</a></td>
 			<td>
 string
 </td>
@@ -1286,7 +1286,7 @@ string
 			<td>Issuer kind (Issuer or ClusterIssuer)</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls--issuer--name"><a href="./values.yaml#L394">ingress.tls.issuer.name</a></td>
+			<td id="ingress--tls--issuer--name"><a href="./values.yaml#L402">ingress.tls.issuer.name</a></td>
 			<td>
 string
 </td>
@@ -1300,7 +1300,7 @@ string
 			<td>Issuer name</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L422">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L430">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -1317,7 +1317,7 @@ object
 			<td>Cilium Network Policies configuration</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--enabled"><a href="./values.yaml#L424">libchartCnps.enabled</a></td>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L432">libchartCnps.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1331,7 +1331,7 @@ false
 			<td>Enable Cilium Network Policies</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L426">libchartCnps.includeCnpgPolicies</a></td>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L434">libchartCnps.includeCnpgPolicies</a></td>
 			<td>
 bool
 </td>
@@ -1414,6 +1414,13 @@ object
       "cpu": "200m",
       "memory": "256Mi"
     }
+  },
+  "reverseProxy": {
+    "trustedPeers": [
+      "0.0.0.0/0"
+    ],
+    "trustedProxyCount": 0,
+    "trustedProxyIps": []
   },
   "securityContext": {
     "fsGroup": 1001,
@@ -2035,6 +2042,26 @@ string
 			<td>Memory request</td>
 		</tr>
 		<tr>
+			<td id="management--reverseProxy"><a href="./values.yaml#L147">management.reverseProxy</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "trustedPeers": [
+    "0.0.0.0/0"
+  ],
+  "trustedProxyCount": 0,
+  "trustedProxyIps": []
+}
+</pre>
+</div>
+			</td>
+			<td>Update management reverse proxy configuration @description Configure trusted proxies to ensure NetBird will be able to detect clientIPs correctly. Note that the provided values are NetBird default config values. It is recommended to tweak them according to your needs.</td>
+		</tr>
+		<tr>
 			<td id="management--securityContext"><a href="./values.yaml#L125">management.securityContext</a></td>
 			<td>
 object
@@ -2182,7 +2209,7 @@ string
 			<td>Strategy type (options: RollingUpdate, Recreate)</td>
 		</tr>
 		<tr>
-			<td id="monitoring"><a href="./values.yaml#L494">monitoring</a></td>
+			<td id="monitoring"><a href="./values.yaml#L502">monitoring</a></td>
 			<td>
 object
 </td>
@@ -2198,7 +2225,7 @@ object
 			<td>Monitoring configuration</td>
 		</tr>
 		<tr>
-			<td id="monitoring--enabled"><a href="./values.yaml#L496">monitoring.enabled</a></td>
+			<td id="monitoring--enabled"><a href="./values.yaml#L504">monitoring.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2212,7 +2239,7 @@ false
 			<td>Enable monitoring</td>
 		</tr>
 		<tr>
-			<td id="postgresql"><a href="./values.yaml#L302">postgresql</a></td>
+			<td id="postgresql"><a href="./values.yaml#L310">postgresql</a></td>
 			<td>
 object
 </td>
@@ -2233,7 +2260,7 @@ object
 			<td>PostgreSQL configuration</td>
 		</tr>
 		<tr>
-			<td id="postgresql--cnpgCluster"><a href="./values.yaml#L306">postgresql.cnpgCluster</a></td>
+			<td id="postgresql--cnpgCluster"><a href="./values.yaml#L314">postgresql.cnpgCluster</a></td>
 			<td>
 object
 </td>
@@ -2251,7 +2278,7 @@ object
 			<td>CNPG Cluster settings</td>
 		</tr>
 		<tr>
-			<td id="postgresql--cnpgCluster--appConnectionSecretName"><a href="./values.yaml#L310">postgresql.cnpgCluster.appConnectionSecretName</a></td>
+			<td id="postgresql--cnpgCluster--appConnectionSecretName"><a href="./values.yaml#L318">postgresql.cnpgCluster.appConnectionSecretName</a></td>
 			<td>
 string
 </td>
@@ -2265,7 +2292,7 @@ string
 			<td>CNPG application connection secret name</td>
 		</tr>
 		<tr>
-			<td id="postgresql--cnpgCluster--clusterName"><a href="./values.yaml#L308">postgresql.cnpgCluster.clusterName</a></td>
+			<td id="postgresql--cnpgCluster--clusterName"><a href="./values.yaml#L316">postgresql.cnpgCluster.clusterName</a></td>
 			<td>
 string
 </td>
@@ -2279,7 +2306,7 @@ string
 			<td>CNPG Cluster name</td>
 		</tr>
 		<tr>
-			<td id="postgresql--cnpgCluster--port"><a href="./values.yaml#L312">postgresql.cnpgCluster.port</a></td>
+			<td id="postgresql--cnpgCluster--port"><a href="./values.yaml#L320">postgresql.cnpgCluster.port</a></td>
 			<td>
 int
 </td>
@@ -2293,7 +2320,7 @@ int
 			<td>CNPG cluster port</td>
 		</tr>
 		<tr>
-			<td id="postgresql--useCnpgCluster"><a href="./values.yaml#L304">postgresql.useCnpgCluster</a></td>
+			<td id="postgresql--useCnpgCluster"><a href="./values.yaml#L312">postgresql.useCnpgCluster</a></td>
 			<td>
 bool
 </td>
@@ -2307,7 +2334,7 @@ true
 			<td>Use CNPG Cluster for PostgreSQL</td>
 		</tr>
 		<tr>
-			<td id="rbac"><a href="./values.yaml#L483">rbac</a></td>
+			<td id="rbac"><a href="./values.yaml#L491">rbac</a></td>
 			<td>
 object
 </td>
@@ -2327,7 +2354,7 @@ object
 			<td>Role-Based Access Control configuration</td>
 		</tr>
 		<tr>
-			<td id="rbac--create"><a href="./values.yaml#L485">rbac.create</a></td>
+			<td id="rbac--create"><a href="./values.yaml#L493">rbac.create</a></td>
 			<td>
 bool
 </td>
@@ -2341,7 +2368,7 @@ false
 			<td>Create RBAC resources</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount"><a href="./values.yaml#L487">rbac.serviceAccount</a></td>
+			<td id="rbac--serviceAccount"><a href="./values.yaml#L495">rbac.serviceAccount</a></td>
 			<td>
 object
 </td>
@@ -2358,7 +2385,7 @@ object
 			<td>Service account configuration</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount--create"><a href="./values.yaml#L489">rbac.serviceAccount.create</a></td>
+			<td id="rbac--serviceAccount--create"><a href="./values.yaml#L497">rbac.serviceAccount.create</a></td>
 			<td>
 bool
 </td>
@@ -2372,7 +2399,7 @@ true
 			<td>Create service account</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount--name"><a href="./values.yaml#L491">rbac.serviceAccount.name</a></td>
+			<td id="rbac--serviceAccount--name"><a href="./values.yaml#L499">rbac.serviceAccount.name</a></td>
 			<td>
 string
 </td>
@@ -2386,7 +2413,7 @@ string
 			<td>Service account name</td>
 		</tr>
 		<tr>
-			<td id="relay"><a href="./values.yaml#L212">relay</a></td>
+			<td id="relay"><a href="./values.yaml#L220">relay</a></td>
 			<td>
 object
 </td>
@@ -2431,7 +2458,7 @@ object
 			<td>Relay Server</td>
 		</tr>
 		<tr>
-			<td id="relay--enabled"><a href="./values.yaml#L214">relay.enabled</a></td>
+			<td id="relay--enabled"><a href="./values.yaml#L222">relay.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2445,7 +2472,7 @@ true
 			<td>Enable Relay server</td>
 		</tr>
 		<tr>
-			<td id="relay--hpa"><a href="./values.yaml#L246">relay.hpa</a></td>
+			<td id="relay--hpa"><a href="./values.yaml#L254">relay.hpa</a></td>
 			<td>
 object
 </td>
@@ -2464,7 +2491,7 @@ object
 			<td>Horizontal Pod Autoscaler configuration</td>
 		</tr>
 		<tr>
-			<td id="relay--hpa--enabled"><a href="./values.yaml#L248">relay.hpa.enabled</a></td>
+			<td id="relay--hpa--enabled"><a href="./values.yaml#L256">relay.hpa.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2478,7 +2505,7 @@ true
 			<td>Enable HPA</td>
 		</tr>
 		<tr>
-			<td id="relay--hpa--maxReplicas"><a href="./values.yaml#L252">relay.hpa.maxReplicas</a></td>
+			<td id="relay--hpa--maxReplicas"><a href="./values.yaml#L260">relay.hpa.maxReplicas</a></td>
 			<td>
 int
 </td>
@@ -2492,7 +2519,7 @@ int
 			<td>Maximum replicas for HPA</td>
 		</tr>
 		<tr>
-			<td id="relay--hpa--minReplicas"><a href="./values.yaml#L250">relay.hpa.minReplicas</a></td>
+			<td id="relay--hpa--minReplicas"><a href="./values.yaml#L258">relay.hpa.minReplicas</a></td>
 			<td>
 int
 </td>
@@ -2506,7 +2533,7 @@ int
 			<td>Minimum replicas for HPA</td>
 		</tr>
 		<tr>
-			<td id="relay--hpa--targetCPUUtilizationPercentage"><a href="./values.yaml#L254">relay.hpa.targetCPUUtilizationPercentage</a></td>
+			<td id="relay--hpa--targetCPUUtilizationPercentage"><a href="./values.yaml#L262">relay.hpa.targetCPUUtilizationPercentage</a></td>
 			<td>
 int
 </td>
@@ -2520,7 +2547,7 @@ int
 			<td>Target CPU utilization percentage</td>
 		</tr>
 		<tr>
-			<td id="relay--image"><a href="./values.yaml#L218">relay.image</a></td>
+			<td id="relay--image"><a href="./values.yaml#L226">relay.image</a></td>
 			<td>
 object
 </td>
@@ -2538,7 +2565,7 @@ object
 			<td>Relay image repository, tag and pullPolicy</td>
 		</tr>
 		<tr>
-			<td id="relay--metricsPort"><a href="./values.yaml#L225">relay.metricsPort</a></td>
+			<td id="relay--metricsPort"><a href="./values.yaml#L233">relay.metricsPort</a></td>
 			<td>
 int
 </td>
@@ -2552,7 +2579,7 @@ int
 			<td>Relay server metrics port</td>
 		</tr>
 		<tr>
-			<td id="relay--port"><a href="./values.yaml#L223">relay.port</a></td>
+			<td id="relay--port"><a href="./values.yaml#L231">relay.port</a></td>
 			<td>
 int
 </td>
@@ -2566,7 +2593,7 @@ int
 			<td>Relay server port</td>
 		</tr>
 		<tr>
-			<td id="relay--replicaCount"><a href="./values.yaml#L216">relay.replicaCount</a></td>
+			<td id="relay--replicaCount"><a href="./values.yaml#L224">relay.replicaCount</a></td>
 			<td>
 int
 </td>
@@ -2580,7 +2607,7 @@ int
 			<td>Number of Relay server replicas</td>
 		</tr>
 		<tr>
-			<td id="relay--resources"><a href="./values.yaml#L234">relay.resources</a></td>
+			<td id="relay--resources"><a href="./values.yaml#L242">relay.resources</a></td>
 			<td>
 object
 </td>
@@ -2603,7 +2630,7 @@ object
 			<td>Resource requests and limits</td>
 		</tr>
 		<tr>
-			<td id="relay--resources--limits--cpu"><a href="./values.yaml#L242">relay.resources.limits.cpu</a></td>
+			<td id="relay--resources--limits--cpu"><a href="./values.yaml#L250">relay.resources.limits.cpu</a></td>
 			<td>
 string
 </td>
@@ -2617,7 +2644,7 @@ string
 			<td>CPU limit</td>
 		</tr>
 		<tr>
-			<td id="relay--resources--limits--memory"><a href="./values.yaml#L244">relay.resources.limits.memory</a></td>
+			<td id="relay--resources--limits--memory"><a href="./values.yaml#L252">relay.resources.limits.memory</a></td>
 			<td>
 string
 </td>
@@ -2631,7 +2658,7 @@ string
 			<td>Memory limit</td>
 		</tr>
 		<tr>
-			<td id="relay--resources--requests--cpu"><a href="./values.yaml#L237">relay.resources.requests.cpu</a></td>
+			<td id="relay--resources--requests--cpu"><a href="./values.yaml#L245">relay.resources.requests.cpu</a></td>
 			<td>
 string
 </td>
@@ -2645,7 +2672,7 @@ string
 			<td>CPU request</td>
 		</tr>
 		<tr>
-			<td id="relay--resources--requests--memory"><a href="./values.yaml#L239">relay.resources.requests.memory</a></td>
+			<td id="relay--resources--requests--memory"><a href="./values.yaml#L247">relay.resources.requests.memory</a></td>
 			<td>
 string
 </td>
@@ -2659,7 +2686,7 @@ string
 			<td>Memory request</td>
 		</tr>
 		<tr>
-			<td id="relay--service--metricsPort"><a href="./values.yaml#L232">relay.service.metricsPort</a></td>
+			<td id="relay--service--metricsPort"><a href="./values.yaml#L240">relay.service.metricsPort</a></td>
 			<td>
 int
 </td>
@@ -2673,7 +2700,7 @@ int
 			<td>Service metrics port</td>
 		</tr>
 		<tr>
-			<td id="relay--service--port"><a href="./values.yaml#L230">relay.service.port</a></td>
+			<td id="relay--service--port"><a href="./values.yaml#L238">relay.service.port</a></td>
 			<td>
 int
 </td>
@@ -2687,7 +2714,7 @@ int
 			<td>Service port</td>
 		</tr>
 		<tr>
-			<td id="relay--service--type"><a href="./values.yaml#L228">relay.service.type</a></td>
+			<td id="relay--service--type"><a href="./values.yaml#L236">relay.service.type</a></td>
 			<td>
 string
 </td>
@@ -2701,7 +2728,7 @@ string
 			<td>Service type</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L413">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L421">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -2730,7 +2757,7 @@ object
 </details></td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--jobs"><a href="./values.yaml#L417">runtimeClass.jobs</a></td>
+			<td id="runtimeClass--jobs"><a href="./values.yaml#L425">runtimeClass.jobs</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -2744,7 +2771,7 @@ object
 			<td>Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--pods"><a href="./values.yaml#L415">runtimeClass.pods</a></td>
+			<td id="runtimeClass--pods"><a href="./values.yaml#L423">runtimeClass.pods</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -2758,7 +2785,7 @@ object
 			<td>Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--tests"><a href="./values.yaml#L419">runtimeClass.tests</a></td>
+			<td id="runtimeClass--tests"><a href="./values.yaml#L427">runtimeClass.tests</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -2772,7 +2799,7 @@ object
 			<td>Sets the runtimeClass for the containers which gets executed by the test hook. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="signal"><a href="./values.yaml#L146">signal</a></td>
+			<td id="signal"><a href="./values.yaml#L154">signal</a></td>
 			<td>
 object
 </td>
@@ -2828,7 +2855,7 @@ object
 			<td>Signal Server</td>
 		</tr>
 		<tr>
-			<td id="signal--enabled"><a href="./values.yaml#L148">signal.enabled</a></td>
+			<td id="signal--enabled"><a href="./values.yaml#L156">signal.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2842,7 +2869,7 @@ true
 			<td>Enable Signal server</td>
 		</tr>
 		<tr>
-			<td id="signal--grpcPort"><a href="./values.yaml#L159">signal.grpcPort</a></td>
+			<td id="signal--grpcPort"><a href="./values.yaml#L167">signal.grpcPort</a></td>
 			<td>
 int
 </td>
@@ -2856,7 +2883,7 @@ int
 			<td>Signal server grpc port</td>
 		</tr>
 		<tr>
-			<td id="signal--hpa"><a href="./values.yaml#L184">signal.hpa</a></td>
+			<td id="signal--hpa"><a href="./values.yaml#L192">signal.hpa</a></td>
 			<td>
 object
 </td>
@@ -2875,7 +2902,7 @@ object
 			<td>Horizontal Pod Autoscaler configuration</td>
 		</tr>
 		<tr>
-			<td id="signal--hpa--enabled"><a href="./values.yaml#L186">signal.hpa.enabled</a></td>
+			<td id="signal--hpa--enabled"><a href="./values.yaml#L194">signal.hpa.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2889,7 +2916,7 @@ true
 			<td>Enable HPA</td>
 		</tr>
 		<tr>
-			<td id="signal--hpa--maxReplicas"><a href="./values.yaml#L190">signal.hpa.maxReplicas</a></td>
+			<td id="signal--hpa--maxReplicas"><a href="./values.yaml#L198">signal.hpa.maxReplicas</a></td>
 			<td>
 int
 </td>
@@ -2903,7 +2930,7 @@ int
 			<td>Maximum replicas for HPA</td>
 		</tr>
 		<tr>
-			<td id="signal--hpa--minReplicas"><a href="./values.yaml#L188">signal.hpa.minReplicas</a></td>
+			<td id="signal--hpa--minReplicas"><a href="./values.yaml#L196">signal.hpa.minReplicas</a></td>
 			<td>
 int
 </td>
@@ -2917,7 +2944,7 @@ int
 			<td>Minimum replicas for HPA</td>
 		</tr>
 		<tr>
-			<td id="signal--hpa--targetCPUUtilizationPercentage"><a href="./values.yaml#L192">signal.hpa.targetCPUUtilizationPercentage</a></td>
+			<td id="signal--hpa--targetCPUUtilizationPercentage"><a href="./values.yaml#L200">signal.hpa.targetCPUUtilizationPercentage</a></td>
 			<td>
 int
 </td>
@@ -2931,7 +2958,7 @@ int
 			<td>Target CPU utilization percentage</td>
 		</tr>
 		<tr>
-			<td id="signal--image"><a href="./values.yaml#L152">signal.image</a></td>
+			<td id="signal--image"><a href="./values.yaml#L160">signal.image</a></td>
 			<td>
 object
 </td>
@@ -2949,7 +2976,7 @@ object
 			<td>Signal image repository, tag and pullPolicy</td>
 		</tr>
 		<tr>
-			<td id="signal--metricsPort"><a href="./values.yaml#L161">signal.metricsPort</a></td>
+			<td id="signal--metricsPort"><a href="./values.yaml#L169">signal.metricsPort</a></td>
 			<td>
 int
 </td>
@@ -2963,7 +2990,7 @@ int
 			<td>Signal server metrics port</td>
 		</tr>
 		<tr>
-			<td id="signal--persistence"><a href="./values.yaml#L194">signal.persistence</a></td>
+			<td id="signal--persistence"><a href="./values.yaml#L202">signal.persistence</a></td>
 			<td>
 object
 </td>
@@ -2985,7 +3012,7 @@ object
 			<td>Signal server persistence configuration.</td>
 		</tr>
 		<tr>
-			<td id="signal--persistence--accessModes"><a href="./values.yaml#L204">signal.persistence.accessModes</a></td>
+			<td id="signal--persistence--accessModes"><a href="./values.yaml#L212">signal.persistence.accessModes</a></td>
 			<td>
 list
 </td>
@@ -3001,7 +3028,7 @@ list
 			<td>Define the accessModes to use when not providing an already existing PVC claim.</td>
 		</tr>
 		<tr>
-			<td id="signal--persistence--emptyDirSizeLimit"><a href="./values.yaml#L198">signal.persistence.emptyDirSizeLimit</a></td>
+			<td id="signal--persistence--emptyDirSizeLimit"><a href="./values.yaml#L206">signal.persistence.emptyDirSizeLimit</a></td>
 			<td>
 string
 </td>
@@ -3015,7 +3042,7 @@ string
 			<td>Define the max directory size when using persistence.enabled: false</td>
 		</tr>
 		<tr>
-			<td id="signal--persistence--size"><a href="./values.yaml#L200">signal.persistence.size</a></td>
+			<td id="signal--persistence--size"><a href="./values.yaml#L208">signal.persistence.size</a></td>
 			<td>
 string
 </td>
@@ -3029,7 +3056,7 @@ string
 			<td>Define the size of the PV when using persistence.enabled: true</td>
 		</tr>
 		<tr>
-			<td id="signal--persistence--storageClass"><a href="./values.yaml#L202">signal.persistence.storageClass</a></td>
+			<td id="signal--persistence--storageClass"><a href="./values.yaml#L210">signal.persistence.storageClass</a></td>
 			<td>
 string
 </td>
@@ -3043,7 +3070,7 @@ string
 			<td>Define the storageClass to use when not providing an already existing PVC claim. Provide your cluster storageclass or leave it empty to use the default one.</td>
 		</tr>
 		<tr>
-			<td id="signal--port"><a href="./values.yaml#L157">signal.port</a></td>
+			<td id="signal--port"><a href="./values.yaml#L165">signal.port</a></td>
 			<td>
 int
 </td>
@@ -3057,7 +3084,7 @@ int
 			<td>Signal server port</td>
 		</tr>
 		<tr>
-			<td id="signal--replicaCount"><a href="./values.yaml#L150">signal.replicaCount</a></td>
+			<td id="signal--replicaCount"><a href="./values.yaml#L158">signal.replicaCount</a></td>
 			<td>
 int
 </td>
@@ -3071,7 +3098,7 @@ int
 			<td>Number of Signal server replicas</td>
 		</tr>
 		<tr>
-			<td id="signal--resources"><a href="./values.yaml#L172">signal.resources</a></td>
+			<td id="signal--resources"><a href="./values.yaml#L180">signal.resources</a></td>
 			<td>
 object
 </td>
@@ -3094,7 +3121,7 @@ object
 			<td>Resource requests and limits</td>
 		</tr>
 		<tr>
-			<td id="signal--resources--limits--cpu"><a href="./values.yaml#L180">signal.resources.limits.cpu</a></td>
+			<td id="signal--resources--limits--cpu"><a href="./values.yaml#L188">signal.resources.limits.cpu</a></td>
 			<td>
 string
 </td>
@@ -3108,7 +3135,7 @@ string
 			<td>CPU limit</td>
 		</tr>
 		<tr>
-			<td id="signal--resources--limits--memory"><a href="./values.yaml#L182">signal.resources.limits.memory</a></td>
+			<td id="signal--resources--limits--memory"><a href="./values.yaml#L190">signal.resources.limits.memory</a></td>
 			<td>
 string
 </td>
@@ -3122,7 +3149,7 @@ string
 			<td>Memory limit</td>
 		</tr>
 		<tr>
-			<td id="signal--resources--requests--cpu"><a href="./values.yaml#L175">signal.resources.requests.cpu</a></td>
+			<td id="signal--resources--requests--cpu"><a href="./values.yaml#L183">signal.resources.requests.cpu</a></td>
 			<td>
 string
 </td>
@@ -3136,7 +3163,7 @@ string
 			<td>CPU request</td>
 		</tr>
 		<tr>
-			<td id="signal--resources--requests--memory"><a href="./values.yaml#L177">signal.resources.requests.memory</a></td>
+			<td id="signal--resources--requests--memory"><a href="./values.yaml#L185">signal.resources.requests.memory</a></td>
 			<td>
 string
 </td>
@@ -3150,7 +3177,7 @@ string
 			<td>Memory request</td>
 		</tr>
 		<tr>
-			<td id="signal--service--grpcPort"><a href="./values.yaml#L168">signal.service.grpcPort</a></td>
+			<td id="signal--service--grpcPort"><a href="./values.yaml#L176">signal.service.grpcPort</a></td>
 			<td>
 int
 </td>
@@ -3164,7 +3191,7 @@ int
 			<td>Service grpc port</td>
 		</tr>
 		<tr>
-			<td id="signal--service--metricsPort"><a href="./values.yaml#L170">signal.service.metricsPort</a></td>
+			<td id="signal--service--metricsPort"><a href="./values.yaml#L178">signal.service.metricsPort</a></td>
 			<td>
 int
 </td>
@@ -3178,7 +3205,7 @@ int
 			<td>Service metrics port</td>
 		</tr>
 		<tr>
-			<td id="signal--service--port"><a href="./values.yaml#L166">signal.service.port</a></td>
+			<td id="signal--service--port"><a href="./values.yaml#L174">signal.service.port</a></td>
 			<td>
 int
 </td>
@@ -3192,7 +3219,7 @@ int
 			<td>Service http port</td>
 		</tr>
 		<tr>
-			<td id="signal--service--type"><a href="./values.yaml#L164">signal.service.type</a></td>
+			<td id="signal--service--type"><a href="./values.yaml#L172">signal.service.type</a></td>
 			<td>
 string
 </td>
@@ -3206,7 +3233,7 @@ string
 			<td>Service type</td>
 		</tr>
 		<tr>
-			<td id="turn"><a href="./values.yaml#L373">turn</a></td>
+			<td id="turn"><a href="./values.yaml#L381">turn</a></td>
 			<td>
 object
 </td>
@@ -3223,7 +3250,7 @@ object
 			<td>TURN (STUN) configuration @description Configure an external STUN server for better connectivity between your clients (NAT traversal).</td>
 		</tr>
 		<tr>
-			<td id="turn--domain"><a href="./values.yaml#L375">turn.domain</a></td>
+			<td id="turn--domain"><a href="./values.yaml#L383">turn.domain</a></td>
 			<td>
 string
 </td>
@@ -3237,7 +3264,7 @@ string
 			<td>Domain for coturn server to provide STUN/TURN (UDP) (optional, defaults to global.domain value if not provided)</td>
 		</tr>
 		<tr>
-			<td id="turn--port"><a href="./values.yaml#L377">turn.port</a></td>
+			<td id="turn--port"><a href="./values.yaml#L385">turn.port</a></td>
 			<td>
 string
 </td>

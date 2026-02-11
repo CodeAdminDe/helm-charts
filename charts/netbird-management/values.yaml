@@ -141,6 +141,14 @@ management:
   updateStrategy:
     # -- Strategy type (options: RollingUpdate, Recreate)
     type: "RollingUpdate"
+  # -- Update management reverse proxy configuration
+  # @description Configure trusted proxies to ensure NetBird will be able to detect clientIPs correctly.
+  # Note that the provided values are NetBird default config values. It is recommended to tweak them according to your needs.
+  reverseProxy:
+    trustedProxyCount: 0
+    trustedProxyIps: []
+    trustedPeers:
+      - "0.0.0.0/0"
 
 # -- Signal Server
 signal:
