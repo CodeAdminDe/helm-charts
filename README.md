@@ -33,7 +33,7 @@ The following charts are currently available:
 | netbird-agent | 0.9.4 | 0.64.5 | A Helm chart for an easier NetBird agent (https://netbird.io) deployment at kubernetes. |
 | netbird-management | 1.12.5 | 0.64.5 | A Helm chart for an easier NetBird management stack (https://netbird.io) deployment at kubernetes. |
 | ollama | 0.17.5 | 0.15.6 | A Helm chart for an easier ollama (https://ollama.com) deployment on k8s. Please note that this is a private helm chart and not directly or indirectly affiliated with ollama or its authors. |
-| outline | 1.7.1 | 1.3.0 | A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes. |
+| outline | 1.7.2 | 1.3.0 | A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes. |
 | redis | 0.4.0 | 8.6.0 | A Helm chart for Redis k8s deployment, based on library/redis |
 | supabase | 0.4.3 | 0.4.3 | A proxy chart for an easier supabase deployment at kubernetes. Take a look at the dependency chart values.yaml and update at least security related values!! |
 | webfinger | 0.3.0 | 0.8.0 | A Helm chart for an easy webfinger deployment at kubernetes. |
