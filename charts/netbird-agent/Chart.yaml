@@ -3,9 +3,9 @@ name: netbird-agent
 description: A Helm chart for an easier NetBird agent (https://netbird.io) deployment at kubernetes.
 type: application
 # renovate: bumpVersion
-version: 0.10.1
+version: 0.10.2
 # renovate: image=netbirdio/netbird
-appVersion: "0.65.1"
+appVersion: "0.65.2"
 home: https://github.com/CodeAdminDe/helm-charts
 keywords:
   - netbird
