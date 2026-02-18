@@ -11984,6 +11984,26 @@ entries:
     version: 0.4.3
   webfinger:
   - apiVersion: v2
+    appVersion: 0.9.2
+    created: "2026-02-18T09:25:08.410523595Z"
+    description: A Helm chart for an easy webfinger deployment at kubernetes.
+    digest: 79e8011dde19b9b41d4a1570730f39e6efa388c2f011cfa53063d771141c0248
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - webfinger
+    - go
+    - web
+    - oidc
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: webfinger
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.4.1/webfinger-0.4.1.tgz
+    version: 0.4.1
+  - apiVersion: v2
     appVersion: 0.9.1
     created: "2026-02-16T08:23:05.699763421Z"
     description: A Helm chart for an easy webfinger deployment at kubernetes.
@@ -12263,4 +12283,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-18T09:06:44.501095018Z"
+generated: "2026-02-18T09:25:08.41119489Z"
