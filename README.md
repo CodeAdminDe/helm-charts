@@ -30,7 +30,7 @@ The following charts are currently available:
 | bind9-hidden-primary | 0.4.3 | 9.20 | A Helm chart for bind9 to use as hidden primary, based on the offical Docker Image by InternetSystemsConsortium (ISC) |
 | coturn-server | 0.2.10 | 4.8.0 | A Helm chart for an easier coturn deployment at kubernetes. |
 | libchart-cnps | 0.2.1 | 0.2.0 | A (experimental) Helm chart of cilium network policies for usage as a library chart. |
-| netbird-agent | 0.10.1 | 0.65.1 | A Helm chart for an easier NetBird agent (https://netbird.io) deployment at kubernetes. |
+| netbird-agent | 0.10.2 | 0.65.2 | A Helm chart for an easier NetBird agent (https://netbird.io) deployment at kubernetes. |
 | netbird-management | 1.12.6 | 0.64.6 | A Helm chart for an easier NetBird management stack (https://netbird.io) deployment at kubernetes. |
 | ollama | 0.17.5 | 0.15.6 | A Helm chart for an easier ollama (https://ollama.com) deployment on k8s. Please note that this is a private helm chart and not directly or indirectly affiliated with ollama or its authors. |
 | outline | 1.8.0 | 1.3.0 | A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes. |
