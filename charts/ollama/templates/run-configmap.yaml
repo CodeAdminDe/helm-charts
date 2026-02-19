@@ -25,7 +25,6 @@ data:
       done
       echo "Ollama is reachable..."
 
-      
       WORKDIR="/tmp/codeadmin-models"
       mkdir -p "$WORKDIR"
 
@@ -64,7 +63,7 @@ data:
           echo "WARN: Modelfile $MODEFILE not found, skipping $NAME"
           continue
         fi
-        
+
         ollama create "$NAME" -f "$MODEFILE" || echo "WARN: create failed for $NAME"
       done
     else
