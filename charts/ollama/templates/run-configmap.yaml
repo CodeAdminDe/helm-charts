@@ -9,7 +9,7 @@ data:
 data:
   run.sh: |
     #!/bin/sh
-    #/bin/sh
+    #!/bin/sh
     set -e
 
     echo "Pull or build requested models, if any..."
