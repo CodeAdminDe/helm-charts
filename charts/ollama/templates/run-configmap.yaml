@@ -7,43 +7,68 @@ metadata:
     {{- include "ollama.labels" . | nindent 4 }}
 data:
   run.sh: |
+    data:
+  run.sh: |
     #/bin/sh
+    set -e
 
-    echo "Pull requested models, if any..."
+    echo "Pull or build requested models, if any..."
+
     if [ -n "${PREPULL_MODEL_LIST}" ]; then
-      echo "Starting ollama to allow pulling..."
+      echo "Starting ollama to allow pulling/creating..."
       ollama serve &
 
       echo "Check if ollama is reachable..."
-      while ! ollama ps; do
+      while ! ollama ps >/dev/null 2>&1; do
         echo "Not reachable... Waiting for ollama ..."
         sleep 1
       done
       echo "Ollama is reachable..."
-      echo "Pulling requested models..."
-      for MODEL in $(echo $PREPULL_MODEL_LIST | tr ',' '\n'); do
-        ollama pull "$MODEL"
-      done
 
-    if [ -n "${PREBUILD_MODEL_LIST}" ]; then
-      echo "Creating custom models from Modelfiles..."
-      IFS=',' read -r -a ENTRIES <<< "$PREBUILD_MODEL_LIST"
-      for ENTRY in "${ENTRIES[@]}"; do
-        NAME="${ENTRY%%:*}"
-        FILE="${ENTRY#*:}"
-        echo "Create $NAME from $FILE..."
-        if [ -f "$FILE" ]; then
-          ollama create "$NAME" -f "$FILE"
-        else
-          echo "WARNING: Modelfile $FILE not found, skipping $NAME"
+      
+      WORKDIR="/tmp/codeadmin-models"
+      mkdir -p "$WORKDIR"
+
+      for ENTRY in $(echo "$PREPULL_MODEL_LIST" | tr ',' '\n'); do
+        # default - pull model
+        if ! echo "$ENTRY" | grep -q '@'; then
+          echo "Pull base model: $ENTRY..."
+          ollama pull "$ENTRY" || echo "WARN: pull failed for $ENTRY"
+          continue
         fi
+
+        # modelfile - create model from repo Modelfiles
+        #   NAME@REPO_URL:PATH/TO/Modelfile
+        NAME="${ENTRY%%@*}"
+        REST="${ENTRY#*@}"
+        REPO_URL="${REST%%:*}"
+        FILE_PATH="${REST#*:}"
+
+        echo "Build custom model '$NAME' from $REPO_URL ($FILE_PATH)..."
+
+        REPO_DIR="$WORKDIR/$(echo "$REPO_URL" | tr '/' '_' | tr ':' '_')"
+        if [ -d "$REPO_DIR" ]; then
+          echo "Repo dir exists, pulling latest..."
+          (cd "$REPO_DIR" && git pull --rebase || true)
+        else
+          echo "Shallow sparse-clone of $REPO_URL..."
+          git clone --depth 1 --filter=blob:none --no-checkout "$REPO_URL" "$REPO_DIR"
+          cd "$REPO_DIR"
+          git sparse-checkout init --cone
+          git sparse-checkout set "$FILE_PATH"
+          git checkout
+        fi
+
+        MODEFILE="$REPO_DIR/$FILE_PATH"
+        if [ ! -f "$MODEFILE" ]; then
+          echo "WARN: Modelfile $MODEFILE not found, skipping $NAME"
+          continue
+        fi
+        
+        ollama create "$NAME" -f "$MODEFILE" || echo "WARN: create failed for $NAME"
       done
     else
-      echo "No custom models requested for build."
-    fi
-    
-    else
-      echo "No models for pre-pull or pre-build requested."
+      echo "No models for pre-pull/pre-build requested."
     fi
 
     echo "Initialization done. Exiting."
