@@ -52,10 +52,12 @@ data:
         else
           echo "Shallow sparse-clone of $REPO_URL..."
           git clone --depth 1 --filter=blob:none --no-checkout "$REPO_URL" "$REPO_DIR"
-          cd "$REPO_DIR"
-          git sparse-checkout init --cone
-          git sparse-checkout set "$FILE_PATH"
-          git checkout
+          (
+            cd "$REPO_DIR"
+            git sparse-checkout init --cone
+            git sparse-checkout set "$(dirname "$FILE_PATH")"
+            git checkout
+          )
         fi
 
         MODEFILE="$REPO_DIR/$FILE_PATH"
