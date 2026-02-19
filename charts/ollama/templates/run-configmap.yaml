@@ -24,8 +24,26 @@ data:
       for MODEL in $(echo $PREPULL_MODEL_LIST | tr ',' '\n'); do
         ollama pull "$MODEL"
       done
+
+    if [ -n "${PREBUILD_MODEL_LIST}" ]; then
+      echo "Creating custom models from Modelfiles..."
+      IFS=',' read -r -a ENTRIES <<< "$PREBUILD_MODEL_LIST"
+      for ENTRY in "${ENTRIES[@]}"; do
+        NAME="${ENTRY%%:*}"
+        FILE="${ENTRY#*:}"
+        echo "Create $NAME from $FILE..."
+        if [ -f "$FILE" ]; then
+          ollama create "$NAME" -f "$FILE"
+        else
+          echo "WARNING: Modelfile $FILE not found, skipping $NAME"
+        fi
+      done
     else
-      echo "No models for pre-pull requested."
+      echo "No custom models requested for build."
+    fi
+    
+    else
+      echo "No models for pre-pull or pre-build requested."
     fi
 
     echo "Initialization done. Exiting."
