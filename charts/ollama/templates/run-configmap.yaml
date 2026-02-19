@@ -34,37 +34,37 @@ data:
           continue
         fi
 
-        # modelfile - create model from repo Modelfiles
-        #   NAME@REPO_URL:PATH/TO/Modelfile
-        NAME="${ENTRY%%@*}"
-        REST="${ENTRY#*@}"
-        REPO_URL="${REST%%:*}"
-        FILE_PATH="${REST#*:}"
+        # # modelfile - create model from repo Modelfiles
+        # #   NAME@REPO_URL:PATH/TO/Modelfile
+        # NAME="${ENTRY%%@*}"
+        # REST="${ENTRY#*@}"
+        # REPO_URL="${REST%%:*}"
+        # FILE_PATH="${REST#*:}"
 
-        echo "Build custom model '$NAME' from $REPO_URL ($FILE_PATH)..."
+        # echo "Build custom model '$NAME' from $REPO_URL ($FILE_PATH)..."
 
-        REPO_DIR="$WORKDIR/$(echo "$REPO_URL" | tr '/' '_' | tr ':' '_')"
-        if [ -d "$REPO_DIR" ]; then
-          echo "Repo dir exists, pulling latest..."
-          (cd "$REPO_DIR" && git pull --rebase || true)
-        else
-          echo "Shallow sparse-clone of $REPO_URL..."
-          git clone --depth 1 --filter=blob:none --no-checkout "$REPO_URL" "$REPO_DIR"
-          (
-            cd "$REPO_DIR"
-            git sparse-checkout init --cone
-            git sparse-checkout set "$(dirname "$FILE_PATH")"
-            git checkout
-          )
-        fi
+        # REPO_DIR="$WORKDIR/$(echo "$REPO_URL" | tr '/' '_' | tr ':' '_')"
+        # if [ -d "$REPO_DIR" ]; then
+        #   echo "Repo dir exists, pulling latest..."
+        #   (cd "$REPO_DIR" && git pull --rebase || true)
+        # else
+        #   echo "Shallow sparse-clone of $REPO_URL..."
+        #   git clone --depth 1 --filter=blob:none --no-checkout "$REPO_URL" "$REPO_DIR"
+        #   (
+        #     cd "$REPO_DIR"
+        #     git sparse-checkout init --cone
+        #     git sparse-checkout set "$(dirname "$FILE_PATH")"
+        #     git checkout
+        #   )
+        # fi
 
-        MODEFILE="$REPO_DIR/$FILE_PATH"
-        if [ ! -f "$MODEFILE" ]; then
-          echo "WARN: Modelfile $MODEFILE not found, skipping $NAME"
-          continue
-        fi
+        # MODEFILE="$REPO_DIR/$FILE_PATH"
+        # if [ ! -f "$MODEFILE" ]; then
+        #   echo "WARN: Modelfile $MODEFILE not found, skipping $NAME"
+        #   continue
+        # fi
 
-        ollama create "$NAME" -f "$MODEFILE" || echo "WARN: create failed for $NAME"
+        # ollama create "$NAME" -f "$MODEFILE" || echo "WARN: create failed for $NAME"
       done
     else
       echo "No models for pre-pull/pre-build requested."

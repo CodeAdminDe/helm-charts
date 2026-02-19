@@ -122,7 +122,7 @@ ollama:
   kvCacheType: "q8_0"
   maxLoadedModels: "1"
 
-# -- This configures the models that ollama should pre-pull and/or pre-create while starting the container. Note that this feature will increase the startup time of the container.
+# -- This configures the models that ollama should pre-pull while starting the container. Note that this feature will increase the startup time of the container.
 prePullModelList: []
 ## Sample:
   # - qwen2.5-coder:7b
@@ -131,6 +131,7 @@ prePullModelList: []
   # - gemma3:4b
   # - hf.co/lmstudio-community/gemma-3n-E4B-it-text-GGUF:Q4_K_M
   # - hf.co/nomic-ai/nomic-embed-text-v1.5-GGUF:Q4_K_M
+  ## Note: pre-create will be implemented in a future release. This example values won't work until then.
   # - code-reviewer@https://github.com/example/example-ai.git:models/code-reviewer.Modelfile
   # - issue-assistant@https://github.com/example/example-ai.git:models/issue-assistant.Modelfile
 
