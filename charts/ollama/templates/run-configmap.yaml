@@ -6,9 +6,9 @@ metadata:
   labels:
     {{- include "ollama.labels" . | nindent 4 }}
 data:
+data:
   run.sh: |
-    data:
-  run.sh: |
+    #!/bin/sh
     #/bin/sh
     set -e
 
