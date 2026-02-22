@@ -1,0 +1,15 @@
+{{- define "extra.specifics.fromchart.kasm-ws" -}}
+<hr /><hr />
+
+## Appendix - Chart-specifics
+
+### Important operational notes
+
+* This chart deploys the Kasm control plane stack for Kubernetes.
+* Kasm agent nodes are intentionally not part of this chart and must be deployed separately.
+* This chart stays close to upstream Kasm behavior while being versioned and released through this helm-repo.
+
+{{- end -}}
+
+{{ template "extra.templates.readme.complexvalues" . }}
+{{ template "extra.specifics.fromchart.kasm-ws" . }}
