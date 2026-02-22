@@ -1,0 +1,42 @@
+apiVersion: v2
+name: kasm-ws
+description: A Helm chart for an easier Kasm Workspaces (https://kasm.com) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with Kasm Technologies, Inc. or its authors.
+type: application
+# renovate: bumpVersion
+version: 0.1.0
+# renovate: image=kasmweb/api
+appVersion: "1.18.1"
+home: https://github.com/CodeAdminDe/helm-charts
+icon: https://kasm-static-content.s3.amazonaws.com/icons/kasm-logo-small.png
+keywords:
+  - kasm
+  - vdi
+  - workspaces
+  - workspace
+  - browser-isolation
+  - remote-desktop
+  - cloud-native
+  - helm
+maintainers:
+  - name: Frederic Roggon
+    email: frederic.roggon@codeadmin.de
+    url: https://github.com/CodeAdminDe
+annotations:
+  category: Virtual Desktop
+  kubeVersion: ">=1.24.0"
+  securityContext: "required"
+  images: |
+    - name: kasm-api
+      image: kasmweb/api:1.18.1
+    - name: kasm-manager
+      image: kasmweb/manager:1.18.1
+    - name: kasm-db
+      image: kasmweb/postgres:1.18.1
+    - name: kasm-proxy
+      image: kasmweb/proxy:1.18.1
+    - name: kasm-guac
+      image: kasmweb/kasm-guac:1.18.1
+    - name: rdp-gateway
+      image: kasmweb/rdp-gateway:1.18.1
+    - name: rdp-https-gateway
+      image: kasmweb/rdp-https-gateway:1.18.1
