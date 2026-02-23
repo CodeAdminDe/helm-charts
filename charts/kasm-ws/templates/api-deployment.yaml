@@ -54,7 +54,7 @@ spec:
         - name: {{ .Values.imagePullSecrets.name | default (printf "%s-image-pull-secret" .Release.Name) }}
       {{- end }}
       {{- if .Values.applySecurity }}
-        {{- include "kasm.podSecurity" . | indent 6 }}
+      {{- include "kasm.podSecurity" . | nindent 6 }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector: {{ toYaml . | nindent 8 }}
