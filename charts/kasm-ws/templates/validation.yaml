@@ -28,3 +28,9 @@ Validate mutually exclusive DB modes and required CNPG settings.
     {{- fail "cnps.workspaceTraffic.namespace must be set when cnps.workspaceTraffic.enabled=true." -}}
   {{- end -}}
 {{- end -}}
+
+{{- if .Values.rbac.create -}}
+  {{- if and (not .Values.rbac.serviceAccount.create) (empty .Values.rbac.serviceAccount.name) -}}
+    {{- fail "rbac.create=true requires either rbac.serviceAccount.create=true or rbac.serviceAccount.name set to an existing ServiceAccount." -}}
+  {{- end -}}
+{{- end -}}

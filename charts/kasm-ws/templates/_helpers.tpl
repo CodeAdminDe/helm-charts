@@ -61,6 +61,24 @@ rdpHttpsGateway:
 {{- end }}
 
 {{/*
+Create the name of the ServiceAccount used by manager workloads.
+*/}}
+{{- define "kasm.serviceAccountName" -}}
+{{- if .Values.rbac.serviceAccount.create }}
+{{- default (printf "%s-manager" .Release.Name) .Values.rbac.serviceAccount.name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- default "default" .Values.rbac.serviceAccount.name -}}
+{{- end -}}
+{{- end }}
+
+{{/*
+Create the name of the namespace-scoped Role for manager workloads.
+*/}}
+{{- define "kasm.rbacRoleName" -}}
+{{- printf "%s-manager" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end }}
+
+{{/*
 Resolve CNPG app connection secret name.
 Defaults to <clusterName>-app when appConnectionSecretName is not provided.
 */}}
