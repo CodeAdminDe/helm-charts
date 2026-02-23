@@ -1184,7 +1184,7 @@ true
 </pre>
 </div>
 			</td>
-			<td>Use this setting to enable/disable deployment of the Kasm RDP HTTPS Gateway service. This service allows users to use native RDP clients via HTTPS connections rather than exposing 3389 - [Kasm RDP HTTPS Gateway](https://docs.kasm.com/docs/guide/connection_proxies#rdp-https-gateway. </td>
+			<td>Use this setting to enable/disable deployment of the Kasm RDP HTTPS Gateway service. This service allows users to use native RDP clients via HTTPS connections rather than exposing 3389 - [Kasm RDP HTTPS Gateway](https://docs.kasm.com/docs/guide/connection_proxies#rdp-https-gateway). </td>
 		</tr>
 		<tr>
 			<td id="components--rdpHttpsGateway--image"><a href="./values.yaml#L372">components.rdpHttpsGateway.image</a></td>
