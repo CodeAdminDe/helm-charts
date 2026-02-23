@@ -67,6 +67,18 @@ ingress:
   # Most likely the hostname above will be enough, but in the event more hosts are needed, this is an array
   #
   annotations: {}
+  # -- Secure-by-default ingress annotation settings.
+  # @description Applied by default and merged with ingress.annotations (custom annotations win on key conflicts).
+  secureDefaults:
+    enabled: true
+    proxyReadTimeoutSeconds: 3600
+    proxySendTimeoutSeconds: 3600
+    proxyBuffering: "off"
+    proxyRequestBuffering: "off"
+    proxyHttpVersion: "1.1"
+    websocket:
+      enabled: true
+      annotationKey: "nginx.org/websocket-services"
   labels: {}
 
 # route -- Configure an OpenShift Route for your Kasm deployment.

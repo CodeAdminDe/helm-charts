@@ -2,6 +2,26 @@
 Deploy the Kasm ingress if .Values.ingress.enabled set to true
 */}}
 {{- $constants := (include "kasm.constants" . | fromYaml) -}}
+{{- $ingressAnnotations := dict -}}
+{{- if .Values.ingress.secureDefaults.enabled -}}
+{{- $_ := set $ingressAnnotations "nginx.ingress.kubernetes.io/proxy-read-timeout" (.Values.ingress.secureDefaults.proxyReadTimeoutSeconds | toString) -}}
+{{- $_ := set $ingressAnnotations "nginx.ingress.kubernetes.io/proxy-send-timeout" (.Values.ingress.secureDefaults.proxySendTimeoutSeconds | toString) -}}
+{{- $_ := set $ingressAnnotations "nginx.ingress.kubernetes.io/proxy-buffering" (.Values.ingress.secureDefaults.proxyBuffering | toString) -}}
+{{- $_ := set $ingressAnnotations "nginx.ingress.kubernetes.io/proxy-request-buffering" (.Values.ingress.secureDefaults.proxyRequestBuffering | toString) -}}
+{{- $_ := set $ingressAnnotations "nginx.ingress.kubernetes.io/proxy-http-version" (.Values.ingress.secureDefaults.proxyHttpVersion | toString) -}}
+{{- if and .Values.ingress.secureDefaults.websocket.enabled .Values.ingress.secureDefaults.websocket.annotationKey -}}
+{{- $websocketServices := list -}}
+{{- range $idx, $zone := (.Values.kasmZones | default (list (dict "name" "default"))) -}}
+{{- $websocketServices = append $websocketServices (printf "%s-%s" $constants.proxy.svc (regexReplaceAll "[^a-zA-Z0-9]+" $zone.name "-" | lower)) -}}
+{{- end -}}
+{{- $_ := set $ingressAnnotations .Values.ingress.secureDefaults.websocket.annotationKey (join "," $websocketServices) -}}
+{{- end -}}
+{{- end -}}
+{{- with .Values.ingress.annotations -}}
+{{- range $key, $value := . -}}
+{{- $_ := set $ingressAnnotations $key ($value | toString) -}}
+{{- end -}}
+{{- end -}}
 {{- if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -13,8 +33,8 @@ metadata:
     {{- include "kasm.defaultLabels" . | indent 4 }}
     {{- with .Values.ingress.labels }}{{- toYaml . | nindent 4 }}{{- end }}
     {{- with .Values.labels }}{{- toYaml . | nindent 4 }}{{- end }}
-  {{- with .Values.ingress.annotations }}
-  annotations: {{ toYaml . | nindent 4 }}
+  {{- if gt (len $ingressAnnotations) 0 }}
+  annotations: {{ toYaml $ingressAnnotations | nindent 4 }}
   {{- end }}
 spec:
 {{- with .Values.ingress.ingressClassName }}
