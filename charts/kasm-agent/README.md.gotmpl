@@ -1,0 +1,32 @@
+{{- define "extra.specifics.fromchart.atom.opinionated" -}}
+<hr /><hr />
+
+## Appendix - Requirements and Scope
+
+### Required Secret: Manager Token
+
+This chart expects an existing Kubernetes secret for the manager token.
+
+Sample:
+
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kasm-agent-manager-token
+type: Opaque
+stringData:
+  manager-token: "CHANGE_ME__I_AM_A_SAMPLE"
+```
+
+> **IMPORTANT**: Never commit unencrypted secrets into Git repositories.
+
+### Vendor Scope Note
+
+According to Kasm vendor documentation, static Docker agents are not part of the official Kubernetes technical-preview deployment model.
+This chart is therefore intended as an advanced, environment-specific option and should be validated carefully in your platform before production usage.
+
+{{- end -}}
+
+{{ template "extra.templates.readme.complexvalues" . }}
+{{ template "extra.specifics.fromchart.atom.opinionated" . }}
