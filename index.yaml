@@ -1122,6 +1122,59 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/kasm-agent-0.1.0/kasm-agent-0.1.0.tgz
     version: 0.1.0
+  kasm-ws:
+  - annotations:
+      category: Virtual Desktop
+      images: |
+        - name: kasm-api
+          image: kasmweb/api:1.18.1
+        - name: kasm-manager
+          image: kasmweb/manager:1.18.1
+        - name: kasm-db
+          image: kasmweb/postgres:1.18.1
+        - name: kasm-proxy
+          image: kasmweb/proxy:1.18.1
+        - name: kasm-guac
+          image: kasmweb/kasm-guac:1.18.1
+        - name: rdp-gateway
+          image: kasmweb/rdp-gateway:1.18.1
+        - name: rdp-https-gateway
+          image: kasmweb/rdp-https-gateway:1.18.1
+      kubeVersion: '>=1.24.0'
+      securityContext: required
+    apiVersion: v2
+    appVersion: 1.18.1
+    created: "2026-02-23T22:28:47.283270569Z"
+    dependencies:
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for an easier Kasm Workspaces (https://kasm.com) deployment
+      on Kubernetes. Please note that this is a private helm chart and not directly
+      or indirectly affiliated with Kasm Technologies, Inc. or its authors.
+    digest: 9261e36689c14b97917671155b55ec561362ba32dff257d4f2d016f6a73fc115
+    home: https://github.com/CodeAdminDe/helm-charts
+    icon: https://kasm-static-content.s3.amazonaws.com/icons/kasm-logo-small.png
+    keywords:
+    - kasm
+    - vdi
+    - workspaces
+    - workspace
+    - browser-isolation
+    - remote-desktop
+    - cloud-native
+    - helm
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: kasm-ws
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/kasm-ws-0.1.0/kasm-ws-0.1.0.tgz
+    version: 0.1.0
   libchart-cnps:
   - apiVersion: v2
     appVersion: 0.2.0
@@ -12828,4 +12881,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-23T22:11:45.640396057Z"
+generated: "2026-02-23T22:28:47.283808853Z"
