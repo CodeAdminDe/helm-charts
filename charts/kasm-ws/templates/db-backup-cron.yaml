@@ -69,6 +69,7 @@ spec:
               args:
                 - |
                   while ! pg_isready -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -t 10; do echo "Waiting for DB..."; sleep 5; done
+            {{- if .Values.securityCompatibility.rootInitContainers.dbBackupCron }}
             - name: {{ $constants.proxy.name }}-data-perms
               image: {{ $constants.api.image }}
               imagePullPolicy: IfNotPresent
@@ -86,6 +87,7 @@ spec:
               volumeMounts:
                 - name: {{ .Release.Name }}-db-backup
                   mountPath: /data/kasm-db-dump
+            {{- end }}
           containers:
             - name: {{ .Release.Name }}-db-backup-container
               image: {{ $constants.api.image }}

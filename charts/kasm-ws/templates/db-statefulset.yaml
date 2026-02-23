@@ -59,6 +59,7 @@ spec:
       affinity: {{ toYaml . | nindent 8 }}
       {{- end }}
       {{- include "db.podSecurity" . | indent 6 }}
+      {{- if .Values.securityCompatibility.rootInitContainers.db }}
       initContainers:
         - name: {{ $constants.db.name }}-data-perms
           image: {{ $constants.api.image }}
@@ -83,6 +84,7 @@ spec:
             - name: {{ printf "%s-%s-data" $constants.db.name .Chart.AppVersion | replace "." "-" }}
               mountPath: /var/run/postgresql
             {{- end }}
+      {{- end }}
       containers:
         - name: {{ $constants.db.name }}-container
           image: {{ $constants.db.image }}
