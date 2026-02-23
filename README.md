@@ -31,6 +31,7 @@ The following charts are currently available:
 | coturn-server | 0.2.10 | 4.8.0 | A Helm chart for an easier coturn deployment at kubernetes. |
 | headscale | 0.1.0 | 0.28.0 | A Helm chart for an easier headscale (https://headscale.net) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with headscale or its authors. |
 | kasm-agent | 0.1.0 | 1.18.1 | A Helm chart for deploying a Kasm agent workload in Kubernetes (advanced/unsupported static-agent model). |
+| kasm-ws | 0.1.0 | 1.18.1 | A Helm chart for an easier Kasm Workspaces (https://kasm.com) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with Kasm Technologies, Inc. or its authors. |
 | libchart-cnps | 0.2.1 | 0.2.0 | A (experimental) Helm chart of cilium network policies for usage as a library chart. |
 | netbird-agent | 0.10.3 | 0.65.3 | A Helm chart for an easier NetBird agent (https://netbird.io) deployment at kubernetes. |
 | netbird-management | 1.14.2 | 0.65.2 | A Helm chart for an easier NetBird management stack (https://netbird.io) deployment at kubernetes. |
