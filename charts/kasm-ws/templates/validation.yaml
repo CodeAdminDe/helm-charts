@@ -19,3 +19,12 @@ Validate mutually exclusive DB modes and required CNPG settings.
     {{- fail "database.useCnpgCluster.secretKeys.password must be set when CNPG mode is enabled." -}}
   {{- end -}}
 {{- end -}}
+
+{{- if .Values.cnps.workspaceTraffic.enabled -}}
+  {{- if not .Values.libchartCnps.enabled -}}
+    {{- fail "cnps.workspaceTraffic.enabled requires libchartCnps.enabled=true." -}}
+  {{- end -}}
+  {{- if empty .Values.cnps.workspaceTraffic.namespace -}}
+    {{- fail "cnps.workspaceTraffic.namespace must be set when cnps.workspaceTraffic.enabled=true." -}}
+  {{- end -}}
+{{- end -}}
