@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "headscale.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "headscale.labels" . | nindent 4 }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: http
+      port: {{ .Values.service.http.port }}
+      targetPort: {{ .Values.service.http.targetPort }}
+      protocol: {{ .Values.service.http.targetProtocol }}
+    {{- if .Values.service.metrics.enabled }}
+    - name: metrics
+      port: {{ .Values.service.metrics.port }}
+      targetPort: {{ .Values.service.metrics.targetPort }}
+      protocol: {{ .Values.service.metrics.targetProtocol }}
+    {{- end }}
+    {{- if .Values.service.grpc.enabled }}
+    - name: grpc
+      port: {{ .Values.service.grpc.port }}
+      targetPort: {{ .Values.service.grpc.targetPort }}
+      protocol: {{ .Values.service.grpc.targetProtocol }}
+    {{- end }}
+  selector:
+    {{- include "headscale.selectorLabels" . | nindent 4 }}
