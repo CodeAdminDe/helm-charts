@@ -26,7 +26,7 @@ Chart validation guards.
 {{- end -}}
 
 {{- if and .Values.hostDocker.enabled .Values.securityContext.runAsNonRoot -}}
-  {{- fail "hostDocker.enabled=true is incompatible with securityContext.runAsNonRoot=true for typical docker socket access." -}}
+  {{- fail "hostDocker.enabled=true is incompatible with securityContext.runAsNonRoot=true for typical docker socket access. Use the root-level sample override in values.yaml (podSecurityContext/securityContext) if your environment requires Docker host resources." -}}
 {{- end -}}
 
 {{- if and .Values.libchartCnps.enabled (not .Values.service.enabled) -}}
