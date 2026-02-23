@@ -108,6 +108,8 @@ spec:
               mountPath: {{ .mountPath }}
               {{- if hasKey . "readOnly" }}
               readOnly: {{ .readOnly }}
+              {{- else }}
+              readOnly: true
               {{- end }}
             {{- end }}
           {{- end }}
