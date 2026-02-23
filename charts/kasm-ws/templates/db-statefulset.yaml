@@ -155,7 +155,7 @@ spec:
         - name: {{ $constants.db.name }}-cert
           secret:
             secretName: {{ .Values.certificate.secretName }}
-            defaultMode: 0o600
+            defaultMode: 0600
   {{- if .Values.database.storage.retentionPolicy }}
   persistentVolumeClaimRetentionPolicy:
     whenDeleted: {{ .Values.database.storage.retentionPolicy.whenDeleted }}

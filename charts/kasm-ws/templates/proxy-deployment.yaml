@@ -66,7 +66,7 @@ spec:
       affinity: {{ toYaml . | nindent 8 }}
       {{- end }}
       {{- if $values.applySecurity }}
-        {{- include "kasm.podSecurity" . | indent 6 }}
+{{- include "kasm.podSecurity" $ | nindent 6 }}
       {{- end }}
       initContainers:
         {{- if and $values.applySecurity $values.securityCompatibility.rootInitContainers.proxy }}
@@ -92,24 +92,24 @@ spec:
             - name: {{ $constants.proxy.name }}-data
               mountPath: /run
         {{- end }}
-        {{- include "kasm.initContainer" (dict "serviceName" $constants.api.svc "servicePort" $constants.api.port "path" "/api/__healthcheck" "schema" "http" "image" $constants.api.image) | indent 8 }}
+{{- include "kasm.initContainer" (dict "serviceName" $constants.api.svc "servicePort" $constants.api.port "path" "/api/__healthcheck" "schema" "http" "image" $constants.api.image) | nindent 8 }}
         {{- if $values.applySecurity }}
-          {{- include "kasm.containerSecurity" . | indent 10 }}
+{{- include "kasm.containerSecurity" $ | nindent 10 }}
         {{- end }}
-        {{- include "kasm.initContainer" (dict "serviceName" (printf "%s-%s" $constants.manager.svc (regexReplaceAll "[^a-zA-Z0-9]+" $zone.name "-" | lower)) "servicePort" $constants.manager.port "path" "/__healthcheck" "schema" "http" "image" $constants.api.image) | indent 8 }}
+{{- include "kasm.initContainer" (dict "serviceName" (printf "%s-%s" $constants.manager.svc (regexReplaceAll "[^a-zA-Z0-9]+" $zone.name "-" | lower)) "servicePort" $constants.manager.port "path" "/__healthcheck" "schema" "http" "image" $constants.api.image) | nindent 8 }}
         {{- if $values.applySecurity }}
-          {{- include "kasm.containerSecurity" . | indent 10 }}
+{{- include "kasm.containerSecurity" $ | nindent 10 }}
         {{- end }}
         {{- if $values.components.guac.enabled }}
-          {{- include "kasm.initContainer" (dict "serviceName" $constants.guac.svc "servicePort" $constants.guac.port "path" "/__healthcheck" "schema" "http" "image" $constants.api.image) | indent 8 }}
+{{- include "kasm.initContainer" (dict "serviceName" $constants.guac.svc "servicePort" $constants.guac.port "path" "/__healthcheck" "schema" "http" "image" $constants.api.image) | nindent 8 }}
           {{- if $values.applySecurity }}
-            {{- include "kasm.containerSecurity" . | indent 10 }}
+{{- include "kasm.containerSecurity" $ | nindent 10 }}
           {{- end }}
         {{- end }}
         {{- if $values.components.rdpGateway.enabled }}
-          {{- include "kasm.initContainer" (dict "serviceName" $constants.rdpGateway.svc "servicePort" $constants.rdpGateway.port "path" "/__healthcheck" "schema" "http" "image" $constants.api.image) | indent 8 }}
+{{- include "kasm.initContainer" (dict "serviceName" $constants.rdpGateway.svc "servicePort" $constants.rdpGateway.port "path" "/__healthcheck" "schema" "http" "image" $constants.api.image) | nindent 8 }}
           {{- if $values.applySecurity }}
-            {{- include "kasm.containerSecurity" . | indent 10 }}
+{{- include "kasm.containerSecurity" $ | nindent 10 }}
           {{- end }}
         {{- end }}
       containers:
@@ -122,7 +122,7 @@ spec:
           resources: {{- include "resources.preset" (dict "node" $constants.proxy.component "size" $values.deploymentSize) | nindent 12 }}
           {{- end }}
           {{- if $values.applySecurity }}
-            {{- include "kasm.containerSecurity" . | indent 10 }}
+{{- include "kasm.containerSecurity" $ | nindent 10 }}
           {{- end }}
           volumeMounts:
             - name: {{ $constants.proxy.name }}-cert
