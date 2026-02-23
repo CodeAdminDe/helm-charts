@@ -86,7 +86,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L149">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L166">affinity</a></td>
 			<td>
 object
 </td>
@@ -198,7 +198,7 @@ string
 			<td>Kasm zone name used for registration.</td>
 		</tr>
 		<tr>
-			<td id="annotations"><a href="./values.yaml#L186">annotations</a></td>
+			<td id="annotations"><a href="./values.yaml#L203">annotations</a></td>
 			<td>
 object
 </td>
@@ -217,7 +217,7 @@ object
 			<td>Common annotations applied to resources created by this chart.</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L161">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L178">cnps</a></td>
 			<td>
 object
 </td>
@@ -259,7 +259,7 @@ object
 			<td>Application-specific Cilium Network Policies configuration. @description Requires CiliumNetworkPolicies library chart.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L172">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L189">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -273,7 +273,7 @@ true
 			<td>Allow egress traffic from the agent.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--egressRules"><a href="./values.yaml#L174">cnps.appTraffic.egress.egressRules</a></td>
+			<td id="cnps--appTraffic--egress--egressRules"><a href="./values.yaml#L191">cnps.appTraffic.egress.egressRules</a></td>
 			<td>
 list
 </td>
@@ -303,7 +303,7 @@ list
 			<td>Egress rules used when allow=true.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L165">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L182">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -317,7 +317,7 @@ false
 			<td>Allow ingress traffic to the agent.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L169">cnps.appTraffic.ingress.fromEntities</a></td>
+			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L186">cnps.appTraffic.ingress.fromEntities</a></td>
 			<td>
 list
 </td>
@@ -331,7 +331,7 @@ list
 			<td>Optional Cilium entities to allow ingress from.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L167">cnps.appTraffic.ingress.matchLabels</a></td>
+			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L184">cnps.appTraffic.ingress.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -387,7 +387,7 @@ list
 			<td>Additional hostPath mounts. @description Use only when strictly required by your runtime environment.</td>
 		</tr>
 		<tr>
-			<td id="extraLabels"><a href="./values.yaml#L193">extraLabels</a></td>
+			<td id="extraLabels"><a href="./values.yaml#L210">extraLabels</a></td>
 			<td>
 object
 </td>
@@ -561,7 +561,7 @@ list
 			<td></td>
 		</tr>
 		<tr>
-			<td id="labels"><a href="./values.yaml#L183">labels</a></td>
+			<td id="labels"><a href="./values.yaml#L200">labels</a></td>
 			<td>
 object
 </td>
@@ -575,7 +575,7 @@ object
 			<td>Common labels applied to all resources.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L153">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L170">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -592,7 +592,7 @@ object
 			<td>Cilium Network Policies configuration.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--enabled"><a href="./values.yaml#L155">libchartCnps.enabled</a></td>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L172">libchartCnps.enabled</a></td>
 			<td>
 bool
 </td>
@@ -606,7 +606,7 @@ false
 			<td>Enable Cilium Network Policies.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L157">libchartCnps.includeCnpgPolicies</a></td>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L174">libchartCnps.includeCnpgPolicies</a></td>
 			<td>
 bool
 </td>
@@ -620,7 +620,7 @@ false
 			<td>Include CNPG-specific policies.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--failureThreshold"><a href="./values.yaml#L138">livenessProbe.failureThreshold</a></td>
+			<td id="livenessProbe--failureThreshold"><a href="./values.yaml#L155">livenessProbe.failureThreshold</a></td>
 			<td>
 int
 </td>
@@ -634,7 +634,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--initialDelaySeconds"><a href="./values.yaml#L135">livenessProbe.initialDelaySeconds</a></td>
+			<td id="livenessProbe--initialDelaySeconds"><a href="./values.yaml#L152">livenessProbe.initialDelaySeconds</a></td>
 			<td>
 int
 </td>
@@ -648,7 +648,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--periodSeconds"><a href="./values.yaml#L136">livenessProbe.periodSeconds</a></td>
+			<td id="livenessProbe--periodSeconds"><a href="./values.yaml#L153">livenessProbe.periodSeconds</a></td>
 			<td>
 int
 </td>
@@ -662,7 +662,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--tcpSocket--port"><a href="./values.yaml#L134">livenessProbe.tcpSocket.port</a></td>
+			<td id="livenessProbe--tcpSocket--port"><a href="./values.yaml#L151">livenessProbe.tcpSocket.port</a></td>
 			<td>
 string
 </td>
@@ -676,7 +676,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--timeoutSeconds"><a href="./values.yaml#L137">livenessProbe.timeoutSeconds</a></td>
+			<td id="livenessProbe--timeoutSeconds"><a href="./values.yaml#L154">livenessProbe.timeoutSeconds</a></td>
 			<td>
 int
 </td>
@@ -704,7 +704,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L148">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L165">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -746,49 +746,63 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="podSecurityContext--fsGroup"><a href="./values.yaml#L110">podSecurityContext.fsGroup</a></td>
+			<td id="podSecurityContext--fsGroup"><a href="./values.yaml#L112">podSecurityContext.fsGroup</a></td>
 			<td>
 int
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-0
+65532
 </pre>
 </div>
 			</td>
 			<td></td>
 		</tr>
 		<tr>
-			<td id="podSecurityContext--runAsGroup"><a href="./values.yaml#L109">podSecurityContext.runAsGroup</a></td>
+			<td id="podSecurityContext--runAsGroup"><a href="./values.yaml#L111">podSecurityContext.runAsGroup</a></td>
 			<td>
 int
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-0
+65532
 </pre>
 </div>
 			</td>
 			<td></td>
 		</tr>
 		<tr>
-			<td id="podSecurityContext--runAsUser"><a href="./values.yaml#L108">podSecurityContext.runAsUser</a></td>
+			<td id="podSecurityContext--runAsNonRoot"><a href="./values.yaml#L109">podSecurityContext.runAsNonRoot</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Restrictive default pod security baseline. @description For host Docker/socket scenarios you may need root-level execution. See sample override below.</td>
+		</tr>
+		<tr>
+			<td id="podSecurityContext--runAsUser"><a href="./values.yaml#L110">podSecurityContext.runAsUser</a></td>
 			<td>
 int
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-0
+65532
 </pre>
 </div>
 			</td>
-			<td>Static agent deployments commonly require root-level interaction with Docker resources.</td>
+			<td></td>
 		</tr>
 		<tr>
-			<td id="podSecurityContext--seccompProfile--type"><a href="./values.yaml#L112">podSecurityContext.seccompProfile.type</a></td>
+			<td id="podSecurityContext--seccompProfile--type"><a href="./values.yaml#L114">podSecurityContext.seccompProfile.type</a></td>
 			<td>
 string
 </td>
@@ -802,7 +816,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L146">readinessProbe.failureThreshold</a></td>
+			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L163">readinessProbe.failureThreshold</a></td>
 			<td>
 int
 </td>
@@ -816,7 +830,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L143">readinessProbe.initialDelaySeconds</a></td>
+			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L160">readinessProbe.initialDelaySeconds</a></td>
 			<td>
 int
 </td>
@@ -830,7 +844,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L144">readinessProbe.periodSeconds</a></td>
+			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L161">readinessProbe.periodSeconds</a></td>
 			<td>
 int
 </td>
@@ -844,7 +858,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--tcpSocket--port"><a href="./values.yaml#L142">readinessProbe.tcpSocket.port</a></td>
+			<td id="readinessProbe--tcpSocket--port"><a href="./values.yaml#L159">readinessProbe.tcpSocket.port</a></td>
 			<td>
 string
 </td>
@@ -858,7 +872,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--timeoutSeconds"><a href="./values.yaml#L145">readinessProbe.timeoutSeconds</a></td>
+			<td id="readinessProbe--timeoutSeconds"><a href="./values.yaml#L162">readinessProbe.timeoutSeconds</a></td>
 			<td>
 int
 </td>
@@ -886,7 +900,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="resources--limits--cpu"><a href="./values.yaml#L129">resources.limits.cpu</a></td>
+			<td id="resources--limits--cpu"><a href="./values.yaml#L146">resources.limits.cpu</a></td>
 			<td>
 string
 </td>
@@ -900,7 +914,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="resources--limits--memory"><a href="./values.yaml#L130">resources.limits.memory</a></td>
+			<td id="resources--limits--memory"><a href="./values.yaml#L147">resources.limits.memory</a></td>
 			<td>
 string
 </td>
@@ -914,7 +928,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="resources--requests--cpu"><a href="./values.yaml#L126">resources.requests.cpu</a></td>
+			<td id="resources--requests--cpu"><a href="./values.yaml#L143">resources.requests.cpu</a></td>
 			<td>
 string
 </td>
@@ -928,7 +942,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="resources--requests--memory"><a href="./values.yaml#L127">resources.requests.memory</a></td>
+			<td id="resources--requests--memory"><a href="./values.yaml#L144">resources.requests.memory</a></td>
 			<td>
 string
 </td>
@@ -987,7 +1001,7 @@ string
 			<td>RuntimeClass for test pods.</td>
 		</tr>
 		<tr>
-			<td id="securityContext--allowPrivilegeEscalation"><a href="./values.yaml#L118">securityContext.allowPrivilegeEscalation</a></td>
+			<td id="securityContext--allowPrivilegeEscalation"><a href="./values.yaml#L128">securityContext.allowPrivilegeEscalation</a></td>
 			<td>
 bool
 </td>
@@ -1001,7 +1015,7 @@ false
 			<td></td>
 		</tr>
 		<tr>
-			<td id="securityContext--capabilities--drop[0]"><a href="./values.yaml#L122">securityContext.capabilities.drop[0]</a></td>
+			<td id="securityContext--capabilities--drop[0]"><a href="./values.yaml#L134">securityContext.capabilities.drop[0]</a></td>
 			<td>
 string
 </td>
@@ -1015,7 +1029,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="securityContext--readOnlyRootFilesystem"><a href="./values.yaml#L119">securityContext.readOnlyRootFilesystem</a></td>
+			<td id="securityContext--privileged"><a href="./values.yaml#L127">securityContext.privileged</a></td>
 			<td>
 bool
 </td>
@@ -1029,42 +1043,70 @@ false
 			<td></td>
 		</tr>
 		<tr>
-			<td id="securityContext--runAsGroup"><a href="./values.yaml#L116">securityContext.runAsGroup</a></td>
-			<td>
-int
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-0
-</pre>
-</div>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td id="securityContext--runAsNonRoot"><a href="./values.yaml#L117">securityContext.runAsNonRoot</a></td>
+			<td id="securityContext--readOnlyRootFilesystem"><a href="./values.yaml#L129">securityContext.readOnlyRootFilesystem</a></td>
 			<td>
 bool
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-false
+true
 </pre>
 </div>
 			</td>
 			<td></td>
 		</tr>
 		<tr>
-			<td id="securityContext--runAsUser"><a href="./values.yaml#L115">securityContext.runAsUser</a></td>
+			<td id="securityContext--runAsGroup"><a href="./values.yaml#L126">securityContext.runAsGroup</a></td>
 			<td>
 int
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-0
+65532
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td id="securityContext--runAsNonRoot"><a href="./values.yaml#L124">securityContext.runAsNonRoot</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Restrictive default container security baseline. @description For host Docker/socket scenarios you may need root-level execution. See sample override below.</td>
+		</tr>
+		<tr>
+			<td id="securityContext--runAsUser"><a href="./values.yaml#L125">securityContext.runAsUser</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+65532
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td id="securityContext--seccompProfile--type"><a href="./values.yaml#L131">securityContext.seccompProfile.type</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"RuntimeDefault"
 </pre>
 </div>
 			</td>
@@ -1225,7 +1267,7 @@ string
 			<td>The name of the service account to use. @description If not set and create=true, a name is generated using the fullname template.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L150">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L167">tolerations</a></td>
 			<td>
 list
 </td>
