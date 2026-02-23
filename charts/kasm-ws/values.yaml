@@ -419,6 +419,43 @@ runtimeClass:
   # -- (string/runtimeClassName) Sets the runtimeClass for the containers which gets executed by the test hook. Takes the runtimeClass name, or "" (default).
   tests: ""
 
+# -- Cilium Network Policies configuration
+libchartCnps:
+  # -- Enable Cilium Network Policies
+  enabled: false
+  # -- Include CNPG-specific policies
+  # @description These are usually only required when using CNPG resources in the same namespace.
+  includeCnpgPolicies: false
+
+# -- Application-specific Cilium Network Policies configuration
+# @description Requires CiliumNetworkPolicies library-chart. These settings are ignored if libchartCnps.enabled is false.
+cnps:
+  appTraffic:
+    ingress:
+      # -- Allow ingress traffic to the proxy component policy.
+      allow: true
+      # -- Labels to match ingress controller pods.
+      # @description Override to match your ingress deployment.
+      #   app.kubernetes.io/name: ingress-nginx
+      #   io.kubernetes.pod.namespace: ingress-nginx
+      matchLabels: {}
+      # -- Optional entities to allow ingress from.
+      # @description Useful when exposing proxy directly via LoadBalancer and allowing external (world) traffic.
+      fromEntities: []
+      #   - world
+    egress:
+      # -- Allow egress traffic for Kasm core components.
+      allow: true
+      # -- Egress rules applied when egress.allow is true.
+      # @description Customize to your security requirements.
+      egressRules:
+        - toEntities:
+            - world
+          toPorts:
+            - ports:
+                - port: "443"
+                  protocol: TCP
+
 # applySecurity -- Apply Pod/Container security settings for Kasm resources
 #
 applySecurity: true
