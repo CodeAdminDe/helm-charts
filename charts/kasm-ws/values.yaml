@@ -465,6 +465,57 @@ cnps:
             - ports:
                 - port: "443"
                   protocol: TCP
+  # -- Workspace session namespace traffic restrictions.
+  # @description Uses the libchart-cnps AppSet merge flow to build a dedicated policy in the workspace namespace.
+  # Requires libchartCnps.enabled=true.
+  workspaceTraffic:
+    # -- Enable workspace egress restriction policy generation.
+    enabled: false
+    # -- Namespace where Kasm session/workspace pods run.
+    namespace: ""
+    # -- Endpoint selector for workspace session pods.
+    # @description Keep empty matchLabels to select all pods in the dedicated workspace namespace.
+    podSelector:
+      matchLabels: {}
+    # -- Ingress handling for workspace pods.
+    ingress:
+      # -- Allow ingress traffic only from pods in the same workspace namespace.
+      # @description Set false to rely on other policies for ingress control.
+      allowFromSameNamespace: true
+    # -- Egress handling for workspace pods.
+    egress:
+      # -- Enable egress rule rendering.
+      allow: true
+      # -- Default egress rules. Override as required for your environment.
+      egressRules:
+        - toEndpoints:
+            - matchLabels:
+                io.kubernetes.pod.namespace: kube-system
+                k8s-app: kube-dns
+          toPorts:
+            - ports:
+                - port: "53"
+                  protocol: UDP
+                - port: "53"
+                  protocol: TCP
+              rules:
+                dns:
+                  - matchPattern: "*"
+        - toEntities:
+            - world
+      # -- Deny private network egress from workspace pods.
+      denyPrivateCidrs: true
+      # -- Private CIDR ranges denied when denyPrivateCidrs is true.
+      privateCidrs:
+        - "10.0.0.0/8"
+        - "172.16.0.0/12"
+        - "192.168.0.0/16"
+        - "127.0.0.0/8"
+        - "169.254.0.0/16"
+        - "100.64.0.0/10"
+        - "fc00::/7"
+        - "fe80::/10"
+        - "::1/128"
 
 # applySecurity -- Apply Pod/Container security settings for Kasm resources
 #

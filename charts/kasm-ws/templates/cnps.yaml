@@ -114,6 +114,43 @@ spec:
 {{ include "kasm-ws.CiliumNetworkPolicies-AppSet.component" (dict "root" . "component" $constants.rdpHttpsGateway.component "ports" (list ($constants.rdpHttpsGateway.port | toString)) "enableIngress" false) }}
 {{- end -}}
 
+{{- define "kasm-ws.CiliumNetworkPolicies-AppSet.workspace" -}}
+metadata:
+  name: {{ .Release.Name | printf "%s-%s--03-app-traffic-workspace" .Chart.Name | trunc 63 | trimSuffix "-" }}
+  namespace: {{ .Values.cnps.workspaceTraffic.namespace }}
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+  labels:
+    {{- include "kasm.defaultLabels" . | nindent 4 }}
+    app.kubernetes.io/component: workspace
+spec:
+  endpointSelector:
+    {{- with .Values.cnps.workspaceTraffic.podSelector }}
+    {{- toYaml . | nindent 4 }}
+    {{- else }}
+    matchLabels: {}
+    {{- end }}
+  {{- if .Values.cnps.workspaceTraffic.ingress.allowFromSameNamespace }}
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: {{ .Values.cnps.workspaceTraffic.namespace }}
+  {{- end }}
+  {{- if .Values.cnps.workspaceTraffic.egress.allow }}
+  egress:
+    {{- with .Values.cnps.workspaceTraffic.egress.egressRules }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+  {{- if and .Values.cnps.workspaceTraffic.egress.denyPrivateCidrs .Values.cnps.workspaceTraffic.egress.privateCidrs }}
+  egressDeny:
+    - toCIDRSet:
+      {{- range .Values.cnps.workspaceTraffic.egress.privateCidrs }}
+        - cidr: {{ . | quote }}
+      {{- end }}
+  {{- end }}
+{{- end -}}
+
 {{- if .Values.libchartCnps.enabled -}}
 ---
 {{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "kasm-ws.CiliumNetworkPolicies-AppSet.proxy") }}
@@ -132,5 +169,9 @@ spec:
   {{- if .Values.components.rdpHttpsGateway.enabled }}
 ---
 {{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "kasm-ws.CiliumNetworkPolicies-AppSet.rdp-https-gateway") }}
+  {{- end }}
+  {{- if and .Values.cnps.workspaceTraffic.enabled .Values.cnps.workspaceTraffic.namespace }}
+---
+{{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "kasm-ws.CiliumNetworkPolicies-AppSet.workspace") }}
   {{- end }}
 {{- end -}}
