@@ -37,18 +37,18 @@ spec:
   endpointSelector:
     matchLabels:
       {{- include "kasm-agent.selectorLabels" . | nindent 6 }}
-  {{- if .Values.cnps.appTraffic.ingress.allow }}
+  {{- $hasIngressEndpoints := not (empty .Values.cnps.appTraffic.ingress.matchLabels) }}
+  {{- $hasIngressEntities := not (empty .Values.cnps.appTraffic.ingress.fromEntities) }}
+  {{- if and .Values.cnps.appTraffic.ingress.allow (or $hasIngressEndpoints $hasIngressEntities) }}
   ingress:
-    - {{- $hasEndpoints := not (empty .Values.cnps.appTraffic.ingress.matchLabels) }}
-      {{- $hasEntities := not (empty .Values.cnps.appTraffic.ingress.fromEntities) }}
-      {{- if $hasEndpoints }}
+    - {{- if $hasIngressEndpoints }}
       fromEndpoints:
         - matchLabels:
           {{- range $key, $val := .Values.cnps.appTraffic.ingress.matchLabels }}
             {{ $key }}: {{ $val }}
           {{- end }}
       {{- end }}
-      {{- if $hasEntities }}
+      {{- if $hasIngressEntities }}
       fromEntities:
         {{- toYaml .Values.cnps.appTraffic.ingress.fromEntities | nindent 8 }}
       {{- end }}
@@ -57,7 +57,7 @@ spec:
             - port: {{ .Values.service.targetPort | quote }}
               protocol: {{ .Values.service.targetProtocol | default "TCP" }}
   {{- end }}
-  {{- if .Values.cnps.appTraffic.egress.allow }}
+  {{- if and .Values.cnps.appTraffic.egress.allow (not (empty .Values.cnps.appTraffic.egress.egressRules)) }}
   egress:
     {{- toYaml .Values.cnps.appTraffic.egress.egressRules | nindent 4 }}
   {{- end }}

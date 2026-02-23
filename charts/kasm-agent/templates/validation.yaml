@@ -32,3 +32,13 @@ Chart validation guards.
 {{- if and .Values.libchartCnps.enabled (not .Values.service.enabled) -}}
   {{- fail "libchartCnps.enabled=true requires service.enabled=true for valid target port policy generation." -}}
 {{- end -}}
+
+{{- $hasIngressEndpoints := not (empty .Values.cnps.appTraffic.ingress.matchLabels) -}}
+{{- $hasIngressEntities := not (empty .Values.cnps.appTraffic.ingress.fromEntities) -}}
+{{- if and .Values.libchartCnps.enabled .Values.cnps.appTraffic.ingress.allow (not (or $hasIngressEndpoints $hasIngressEntities)) -}}
+  {{- fail "cnps.appTraffic.ingress.allow=true requires at least one source selector (cnps.appTraffic.ingress.matchLabels or cnps.appTraffic.ingress.fromEntities)." -}}
+{{- end -}}
+
+{{- if and .Values.libchartCnps.enabled .Values.cnps.appTraffic.egress.allow (empty .Values.cnps.appTraffic.egress.egressRules) -}}
+  {{- fail "cnps.appTraffic.egress.allow=true requires at least one egress rule in cnps.appTraffic.egress.egressRules." -}}
+{{- end -}}

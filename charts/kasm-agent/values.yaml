@@ -195,3 +195,4 @@ extraLabels:
   pod: {}
   service: {}
   secret: {}
+  serviceAccount: {}
