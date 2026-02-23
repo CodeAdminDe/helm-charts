@@ -84,14 +84,31 @@ spec:
             - name: POSTGRES_PORT
               value: {{ $constants.db.port | quote }}
             - name: POSTGRES_DB
+              {{- if $values.database.useCnpgCluster.enabled }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "kasm.cnpg.appConnectionSecretName" $ }}
+                  key: {{ $values.database.useCnpgCluster.secretKeys.database | quote }}
+              {{- else }}
               value: {{ $values.database.kasmDbName }}
+              {{- end }}
             - name: POSTGRES_USER
+              {{- if $values.database.useCnpgCluster.enabled }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "kasm.cnpg.appConnectionSecretName" $ }}
+                  key: {{ $values.database.useCnpgCluster.secretKeys.username | quote }}
+              {{- else }}
               value: {{ $values.database.kasmDbUser }}
+              {{- end }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                 {{- if $values.database.kasmDbSecret -}}
                 {{ $values.database.kasmDbSecret | toYaml | nindent 18 }}
+                {{- else if $values.database.useCnpgCluster.enabled }}
+                  name: {{ include "kasm.cnpg.appConnectionSecretName" $ }}
+                  key: {{ $values.database.useCnpgCluster.secretKeys.password | quote }}
                 {{- else }}
                   name: {{ $.Release.Name }}-secrets
                   key: "db-password"

@@ -2,7 +2,7 @@
 Kasm DB configMaps containing pg_hba.conf and postgresql.conf files
 */}}
 {{- $constants := (include "kasm.constants" . | fromYaml) -}}
-{{- if eq .Values.database.standalone false }}
+{{- if and (eq .Values.database.standalone false) (not .Values.database.useCnpgCluster.enabled) }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
