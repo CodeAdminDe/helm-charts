@@ -1411,7 +1411,7 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
-  "whenDeleted": "Delete",
+  "whenDeleted": "Retain",
   "whenScaled": "Retain"
 }
 </pre>
