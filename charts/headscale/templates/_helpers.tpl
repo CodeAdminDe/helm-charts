@@ -111,9 +111,11 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- else -}}
 {{- $postgresHost := .Values.database.postgres.host -}}
 {{- $postgresPort := .Values.database.postgres.port -}}
+{{- $postgresSSL := .Values.database.postgres.ssl -}}
 {{- if .Values.database.useCnpgCluster.enabled -}}
 {{- $postgresHost = printf "%s-rw" .Values.database.useCnpgCluster.clusterName -}}
 {{- $postgresPort = .Values.database.useCnpgCluster.port -}}
+{{- $postgresSSL = (.Values.database.useCnpgCluster.ssl | default "require") -}}
 {{- end -}}
 {{- $_ := set $database "postgres" (dict
   "host" $postgresHost
@@ -121,7 +123,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
   "name" .Values.database.postgres.name
   "user" .Values.database.postgres.user
   "pass" ""
-  "ssl" .Values.database.postgres.ssl
+  "ssl" $postgresSSL
   "max_open_conns" .Values.database.postgres.maxOpenConns
   "max_idle_conns" .Values.database.postgres.maxIdleConns
   "conn_max_idle_time_secs" .Values.database.postgres.connMaxIdleTimeSecs
@@ -189,7 +191,18 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{/* Pod annotation checksum for config source. */}}
 {{- define "headscale.configChecksum" -}}
 {{- if .Values.config.existingSecret.name -}}
-{{- printf "%s/%s" .Values.config.existingSecret.name .Values.config.existingSecret.key | sha256sum -}}
+{{- $fallback := printf "%s/%s" .Values.config.existingSecret.name .Values.config.existingSecret.key -}}
+{{- $existingSecret := lookup "v1" "Secret" .Release.Namespace .Values.config.existingSecret.name -}}
+{{- if $existingSecret -}}
+  {{- $secretValue := default "" (index $existingSecret.data .Values.config.existingSecret.key) -}}
+  {{- if $secretValue -}}
+{{- $secretValue | sha256sum -}}
+  {{- else -}}
+{{- $fallback | sha256sum -}}
+  {{- end -}}
+{{- else -}}
+{{- $fallback | sha256sum -}}
+{{- end -}}
 {{- else -}}
 {{- include "headscale.generatedConfig" . | sha256sum -}}
 {{- end -}}

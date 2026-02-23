@@ -1,3 +1,5 @@
+{{- $tlsEnabled := or (ne .Values.headscale.tls.certPath "") (ne .Values.headscale.tls.keyPath "") (ne .Values.headscale.tls.letsencrypt.hostname "") -}}
+{{- $scheme := ternary "https" "http" $tlsEnabled -}}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -17,5 +19,5 @@ spec:
       command: ["sh", "-c"]
       args:
         - |
-          wget -qO- http://{{ include "headscale.fullname" . }}:{{ .Values.service.http.port }}/health
+          wget {{- if $tlsEnabled }} --no-check-certificate{{- end }} -qO- {{ $scheme }}://{{ include "headscale.fullname" . }}:{{ .Values.service.http.port }}/health
   restartPolicy: Never

@@ -29,9 +29,9 @@ helm repo add codeadminde https://codeadminde.github.io/helm-charts/
 helm repo update
 helm install headscale codeadminde/headscale
 ```
-_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
+_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
 
-> I'd recommend to read trough the docs. Skip them at your own risk. ;-)
+> I'd recommend to read through the docs. Skip them at your own risk. ;-)
 
 ## Repository
 
@@ -49,7 +49,7 @@ To install the chart with the release name `headscale`
 ```bash
 helm install headscale codeadminde/headscale
 ```
-_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
+_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
 
 ## Uninstallation
 
@@ -58,7 +58,7 @@ To uninstall the chart release named `headscale`
 ```bash
 helm uninstall headscale
 ```
-_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
+_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
 
 The command removes all the Kubernetes components associated with the chart **including persistent volumes** and deletes the release.
 
@@ -69,7 +69,7 @@ So it would be a good idea to take a look at it, even if you already know what y
 
 To configure the release (chart values), provide your own values via a *.yaml file and reference it with the `-f` flag.
 
-> #### Sample
+> ### Sample - install with values file
 >
 > ```bash
 > helm install headscale codeadminde/headscale -f values.yaml
@@ -77,7 +77,7 @@ To configure the release (chart values), provide your own values via a *.yaml fi
 
 Alternatively, you could provide the values which you want to override at the CLI directly. Than you've to provide the values as key=value pair(s), referenced by the `--set` flag.
 
-> #### Sample
+> ### Sample - install with inline set flags
 >
 > ```bash
 > helm install headscale --set key=value --set keyTwo=secondValue codeadminde/headscale
@@ -94,7 +94,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="additionalEnvSecrets"><a href="./values.yaml#L314">additionalEnvSecrets</a></td>
+			<td id="additionalEnvSecrets"><a href="./values.yaml#L322">additionalEnvSecrets</a></td>
 			<td>
 object
 </td>
@@ -105,10 +105,10 @@ object
 </pre>
 </div>
 			</td>
-			<td>Additional env vars from existing secrets. @description Map ENV_KEY to secret name containing the same key.</td>
+			<td>Additional env vars from existing secrets. @description Supports either map style (`ENV: secretName`) or list style entries (`[{name, secretName, secretKey}]`).</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L353">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L361">affinity</a></td>
 			<td>
 object
 </td>
@@ -122,7 +122,7 @@ object
 			<td>Workload affinity.</td>
 		</tr>
 		<tr>
-			<td id="applyHealthChecks"><a href="./values.yaml#L265">applyHealthChecks</a></td>
+			<td id="applyHealthChecks"><a href="./values.yaml#L271">applyHealthChecks</a></td>
 			<td>
 bool
 </td>
@@ -136,7 +136,7 @@ true
 			<td>Enable liveness and readiness probes.</td>
 		</tr>
 		<tr>
-			<td id="applySecurity"><a href="./values.yaml#L245">applySecurity</a></td>
+			<td id="applySecurity"><a href="./values.yaml#L251">applySecurity</a></td>
 			<td>
 bool
 </td>
@@ -150,7 +150,7 @@ true
 			<td>Apply default pod/container security settings.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L297">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L303">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -158,10 +158,12 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
+  "enableMemoryUtilization": false,
   "enabled": false,
   "maxReplicas": 3,
   "minReplicas": 1,
-  "targetCPUUtilizationPercentage": 80
+  "targetCPUUtilizationPercentage": 80,
+  "targetMemoryUtilizationPercentage": 80
 }
 </pre>
 </div>
@@ -169,7 +171,7 @@ object
 			<td>HorizontalPodAutoscaler configuration.</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L322">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L330">cnps</a></td>
 			<td>
 object
 </td>
@@ -206,7 +208,7 @@ object
 			<td>App-specific CiliumNetworkPolicies settings.</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L325">cnps.cnpgTraffic.instanceExtraEgress</a></td>
+			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L333">cnps.cnpgTraffic.instanceExtraEgress</a></td>
 			<td>
 list
 </td>
@@ -294,7 +296,7 @@ object
       "name": ""
     },
     "port": 5432,
-    "ssl": "disable",
+    "ssl": "require",
     "user": "headscale"
   },
   "sqlite": {
@@ -311,7 +313,8 @@ object
       "database": "dbname",
       "password": "password",
       "username": "username"
-    }
+    },
+    "ssl": "require"
   }
 }
 </pre>
@@ -320,7 +323,7 @@ object
 			<td>Database configuration.</td>
 		</tr>
 		<tr>
-			<td id="database--gorm"><a href="./values.yaml#L156">database.gorm</a></td>
+			<td id="database--gorm"><a href="./values.yaml#L159">database.gorm</a></td>
 			<td>
 object
 </td>
@@ -372,7 +375,7 @@ object
     "name": ""
   },
   "port": 5432,
-  "ssl": "disable",
+  "ssl": "require",
   "user": "headscale"
 }
 </pre>
@@ -381,7 +384,7 @@ object
 			<td>Postgres configuration.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--passwordSecret--key"><a href="./values.yaml#L142">database.postgres.passwordSecret.key</a></td>
+			<td id="database--postgres--passwordSecret--key"><a href="./values.yaml#L143">database.postgres.passwordSecret.key</a></td>
 			<td>
 string
 </td>
@@ -395,7 +398,7 @@ string
 			<td>Secret key for the postgres password value.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--passwordSecret--name"><a href="./values.yaml#L140">database.postgres.passwordSecret.name</a></td>
+			<td id="database--postgres--passwordSecret--name"><a href="./values.yaml#L141">database.postgres.passwordSecret.name</a></td>
 			<td>
 string
 </td>
@@ -407,6 +410,20 @@ string
 </div>
 			</td>
 			<td>Existing secret containing the postgres password key.</td>
+		</tr>
+		<tr>
+			<td id="database--postgres--ssl"><a href="./values.yaml#L135">database.postgres.ssl</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"require"
+</pre>
+</div>
+			</td>
+			<td>SSL mode for direct/external Postgres usage.</td>
 		</tr>
 		<tr>
 			<td id="database--sqlite"><a href="./values.yaml#L123">database.sqlite</a></td>
@@ -427,7 +444,7 @@ object
 			<td>SQLite configuration.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster"><a href="./values.yaml#L145">database.useCnpgCluster</a></td>
+			<td id="database--useCnpgCluster"><a href="./values.yaml#L146">database.useCnpgCluster</a></td>
 			<td>
 object
 </td>
@@ -443,7 +460,8 @@ object
     "database": "dbname",
     "password": "password",
     "username": "username"
-  }
+  },
+  "ssl": "require"
 }
 </pre>
 </div>
@@ -451,7 +469,21 @@ object
 			<td>Use an in-cluster CNPG app secret as postgres datasource input.</td>
 		</tr>
 		<tr>
-			<td id="env"><a href="./values.yaml#L310">env</a></td>
+			<td id="database--useCnpgCluster--ssl"><a href="./values.yaml#L152">database.useCnpgCluster.ssl</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"require"
+</pre>
+</div>
+			</td>
+			<td>SSL mode override for CNPG connectivity.</td>
+		</tr>
+		<tr>
+			<td id="env"><a href="./values.yaml#L318">env</a></td>
 			<td>
 object
 </td>
@@ -913,7 +945,7 @@ list
 			<td>Image pull secrets (for private registries).</td>
 		</tr>
 		<tr>
-			<td id="ingress"><a href="./values.yaml#L205">ingress</a></td>
+			<td id="ingress"><a href="./values.yaml#L208">ingress</a></td>
 			<td>
 object
 </td>
@@ -943,8 +975,8 @@ object
     "proxyRequestBuffering": "off",
     "proxySendTimeoutSeconds": 3600,
     "websocket": {
-      "annotationKey": "nginx.org/websocket-services",
-      "enabled": true
+      "annotationKey": "",
+      "enabled": false
     }
   },
   "tls": []
@@ -955,7 +987,7 @@ object
 			<td>Ingress configuration for headscale HTTP endpoint.</td>
 		</tr>
 		<tr>
-			<td id="ingress--secureDefaults"><a href="./values.yaml#L211">ingress.secureDefaults</a></td>
+			<td id="ingress--secureDefaults"><a href="./values.yaml#L214">ingress.secureDefaults</a></td>
 			<td>
 object
 </td>
@@ -970,8 +1002,8 @@ object
   "proxyRequestBuffering": "off",
   "proxySendTimeoutSeconds": 3600,
   "websocket": {
-    "annotationKey": "nginx.org/websocket-services",
-    "enabled": true
+    "annotationKey": "",
+    "enabled": false
   }
 }
 </pre>
@@ -980,7 +1012,35 @@ object
 			<td>Secure-by-default ingress annotation settings. @description Applied by default and merged with ingress.annotations (custom annotations win on key conflicts).</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L317">libchartCnps</a></td>
+			<td id="ingress--secureDefaults--websocket--annotationKey"><a href="./values.yaml#L226">ingress.secureDefaults.websocket.annotationKey</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Annotation key to use when websocket annotation injection is enabled. Example for NGINX Plus: nginx.org/websocket-services</td>
+		</tr>
+		<tr>
+			<td id="ingress--secureDefaults--websocket--enabled"><a href="./values.yaml#L223">ingress.secureDefaults.websocket.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Inject websocket annotation. Keep disabled for ingress-nginx defaults.</td>
+		</tr>
+		<tr>
+			<td id="libchartCnps"><a href="./values.yaml#L325">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -997,7 +1057,7 @@ object
 			<td>CiliumNetworkPolicies dependency toggle.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L268">livenessProbe</a></td>
+			<td id="livenessProbe"><a href="./values.yaml#L274">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -1034,7 +1094,7 @@ string
 			<td>Override release-based naming.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L347">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L355">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -1048,7 +1108,7 @@ object
 			<td>Workload node selector.</td>
 		</tr>
 		<tr>
-			<td id="persistence"><a href="./values.yaml#L164">persistence</a></td>
+			<td id="persistence"><a href="./values.yaml#L167">persistence</a></td>
 			<td>
 object
 </td>
@@ -1073,7 +1133,7 @@ object
 			<td>Persistent storage for `/var/lib/headscale`.</td>
 		</tr>
 		<tr>
-			<td id="persistence--accessModes"><a href="./values.yaml#L174">persistence.accessModes</a></td>
+			<td id="persistence--accessModes"><a href="./values.yaml#L177">persistence.accessModes</a></td>
 			<td>
 list
 </td>
@@ -1089,7 +1149,7 @@ list
 			<td>PVC accessModes when creating a claim.</td>
 		</tr>
 		<tr>
-			<td id="persistence--emptyDirSizeLimit"><a href="./values.yaml#L177">persistence.emptyDirSizeLimit</a></td>
+			<td id="persistence--emptyDirSizeLimit"><a href="./values.yaml#L180">persistence.emptyDirSizeLimit</a></td>
 			<td>
 string
 </td>
@@ -1103,7 +1163,7 @@ string
 			<td>emptyDir size limit for `/var/lib/headscale` when persistence.enabled=false.</td>
 		</tr>
 		<tr>
-			<td id="persistence--enabled"><a href="./values.yaml#L166">persistence.enabled</a></td>
+			<td id="persistence--enabled"><a href="./values.yaml#L169">persistence.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1117,7 +1177,7 @@ true
 			<td>Enable persistence with PVC for headscale state and keys.</td>
 		</tr>
 		<tr>
-			<td id="persistence--existingClaim"><a href="./values.yaml#L168">persistence.existingClaim</a></td>
+			<td id="persistence--existingClaim"><a href="./values.yaml#L171">persistence.existingClaim</a></td>
 			<td>
 string
 </td>
@@ -1131,7 +1191,7 @@ string
 			<td>Existing claim to use instead of creating a new PVC.</td>
 		</tr>
 		<tr>
-			<td id="persistence--runDirSizeLimit"><a href="./values.yaml#L179">persistence.runDirSizeLimit</a></td>
+			<td id="persistence--runDirSizeLimit"><a href="./values.yaml#L182">persistence.runDirSizeLimit</a></td>
 			<td>
 string
 </td>
@@ -1145,7 +1205,7 @@ string
 			<td>emptyDir size limit for `/var/run/headscale`.</td>
 		</tr>
 		<tr>
-			<td id="persistence--size"><a href="./values.yaml#L170">persistence.size</a></td>
+			<td id="persistence--size"><a href="./values.yaml#L173">persistence.size</a></td>
 			<td>
 string
 </td>
@@ -1159,7 +1219,7 @@ string
 			<td>PVC size when creating a claim.</td>
 		</tr>
 		<tr>
-			<td id="persistence--storageClass"><a href="./values.yaml#L172">persistence.storageClass</a></td>
+			<td id="persistence--storageClass"><a href="./values.yaml#L175">persistence.storageClass</a></td>
 			<td>
 string
 </td>
@@ -1173,7 +1233,7 @@ string
 			<td>PVC storageClass when creating a claim.</td>
 		</tr>
 		<tr>
-			<td id="persistence--tmpDirSizeLimit"><a href="./values.yaml#L181">persistence.tmpDirSizeLimit</a></td>
+			<td id="persistence--tmpDirSizeLimit"><a href="./values.yaml#L184">persistence.tmpDirSizeLimit</a></td>
 			<td>
 string
 </td>
@@ -1187,7 +1247,7 @@ string
 			<td>emptyDir size limit for `/tmp`.</td>
 		</tr>
 		<tr>
-			<td id="podAnnotations"><a href="./values.yaml#L341">podAnnotations</a></td>
+			<td id="podAnnotations"><a href="./values.yaml#L349">podAnnotations</a></td>
 			<td>
 object
 </td>
@@ -1201,7 +1261,7 @@ object
 			<td>Pod annotations.</td>
 		</tr>
 		<tr>
-			<td id="podLabels"><a href="./values.yaml#L344">podLabels</a></td>
+			<td id="podLabels"><a href="./values.yaml#L352">podLabels</a></td>
 			<td>
 object
 </td>
@@ -1215,7 +1275,7 @@ object
 			<td>Pod labels.</td>
 		</tr>
 		<tr>
-			<td id="podSecurityContext"><a href="./values.yaml#L248">podSecurityContext</a></td>
+			<td id="podSecurityContext"><a href="./values.yaml#L254">podSecurityContext</a></td>
 			<td>
 object
 </td>
@@ -1231,7 +1291,7 @@ object
 			<td>Pod-level security context for workload pods.</td>
 		</tr>
 		<tr>
-			<td id="rbac"><a href="./values.yaml#L236">rbac</a></td>
+			<td id="rbac"><a href="./values.yaml#L242">rbac</a></td>
 			<td>
 object
 </td>
@@ -1249,7 +1309,7 @@ object
 			<td>RBAC settings.</td>
 		</tr>
 		<tr>
-			<td id="rbac--create"><a href="./values.yaml#L238">rbac.create</a></td>
+			<td id="rbac--create"><a href="./values.yaml#L244">rbac.create</a></td>
 			<td>
 bool
 </td>
@@ -1263,7 +1323,7 @@ false
 			<td>Create namespace-scoped role + rolebinding.</td>
 		</tr>
 		<tr>
-			<td id="rbac--namespace"><a href="./values.yaml#L240">rbac.namespace</a></td>
+			<td id="rbac--namespace"><a href="./values.yaml#L246">rbac.namespace</a></td>
 			<td>
 string
 </td>
@@ -1277,7 +1337,7 @@ string
 			<td>Namespace override for RBAC objects. Empty means release namespace.</td>
 		</tr>
 		<tr>
-			<td id="rbac--rules"><a href="./values.yaml#L242">rbac.rules</a></td>
+			<td id="rbac--rules"><a href="./values.yaml#L248">rbac.rules</a></td>
 			<td>
 list
 </td>
@@ -1291,7 +1351,7 @@ list
 			<td>RBAC rules for Role when rbac.create=true.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe"><a href="./values.yaml#L278">readinessProbe</a></td>
+			<td id="readinessProbe"><a href="./values.yaml#L284">readinessProbe</a></td>
 			<td>
 object
 </td>
@@ -1328,7 +1388,7 @@ int
 			<td>Number of headscale pod replicas. Note: SQLite mode is single-writer. Keep this at 1 when database.mode=sqlite.</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L288">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L294">resources</a></td>
 			<td>
 object
 </td>
@@ -1351,7 +1411,7 @@ object
 			<td>Resource requests/limits.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L304">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L312">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -1368,7 +1428,7 @@ object
 			<td>RuntimeClass names.</td>
 		</tr>
 		<tr>
-			<td id="securityContext"><a href="./values.yaml#L252">securityContext</a></td>
+			<td id="securityContext"><a href="./values.yaml#L258">securityContext</a></td>
 			<td>
 object
 </td>
@@ -1396,7 +1456,7 @@ object
 			<td>Container-level security context for workload containers.</td>
 		</tr>
 		<tr>
-			<td id="service"><a href="./values.yaml#L184">service</a></td>
+			<td id="service"><a href="./values.yaml#L187">service</a></td>
 			<td>
 object
 </td>
@@ -1430,7 +1490,7 @@ object
 			<td>Kubernetes Service configuration.</td>
 		</tr>
 		<tr>
-			<td id="service--annotations"><a href="./values.yaml#L188">service.annotations</a></td>
+			<td id="service--annotations"><a href="./values.yaml#L191">service.annotations</a></td>
 			<td>
 object
 </td>
@@ -1444,7 +1504,7 @@ object
 			<td>Service annotations.</td>
 		</tr>
 		<tr>
-			<td id="service--type"><a href="./values.yaml#L186">service.type</a></td>
+			<td id="service--type"><a href="./values.yaml#L189">service.type</a></td>
 			<td>
 string
 </td>
@@ -1458,7 +1518,7 @@ string
 			<td>Service type. This chart enforces ClusterIP.</td>
 		</tr>
 		<tr>
-			<td id="serviceAccount"><a href="./values.yaml#L229">serviceAccount</a></td>
+			<td id="serviceAccount"><a href="./values.yaml#L235">serviceAccount</a></td>
 			<td>
 object
 </td>
@@ -1477,7 +1537,7 @@ object
 			<td>Create service account.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L350">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L358">tolerations</a></td>
 			<td>
 list
 </td>
@@ -1503,7 +1563,7 @@ Please note that this chart does not provide any production ready network polici
 Therefore, I recommend the implementation of network policies before using in prod environments.
 
 > **If you're using Cilium CNI**: I've added experimental support for CNPs.
-> Note that these are highly oppinionated and you should review them carefully before using.
+> Note that these are highly opinionated and you should review them carefully before using.
 > E.g. it's required that each release gets deployed within a separate namespace.
 
 ## Opinionated & Non-standard

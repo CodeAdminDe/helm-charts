@@ -35,6 +35,9 @@
     {{- if empty .Values.database.useCnpgCluster.clusterName -}}
       {{- fail "database.useCnpgCluster.clusterName must be set when CNPG mode is enabled." -}}
     {{- end -}}
+    {{- if empty .Values.database.useCnpgCluster.ssl -}}
+      {{- fail "database.useCnpgCluster.ssl must be set when CNPG mode is enabled." -}}
+    {{- end -}}
     {{- if empty .Values.database.useCnpgCluster.secretKeys.database -}}
       {{- fail "database.useCnpgCluster.secretKeys.database must be set when CNPG mode is enabled." -}}
     {{- end -}}
@@ -56,6 +59,9 @@
     {{- end -}}
     {{- if empty .Values.database.postgres.passwordSecret.name -}}
       {{- fail "database.postgres.passwordSecret.name must be set when database.mode=postgres and CNPG mode is disabled." -}}
+    {{- end -}}
+    {{- if empty .Values.database.postgres.passwordSecret.key -}}
+      {{- fail "database.postgres.passwordSecret.key must be set when database.mode=postgres and CNPG mode is disabled." -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
