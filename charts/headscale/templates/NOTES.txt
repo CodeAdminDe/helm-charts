@@ -1,0 +1,17 @@
+1. Access headscale inside the cluster:
+   kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "headscale.fullname" . }} {{ .Values.service.http.port }}:{{ .Values.service.http.port }}
+
+2. Health endpoint:
+   http://127.0.0.1:{{ .Values.service.http.port }}/health
+
+3. If ingress is enabled, use one of the configured hosts:
+   {{- if .Values.ingress.enabled }}
+   {{- range .Values.ingress.hosts }}
+   - {{ .host }}
+   {{- end }}
+   {{- else }}
+   ingress disabled
+   {{- end }}
+
+4. If using sqlite mode, keep a single replica:
+   database.mode=sqlite and replicaCount=1

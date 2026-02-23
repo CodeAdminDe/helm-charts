@@ -1,0 +1,17 @@
+{{- if .Values.rbac.create }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "headscale.rbacRoleName" . }}
+  namespace: {{ include "headscale.rbacNamespace" . }}
+  labels:
+    {{- include "headscale.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "headscale.rbacRoleName" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "headscale.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+{{- end }}

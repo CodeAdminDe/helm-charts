@@ -1,0 +1,169 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "headscale.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "headscale.labels" . | nindent 4 }}
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+    checksum/config: {{ include "headscale.configChecksum" . }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "headscale.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "headscale.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/config: {{ include "headscale.configChecksum" . }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "headscale.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      {{- if and .Values.applySecurity .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ include "headscale.name" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            {{- toYaml .Values.headscale.args | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.http.targetPort }}
+              protocol: {{ .Values.service.http.targetProtocol }}
+            {{- if .Values.service.metrics.enabled }}
+            - name: metrics
+              containerPort: {{ .Values.service.metrics.targetPort }}
+              protocol: {{ .Values.service.metrics.targetProtocol }}
+            {{- end }}
+            {{- if .Values.service.grpc.enabled }}
+            - name: grpc
+              containerPort: {{ .Values.service.grpc.targetPort }}
+              protocol: {{ .Values.service.grpc.targetProtocol }}
+            {{- end }}
+          env:
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- range $key, $secret := .Values.additionalEnvSecrets }}
+            - name: {{ $key }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secret }}
+                  key: {{ $key | quote }}
+            {{- end }}
+            {{- if and (eq .Values.database.mode "postgres") (not .Values.database.useCnpgCluster.enabled) }}
+            - name: HEADSCALE_DATABASE_POSTGRES_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.postgres.passwordSecret.name | quote }}
+                  key: {{ .Values.database.postgres.passwordSecret.key | quote }}
+            {{- end }}
+            {{- if and (eq .Values.database.mode "postgres") .Values.database.useCnpgCluster.enabled }}
+            - name: HEADSCALE_DATABASE_POSTGRES_HOST
+              value: {{ printf "%s-rw" .Values.database.useCnpgCluster.clusterName | quote }}
+            - name: HEADSCALE_DATABASE_POSTGRES_PORT
+              value: {{ .Values.database.useCnpgCluster.port | quote }}
+            - name: HEADSCALE_DATABASE_POSTGRES_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "headscale.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.database | quote }}
+            - name: HEADSCALE_DATABASE_POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "headscale.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.username | quote }}
+            - name: HEADSCALE_DATABASE_POSTGRES_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "headscale.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.password | quote }}
+            {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/headscale/config.yaml
+              subPath: config.yaml
+              readOnly: true
+            - name: headscale-data
+              mountPath: /var/lib/headscale
+            - name: headscale-run
+              mountPath: /var/run/headscale
+            - name: headscale-tmp
+              mountPath: /tmp
+          {{- if and .Values.applySecurity .Values.securityContext }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          {{- if .Values.applyHealthChecks }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      volumes:
+        - name: config
+          {{- if .Values.config.existingSecret.name }}
+          secret:
+            secretName: {{ .Values.config.existingSecret.name }}
+            items:
+              - key: {{ .Values.config.existingSecret.key }}
+                path: config.yaml
+          {{- else }}
+          configMap:
+            name: {{ include "headscale.generatedConfigName" . }}
+            items:
+              - key: config.yaml
+                path: config.yaml
+          {{- end }}
+        - name: headscale-data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "headscale.persistenceClaimName" . }}
+          {{- else }}
+          emptyDir:
+            sizeLimit: {{ .Values.persistence.emptyDirSizeLimit }}
+          {{- end }}
+        - name: headscale-run
+          emptyDir:
+            sizeLimit: {{ .Values.persistence.runDirSizeLimit }}
+        - name: headscale-tmp
+          emptyDir:
+            sizeLimit: {{ .Values.persistence.tmpDirSizeLimit }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

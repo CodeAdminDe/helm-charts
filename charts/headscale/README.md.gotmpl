@@ -1,0 +1,16 @@
+{{- define "extra.specifics.fromchart.headscale" -}}
+<hr /><hr />
+
+## Appendix - Chart-specifics
+
+### Important operational notes
+
+* Upstream headscale currently recommends SQLite for most setups. This chart therefore defaults to `database.mode=sqlite`.
+* PostgreSQL support stays optional for integration scenarios and is exposed via `database.mode=postgres`.
+* Service exposure is intentionally ClusterIP-only. External access should be done via ingress/reverse-proxy according to your platform standards.
+* The chart supports consuming an existing in-namespace CNPG app secret (`database.useCnpgCluster.*`) for PostgreSQL credentials.
+
+{{- end -}}
+
+{{ template "extra.templates.readme.complexvalues" . }}
+{{ template "extra.specifics.fromchart.headscale" . }}
