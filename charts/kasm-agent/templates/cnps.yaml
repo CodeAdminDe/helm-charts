@@ -1,0 +1,68 @@
+{{- define "kasm-agent.CiliumNetworkPolicies-NamespaceSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+  labels:
+    {{- include "kasm-agent.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-NamespaceSet" (list . "kasm-agent.CiliumNetworkPolicies-NamespaceSet") }}
+---
+{{- end -}}
+
+{{- define "kasm-agent.CiliumNetworkPolicies-CnpgSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+  labels:
+    {{- include "kasm-agent.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if and .Values.libchartCnps.includeCnpgPolicies .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-CnpgSet" (list . "kasm-agent.CiliumNetworkPolicies-CnpgSet") }}
+---
+{{- end -}}
+
+{{- define "kasm-agent.CiliumNetworkPolicies-AppSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+  labels:
+    {{- include "kasm-agent.labels" . | nindent 4 }}
+spec:
+  endpointSelector:
+    matchLabels:
+      {{- include "kasm-agent.selectorLabels" . | nindent 6 }}
+  {{- $hasIngressEndpoints := not (empty .Values.cnps.appTraffic.ingress.matchLabels) }}
+  {{- $hasIngressEntities := not (empty .Values.cnps.appTraffic.ingress.fromEntities) }}
+  {{- if and .Values.cnps.appTraffic.ingress.allow (or $hasIngressEndpoints $hasIngressEntities) }}
+  ingress:
+    - {{- if $hasIngressEndpoints }}
+      fromEndpoints:
+        - matchLabels:
+          {{- range $key, $val := .Values.cnps.appTraffic.ingress.matchLabels }}
+            {{ $key }}: {{ $val }}
+          {{- end }}
+      {{- end }}
+      {{- if $hasIngressEntities }}
+      fromEntities:
+        {{- toYaml .Values.cnps.appTraffic.ingress.fromEntities | nindent 8 }}
+      {{- end }}
+      toPorts:
+        - ports:
+            - port: {{ .Values.service.targetPort | quote }}
+              protocol: {{ .Values.service.targetProtocol | default "TCP" }}
+  {{- end }}
+  {{- if and .Values.cnps.appTraffic.egress.allow (not (empty .Values.cnps.appTraffic.egress.egressRules)) }}
+  egress:
+    {{- toYaml .Values.cnps.appTraffic.egress.egressRules | nindent 4 }}
+  {{- end }}
+{{- end -}}
+
+{{- if .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "kasm-agent.CiliumNetworkPolicies-AppSet") }}
+{{- end -}}

@@ -1,0 +1,361 @@
+# -- Number of headscale pod replicas.
+# Note: SQLite mode is single-writer. Keep this at 1 when database.mode=sqlite.
+replicaCount: 1
+
+# -- Override release-based naming.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- Container image configuration.
+image:
+  # -- Image repository.
+  repository: headscale/headscale
+  # -- Image pull policy.
+  pullPolicy: IfNotPresent
+  # -- Image tag override (defaults to .Chart.AppVersion when empty).
+  tag: ""
+
+# -- Image pull secrets (for private registries).
+imagePullSecrets: []
+
+# -- Headscale runtime configuration rendered into `/etc/headscale/config.yaml`.
+headscale:
+  # -- Public URL clients use to connect to headscale.
+  # Must start with `http://` or `https://`.
+  serverUrl: "https://headscale.example.com"
+
+  # -- Container args for headscale runtime. Keep `serve` for server mode.
+  args:
+    - serve
+
+  # -- Listener bind configuration.
+  listeners:
+    httpBindAddress: "0.0.0.0"
+    metricsBindAddress: "0.0.0.0"
+    grpcBindAddress: "0.0.0.0"
+
+  # -- Allow insecure gRPC admin listener.
+  # @description Disable in production unless strictly required.
+  grpcAllowInsecure: false
+
+  # -- Disable update checks at startup.
+  disableCheckUpdates: true
+
+  # -- Duration before inactive ephemeral nodes are deleted.
+  ephemeralNodeInactivityTimeout: "30m"
+
+  # -- Noise protocol configuration.
+  noise:
+    privateKeyPath: "/var/lib/headscale/noise_private.key"
+
+  # -- Tailnet prefix allocation configuration.
+  prefixes:
+    v4: "100.64.0.0/10"
+    v6: "fd7a:115c:a1e0::/48"
+    allocation: sequential
+
+  # -- DERP map source configuration.
+  derp:
+    urls:
+      - https://controlplane.tailscale.com/derpmap/default
+    paths: []
+    autoUpdateEnabled: true
+    updateFrequency: "3h"
+
+  # -- TLS settings for direct TLS termination in headscale.
+  # @description Leave cert/key empty when terminating TLS at ingress/reverse proxy.
+  tls:
+    certPath: ""
+    keyPath: ""
+    letsencrypt:
+      hostname: ""
+      challengeType: "HTTP-01"
+      listen: ":http"
+      cacheDir: "/var/lib/headscale/cache"
+      acmeUrl: "https://acme-v02.api.letsencrypt.org/directory"
+      acmeEmail: ""
+
+  # -- Logging configuration.
+  log:
+    level: info
+    format: text
+
+  # -- ACL policy backend.
+  policy:
+    # -- `database` or `file`.
+    mode: database
+    # -- Path to ACL file when using file mode.
+    path: ""
+
+  # -- DNS settings exposed to clients.
+  dns:
+    magicDns: false
+    baseDomain: ""
+    overrideLocalDns: false
+    nameserversGlobal: []
+    nameserversSplit: {}
+    searchDomains: []
+
+  # -- Unix socket settings used by local CLI inside container.
+  unixSocket:
+    path: "/var/run/headscale/headscale.sock"
+    permission: "0770"
+
+  # -- Additional raw top-level config keys to merge into generated config.
+  # @description Use this for advanced upstream options not explicitly exposed by chart values.
+  extraConfig: {}
+
+# -- Config source control.
+config:
+  existingSecret:
+    # -- Existing secret containing headscale config file.
+    # When set, generated ConfigMap is skipped and this secret is mounted instead.
+    name: ""
+    # -- Secret key containing the config file content.
+    key: "config.yaml"
+
+# -- Database configuration.
+database:
+  # -- Database mode for headscale runtime (`sqlite` or `postgres`).
+  mode: sqlite
+
+  # -- SQLite configuration.
+  sqlite:
+    path: "/var/lib/headscale/db.sqlite"
+    writeAheadLog: true
+    walAutocheckpoint: 1000
+
+  # -- Postgres configuration.
+  postgres:
+    host: ""
+    port: 5432
+    name: "headscale"
+    user: "headscale"
+    # -- SSL mode for direct/external Postgres usage.
+    ssl: "require"
+    maxOpenConns: 10
+    maxIdleConns: 10
+    connMaxIdleTimeSecs: 3600
+    passwordSecret:
+      # -- Existing secret containing the postgres password key.
+      name: ""
+      # -- Secret key for the postgres password value.
+      key: "password"
+
+  # -- Use an in-cluster CNPG app secret as postgres datasource input.
+  useCnpgCluster:
+    enabled: false
+    clusterName: "cnpg-cluster"
+    appConnectionSecretName: ""
+    port: 5432
+    # -- SSL mode override for CNPG connectivity.
+    ssl: "require"
+    secretKeys:
+      database: "dbname"
+      username: "username"
+      password: "password"
+
+  # -- GORM tuning for headscale DB layer.
+  gorm:
+    debug: false
+    prepareStmt: true
+    parameterizedQueries: true
+    skipErrRecordNotFound: true
+    slowThreshold: 1000
+
+# -- Persistent storage for `/var/lib/headscale`.
+persistence:
+  # -- Enable persistence with PVC for headscale state and keys.
+  enabled: true
+  # -- Existing claim to use instead of creating a new PVC.
+  existingClaim: ""
+  # -- PVC size when creating a claim.
+  size: 1Gi
+  # -- PVC storageClass when creating a claim.
+  storageClass: ""
+  # -- PVC accessModes when creating a claim.
+  accessModes:
+    - ReadWriteOnce
+  # -- emptyDir size limit for `/var/lib/headscale` when persistence.enabled=false.
+  emptyDirSizeLimit: 2Gi
+  # -- emptyDir size limit for `/var/run/headscale`.
+  runDirSizeLimit: 16Mi
+  # -- emptyDir size limit for `/tmp`.
+  tmpDirSizeLimit: 32Mi
+
+# -- Kubernetes Service configuration.
+service:
+  # -- Service type. This chart enforces ClusterIP.
+  type: ClusterIP
+  # -- Service annotations.
+  annotations: {}
+  http:
+    port: 8080
+    targetPort: 8080
+    targetProtocol: TCP
+  metrics:
+    enabled: true
+    port: 9090
+    targetPort: 9090
+    targetProtocol: TCP
+  grpc:
+    enabled: false
+    port: 50443
+    targetPort: 50443
+    targetProtocol: TCP
+
+# -- Ingress configuration for headscale HTTP endpoint.
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  # -- Secure-by-default ingress annotation settings.
+  # @description Applied by default and merged with ingress.annotations (custom annotations win on key conflicts).
+  secureDefaults:
+    enabled: true
+    proxyReadTimeoutSeconds: 3600
+    proxySendTimeoutSeconds: 3600
+    proxyBuffering: "off"
+    proxyRequestBuffering: "off"
+    proxyHttpVersion: "1.1"
+    websocket:
+      # -- Inject websocket annotation. Keep disabled for ingress-nginx defaults.
+      enabled: false
+      # -- Annotation key to use when websocket annotation injection is enabled.
+      # Example for NGINX Plus: nginx.org/websocket-services
+      annotationKey: ""
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+# -- Create service account.
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+  automountServiceAccountToken: false
+
+# -- RBAC settings.
+rbac:
+  # -- Create namespace-scoped role + rolebinding.
+  create: false
+  # -- Namespace override for RBAC objects. Empty means release namespace.
+  namespace: ""
+  # -- RBAC rules for Role when rbac.create=true.
+  rules: []
+
+# -- Apply default pod/container security settings.
+applySecurity: true
+
+# -- Pod-level security context for workload pods.
+podSecurityContext:
+  fsGroup: 65532
+
+# -- Container-level security context for workload containers.
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- Enable liveness and readiness probes.
+applyHealthChecks: true
+
+# -- Liveness probe.
+livenessProbe:
+  httpGet:
+    path: /health
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+# -- Readiness probe.
+readinessProbe:
+  httpGet:
+    path: /health
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+# -- Resource requests/limits.
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+# -- HorizontalPodAutoscaler configuration.
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+  enableMemoryUtilization: false
+  targetMemoryUtilizationPercentage: 80
+
+# -- RuntimeClass names.
+runtimeClass:
+  pods: ""
+  tests: ""
+
+# -- Extra environment variables.
+# @description Avoid putting plaintext credentials here.
+env: {}
+
+# -- Additional env vars from existing secrets.
+# @description Supports either map style (`ENV: secretName`) or list style entries (`[{name, secretName, secretKey}]`).
+additionalEnvSecrets: {}
+
+# -- CiliumNetworkPolicies dependency toggle.
+libchartCnps:
+  enabled: false
+  includeCnpgPolicies: false
+
+# -- App-specific CiliumNetworkPolicies settings.
+cnps:
+  cnpgTraffic:
+    # -- Additional Cilium egress rules for CNPG instance pods when libchartCnps.includeCnpgPolicies=true.
+    instanceExtraEgress: []
+  appTraffic:
+    ingress:
+      allow: true
+      matchLabels: {}
+      includeGrpcPort: false
+      includeMetricsPort: false
+    egress:
+      allow: true
+      matchLabels: {}
+      toEntities: []
+      toPorts:
+        - port: "443"
+          protocol: TCP
+
+# -- Pod annotations.
+podAnnotations: {}
+
+# -- Pod labels.
+podLabels: {}
+
+# -- Workload node selector.
+nodeSelector: {}
+
+# -- Workload tolerations.
+tolerations: []
+
+# -- Workload affinity.
+affinity: {}

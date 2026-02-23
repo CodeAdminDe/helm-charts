@@ -67,7 +67,7 @@ Create the name of the ServiceAccount used by manager workloads.
 {{- if .Values.rbac.serviceAccount.create }}
 {{- default (printf "%s-manager" .Release.Name) .Values.rbac.serviceAccount.name | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- default "default" .Values.rbac.serviceAccount.name | trunc 63 | trimSuffix "-" -}}
+{{- default "default" .Values.rbac.serviceAccount.name -}}
 {{- end -}}
 {{- end }}
 

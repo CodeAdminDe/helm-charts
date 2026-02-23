@@ -217,8 +217,8 @@ database:
     # database.storage.retentionPolicy -- Configure how the DB volume should be retained or deleted throughout the DB's lifecycle
     #
     retentionPolicy:
-      whenDeleted: Retain
-      whenScaled: Retain
+      whenDeleted: Delete
+      whenScaled: Delete
   # database.annotations -- Custom annotations to add to the Kasm DB StatefulSet
   annotations: {}
   # database.resources -- Manually configure the Kasm DB StatefulSet resources. This overrides the pre-defined `deploymentSize` values.
@@ -374,7 +374,7 @@ components:
       tag: 1.18.1
     # components.rdpHttpsGateway.enabled -- Use this setting to enable/disable deployment of the Kasm RDP HTTPS Gateway service.
     # This service allows users to use native RDP clients via HTTPS connections rather than exposing 3389 -
-    # [Kasm RDP HTTPS Gateway](https://docs.kasm.com/docs/guide/connection_proxies#rdp-https-gateway.
+    # [Kasm RDP HTTPS Gateway](https://docs.kasm.com/docs/guide/connection_proxies#rdp-https-gateway).
     #
     enabled: true
     # components.rdpHttpsGateway.annotations -- Custom annotations to add to the Kasm RDP HTTPS Gateway Deployment
@@ -407,9 +407,9 @@ imagePullSecrets:
   type: ""
   # imagePullSecrets.server -- The Registry server to use when pulling images (required for dockerconfigjson and dockercfg)
   server: ""
-  # imagePullSecrets.username -- The username used to authenticate agaisnt your Registry server.
+  # imagePullSecrets.username -- The username used to authenticate against your Registry server.
   username: ""
-  # imagePullSecrets.password -- The password used to authenticate agaisnt your Registry server.
+  # imagePullSecrets.password -- The password used to authenticate against your Registry server.
   password: ""
   # imagePullSecrets.email -- The email address used to authenticate (optional, used for dockerconfigjson and dockercfg)
   email: ""
@@ -631,7 +631,7 @@ annotations:
 # for more information.
 #
 extraLabels:
-  # extraLabels.certSecret -- Additional statefulSet labels to apply to resources created by this chart
+  # extraLabels.certSecret -- Additional certSecret labels to apply to resources created by this chart
   certSecret: {}
   # extraLabels.configMap -- Additional configMap labels to apply to resources created by this chart
   configMap: {}

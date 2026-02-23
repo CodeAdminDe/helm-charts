@@ -54,7 +54,7 @@ spec:
         - name: {{ .Values.imagePullSecrets.name | default (printf "%s-image-pull-secret" .Release.Name) }}
       {{- end }}
       {{- if .Values.applySecurity }}
-        {{- include "kasm.podSecurity" . | indent 6 }}
+      {{- include "kasm.podSecurity" . | nindent 6 }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector: {{ toYaml . | nindent 8 }}
@@ -106,9 +106,31 @@ spec:
             - -c
           args:
             - |
-              while [ ! $(PGPASSWORD=$POSTGRES_PASSWORD psql -U $POSTGRES_USER -d $POSTGRES_DB -p $POSTGRES_PORT -h $POSTGRES_HOST -t -c "select zone_id from zones" 2>/dev/null | wc -l) -ge 2 ]; do echo "Waiting for DB to initialize..."; sleep 5; done
+              timeout="${KASM_DB_READY_TIMEOUT_SECONDS:-300}"
+              interval=5
+              elapsed=0
+              while true; do
+                if query_output="$(PGPASSWORD="$POSTGRES_PASSWORD" psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$POSTGRES_DB" -p "$POSTGRES_PORT" -h "$POSTGRES_HOST" -t -A -c "select count(zone_id) from zones;" 2>&1)"; then
+                  zone_count="$(echo "$query_output" | tr -d '[:space:]')"
+                  if [[ "$zone_count" =~ ^[0-9]+$ ]] && [ "$zone_count" -ge 2 ]; then
+                    echo "DB initialized with ${zone_count} zones."
+                    break
+                  fi
+                  echo "Waiting for DB to initialize zones (current count: ${zone_count:-unknown}, elapsed: ${elapsed}s)."
+                else
+                  echo "DB readiness query failed after ${elapsed}s: $query_output"
+                fi
+
+                if [ "$elapsed" -ge "$timeout" ]; then
+                  echo "Timeout waiting for DB initialization after ${elapsed}s."
+                  exit 1
+                fi
+
+                sleep "$interval"
+                elapsed=$((elapsed + interval))
+              done
           {{- if .Values.applySecurity }}
-            {{- include "kasm.containerSecurity" . | indent 10 }}
+{{- include "kasm.containerSecurity" . | nindent 10 }}
           {{- end }}
       containers:
         - name: {{ $constants.api.name }}-container
@@ -169,5 +191,5 @@ spec:
           resources: {{- include "resources.preset" (dict "node" $constants.api.component "size" .Values.deploymentSize) | nindent 12 }}
           {{- end }}
           {{- if .Values.applySecurity }}
-            {{- include "kasm.containerSecurity" . | indent 10 }}
+{{- include "kasm.containerSecurity" . | nindent 10 }}
           {{- end }}

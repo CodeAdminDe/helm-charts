@@ -3,11 +3,8 @@
 # kasm-ws
 
 ![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.18.1](https://img.shields.io/badge/AppVersion-1.18.1-informational?style=flat-square)
-
 A Helm chart for an easier Kasm Workspaces (https://kasm.com) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with Kasm Technologies, Inc. or its authors.
-
 **Homepage:** <https://github.com/CodeAdminDe/helm-charts>
-
 ## Maintainers
 
 | Name | Email | Url |
@@ -19,7 +16,6 @@ A Helm chart for an easier Kasm Workspaces (https://kasm.com) deployment on Kube
 | Repository | Name | Version |
 |------------|------|---------|
 | https://codeadminde.github.io/helm-charts | libchart-cnps(libchart-cnps) | 0.2.1 |
-
 ## TL;DR
 
 You don't want to read through the docs? That's the quick and dirty way:
@@ -29,10 +25,9 @@ helm repo add codeadminde https://codeadminde.github.io/helm-charts/
 helm repo update
 helm install kasm-ws codeadminde/kasm-ws
 ```
-_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
+_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
 
-> I'd recommend to read trough the docs. Skip them at your own risk. ;-)
-
+> I'd recommend reading through the docs. Skip them at your own risk. ;-)
 ## Repository
 
 In order to install / query / etc... the charts, you'll need to add the repository:
@@ -41,7 +36,6 @@ In order to install / query / etc... the charts, you'll need to add the reposito
 helm repo add codeadminde https://codeadminde.github.io/helm-charts/
 helm repo update
 ```
-
 ## Installation
 
 To install the chart with the release name `kasm-ws`
@@ -49,8 +43,7 @@ To install the chart with the release name `kasm-ws`
 ```bash
 helm install kasm-ws codeadminde/kasm-ws
 ```
-_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
-
+_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
 ## Uninstallation
 
 To uninstall the chart release named `kasm-ws`
@@ -58,10 +51,9 @@ To uninstall the chart release named `kasm-ws`
 ```bash
 helm uninstall kasm-ws
 ```
-_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
+_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
 
 The command removes all the Kubernetes components associated with the chart **including persistent volumes** and deletes the release.
-
 ## Configuration
 
 Take a look at the [values.yaml](./values.yaml) file of the chart. It contains the default configuration and additional notes.
@@ -69,15 +61,15 @@ So it would be a good idea to take a look at it, even if you already know what y
 
 To configure the release (chart values), provide your own values via a *.yaml file and reference it with the `-f` flag.
 
-> #### Sample
+> ### Install sample
 >
 > ```bash
 > helm install kasm-ws codeadminde/kasm-ws -f values.yaml
 > ```
 
-Alternatively, you could provide the values which you want to override at the CLI directly. Than you've to provide the values as key=value pair(s), referenced by the `--set` flag.
+Alternatively, you can provide the values you want to override directly at the CLI as key=value pairs via the `--set` flag.
 
-> #### Sample
+> ### Override sample
 >
 > ```bash
 > helm install kasm-ws --set key=value --set keyTwo=secondValue codeadminde/kasm-ws
@@ -1184,7 +1176,7 @@ true
 </pre>
 </div>
 			</td>
-			<td>Use this setting to enable/disable deployment of the Kasm RDP HTTPS Gateway service. This service allows users to use native RDP clients via HTTPS connections rather than exposing 3389 - [Kasm RDP HTTPS Gateway](https://docs.kasm.com/docs/guide/connection_proxies#rdp-https-gateway. </td>
+			<td>Use this setting to enable/disable deployment of the Kasm RDP HTTPS Gateway service. This service allows users to use native RDP clients via HTTPS connections rather than exposing 3389 - [Kasm RDP HTTPS Gateway](https://docs.kasm.com/docs/guide/connection_proxies#rdp-https-gateway). </td>
 		</tr>
 		<tr>
 			<td id="components--rdpHttpsGateway--image"><a href="./values.yaml#L372">components.rdpHttpsGateway.image</a></td>
@@ -1411,8 +1403,8 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
-  "whenDeleted": "Retain",
-  "whenScaled": "Retain"
+  "whenDeleted": "Delete",
+  "whenScaled": "Delete"
 }
 </pre>
 </div>
@@ -1637,7 +1629,7 @@ object
 </pre>
 </div>
 			</td>
-			<td>Additional statefulSet labels to apply to resources created by this chart</td>
+			<td>Additional certSecret labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
 			<td id="extraLabels--configMap"><a href="./values.yaml#L637">extraLabels.configMap</a></td>
@@ -1903,7 +1895,7 @@ string
 </pre>
 </div>
 			</td>
-			<td>The password used to authenticate agaisnt your Registry server.</td>
+			<td>The password used to authenticate against your Registry server.</td>
 		</tr>
 		<tr>
 			<td id="imagePullSecrets--server"><a href="./values.yaml#L409">imagePullSecrets.server</a></td>
@@ -1945,7 +1937,7 @@ string
 </pre>
 </div>
 			</td>
-			<td>The username used to authenticate agaisnt your Registry server.</td>
+			<td>The username used to authenticate against your Registry server.</td>
 		</tr>
 		<tr>
 			<td id="ingress--annotations"><a href="./values.yaml#L69">ingress.annotations</a></td>
@@ -2548,10 +2540,10 @@ The chart uses some value types for which I would like to add a further explanat
 
 Provide a valid name of a runtimeClass within your cluster.
 
-If you want to get the current available runtimeClasses within your cluster, exec:
+If you want to get the currently available runtimeClasses within your cluster, run:
 
-```
-kubectl get -A runtimeClasses
+```bash
+kubectl get runtimeclasses
 ```
 
 _**Personal recommendation**: A runtime that I believe is worth trying is the Kata Container Runtime.
@@ -2561,11 +2553,11 @@ e.g. to learn [how to create a runtime class](https://github.com/kata-containers
 
 ## Chart with experimental support for CiliumNetworkPolicies
 
-Please note that this chart does not provide any production ready network policies itself.
+Please note that this chart does not provide any production-ready network policies itself.
 Therefore, I recommend the implementation of network policies before using in prod environments.
 
 > **If you're using Cilium CNI**: I've added experimental support for CNPs.
-> Note that these are highly oppinionated and you should review them carefully before using.
+> Note that these are highly opinionated and you should review them carefully before using.
 > E.g. it's required that each release gets deployed within a separate namespace.
 
 ## Opinionated & Non-standard
@@ -2576,7 +2568,6 @@ Therefore, I'm very happy if you find the chart/s provided here helpful and perh
 but at the same time I strongly advise you to take a close look at it and adapt it to your needs where necessary.
 
 If you would like to return any helpful changes, I would also be happy to receive a pull request or two ;-)
-
 ## Feedback & Security
 
 Please reach out to me at frederic.roggon@codeadmin.de for feedback.

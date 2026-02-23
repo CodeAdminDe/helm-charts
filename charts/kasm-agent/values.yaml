@@ -1,0 +1,215 @@
+# Default values for kasm-agent.
+# This is a YAML-formatted file.
+
+replicaCount: 1
+
+image:
+  # -- Container image repository.
+  repository: kasmweb/agent
+  # -- Container image tag. Defaults to chart appVersion if empty.
+  tag: ""
+  # -- Container image pull policy.
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Specifies whether a service account should be created.
+  create: true
+  # -- Automatically mount a ServiceAccount token into the pod.
+  automount: false
+  # -- Annotations to add to the service account.
+  annotations: {}
+  # -- The name of the service account to use.
+  # @description If not set and create=true, a name is generated using the fullname template.
+  name: ""
+
+# -- RuntimeClass configuration.
+# Register a runtimeClass in the cluster before using it.
+runtimeClass:
+  # -- RuntimeClass for deployment pods.
+  pods: ""
+  # -- RuntimeClass for test pods.
+  tests: ""
+
+service:
+  # -- Enable or disable service creation.
+  enabled: true
+  # -- Service type. This chart intentionally supports ClusterIP only.
+  type: ClusterIP
+  # -- Service port.
+  port: 4444
+  # -- Container target port.
+  targetPort: 4444
+  # -- Service protocol.
+  targetProtocol: TCP
+  # -- Custom annotations for the service.
+  annotations: {}
+  # -- Custom labels for the service.
+  labels: {}
+
+agent:
+  # -- Kasm manager hostname/address reachable by the agent.
+  managerHostname: "kasm-manager.example.internal"
+  # -- Public hostname/address advertised by this agent.
+  publicHostname: "kasm-agent.example.internal"
+  # -- Kasm zone name used for registration.
+  zoneName: "default"
+  # -- Agent log level.
+  logLevel: "info"
+  # -- Optional Docker host override, e.g. tcp://docker-host:2376.
+  # @description If empty and hostDocker.enabled=true, defaults to unix://<hostDocker.socketPath>.
+  dockerHost: "tcp://docker-host.example.internal:2376"
+  managerTokenSecret:
+    # -- Existing secret name containing the manager token.
+    name: "kasm-agent-manager-token"
+    # -- Secret key containing the manager token.
+    key: "manager-token"
+
+# -- Additional plain environment variables.
+# @description Do not place secrets here.
+extraEnv: {}
+
+# -- Additional environment variables from secrets.
+# @description Map ENV_NAME -> secretName, where each secret contains a key with the same ENV_NAME.
+extraEnvSecrets: {}
+
+hostDocker:
+  # -- Mount host docker socket into the pod.
+  # @description Required for setups where the agent must control a host Docker daemon.
+  enabled: false
+  # -- Host docker socket path.
+  socketPath: /var/run/docker.sock
+  # -- Container mount path for the socket.
+  socketMountPath: /var/run/docker.sock
+  # -- Mount host docker client binary.
+  mountBinary: false
+  # -- Host docker binary path.
+  binaryPath: /usr/bin/docker
+  # -- Container mount path for docker binary.
+  binaryMountPath: /usr/bin/docker
+
+# -- Additional hostPath mounts.
+# @description Use only when strictly required by your runtime environment.
+extraHostPaths: []
+#  - name: nvidia-device-0
+#    hostPath: /dev/nvidia0
+#    mountPath: /dev/nvidia0
+#    type: CharDevice
+#    readOnly: false
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  # -- Restrictive default pod security baseline.
+  # @description For host Docker/socket scenarios you may need root-level execution. See sample override below.
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  fsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault
+  # -- Sample override for root-level Docker resource access (uncomment if required by your environment):
+  # runAsNonRoot: false
+  # runAsUser: 0
+  # runAsGroup: 0
+  # fsGroup: 0
+
+securityContext:
+  # -- Restrictive default container security baseline.
+  # @description For host Docker/socket scenarios you may need root-level execution. See sample override below.
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  privileged: false
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  seccompProfile:
+    type: RuntimeDefault
+  capabilities:
+    drop:
+      - ALL
+  # -- Sample override for root-level Docker resource access (uncomment if required by your environment):
+  # runAsNonRoot: false
+  # runAsUser: 0
+  # runAsGroup: 0
+  # readOnlyRootFilesystem: false
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+livenessProbe:
+  tcpSocket:
+    port: agent
+  initialDelaySeconds: 20
+  periodSeconds: 20
+  timeoutSeconds: 5
+  failureThreshold: 6
+
+readinessProbe:
+  tcpSocket:
+    port: agent
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+
+nodeSelector: {}
+affinity: {}
+tolerations: []
+
+# -- Cilium Network Policies configuration.
+libchartCnps:
+  # -- Enable Cilium Network Policies.
+  enabled: false
+  # -- Include CNPG-specific policies.
+  includeCnpgPolicies: false
+
+# -- Application-specific Cilium Network Policies configuration.
+# @description Requires CiliumNetworkPolicies library chart.
+cnps:
+  appTraffic:
+    ingress:
+      # -- Allow ingress traffic to the agent.
+      allow: false
+      # -- Optional labels to match source pods.
+      matchLabels: {}
+      # -- Optional Cilium entities to allow ingress from.
+      fromEntities: []
+    egress:
+      # -- Allow egress traffic from the agent.
+      allow: true
+      # -- Egress rules used when allow=true.
+      egressRules:
+        - toEntities:
+            - world
+          toPorts:
+            - ports:
+                - port: "443"
+                  protocol: TCP
+
+# -- Common labels applied to all resources.
+labels: {}
+
+# -- Common annotations applied to resources created by this chart.
+annotations:
+  deployment: {}
+  pod: {}
+  service: {}
+  secret: {}
+
+# -- Additional labels per resource type.
+extraLabels:
+  deployment: {}
+  pod: {}
+  service: {}
+  secret: {}
+  serviceAccount: {}

@@ -1,0 +1,23 @@
+{{- $tlsEnabled := or (ne .Values.headscale.tls.certPath "") (ne .Values.headscale.tls.keyPath "") (ne .Values.headscale.tls.letsencrypt.hostname "") -}}
+{{- $scheme := ternary "https" "http" $tlsEnabled -}}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "headscale.fullname" . }}-test-connection"
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "headscale.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  {{- if .Values.runtimeClass.tests }}
+  runtimeClassName: {{ .Values.runtimeClass.tests }}
+  {{- end }}
+  containers:
+    - name: wget
+      image: busybox:1.37
+      command: ["sh", "-c"]
+      args:
+        - |
+          wget {{- if $tlsEnabled }} --no-check-certificate{{- end }} -qO- {{ $scheme }}://{{ include "headscale.fullname" . }}:{{ .Values.service.http.port }}/health
+  restartPolicy: Never

@@ -61,7 +61,7 @@ spec:
         - name: {{ $values.imagePullSecrets.name | default (printf "%s-image-pull-secret" $.Release.Name) }}
       {{- end }}
       {{- if $values.applySecurity }}
-        {{- include "kasm.podSecurity" . | indent 6 }}
+{{- include "kasm.podSecurity" $ | nindent 6 }}
       {{- end }}
       {{- with $values.nodeSelector }}
       nodeSelector: {{ toYaml . | nindent 8 }}
@@ -69,9 +69,10 @@ spec:
       {{- with $values.affinity }}
       affinity: {{ toYaml . | nindent 8 }}
       {{- end }}
-      initContainers: {{- include "kasm.initContainer" (dict "serviceName" $constants.api.svc "servicePort" $constants.api.port "path" "/api/__healthcheck" "schema" "http" "image" $constants.api.image) | indent 8 }}
+      initContainers:
+{{- include "kasm.initContainer" (dict "serviceName" $constants.api.svc "servicePort" $constants.api.port "path" "/api/__healthcheck" "schema" "http" "image" $constants.api.image) | nindent 8 }}
       {{- if $values.applySecurity }}
-        {{- include "kasm.containerSecurity" . | indent 10 }}
+{{- include "kasm.containerSecurity" $ | nindent 10 }}
       {{- end }}
       containers:
         - name: {{ printf "%s-%s-container" $constants.manager.name (regexReplaceAll "[^a-zA-Z0-9]+" $zone.name "-" | lower) }}
@@ -134,7 +135,7 @@ spec:
           resources: {{- include "resources.preset" (dict "node" $constants.manager.component "size" $values.deploymentSize) | nindent 12 }}
           {{- end }}
           {{- if $values.applySecurity }}
-            {{- include "kasm.containerSecurity" . | indent 10 }}
+{{- include "kasm.containerSecurity" $ | nindent 10 }}
           {{- end }}
           volumeMounts:
             - name: {{ $constants.manager.name }}-tmp

@@ -1,0 +1,14 @@
+{{- if not .Values.config.existingSecret.name }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "headscale.generatedConfigName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "headscale.labels" . | nindent 4 }}
+  annotations:
+    checksum/config: {{ include "headscale.configChecksum" . }}
+data:
+  config.yaml: |
+    {{- include "headscale.generatedConfig" . | nindent 4 }}
+{{- end }}
