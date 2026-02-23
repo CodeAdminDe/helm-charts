@@ -64,6 +64,7 @@ spec:
         {{- include "kasm.podSecurity" . | indent 6 }}
       {{- end }}
       initContainers:
+        {{- if and .Values.applySecurity .Values.securityCompatibility.rootInitContainers.rdpGateway }}
         - name: {{ $constants.rdpGateway.name }}-tmp-perms
           image: {{ $constants.api.image }}
           imagePullPolicy: IfNotPresent
@@ -84,6 +85,7 @@ spec:
               mountPath: /opt/kasm/current/log
             - name: {{ $constants.rdpGateway.name }}-data
               mountPath: /tmp
+        {{- end }}
         {{- include "kasm.initContainer" (dict "serviceName" $constants.api.svc "servicePort" $constants.api.port "path" "/api/__healthcheck" "schema" "http" "image" $constants.api.image) | indent 8 }}
         {{- if .Values.applySecurity }}
           {{- include "kasm.containerSecurity" . | indent 10 }}

@@ -64,7 +64,7 @@ spec:
       affinity: {{ toYaml . | nindent 8 }}
       {{- end }}
       initContainers:
-      {{- if .Values.applySecurity }}
+      {{- if and .Values.applySecurity .Values.securityCompatibility.rootInitContainers.guac }}
         - name: {{ $constants.guac.name }}-tmp-perms
           image: {{ $constants.api.image }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}

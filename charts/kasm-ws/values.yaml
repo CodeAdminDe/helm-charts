@@ -525,6 +525,23 @@ applySecurity: true
 #
 applyHealthChecks: true
 
+# securityCompatibility -- Backward-compatibility toggles for permission/bootstrap behavior.
+# @description Enable specific root init containers only if your storage/runtime needs in-place ownership changes.
+securityCompatibility:
+  rootInitContainers:
+    # -- Enable root permission init container for the Kasm proxy deployment.
+    proxy: false
+    # -- Enable root permission init container for the Kasm guac deployment.
+    guac: false
+    # -- Enable root permission init container for the Kasm RDP gateway deployment.
+    rdpGateway: false
+    # -- Enable root permission init container for the Kasm RDP HTTPS gateway deployment.
+    rdpHttpsGateway: false
+    # -- Enable root permission init container for the Kasm DB StatefulSet.
+    db: false
+    # -- Enable root permission init container for the DB backup cron job.
+    dbBackupCron: false
+
 # restartPolicy -- Configure global Pod restart policy for Kasm resources
 #
 restartPolicy: "Always"
