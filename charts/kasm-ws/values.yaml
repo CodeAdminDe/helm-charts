@@ -449,6 +449,9 @@ runtimeClass:
 rbac:
   # -- Create namespace-scoped RBAC resources (Role + RoleBinding).
   create: false
+  # -- Namespace where Role and RoleBinding should be created.
+  # @description Leave empty to use .Release.Namespace. Set this to your dedicated workspace/session namespace if manager must orchestrate pods there.
+  namespace: ""
   # -- Override Role rules. If empty, a least-privilege baseline is used.
   # @raw
   #
