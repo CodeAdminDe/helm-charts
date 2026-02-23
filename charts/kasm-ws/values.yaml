@@ -34,18 +34,16 @@ kasmZones: []
 #   - name: Zone-B
 #     upstream_auth_addr: zone-b.kasm.contoso.com
 
-# proxyService -- Configure the external-facing service type to use.
-# Allowed service types: ClusterIP or LoadBalancer.
+# proxyService -- Configure the proxy service type.
+# This chart is intentionally restricted to ClusterIP-only exposure.
 #
-# The service.annotations defined here only apply to the `proxy` service (`proxy-service-external.yaml` file).
+# The service.annotations defined here only apply to the `proxy` service.
 # If you wish to apply annotations to all services, use the annotations.service value at the bottom of this chart.
 #
-# NOTE: If ingress.enabled or route.enabled set to `true` service.type MUST be set to `ClusterIP`. Also, if you
-# wish to deploy a multi-zone Kasm (see [Deployment Zones](https://docs.kasm.com/docs/guide/deployment_zones)
-# documentation for reference), you MUST use either a Route or an Ingress and set the `proxyService.type` to `ClusterIP`.
+# NOTE: External exposure is expected to happen through ingress/route resources only.
 #
 proxyService:
-  type: LoadBalancer
+  type: ClusterIP
   annotations: {}
   labels: {}
 
@@ -440,7 +438,7 @@ cnps:
       #   io.kubernetes.pod.namespace: ingress-nginx
       matchLabels: {}
       # -- Optional entities to allow ingress from.
-      # @description Useful when exposing proxy directly via LoadBalancer and allowing external (world) traffic.
+      # @description Useful to allow additional ingress entities beyond the ingress controller labels.
       fromEntities: []
       #   - world
     egress:
