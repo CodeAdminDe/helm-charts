@@ -1,0 +1,136 @@
+{{- define "kasm-ws.CiliumNetworkPolicies-NamespaceSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+  labels:
+    {{- include "kasm.defaultLabels" . | nindent 4 }}
+{{- end -}}
+
+{{- if .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-NamespaceSet" (list . "kasm-ws.CiliumNetworkPolicies-NamespaceSet") }}
+---
+{{ end -}}
+
+{{- define "kasm-ws.CiliumNetworkPolicies-CnpgSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+  labels:
+    {{- include "kasm.defaultLabels" . | nindent 4 }}
+{{- end -}}
+
+{{- if and .Values.libchartCnps.enabled .Values.libchartCnps.includeCnpgPolicies -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-CnpgSet" (list . "kasm-ws.CiliumNetworkPolicies-CnpgSet") }}
+---
+{{ end -}}
+
+{{- define "kasm-ws.CiliumNetworkPolicies-AppSet.component" -}}
+{{- $root := .root -}}
+{{- $component := .component -}}
+{{- $ports := .ports -}}
+{{- $enableIngress := .enableIngress -}}
+metadata:
+  name: {{ $root.Release.Name | printf "%s-%s--03-app-traffic-%s" $root.Chart.Name $component | trunc 63 | trimSuffix "-" }}
+  namespace: {{ $root.Release.Namespace }}
+  annotations:
+    checksum/values: {{ print $root.Values | sha256sum }}
+  labels:
+    {{- include "kasm.defaultLabels" $root | nindent 4 }}
+    app.kubernetes.io/component: {{ $component }}
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/instance: {{ $root.Release.Name }}
+      app.kubernetes.io/part-of: "kasm"
+      app.kubernetes.io/component: {{ $component }}
+  {{- if and $enableIngress $root.Values.cnps.appTraffic.ingress.allow }}
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+          {{- if $root.Values.cnps.appTraffic.ingress.matchLabels }}
+          {{- range $key, $val := $root.Values.cnps.appTraffic.ingress.matchLabels }}
+            {{ $key }}: {{ $val }}
+          {{- end }}
+          {{- else }}
+            app.kubernetes.io/name: ingress-nginx
+            io.kubernetes.pod.namespace: ingress-nginx
+          {{- end }}
+      toPorts:
+        - ports:
+          {{- range $p := $ports }}
+            - port: {{ $p | quote }}
+              protocol: TCP
+          {{- end }}
+    {{- if $root.Values.cnps.appTraffic.ingress.fromEntities }}
+    - fromEntities:
+      {{- with $root.Values.cnps.appTraffic.ingress.fromEntities }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      toPorts:
+        - ports:
+          {{- range $p := $ports }}
+            - port: {{ $p | quote }}
+              protocol: TCP
+          {{- end }}
+    {{- end }}
+  {{- end }}
+  {{- if $root.Values.cnps.appTraffic.egress.allow }}
+  egress:
+  {{- with $root.Values.cnps.appTraffic.egress.egressRules }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}
+{{- end -}}
+
+{{- define "kasm-ws.CiliumNetworkPolicies-AppSet.proxy" -}}
+{{- $constants := (include "kasm.constants" . | fromYaml) -}}
+{{ include "kasm-ws.CiliumNetworkPolicies-AppSet.component" (dict "root" . "component" $constants.proxy.component "ports" (list ($constants.proxy.http | toString) ($constants.proxy.https | toString)) "enableIngress" true) }}
+{{- end -}}
+
+{{- define "kasm-ws.CiliumNetworkPolicies-AppSet.api" -}}
+{{- $constants := (include "kasm.constants" . | fromYaml) -}}
+{{ include "kasm-ws.CiliumNetworkPolicies-AppSet.component" (dict "root" . "component" $constants.api.component "ports" (list ($constants.api.port | toString)) "enableIngress" false) }}
+{{- end -}}
+
+{{- define "kasm-ws.CiliumNetworkPolicies-AppSet.manager" -}}
+{{- $constants := (include "kasm.constants" . | fromYaml) -}}
+{{ include "kasm-ws.CiliumNetworkPolicies-AppSet.component" (dict "root" . "component" $constants.manager.component "ports" (list ($constants.manager.port | toString)) "enableIngress" false) }}
+{{- end -}}
+
+{{- define "kasm-ws.CiliumNetworkPolicies-AppSet.guac" -}}
+{{- $constants := (include "kasm.constants" . | fromYaml) -}}
+{{ include "kasm-ws.CiliumNetworkPolicies-AppSet.component" (dict "root" . "component" $constants.guac.component "ports" (list ($constants.guac.port | toString)) "enableIngress" false) }}
+{{- end -}}
+
+{{- define "kasm-ws.CiliumNetworkPolicies-AppSet.rdp-gateway" -}}
+{{- $constants := (include "kasm.constants" . | fromYaml) -}}
+{{ include "kasm-ws.CiliumNetworkPolicies-AppSet.component" (dict "root" . "component" $constants.rdpGateway.component "ports" (list ($constants.rdpGateway.port | toString)) "enableIngress" false) }}
+{{- end -}}
+
+{{- define "kasm-ws.CiliumNetworkPolicies-AppSet.rdp-https-gateway" -}}
+{{- $constants := (include "kasm.constants" . | fromYaml) -}}
+{{ include "kasm-ws.CiliumNetworkPolicies-AppSet.component" (dict "root" . "component" $constants.rdpHttpsGateway.component "ports" (list ($constants.rdpHttpsGateway.port | toString)) "enableIngress" false) }}
+{{- end -}}
+
+{{- if .Values.libchartCnps.enabled -}}
+---
+{{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "kasm-ws.CiliumNetworkPolicies-AppSet.proxy") }}
+---
+{{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "kasm-ws.CiliumNetworkPolicies-AppSet.api") }}
+---
+{{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "kasm-ws.CiliumNetworkPolicies-AppSet.manager") }}
+  {{- if .Values.components.guac.enabled }}
+---
+{{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "kasm-ws.CiliumNetworkPolicies-AppSet.guac") }}
+  {{- end }}
+  {{- if .Values.components.rdpGateway.enabled }}
+---
+{{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "kasm-ws.CiliumNetworkPolicies-AppSet.rdp-gateway") }}
+  {{- end }}
+  {{- if .Values.components.rdpHttpsGateway.enabled }}
+---
+{{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "kasm-ws.CiliumNetworkPolicies-AppSet.rdp-https-gateway") }}
+  {{- end }}
+{{- end -}}

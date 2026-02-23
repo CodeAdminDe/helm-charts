@@ -21,6 +21,12 @@ maintainers:
   - name: Frederic Roggon
     email: frederic.roggon@codeadmin.de
     url: https://github.com/CodeAdminDe
+dependencies:
+  - name: libchart-cnps
+    version: 0.2.1
+    repository: https://codeadminde.github.io/helm-charts
+    alias: libchart-cnps
+    condition: libchartCnps.enabled
 annotations:
   category: Virtual Desktop
   kubeVersion: ">=1.24.0"

@@ -14,6 +14,12 @@ A Helm chart for an easier Kasm Workspaces (https://kasm.com) deployment on Kube
 | ---- | ------ | --- |
 | Frederic Roggon | <frederic.roggon@codeadmin.de> | <https://github.com/CodeAdminDe> |
 
+## Requirements
+
+| Repository | Name | Version |
+|------------|------|---------|
+| https://codeadminde.github.io/helm-charts | libchart-cnps(libchart-cnps) | 0.2.1 |
+
 ## TL;DR
 
 You don't want to read through the docs? That's the quick and dirty way:
@@ -102,7 +108,7 @@ object
 			<td>Configure node affinity settings for Kasm pods - [Kubernetes Affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/). Kasm is not guaranteed to work with Affinity settings - use caution if you must configuring these settings. The below, optional object passes in raw Affinity rules for Pods, Nodes, etc. for your environment. Make sure you use the correct values below as this Helm chart will not do any error checking for you. </td>
 		</tr>
 		<tr>
-			<td id="annotations--certSecret"><a href="./values.yaml#L444">annotations.certSecret</a></td>
+			<td id="annotations--certSecret"><a href="./values.yaml#L481">annotations.certSecret</a></td>
 			<td>
 object
 </td>
@@ -116,7 +122,7 @@ object
 			<td>Additional certSecret annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--configMap"><a href="./values.yaml#L446">annotations.configMap</a></td>
+			<td id="annotations--configMap"><a href="./values.yaml#L483">annotations.configMap</a></td>
 			<td>
 object
 </td>
@@ -130,7 +136,7 @@ object
 			<td>Additional configMap annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--cron"><a href="./values.yaml#L448">annotations.cron</a></td>
+			<td id="annotations--cron"><a href="./values.yaml#L485">annotations.cron</a></td>
 			<td>
 object
 </td>
@@ -144,7 +150,7 @@ object
 			<td>Additional cron pod cron labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--cronPod"><a href="./values.yaml#L450">annotations.cronPod</a></td>
+			<td id="annotations--cronPod"><a href="./values.yaml#L487">annotations.cronPod</a></td>
 			<td>
 object
 </td>
@@ -158,7 +164,7 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="annotations--deployment"><a href="./values.yaml#L452">annotations.deployment</a></td>
+			<td id="annotations--deployment"><a href="./values.yaml#L489">annotations.deployment</a></td>
 			<td>
 object
 </td>
@@ -172,7 +178,7 @@ object
 			<td>Additional deployment annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--pod"><a href="./values.yaml#L454">annotations.pod</a></td>
+			<td id="annotations--pod"><a href="./values.yaml#L491">annotations.pod</a></td>
 			<td>
 object
 </td>
@@ -186,7 +192,7 @@ object
 			<td>Additional pod annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--pvc"><a href="./values.yaml#L456">annotations.pvc</a></td>
+			<td id="annotations--pvc"><a href="./values.yaml#L493">annotations.pvc</a></td>
 			<td>
 object
 </td>
@@ -200,7 +206,7 @@ object
 			<td>Additional PersistentVolumeClaim annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--secret"><a href="./values.yaml#L460">annotations.secret</a></td>
+			<td id="annotations--secret"><a href="./values.yaml#L497">annotations.secret</a></td>
 			<td>
 object
 </td>
@@ -214,7 +220,7 @@ object
 			<td>Additional secret annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--service"><a href="./values.yaml#L458">annotations.service</a></td>
+			<td id="annotations--service"><a href="./values.yaml#L495">annotations.service</a></td>
 			<td>
 object
 </td>
@@ -228,7 +234,7 @@ object
 			<td>Additional service annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--statefulSet"><a href="./values.yaml#L462">annotations.statefulSet</a></td>
+			<td id="annotations--statefulSet"><a href="./values.yaml#L499">annotations.statefulSet</a></td>
 			<td>
 object
 </td>
@@ -242,7 +248,7 @@ object
 			<td>Additional statefulSet annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="applyHealthChecks"><a href="./values.yaml#L428">applyHealthChecks</a></td>
+			<td id="applyHealthChecks"><a href="./values.yaml#L465">applyHealthChecks</a></td>
 			<td>
 bool
 </td>
@@ -256,7 +262,7 @@ true
 			<td>Add Pod/Container healthchecks settings for Kasm resources </td>
 		</tr>
 		<tr>
-			<td id="applySecurity"><a href="./values.yaml#L424">applySecurity</a></td>
+			<td id="applySecurity"><a href="./values.yaml#L461">applySecurity</a></td>
 			<td>
 bool
 </td>
@@ -318,6 +324,134 @@ string
 </div>
 			</td>
 			<td>Cluster-wide Kubernetes DNS domain name </td>
+		</tr>
+		<tr>
+			<td id="cnps"><a href="./values.yaml#L432">cnps</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "appTraffic": {
+    "egress": {
+      "allow": true,
+      "egressRules": [
+        {
+          "toEntities": [
+            "world"
+          ],
+          "toPorts": [
+            {
+              "ports": [
+                {
+                  "port": "443",
+                  "protocol": "TCP"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "ingress": {
+      "allow": true,
+      "fromEntities": [],
+      "matchLabels": {}
+    }
+  }
+}
+</pre>
+</div>
+			</td>
+			<td>Application-specific Cilium Network Policies configuration @description Requires CiliumNetworkPolicies library-chart. These settings are ignored if libchartCnps.enabled is false.</td>
+		</tr>
+		<tr>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L448">cnps.appTraffic.egress.allow</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Allow egress traffic for Kasm core components.</td>
+		</tr>
+		<tr>
+			<td id="cnps--appTraffic--egress--egressRules"><a href="./values.yaml#L451">cnps.appTraffic.egress.egressRules</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[
+  {
+    "toEntities": [
+      "world"
+    ],
+    "toPorts": [
+      {
+        "ports": [
+          {
+            "port": "443",
+            "protocol": "TCP"
+          }
+        ]
+      }
+    ]
+  }
+]
+</pre>
+</div>
+			</td>
+			<td>Egress rules applied when egress.allow is true. @description Customize to your security requirements.</td>
+		</tr>
+		<tr>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L436">cnps.appTraffic.ingress.allow</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Allow ingress traffic to the proxy component policy.</td>
+		</tr>
+		<tr>
+			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L444">cnps.appTraffic.ingress.fromEntities</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Optional entities to allow ingress from. @description Useful when exposing proxy directly via LoadBalancer and allowing external (world) traffic.</td>
+		</tr>
+		<tr>
+			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L441">cnps.appTraffic.ingress.matchLabels</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>Labels to match ingress controller pods. @description Override to match your ingress deployment.   app.kubernetes.io/name: ingress-nginx   io.kubernetes.pod.namespace: ingress-nginx</td>
 		</tr>
 		<tr>
 			<td id="components--api--annotations"><a href="./values.yaml#L282">components.api.annotations</a></td>
@@ -1086,7 +1220,7 @@ string
 			<td>Define the estimated size of the Kasm deployment in expected session load.  small  = Up to 10-15 sessions  medium = Up to 25-30 sessions  large  = Up to 50+ sessions </td>
 		</tr>
 		<tr>
-			<td id="extraLabels--certSecret"><a href="./values.yaml#L470">extraLabels.certSecret</a></td>
+			<td id="extraLabels--certSecret"><a href="./values.yaml#L507">extraLabels.certSecret</a></td>
 			<td>
 object
 </td>
@@ -1100,7 +1234,7 @@ object
 			<td>Additional statefulSet labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--configMap"><a href="./values.yaml#L472">extraLabels.configMap</a></td>
+			<td id="extraLabels--configMap"><a href="./values.yaml#L509">extraLabels.configMap</a></td>
 			<td>
 object
 </td>
@@ -1114,7 +1248,7 @@ object
 			<td>Additional configMap labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--cron"><a href="./values.yaml#L486">extraLabels.cron</a></td>
+			<td id="extraLabels--cron"><a href="./values.yaml#L523">extraLabels.cron</a></td>
 			<td>
 object
 </td>
@@ -1128,7 +1262,7 @@ object
 			<td>Additional cron labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--cronPod"><a href="./values.yaml#L488">extraLabels.cronPod</a></td>
+			<td id="extraLabels--cronPod"><a href="./values.yaml#L525">extraLabels.cronPod</a></td>
 			<td>
 object
 </td>
@@ -1142,7 +1276,7 @@ object
 			<td>Additional cron Pod labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--deployment"><a href="./values.yaml#L474">extraLabels.deployment</a></td>
+			<td id="extraLabels--deployment"><a href="./values.yaml#L511">extraLabels.deployment</a></td>
 			<td>
 object
 </td>
@@ -1156,7 +1290,7 @@ object
 			<td>Additional deployment labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--job"><a href="./values.yaml#L482">extraLabels.job</a></td>
+			<td id="extraLabels--job"><a href="./values.yaml#L519">extraLabels.job</a></td>
 			<td>
 object
 </td>
@@ -1170,7 +1304,7 @@ object
 			<td>Additional job labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--jobPod"><a href="./values.yaml#L484">extraLabels.jobPod</a></td>
+			<td id="extraLabels--jobPod"><a href="./values.yaml#L521">extraLabels.jobPod</a></td>
 			<td>
 object
 </td>
@@ -1184,7 +1318,7 @@ object
 			<td>Additional job Pod labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--pod"><a href="./values.yaml#L476">extraLabels.pod</a></td>
+			<td id="extraLabels--pod"><a href="./values.yaml#L513">extraLabels.pod</a></td>
 			<td>
 object
 </td>
@@ -1198,7 +1332,7 @@ object
 			<td>Additional pod labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--pvc"><a href="./values.yaml#L490">extraLabels.pvc</a></td>
+			<td id="extraLabels--pvc"><a href="./values.yaml#L527">extraLabels.pvc</a></td>
 			<td>
 object
 </td>
@@ -1212,7 +1346,7 @@ object
 			<td>Additional PersistentVolumeClaim labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--secret"><a href="./values.yaml#L478">extraLabels.secret</a></td>
+			<td id="extraLabels--secret"><a href="./values.yaml#L515">extraLabels.secret</a></td>
 			<td>
 object
 </td>
@@ -1226,7 +1360,7 @@ object
 			<td>Additional secret labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--service"><a href="./values.yaml#L480">extraLabels.service</a></td>
+			<td id="extraLabels--service"><a href="./values.yaml#L517">extraLabels.service</a></td>
 			<td>
 object
 </td>
@@ -1240,7 +1374,7 @@ object
 			<td>Additional service labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--statefulSet"><a href="./values.yaml#L492">extraLabels.statefulSet</a></td>
+			<td id="extraLabels--statefulSet"><a href="./values.yaml#L529">extraLabels.statefulSet</a></td>
 			<td>
 object
 </td>
@@ -1254,7 +1388,7 @@ object
 			<td>Additional statefulSet labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraObjects"><a href="./values.yaml#L497">extraObjects</a></td>
+			<td id="extraObjects"><a href="./values.yaml#L534">extraObjects</a></td>
 			<td>
 list
 </td>
@@ -1506,7 +1640,7 @@ list
 			<td>This is a list of objects defining different Kasm Zone configurations for your deployment. This configuration is typically used for multi-region, large, or custom deployments where the customer requires a high degree of configurability and has multiple resources in disparate areas.  NOTE: If you configure custom zones below, you MUST use a valid `ingress` configuration due to the increased deployment complexity of a multi-zone Kasm deployment. Refer to the Kasm [Deployment Zones](https://docs.kasm.com/docs/guide/deployment_zones) documentation for more information on Kasm Zones.  The first zone in the list is treated as the primary zone. Traffic to the configured `publicAddr` in the ingress rule will be routed to this primary zone. </td>
 		</tr>
 		<tr>
-			<td id="labels"><a href="./values.yaml#L436">labels</a></td>
+			<td id="labels"><a href="./values.yaml#L473">labels</a></td>
 			<td>
 object
 </td>
@@ -1518,6 +1652,51 @@ object
 </div>
 			</td>
 			<td>Custom labels to apply to all deployed resources </td>
+		</tr>
+		<tr>
+			<td id="libchartCnps"><a href="./values.yaml#L423">libchartCnps</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "enabled": false,
+  "includeCnpgPolicies": false
+}
+</pre>
+</div>
+			</td>
+			<td>Cilium Network Policies configuration</td>
+		</tr>
+		<tr>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L425">libchartCnps.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Enable Cilium Network Policies</td>
+		</tr>
+		<tr>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L428">libchartCnps.includeCnpgPolicies</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Include CNPG-specific policies @description These are usually only required when using CNPG resources in the same namespace.</td>
 		</tr>
 		<tr>
 			<td id="nodeSelector"><a href="./values.yaml#L402">nodeSelector</a></td>
@@ -1566,7 +1745,7 @@ string
 			<td>Set the access URL to be used for the Kasm deployment. This is the URL you will use to access your Kasm deployment. This URL can be a private address, it just needs to be resolvable by systems you use to interface with Kasm.  If you create a self-signed or custom certificate, this is the value you should assign as the Common Name associated with the certificate. If `certificate.certManager.enabled` is set to true, this is the name used to generate the certificate. </td>
 		</tr>
 		<tr>
-			<td id="restartPolicy"><a href="./values.yaml#L432">restartPolicy</a></td>
+			<td id="restartPolicy"><a href="./values.yaml#L469">restartPolicy</a></td>
 			<td>
 string
 </td>
@@ -1708,10 +1887,14 @@ Take a look at [https://katacontainers.io](https://katacontainers.io) to get an 
 Also take a look at the HowTo-Section within the kata-container GitHub Repository,
 e.g. to learn [how to create a runtime class](https://github.com/kata-containers/kata-containers/blob/main/docs/how-to/run-kata-with-k8s.md#create-runtime-class-for-kata-containers)_
 
-## Chart without NetworkPolicies
+## Chart with experimental support for CiliumNetworkPolicies
 
-Please note that this chart does not provide any network policies itself.
+Please note that this chart does not provide any production ready network policies itself.
 Therefore, I recommend the implementation of network policies before using in prod environments.
+
+> **If you're using Cilium CNI**: I've added experimental support for CNPs.
+> Note that these are highly oppinionated and you should review them carefully before using.
+> E.g. it's required that each release gets deployed within a separate namespace.
 
 ## Opinionated & Non-standard
 
