@@ -3,8 +3,11 @@
 # kasm-ws
 
 ![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.18.1](https://img.shields.io/badge/AppVersion-1.18.1-informational?style=flat-square)
+
 A Helm chart for an easier Kasm Workspaces (https://kasm.com) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with Kasm Technologies, Inc. or its authors.
+
 **Homepage:** <https://github.com/CodeAdminDe/helm-charts>
+
 ## Maintainers
 
 | Name | Email | Url |
@@ -16,6 +19,7 @@ A Helm chart for an easier Kasm Workspaces (https://kasm.com) deployment on Kube
 | Repository | Name | Version |
 |------------|------|---------|
 | https://codeadminde.github.io/helm-charts | libchart-cnps(libchart-cnps) | 0.2.1 |
+
 ## TL;DR
 
 You don't want to read through the docs? That's the quick and dirty way:
@@ -25,9 +29,10 @@ helm repo add codeadminde https://codeadminde.github.io/helm-charts/
 helm repo update
 helm install kasm-ws codeadminde/kasm-ws
 ```
-_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
+_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
 
-> I'd recommend reading through the docs. Skip them at your own risk. ;-)
+> I'd recommend to read trough the docs. Skip them at your own risk. ;-)
+
 ## Repository
 
 In order to install / query / etc... the charts, you'll need to add the repository:
@@ -36,6 +41,7 @@ In order to install / query / etc... the charts, you'll need to add the reposito
 helm repo add codeadminde https://codeadminde.github.io/helm-charts/
 helm repo update
 ```
+
 ## Installation
 
 To install the chart with the release name `kasm-ws`
@@ -43,7 +49,8 @@ To install the chart with the release name `kasm-ws`
 ```bash
 helm install kasm-ws codeadminde/kasm-ws
 ```
-_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
+_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
+
 ## Uninstallation
 
 To uninstall the chart release named `kasm-ws`
@@ -51,9 +58,10 @@ To uninstall the chart release named `kasm-ws`
 ```bash
 helm uninstall kasm-ws
 ```
-_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
+_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
 
 The command removes all the Kubernetes components associated with the chart **including persistent volumes** and deletes the release.
+
 ## Configuration
 
 Take a look at the [values.yaml](./values.yaml) file of the chart. It contains the default configuration and additional notes.
@@ -61,15 +69,15 @@ So it would be a good idea to take a look at it, even if you already know what y
 
 To configure the release (chart values), provide your own values via a *.yaml file and reference it with the `-f` flag.
 
-> ### Install sample
+> #### Sample
 >
 > ```bash
 > helm install kasm-ws codeadminde/kasm-ws -f values.yaml
 > ```
 
-Alternatively, you can provide the values you want to override directly at the CLI as key=value pairs via the `--set` flag.
+Alternatively, you could provide the values which you want to override at the CLI directly. Than you've to provide the values as key=value pair(s), referenced by the `--set` flag.
 
-> ### Override sample
+> #### Sample
 >
 > ```bash
 > helm install kasm-ws --set key=value --set keyTwo=secondValue codeadminde/kasm-ws
@@ -2540,10 +2548,10 @@ The chart uses some value types for which I would like to add a further explanat
 
 Provide a valid name of a runtimeClass within your cluster.
 
-If you want to get the currently available runtimeClasses within your cluster, run:
+If you want to get the current available runtimeClasses within your cluster, exec:
 
-```bash
-kubectl get runtimeclasses
+```
+kubectl get -A runtimeClasses
 ```
 
 _**Personal recommendation**: A runtime that I believe is worth trying is the Kata Container Runtime.
@@ -2553,11 +2561,11 @@ e.g. to learn [how to create a runtime class](https://github.com/kata-containers
 
 ## Chart with experimental support for CiliumNetworkPolicies
 
-Please note that this chart does not provide any production-ready network policies itself.
+Please note that this chart does not provide any production ready network policies itself.
 Therefore, I recommend the implementation of network policies before using in prod environments.
 
 > **If you're using Cilium CNI**: I've added experimental support for CNPs.
-> Note that these are highly opinionated and you should review them carefully before using.
+> Note that these are highly oppinionated and you should review them carefully before using.
 > E.g. it's required that each release gets deployed within a separate namespace.
 
 ## Opinionated & Non-standard
@@ -2568,6 +2576,7 @@ Therefore, I'm very happy if you find the chart/s provided here helpful and perh
 but at the same time I strongly advise you to take a close look at it and adapt it to your needs where necessary.
 
 If you would like to return any helpful changes, I would also be happy to receive a pull request or two ;-)
+
 ## Feedback & Security
 
 Please reach out to me at frederic.roggon@codeadmin.de for feedback.
@@ -2576,12 +2585,3 @@ If you find security-related issues, please do not use the issue tracker instead
 
 ----------------------------------------------
 Autogenerated from chart metadata using [helm-docs](https://github.com/norwoodj/helm-docs)
-<hr /><hr />
-
-## Appendix - Chart-specifics
-
-### Important operational notes
-
-* This chart deploys the Kasm control plane stack for Kubernetes.
-* Kasm agent nodes are intentionally not part of this chart and must be deployed separately.
-* This chart stays close to upstream Kasm behavior while being versioned and released through this helm-repo.

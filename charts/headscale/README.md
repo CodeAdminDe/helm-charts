@@ -29,9 +29,9 @@ helm repo add codeadminde https://codeadminde.github.io/helm-charts/
 helm repo update
 helm install headscale codeadminde/headscale
 ```
-_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
+_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
 
-> I'd recommend to read through the docs. Skip them at your own risk. ;-)
+> I'd recommend to read trough the docs. Skip them at your own risk. ;-)
 
 ## Repository
 
@@ -49,7 +49,7 @@ To install the chart with the release name `headscale`
 ```bash
 helm install headscale codeadminde/headscale
 ```
-_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
+_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
 
 ## Uninstallation
 
@@ -58,7 +58,7 @@ To uninstall the chart release named `headscale`
 ```bash
 helm uninstall headscale
 ```
-_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
+_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
 
 The command removes all the Kubernetes components associated with the chart **including persistent volumes** and deletes the release.
 
@@ -69,7 +69,7 @@ So it would be a good idea to take a look at it, even if you already know what y
 
 To configure the release (chart values), provide your own values via a *.yaml file and reference it with the `-f` flag.
 
-> ### Sample - install with values file
+> #### Sample
 >
 > ```bash
 > helm install headscale codeadminde/headscale -f values.yaml
@@ -77,7 +77,7 @@ To configure the release (chart values), provide your own values via a *.yaml fi
 
 Alternatively, you could provide the values which you want to override at the CLI directly. Than you've to provide the values as key=value pair(s), referenced by the `--set` flag.
 
-> ### Sample - install with inline set flags
+> #### Sample
 >
 > ```bash
 > helm install headscale --set key=value --set keyTwo=secondValue codeadminde/headscale
@@ -1563,7 +1563,7 @@ Please note that this chart does not provide any production ready network polici
 Therefore, I recommend the implementation of network policies before using in prod environments.
 
 > **If you're using Cilium CNI**: I've added experimental support for CNPs.
-> Note that these are highly opinionated and you should review them carefully before using.
+> Note that these are highly oppinionated and you should review them carefully before using.
 > E.g. it's required that each release gets deployed within a separate namespace.
 
 ## Opinionated & Non-standard
