@@ -407,9 +407,9 @@ imagePullSecrets:
   type: ""
   # imagePullSecrets.server -- The Registry server to use when pulling images (required for dockerconfigjson and dockercfg)
   server: ""
-  # imagePullSecrets.username -- The username used to authenticate agaisnt your Registry server.
+  # imagePullSecrets.username -- The username used to authenticate against your Registry server.
   username: ""
-  # imagePullSecrets.password -- The password used to authenticate agaisnt your Registry server.
+  # imagePullSecrets.password -- The password used to authenticate against your Registry server.
   password: ""
   # imagePullSecrets.email -- The email address used to authenticate (optional, used for dockerconfigjson and dockercfg)
   email: ""
@@ -630,7 +630,7 @@ annotations:
 # for more information.
 #
 extraLabels:
-  # extraLabels.certSecret -- Additional statefulSet labels to apply to resources created by this chart
+  # extraLabels.certSecret -- Additional certSecret labels to apply to resources created by this chart
   certSecret: {}
   # extraLabels.configMap -- Additional configMap labels to apply to resources created by this chart
   configMap: {}
