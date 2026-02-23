@@ -3,8 +3,11 @@
 # kasm-agent
 
 ![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.18.1](https://img.shields.io/badge/AppVersion-1.18.1-informational?style=flat-square)
+
 A Helm chart for deploying a Kasm agent workload in Kubernetes (advanced/unsupported static-agent model).
+
 **Homepage:** <https://github.com/CodeAdminDe/helm-charts>
+
 ## Maintainers
 
 | Name | Email | Url |
@@ -16,6 +19,7 @@ A Helm chart for deploying a Kasm agent workload in Kubernetes (advanced/unsuppo
 | Repository | Name | Version |
 |------------|------|---------|
 | https://codeadminde.github.io/helm-charts | libchart-cnps(libchart-cnps) | 0.2.1 |
+
 ## TL;DR
 
 You don't want to read through the docs? That's the quick and dirty way:
@@ -25,9 +29,10 @@ helm repo add codeadminde https://codeadminde.github.io/helm-charts/
 helm repo update
 helm install kasm-agent codeadminde/kasm-agent
 ```
-_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
+_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
 
-> I'd recommend to read through the docs. Skip them at your own risk. ;-)
+> I'd recommend to read trough the docs. Skip them at your own risk. ;-)
+
 ## Repository
 
 In order to install / query / etc... the charts, you'll need to add the repository:
@@ -36,6 +41,7 @@ In order to install / query / etc... the charts, you'll need to add the reposito
 helm repo add codeadminde https://codeadminde.github.io/helm-charts/
 helm repo update
 ```
+
 ## Installation
 
 To install the chart with the release name `kasm-agent`
@@ -43,7 +49,8 @@ To install the chart with the release name `kasm-agent`
 ```bash
 helm install kasm-agent codeadminde/kasm-agent
 ```
-_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
+_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
+
 ## Uninstallation
 
 To uninstall the chart release named `kasm-agent`
@@ -51,9 +58,10 @@ To uninstall the chart release named `kasm-agent`
 ```bash
 helm uninstall kasm-agent
 ```
-_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
+_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
 
 The command removes all the Kubernetes components associated with the chart **including persistent volumes** and deletes the release.
+
 ## Configuration
 
 Take a look at the [values.yaml](./values.yaml) file of the chart. It contains the default configuration and additional notes.
@@ -67,7 +75,7 @@ To configure the release (chart values), provide your own values via a *.yaml fi
 > helm install kasm-agent codeadminde/kasm-agent -f values.yaml
 > ```
 
-Alternatively, you could provide the values which you want to override at the CLI directly. Then you have to provide the values as key=value pair(s), referenced by the `--set` flag.
+Alternatively, you could provide the values which you want to override at the CLI directly. Than you've to provide the values as key=value pair(s), referenced by the `--set` flag.
 
 > #### Sample
 >
@@ -1293,7 +1301,7 @@ Please note that this chart does not provide any production ready network polici
 Therefore, I recommend the implementation of network policies before using in prod environments.
 
 > **If you're using Cilium CNI**: I've added experimental support for CNPs.
-> Note that these are highly opinionated and you should review them carefully before using.
+> Note that these are highly oppinionated and you should review them carefully before using.
 > E.g. it's required that each release gets deployed within a separate namespace.
 
 ## Opinionated & Non-standard
@@ -1304,6 +1312,7 @@ Therefore, I'm very happy if you find the chart/s provided here helpful and perh
 but at the same time I strongly advise you to take a close look at it and adapt it to your needs where necessary.
 
 If you would like to return any helpful changes, I would also be happy to receive a pull request or two ;-)
+
 ## Feedback & Security
 
 Please reach out to me at frederic.roggon@codeadmin.de for feedback.
