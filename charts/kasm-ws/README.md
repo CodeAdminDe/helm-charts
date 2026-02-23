@@ -108,7 +108,7 @@ object
 			<td>Configure node affinity settings for Kasm pods - [Kubernetes Affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/). Kasm is not guaranteed to work with Affinity settings - use caution if you must configuring these settings. The below, optional object passes in raw Affinity rules for Pods, Nodes, etc. for your environment. Make sure you use the correct values below as this Helm chart will not do any error checking for you. </td>
 		</tr>
 		<tr>
-			<td id="annotations--certSecret"><a href="./values.yaml#L575">annotations.certSecret</a></td>
+			<td id="annotations--certSecret"><a href="./values.yaml#L605">annotations.certSecret</a></td>
 			<td>
 object
 </td>
@@ -122,7 +122,7 @@ object
 			<td>Additional certSecret annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--configMap"><a href="./values.yaml#L577">annotations.configMap</a></td>
+			<td id="annotations--configMap"><a href="./values.yaml#L607">annotations.configMap</a></td>
 			<td>
 object
 </td>
@@ -136,7 +136,7 @@ object
 			<td>Additional configMap annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--cron"><a href="./values.yaml#L579">annotations.cron</a></td>
+			<td id="annotations--cron"><a href="./values.yaml#L609">annotations.cron</a></td>
 			<td>
 object
 </td>
@@ -150,7 +150,7 @@ object
 			<td>Additional cron pod cron labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--cronPod"><a href="./values.yaml#L581">annotations.cronPod</a></td>
+			<td id="annotations--cronPod"><a href="./values.yaml#L611">annotations.cronPod</a></td>
 			<td>
 object
 </td>
@@ -164,7 +164,7 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="annotations--deployment"><a href="./values.yaml#L583">annotations.deployment</a></td>
+			<td id="annotations--deployment"><a href="./values.yaml#L613">annotations.deployment</a></td>
 			<td>
 object
 </td>
@@ -178,7 +178,7 @@ object
 			<td>Additional deployment annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--pod"><a href="./values.yaml#L585">annotations.pod</a></td>
+			<td id="annotations--pod"><a href="./values.yaml#L615">annotations.pod</a></td>
 			<td>
 object
 </td>
@@ -192,7 +192,7 @@ object
 			<td>Additional pod annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--pvc"><a href="./values.yaml#L587">annotations.pvc</a></td>
+			<td id="annotations--pvc"><a href="./values.yaml#L617">annotations.pvc</a></td>
 			<td>
 object
 </td>
@@ -206,7 +206,7 @@ object
 			<td>Additional PersistentVolumeClaim annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--secret"><a href="./values.yaml#L591">annotations.secret</a></td>
+			<td id="annotations--secret"><a href="./values.yaml#L621">annotations.secret</a></td>
 			<td>
 object
 </td>
@@ -220,7 +220,7 @@ object
 			<td>Additional secret annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--service"><a href="./values.yaml#L589">annotations.service</a></td>
+			<td id="annotations--service"><a href="./values.yaml#L619">annotations.service</a></td>
 			<td>
 object
 </td>
@@ -234,7 +234,7 @@ object
 			<td>Additional service annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--statefulSet"><a href="./values.yaml#L593">annotations.statefulSet</a></td>
+			<td id="annotations--statefulSet"><a href="./values.yaml#L623">annotations.statefulSet</a></td>
 			<td>
 object
 </td>
@@ -248,7 +248,7 @@ object
 			<td>Additional statefulSet annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="applyHealthChecks"><a href="./values.yaml#L542">applyHealthChecks</a></td>
+			<td id="applyHealthChecks"><a href="./values.yaml#L572">applyHealthChecks</a></td>
 			<td>
 bool
 </td>
@@ -262,7 +262,7 @@ true
 			<td>Add Pod/Container healthchecks settings for Kasm resources </td>
 		</tr>
 		<tr>
-			<td id="applySecurity"><a href="./values.yaml#L538">applySecurity</a></td>
+			<td id="applySecurity"><a href="./values.yaml#L568">applySecurity</a></td>
 			<td>
 bool
 </td>
@@ -326,7 +326,7 @@ string
 			<td>Cluster-wide Kubernetes DNS domain name </td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L458">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L488">cnps</a></td>
 			<td>
 object
 </td>
@@ -431,7 +431,7 @@ object
 			<td>Application-specific Cilium Network Policies configuration @description Requires CiliumNetworkPolicies library-chart. These settings are ignored if libchartCnps.enabled is false.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L474">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L504">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -445,7 +445,7 @@ true
 			<td>Allow egress traffic for Kasm core components.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--egressRules"><a href="./values.yaml#L477">cnps.appTraffic.egress.egressRules</a></td>
+			<td id="cnps--appTraffic--egress--egressRules"><a href="./values.yaml#L507">cnps.appTraffic.egress.egressRules</a></td>
 			<td>
 list
 </td>
@@ -475,7 +475,7 @@ list
 			<td>Egress rules applied when egress.allow is true. @description Customize to your security requirements.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L462">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L492">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -489,7 +489,7 @@ true
 			<td>Allow ingress traffic to the proxy component policy.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L470">cnps.appTraffic.ingress.fromEntities</a></td>
+			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L500">cnps.appTraffic.ingress.fromEntities</a></td>
 			<td>
 list
 </td>
@@ -503,7 +503,7 @@ list
 			<td>Optional entities to allow ingress from. @description Useful to allow additional ingress entities beyond the ingress controller labels.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L467">cnps.appTraffic.ingress.matchLabels</a></td>
+			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L497">cnps.appTraffic.ingress.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -517,7 +517,7 @@ object
 			<td>Labels to match ingress controller pods. @description Override to match your ingress deployment.   app.kubernetes.io/name: ingress-nginx   io.kubernetes.pod.namespace: ingress-nginx</td>
 		</tr>
 		<tr>
-			<td id="cnps--workspaceTraffic"><a href="./values.yaml#L487">cnps.workspaceTraffic</a></td>
+			<td id="cnps--workspaceTraffic"><a href="./values.yaml#L517">cnps.workspaceTraffic</a></td>
 			<td>
 object
 </td>
@@ -593,7 +593,7 @@ object
 			<td>Workspace session namespace traffic restrictions. @description Uses the libchart-cnps AppSet merge flow to build a dedicated policy in the workspace namespace. Requires libchartCnps.enabled=true.</td>
 		</tr>
 		<tr>
-			<td id="cnps--workspaceTraffic--egress"><a href="./values.yaml#L502">cnps.workspaceTraffic.egress</a></td>
+			<td id="cnps--workspaceTraffic--egress"><a href="./values.yaml#L532">cnps.workspaceTraffic.egress</a></td>
 			<td>
 object
 </td>
@@ -659,7 +659,7 @@ object
 			<td>Egress handling for workspace pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--workspaceTraffic--egress--allow"><a href="./values.yaml#L504">cnps.workspaceTraffic.egress.allow</a></td>
+			<td id="cnps--workspaceTraffic--egress--allow"><a href="./values.yaml#L534">cnps.workspaceTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -673,7 +673,7 @@ true
 			<td>Enable egress rule rendering.</td>
 		</tr>
 		<tr>
-			<td id="cnps--workspaceTraffic--egress--denyPrivateCidrs"><a href="./values.yaml#L523">cnps.workspaceTraffic.egress.denyPrivateCidrs</a></td>
+			<td id="cnps--workspaceTraffic--egress--denyPrivateCidrs"><a href="./values.yaml#L553">cnps.workspaceTraffic.egress.denyPrivateCidrs</a></td>
 			<td>
 bool
 </td>
@@ -687,7 +687,7 @@ true
 			<td>Deny private network egress from workspace pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--workspaceTraffic--egress--egressRules"><a href="./values.yaml#L506">cnps.workspaceTraffic.egress.egressRules</a></td>
+			<td id="cnps--workspaceTraffic--egress--egressRules"><a href="./values.yaml#L536">cnps.workspaceTraffic.egress.egressRules</a></td>
 			<td>
 list
 </td>
@@ -738,7 +738,7 @@ list
 			<td>Default egress rules. Override as required for your environment.</td>
 		</tr>
 		<tr>
-			<td id="cnps--workspaceTraffic--egress--privateCidrs"><a href="./values.yaml#L525">cnps.workspaceTraffic.egress.privateCidrs</a></td>
+			<td id="cnps--workspaceTraffic--egress--privateCidrs"><a href="./values.yaml#L555">cnps.workspaceTraffic.egress.privateCidrs</a></td>
 			<td>
 list
 </td>
@@ -762,7 +762,7 @@ list
 			<td>Private CIDR ranges denied when denyPrivateCidrs is true.</td>
 		</tr>
 		<tr>
-			<td id="cnps--workspaceTraffic--enabled"><a href="./values.yaml#L489">cnps.workspaceTraffic.enabled</a></td>
+			<td id="cnps--workspaceTraffic--enabled"><a href="./values.yaml#L519">cnps.workspaceTraffic.enabled</a></td>
 			<td>
 bool
 </td>
@@ -776,7 +776,7 @@ false
 			<td>Enable workspace egress restriction policy generation.</td>
 		</tr>
 		<tr>
-			<td id="cnps--workspaceTraffic--ingress"><a href="./values.yaml#L497">cnps.workspaceTraffic.ingress</a></td>
+			<td id="cnps--workspaceTraffic--ingress"><a href="./values.yaml#L527">cnps.workspaceTraffic.ingress</a></td>
 			<td>
 object
 </td>
@@ -792,7 +792,7 @@ object
 			<td>Ingress handling for workspace pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--workspaceTraffic--ingress--allowFromSameNamespace"><a href="./values.yaml#L500">cnps.workspaceTraffic.ingress.allowFromSameNamespace</a></td>
+			<td id="cnps--workspaceTraffic--ingress--allowFromSameNamespace"><a href="./values.yaml#L530">cnps.workspaceTraffic.ingress.allowFromSameNamespace</a></td>
 			<td>
 bool
 </td>
@@ -806,7 +806,7 @@ true
 			<td>Allow ingress traffic only from pods in the same workspace namespace. @description Set false to rely on other policies for ingress control.</td>
 		</tr>
 		<tr>
-			<td id="cnps--workspaceTraffic--namespace"><a href="./values.yaml#L491">cnps.workspaceTraffic.namespace</a></td>
+			<td id="cnps--workspaceTraffic--namespace"><a href="./values.yaml#L521">cnps.workspaceTraffic.namespace</a></td>
 			<td>
 string
 </td>
@@ -820,7 +820,7 @@ string
 			<td>Namespace where Kasm session/workspace pods run.</td>
 		</tr>
 		<tr>
-			<td id="cnps--workspaceTraffic--podSelector"><a href="./values.yaml#L494">cnps.workspaceTraffic.podSelector</a></td>
+			<td id="cnps--workspaceTraffic--podSelector"><a href="./values.yaml#L524">cnps.workspaceTraffic.podSelector</a></td>
 			<td>
 object
 </td>
@@ -1626,7 +1626,7 @@ string
 			<td>Define the estimated size of the Kasm deployment in expected session load.  small  = Up to 10-15 sessions  medium = Up to 25-30 sessions  large  = Up to 50+ sessions </td>
 		</tr>
 		<tr>
-			<td id="extraLabels--certSecret"><a href="./values.yaml#L601">extraLabels.certSecret</a></td>
+			<td id="extraLabels--certSecret"><a href="./values.yaml#L631">extraLabels.certSecret</a></td>
 			<td>
 object
 </td>
@@ -1640,7 +1640,7 @@ object
 			<td>Additional statefulSet labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--configMap"><a href="./values.yaml#L603">extraLabels.configMap</a></td>
+			<td id="extraLabels--configMap"><a href="./values.yaml#L633">extraLabels.configMap</a></td>
 			<td>
 object
 </td>
@@ -1654,7 +1654,7 @@ object
 			<td>Additional configMap labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--cron"><a href="./values.yaml#L617">extraLabels.cron</a></td>
+			<td id="extraLabels--cron"><a href="./values.yaml#L647">extraLabels.cron</a></td>
 			<td>
 object
 </td>
@@ -1668,7 +1668,7 @@ object
 			<td>Additional cron labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--cronPod"><a href="./values.yaml#L619">extraLabels.cronPod</a></td>
+			<td id="extraLabels--cronPod"><a href="./values.yaml#L649">extraLabels.cronPod</a></td>
 			<td>
 object
 </td>
@@ -1682,7 +1682,7 @@ object
 			<td>Additional cron Pod labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--deployment"><a href="./values.yaml#L605">extraLabels.deployment</a></td>
+			<td id="extraLabels--deployment"><a href="./values.yaml#L635">extraLabels.deployment</a></td>
 			<td>
 object
 </td>
@@ -1696,7 +1696,7 @@ object
 			<td>Additional deployment labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--job"><a href="./values.yaml#L613">extraLabels.job</a></td>
+			<td id="extraLabels--job"><a href="./values.yaml#L643">extraLabels.job</a></td>
 			<td>
 object
 </td>
@@ -1710,7 +1710,7 @@ object
 			<td>Additional job labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--jobPod"><a href="./values.yaml#L615">extraLabels.jobPod</a></td>
+			<td id="extraLabels--jobPod"><a href="./values.yaml#L645">extraLabels.jobPod</a></td>
 			<td>
 object
 </td>
@@ -1724,7 +1724,7 @@ object
 			<td>Additional job Pod labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--pod"><a href="./values.yaml#L607">extraLabels.pod</a></td>
+			<td id="extraLabels--pod"><a href="./values.yaml#L637">extraLabels.pod</a></td>
 			<td>
 object
 </td>
@@ -1738,7 +1738,7 @@ object
 			<td>Additional pod labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--pvc"><a href="./values.yaml#L621">extraLabels.pvc</a></td>
+			<td id="extraLabels--pvc"><a href="./values.yaml#L651">extraLabels.pvc</a></td>
 			<td>
 object
 </td>
@@ -1752,7 +1752,7 @@ object
 			<td>Additional PersistentVolumeClaim labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--secret"><a href="./values.yaml#L609">extraLabels.secret</a></td>
+			<td id="extraLabels--secret"><a href="./values.yaml#L639">extraLabels.secret</a></td>
 			<td>
 object
 </td>
@@ -1766,7 +1766,7 @@ object
 			<td>Additional secret labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--service"><a href="./values.yaml#L611">extraLabels.service</a></td>
+			<td id="extraLabels--service"><a href="./values.yaml#L641">extraLabels.service</a></td>
 			<td>
 object
 </td>
@@ -1780,7 +1780,7 @@ object
 			<td>Additional service labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--statefulSet"><a href="./values.yaml#L623">extraLabels.statefulSet</a></td>
+			<td id="extraLabels--statefulSet"><a href="./values.yaml#L653">extraLabels.statefulSet</a></td>
 			<td>
 object
 </td>
@@ -1794,7 +1794,7 @@ object
 			<td>Additional statefulSet labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraObjects"><a href="./values.yaml#L628">extraObjects</a></td>
+			<td id="extraObjects"><a href="./values.yaml#L658">extraObjects</a></td>
 			<td>
 list
 </td>
@@ -2071,7 +2071,7 @@ list
 			<td>This is a list of objects defining different Kasm Zone configurations for your deployment. This configuration is typically used for multi-region, large, or custom deployments where the customer requires a high degree of configurability and has multiple resources in disparate areas.  NOTE: If you configure custom zones below, you MUST use a valid `ingress` configuration due to the increased deployment complexity of a multi-zone Kasm deployment. Refer to the Kasm [Deployment Zones](https://docs.kasm.com/docs/guide/deployment_zones) documentation for more information on Kasm Zones.  The first zone in the list is treated as the primary zone. Traffic to the configured `publicAddr` in the ingress rule will be routed to this primary zone. </td>
 		</tr>
 		<tr>
-			<td id="labels"><a href="./values.yaml#L567">labels</a></td>
+			<td id="labels"><a href="./values.yaml#L597">labels</a></td>
 			<td>
 object
 </td>
@@ -2085,7 +2085,7 @@ object
 			<td>Custom labels to apply to all deployed resources </td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L449">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L479">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -2102,7 +2102,7 @@ object
 			<td>Cilium Network Policies configuration</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--enabled"><a href="./values.yaml#L451">libchartCnps.enabled</a></td>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L481">libchartCnps.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2116,7 +2116,7 @@ false
 			<td>Enable Cilium Network Policies</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L454">libchartCnps.includeCnpgPolicies</a></td>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L484">libchartCnps.includeCnpgPolicies</a></td>
 			<td>
 bool
 </td>
@@ -2176,7 +2176,126 @@ string
 			<td>Set the access URL to be used for the Kasm deployment. This is the URL you will use to access your Kasm deployment. This URL can be a private address, it just needs to be resolvable by systems you use to interface with Kasm.  If you create a self-signed or custom certificate, this is the value you should assign as the Common Name associated with the certificate. If `certificate.certManager.enabled` is set to true, this is the name used to generate the certificate. </td>
 		</tr>
 		<tr>
-			<td id="restartPolicy"><a href="./values.yaml#L563">restartPolicy</a></td>
+			<td id="rbac"><a href="./values.yaml#L449">rbac</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "create": false,
+  "rules": [],
+  "serviceAccount": {
+    "annotations": {},
+    "automountServiceAccountToken": true,
+    "create": false,
+    "name": ""
+  }
+}
+</pre>
+</div>
+			</td>
+			<td>Role-Based Access Control configuration for manager/session orchestration.</td>
+		</tr>
+		<tr>
+			<td id="rbac--create"><a href="./values.yaml#L451">rbac.create</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Create namespace-scoped RBAC resources (Role + RoleBinding).</td>
+		</tr>
+		<tr>
+			<td id="rbac--rules"><a href="./values.yaml#L466">rbac.rules</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Override Role rules. If empty, a least-privilege baseline is used.
+
+<details>
+<summary>Default baseline rules (Expand)</summary>
+
+- apiGroups: [""]
+  resources: ["pods", "services", "persistentvolumeclaims"]
+  verbs: ["get", "list", "watch", "create", "delete"]
+- apiGroups: [""]
+  resources: ["pods/log", "pods/status"]
+  verbs: ["get"]
+
+</details></td>
+		</tr>
+		<tr>
+			<td id="rbac--serviceAccount--annotations"><a href="./values.yaml#L474">rbac.serviceAccount.annotations</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>ServiceAccount annotations (e.g., workload identity / IAM role bindings).</td>
+		</tr>
+		<tr>
+			<td id="rbac--serviceAccount--automountServiceAccountToken"><a href="./values.yaml#L476">rbac.serviceAccount.automountServiceAccountToken</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Automatically mount ServiceAccount API credentials into manager pods.</td>
+		</tr>
+		<tr>
+			<td id="rbac--serviceAccount--create"><a href="./values.yaml#L469">rbac.serviceAccount.create</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Create a dedicated ServiceAccount for manager workloads.</td>
+		</tr>
+		<tr>
+			<td id="rbac--serviceAccount--name"><a href="./values.yaml#L472">rbac.serviceAccount.name</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Name of the ServiceAccount to use. @description If create=true and this is empty, defaults to "<release-name>-manager". If create=false, this should reference an existing ServiceAccount.</td>
+		</tr>
+		<tr>
+			<td id="restartPolicy"><a href="./values.yaml#L593">restartPolicy</a></td>
 			<td>
 string
 </td>
@@ -2297,7 +2416,7 @@ object
 			<td>Sets the runtimeClass for the containers which gets executed by the test hook. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="securityCompatibility"><a href="./values.yaml#L546">securityCompatibility</a></td>
+			<td id="securityCompatibility"><a href="./values.yaml#L576">securityCompatibility</a></td>
 			<td>
 object
 </td>
@@ -2320,7 +2439,7 @@ object
 			<td>Backward-compatibility toggles for permission/bootstrap behavior. @description Enable specific root init containers only if your storage/runtime needs in-place ownership changes.</td>
 		</tr>
 		<tr>
-			<td id="securityCompatibility--rootInitContainers--db"><a href="./values.yaml#L557">securityCompatibility.rootInitContainers.db</a></td>
+			<td id="securityCompatibility--rootInitContainers--db"><a href="./values.yaml#L587">securityCompatibility.rootInitContainers.db</a></td>
 			<td>
 bool
 </td>
@@ -2334,7 +2453,7 @@ false
 			<td>Enable root permission init container for the Kasm DB StatefulSet.</td>
 		</tr>
 		<tr>
-			<td id="securityCompatibility--rootInitContainers--dbBackupCron"><a href="./values.yaml#L559">securityCompatibility.rootInitContainers.dbBackupCron</a></td>
+			<td id="securityCompatibility--rootInitContainers--dbBackupCron"><a href="./values.yaml#L589">securityCompatibility.rootInitContainers.dbBackupCron</a></td>
 			<td>
 bool
 </td>
@@ -2348,7 +2467,7 @@ false
 			<td>Enable root permission init container for the DB backup cron job.</td>
 		</tr>
 		<tr>
-			<td id="securityCompatibility--rootInitContainers--guac"><a href="./values.yaml#L551">securityCompatibility.rootInitContainers.guac</a></td>
+			<td id="securityCompatibility--rootInitContainers--guac"><a href="./values.yaml#L581">securityCompatibility.rootInitContainers.guac</a></td>
 			<td>
 bool
 </td>
@@ -2362,7 +2481,7 @@ false
 			<td>Enable root permission init container for the Kasm guac deployment.</td>
 		</tr>
 		<tr>
-			<td id="securityCompatibility--rootInitContainers--proxy"><a href="./values.yaml#L549">securityCompatibility.rootInitContainers.proxy</a></td>
+			<td id="securityCompatibility--rootInitContainers--proxy"><a href="./values.yaml#L579">securityCompatibility.rootInitContainers.proxy</a></td>
 			<td>
 bool
 </td>
@@ -2376,7 +2495,7 @@ false
 			<td>Enable root permission init container for the Kasm proxy deployment.</td>
 		</tr>
 		<tr>
-			<td id="securityCompatibility--rootInitContainers--rdpGateway"><a href="./values.yaml#L553">securityCompatibility.rootInitContainers.rdpGateway</a></td>
+			<td id="securityCompatibility--rootInitContainers--rdpGateway"><a href="./values.yaml#L583">securityCompatibility.rootInitContainers.rdpGateway</a></td>
 			<td>
 bool
 </td>
@@ -2390,7 +2509,7 @@ false
 			<td>Enable root permission init container for the Kasm RDP gateway deployment.</td>
 		</tr>
 		<tr>
-			<td id="securityCompatibility--rootInitContainers--rdpHttpsGateway"><a href="./values.yaml#L555">securityCompatibility.rootInitContainers.rdpHttpsGateway</a></td>
+			<td id="securityCompatibility--rootInitContainers--rdpHttpsGateway"><a href="./values.yaml#L585">securityCompatibility.rootInitContainers.rdpHttpsGateway</a></td>
 			<td>
 bool
 </td>
