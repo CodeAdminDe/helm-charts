@@ -1088,6 +1088,40 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/headscale-0.1.0/headscale-0.1.0.tgz
     version: 0.1.0
+  kasm-agent:
+  - annotations:
+      category: Security
+      kubeVersion: '>=1.33.0'
+      securityContext: required
+    apiVersion: v2
+    appVersion: 1.18.1
+    created: "2026-02-23T22:11:45.63946538Z"
+    dependencies:
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for deploying a Kasm agent workload in Kubernetes (advanced/unsupported
+      static-agent model).
+    digest: ce639a2f77166523101674ebe4bafba7938135e2b80bb6ae254754aa5dbf7687
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - kasm
+    - kasm-workspaces
+    - agent
+    - remote-browser
+    - workspace
+    - security
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: kasm-agent
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/kasm-agent-0.1.0/kasm-agent-0.1.0.tgz
+    version: 0.1.0
   libchart-cnps:
   - apiVersion: v2
     appVersion: 0.2.0
@@ -12794,4 +12828,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-23T22:09:49.222657199Z"
+generated: "2026-02-23T22:11:45.640396057Z"
