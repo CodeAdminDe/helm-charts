@@ -79,6 +79,13 @@ Create the name of the namespace-scoped Role for manager workloads.
 {{- end }}
 
 {{/*
+Namespace where manager RBAC objects are created.
+*/}}
+{{- define "kasm.rbacNamespace" -}}
+{{- default .Release.Namespace .Values.rbac.namespace -}}
+{{- end }}
+
+{{/*
 Resolve CNPG app connection secret name.
 Defaults to <clusterName>-app when appConnectionSecretName is not provided.
 */}}
