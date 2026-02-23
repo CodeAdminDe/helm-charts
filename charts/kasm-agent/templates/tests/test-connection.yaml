@@ -1,0 +1,21 @@
+{{- if .Values.service.enabled }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "kasm-agent.fullname" . }}-test-connection"
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "kasm-agent.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  {{- if .Values.runtimeClass.tests }}
+  runtimeClassName: {{ .Values.runtimeClass.tests }}
+  {{- end }}
+  containers:
+    - name: wget
+      image: busybox:1.36
+      command: ["wget"]
+      args: ["{{ include "kasm-agent.fullname" . }}:{{ .Values.service.port }}"]
+  restartPolicy: Never
+{{- end }}

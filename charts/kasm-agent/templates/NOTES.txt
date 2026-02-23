@@ -1,0 +1,18 @@
+1. Validate manager reachability and token bootstrap:
+
+  kubectl get deploy -n {{ .Release.Namespace }} {{ include "kasm-agent.fullname" . }}
+  kubectl logs -n {{ .Release.Namespace }} deploy/{{ include "kasm-agent.fullname" . }}
+
+2. Verify service endpoint (if enabled):
+{{- if .Values.service.enabled }}
+
+  kubectl get svc -n {{ .Release.Namespace }} {{ include "kasm-agent.fullname" . }}
+{{- else }}
+
+  Service is disabled (.Values.service.enabled=false).
+{{- end }}
+
+3. Security reminder:
+
+  If hostDocker.enabled=true, this pod receives access to host Docker resources.
+  Restrict scheduling via nodeSelector/tolerations/affinity and review hostPath usage.

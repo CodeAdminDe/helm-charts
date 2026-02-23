@@ -1,0 +1,30 @@
+apiVersion: v2
+name: kasm-agent
+description: A Helm chart for deploying a Kasm agent workload in Kubernetes (advanced/unsupported static-agent model).
+type: application
+# renovate: bumpVersion
+version: 0.1.0
+# renovate: image=kasmweb/agent
+appVersion: "1.18.1"
+home: https://github.com/CodeAdminDe/helm-charts
+keywords:
+  - kasm
+  - kasm-workspaces
+  - agent
+  - remote-browser
+  - workspace
+  - security
+maintainers:
+  - name: Frederic Roggon
+    email: frederic.roggon@codeadmin.de
+    url: https://github.com/CodeAdminDe
+annotations:
+  category: Security
+  kubeVersion: ">=1.33.0"
+  securityContext: "required"
+dependencies:
+  - name: libchart-cnps
+    version: 0.2.1
+    repository: https://codeadminde.github.io/helm-charts
+    alias: libchart-cnps
+    condition: libchartCnps.enabled

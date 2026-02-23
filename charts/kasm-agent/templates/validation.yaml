@@ -1,0 +1,34 @@
+{{/*
+Chart validation guards.
+*/}}
+{{- if ne .Values.service.type "ClusterIP" -}}
+  {{- fail "service.type must be ClusterIP. LoadBalancer/NodePort exposure is intentionally not supported by this chart." -}}
+{{- end -}}
+
+{{- if empty .Values.agent.managerHostname -}}
+  {{- fail "agent.managerHostname must be set." -}}
+{{- end -}}
+
+{{- if empty .Values.agent.publicHostname -}}
+  {{- fail "agent.publicHostname must be set." -}}
+{{- end -}}
+
+{{- if empty .Values.agent.managerTokenSecret.name -}}
+  {{- fail "agent.managerTokenSecret.name must be set to an existing secret containing the manager token." -}}
+{{- end -}}
+
+{{- if empty .Values.agent.managerTokenSecret.key -}}
+  {{- fail "agent.managerTokenSecret.key must be set." -}}
+{{- end -}}
+
+{{- if and (not .Values.hostDocker.enabled) (empty .Values.agent.dockerHost) -}}
+  {{- fail "Either hostDocker.enabled=true or agent.dockerHost must be set so the agent can access a Docker daemon." -}}
+{{- end -}}
+
+{{- if and .Values.hostDocker.enabled .Values.securityContext.runAsNonRoot -}}
+  {{- fail "hostDocker.enabled=true is incompatible with securityContext.runAsNonRoot=true for typical docker socket access." -}}
+{{- end -}}
+
+{{- if and .Values.libchartCnps.enabled (not .Values.service.enabled) -}}
+  {{- fail "libchartCnps.enabled=true requires service.enabled=true for valid target port policy generation." -}}
+{{- end -}}

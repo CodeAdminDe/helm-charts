@@ -1,0 +1,148 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "kasm-agent.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "kasm-agent.labels" . | nindent 4 }}
+    {{- with .Values.labels }}{{ toYaml . | nindent 4 }}{{- end }}
+    {{- with .Values.extraLabels.deployment }}{{ toYaml . | nindent 4 }}{{- end }}
+  {{- if .Values.annotations.deployment }}
+  annotations:
+    {{- toYaml .Values.annotations.deployment | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "kasm-agent.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "kasm-agent.selectorLabels" . | nindent 8 }}
+        {{- with .Values.labels }}{{ toYaml . | nindent 8 }}{{- end }}
+        {{- with .Values.podLabels }}{{ toYaml . | nindent 8 }}{{- end }}
+        {{- with .Values.extraLabels.pod }}{{ toYaml . | nindent 8 }}{{- end }}
+      {{- if or .Values.podAnnotations .Values.annotations.pod }}
+      annotations:
+        {{- with .Values.annotations.pod }}{{ toYaml . | nindent 8 }}{{- end }}
+        {{- with .Values.podAnnotations }}{{ toYaml . | nindent 8 }}{{- end }}
+      {{- end }}
+    spec:
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "kasm-agent.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ include "kasm-agent.name" . }}
+          image: {{ include "kasm-agent.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          ports:
+            - name: agent
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: {{ .Values.service.targetProtocol }}
+          env:
+            - name: KASM_ROLE
+              value: "agent"
+            - name: KASM_MANAGER_HOSTNAME
+              value: {{ .Values.agent.managerHostname | quote }}
+            - name: KASM_PUBLIC_HOSTNAME
+              value: {{ .Values.agent.publicHostname | quote }}
+            - name: KASM_ZONE
+              value: {{ .Values.agent.zoneName | quote }}
+            - name: KASM_LOG_LEVEL
+              value: {{ .Values.agent.logLevel | quote }}
+            - name: KASM_MANAGER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.agent.managerTokenSecret.name }}
+                  key: {{ .Values.agent.managerTokenSecret.key }}
+            {{- $dockerHost := include "kasm-agent.effectiveDockerHost" . }}
+            {{- if $dockerHost }}
+            - name: DOCKER_HOST
+              value: {{ $dockerHost | quote }}
+            {{- end }}
+            {{- range $key, $value := .Values.extraEnv }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- range $key, $secretName := .Values.extraEnvSecrets }}
+            - name: {{ $key }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretName }}
+                  key: {{ $key | quote }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if or .Values.hostDocker.enabled .Values.hostDocker.mountBinary .Values.extraHostPaths }}
+          volumeMounts:
+            {{- if .Values.hostDocker.enabled }}
+            - name: docker-socket
+              mountPath: {{ .Values.hostDocker.socketMountPath }}
+            {{- end }}
+            {{- if .Values.hostDocker.mountBinary }}
+            - name: docker-binary
+              mountPath: {{ .Values.hostDocker.binaryMountPath }}
+              readOnly: true
+            {{- end }}
+            {{- range .Values.extraHostPaths }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+              {{- if hasKey . "readOnly" }}
+              readOnly: {{ .readOnly }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+      {{- if or .Values.hostDocker.enabled .Values.hostDocker.mountBinary .Values.extraHostPaths }}
+      volumes:
+        {{- if .Values.hostDocker.enabled }}
+        - name: docker-socket
+          hostPath:
+            path: {{ .Values.hostDocker.socketPath }}
+            type: Socket
+        {{- end }}
+        {{- if .Values.hostDocker.mountBinary }}
+        - name: docker-binary
+          hostPath:
+            path: {{ .Values.hostDocker.binaryPath }}
+            type: File
+        {{- end }}
+        {{- range .Values.extraHostPaths }}
+        - name: {{ .name }}
+          hostPath:
+            path: {{ .hostPath }}
+            {{- if .type }}
+            type: {{ .type }}
+            {{- end }}
+        {{- end }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
