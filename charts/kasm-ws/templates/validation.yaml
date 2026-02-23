@@ -1,0 +1,21 @@
+{{/*
+Validate mutually exclusive DB modes and required CNPG settings.
+*/}}
+{{- if and .Values.database.standalone .Values.database.useCnpgCluster.enabled -}}
+  {{- fail "The database.standalone and database.useCnpgCluster.enabled options cannot both be true. Choose either generic standalone DB mode or CNPG cluster mode." -}}
+{{- end -}}
+
+{{- if .Values.database.useCnpgCluster.enabled -}}
+  {{- if empty .Values.database.useCnpgCluster.clusterName -}}
+    {{- fail "database.useCnpgCluster.clusterName must be set when CNPG mode is enabled." -}}
+  {{- end -}}
+  {{- if empty .Values.database.useCnpgCluster.secretKeys.database -}}
+    {{- fail "database.useCnpgCluster.secretKeys.database must be set when CNPG mode is enabled." -}}
+  {{- end -}}
+  {{- if empty .Values.database.useCnpgCluster.secretKeys.username -}}
+    {{- fail "database.useCnpgCluster.secretKeys.username must be set when CNPG mode is enabled." -}}
+  {{- end -}}
+  {{- if empty .Values.database.useCnpgCluster.secretKeys.password -}}
+    {{- fail "database.useCnpgCluster.secretKeys.password must be set when CNPG mode is enabled." -}}
+  {{- end -}}
+{{- end -}}
