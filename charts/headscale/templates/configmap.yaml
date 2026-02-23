@@ -7,7 +7,7 @@ metadata:
   labels:
     {{- include "headscale.labels" . | nindent 4 }}
   annotations:
-    checksum/values: {{ print .Values | sha256sum }}
+    checksum/config: {{ include "headscale.configChecksum" . }}
 data:
   config.yaml: |
     {{- include "headscale.generatedConfig" . | nindent 4 }}

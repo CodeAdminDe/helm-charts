@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "headscale.labels" . | nindent 4 }}
   annotations:
-    checksum/values: {{ print .Values | sha256sum }}
+    checksum/values: {{ toJson .Values | sha256sum }}
     checksum/config: {{ include "headscale.configChecksum" . }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
@@ -66,12 +66,30 @@ spec:
             - name: {{ $key }}
               value: {{ $value | quote }}
             {{- end }}
-            {{- range $key, $secret := .Values.additionalEnvSecrets }}
-            - name: {{ $key }}
+            {{- if kindIs "map" .Values.additionalEnvSecrets }}
+            {{- range $envName, $secretConfig := .Values.additionalEnvSecrets }}
+              {{- if kindIs "string" $secretConfig }}
+            - name: {{ $envName }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ $secret }}
-                  key: {{ $key | quote }}
+                  name: {{ $secretConfig }}
+                  key: {{ $envName | quote }}
+              {{- else if kindIs "map" $secretConfig }}
+            - name: {{ default $envName (index $secretConfig "name") }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "" (index $secretConfig "secretName") }}
+                  key: {{ default $envName (index $secretConfig "secretKey") | quote }}
+              {{- end }}
+            {{- end }}
+            {{- else if kindIs "slice" .Values.additionalEnvSecrets }}
+            {{- range $entry := .Values.additionalEnvSecrets }}
+            - name: {{ $entry.name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $entry.secretName }}
+                  key: {{ default $entry.name $entry.secretKey | quote }}
+            {{- end }}
             {{- end }}
             {{- if and (eq .Values.database.mode "postgres") (not .Values.database.useCnpgCluster.enabled) }}
             - name: HEADSCALE_DATABASE_POSTGRES_PASS

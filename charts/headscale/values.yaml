@@ -131,7 +131,8 @@ database:
     port: 5432
     name: "headscale"
     user: "headscale"
-    ssl: "disable"
+    # -- SSL mode for direct/external Postgres usage.
+    ssl: "require"
     maxOpenConns: 10
     maxIdleConns: 10
     connMaxIdleTimeSecs: 3600
@@ -147,6 +148,8 @@ database:
     clusterName: "cnpg-cluster"
     appConnectionSecretName: ""
     port: 5432
+    # -- SSL mode override for CNPG connectivity.
+    ssl: "require"
     secretKeys:
       database: "dbname"
       username: "username"
@@ -216,8 +219,11 @@ ingress:
     proxyRequestBuffering: "off"
     proxyHttpVersion: "1.1"
     websocket:
-      enabled: true
-      annotationKey: "nginx.org/websocket-services"
+      # -- Inject websocket annotation. Keep disabled for ingress-nginx defaults.
+      enabled: false
+      # -- Annotation key to use when websocket annotation injection is enabled.
+      # Example for NGINX Plus: nginx.org/websocket-services
+      annotationKey: ""
   hosts:
     - host: chart-example.local
       paths:
@@ -299,6 +305,8 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 3
   targetCPUUtilizationPercentage: 80
+  enableMemoryUtilization: false
+  targetMemoryUtilizationPercentage: 80
 
 # -- RuntimeClass names.
 runtimeClass:
@@ -310,7 +318,7 @@ runtimeClass:
 env: {}
 
 # -- Additional env vars from existing secrets.
-# @description Map ENV_KEY to secret name containing the same key.
+# @description Supports either map style (`ENV: secretName`) or list style entries (`[{name, secretName, secretKey}]`).
 additionalEnvSecrets: {}
 
 # -- CiliumNetworkPolicies dependency toggle.

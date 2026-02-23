@@ -6,7 +6,7 @@
 {{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-buffering" (.Values.ingress.secureDefaults.proxyBuffering | toString) -}}
 {{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-request-buffering" (.Values.ingress.secureDefaults.proxyRequestBuffering | toString) -}}
 {{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-http-version" (.Values.ingress.secureDefaults.proxyHttpVersion | toString) -}}
-{{- if .Values.ingress.secureDefaults.websocket.enabled -}}
+{{- if and .Values.ingress.secureDefaults.websocket.enabled .Values.ingress.secureDefaults.websocket.annotationKey -}}
 {{- $_ := set $annotations .Values.ingress.secureDefaults.websocket.annotationKey (include "headscale.fullname" .) -}}
 {{- end -}}
 {{- end -}}

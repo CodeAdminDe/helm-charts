@@ -6,8 +6,6 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "headscale.labels" . | nindent 4 }}
-  annotations:
-    checksum/values: {{ print .Values | sha256sum }}
 spec:
   accessModes:
     {{- toYaml .Values.persistence.accessModes | nindent 4 }}
