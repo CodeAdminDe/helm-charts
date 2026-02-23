@@ -134,6 +134,6 @@ spec:
           {{- else }}
           resources: {{- include "resources.preset" (dict "node" $constants.api.component "size" .Values.deploymentSize) | nindent 12 }}
           {{- end }}
-          {{- if .Values.applyPodSecurity }}
+          {{- if .Values.applySecurity }}
             {{- include "kasm.containerSecurity" . | indent 10 }}
           {{- end }}
