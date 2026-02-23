@@ -170,6 +170,22 @@ database:
   #   name: kasm-db-secret
   #   key: kasm-db-secret-key
 
+  # database.useCnpgCluster -- Configure usage of an existing in-namespace CNPG Cluster.
+  # @description Enables consumption of an already deployed CloudNativePG cluster without deploying the in-chart DB StatefulSet.
+  # Notes:
+  #  * Requires an existing CNPG cluster in the same namespace.
+  #  * App secret name defaults to `<clusterName>-app` when appConnectionSecretName is empty.
+  #  * If database.kasmDbSecret is set, it takes precedence over CNPG app secret for DB password lookups.
+  useCnpgCluster:
+    enabled: false
+    clusterName: "cnpg-cluster"
+    appConnectionSecretName: ""
+    port: 5432
+    secretKeys:
+      database: "dbname"
+      username: "username"
+      password: "password"
+
   # database.postgresMasterUser -- An object defining the PostgreSQL DB Master user and the Kubernetes secret and key values for
   # the Master DB password. These credentials are only used by the `db-init-job` to create the `kasmDbName` database, the `kasmDbUser`
   # user account, set permissions for the user account, and initialize and pre-seed the Kasm Database.

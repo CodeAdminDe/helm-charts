@@ -27,11 +27,11 @@ proxy:
   extHttps: 443
 db:
   component: db
-  svc: {{ .Values.database.hostname }}
+  svc: {{ ternary (printf "%s-rw" .Values.database.useCnpgCluster.clusterName) .Values.database.hostname .Values.database.useCnpgCluster.enabled }}
   portName: db-pt
   name: {{ printf "%s-db" .Release.Name }}
   image: {{ printf "%s:%s" .Values.database.image.repository .Values.database.image.tag }}
-  port: {{ .Values.database.port }}
+  port: {{ ternary .Values.database.useCnpgCluster.port .Values.database.port .Values.database.useCnpgCluster.enabled }}
 guac:
   component: guac
   svc: kasm-guac
@@ -58,6 +58,18 @@ rdpHttpsGateway:
   name: {{ printf "%s-rdp-https-gw" .Release.Name }}
   image: {{ printf "%s:%s" .Values.components.rdpHttpsGateway.image.repository .Values.components.rdpHttpsGateway.image.tag }}
   port: 9443
+{{- end }}
+
+{{/*
+Resolve CNPG app connection secret name.
+Defaults to <clusterName>-app when appConnectionSecretName is not provided.
+*/}}
+{{- define "kasm.cnpg.appConnectionSecretName" -}}
+{{- if .Values.database.useCnpgCluster.appConnectionSecretName -}}
+{{- .Values.database.useCnpgCluster.appConnectionSecretName -}}
+{{- else -}}
+{{- printf "%s-app" .Values.database.useCnpgCluster.clusterName -}}
+{{- end -}}
 {{- end }}
 
 {{/*

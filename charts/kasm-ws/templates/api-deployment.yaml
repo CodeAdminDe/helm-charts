@@ -72,14 +72,31 @@ spec:
             - name: POSTGRES_PORT
               value: {{ $constants.db.port | quote }}
             - name: POSTGRES_DB
+              {{- if .Values.database.useCnpgCluster.enabled }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "kasm.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.database | quote }}
+              {{- else }}
               value: {{ .Values.database.kasmDbName }}
+              {{- end }}
             - name: POSTGRES_USER
+              {{- if .Values.database.useCnpgCluster.enabled }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "kasm.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.username | quote }}
+              {{- else }}
               value: {{ .Values.database.kasmDbUser }}
+              {{- end }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                 {{- if .Values.database.kasmDbSecret -}}
                 {{ .Values.database.kasmDbSecret | toYaml | nindent 18 }}
+                {{- else if .Values.database.useCnpgCluster.enabled }}
+                  name: {{ include "kasm.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.password | quote }}
                 {{- else }}
                   name: {{ .Release.Name }}-secrets
                   key: "db-password"
@@ -107,14 +124,31 @@ spec:
             - name: POSTGRES_PORT
               value: {{ $constants.db.port | quote }}
             - name: POSTGRES_DB
+              {{- if .Values.database.useCnpgCluster.enabled }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "kasm.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.database | quote }}
+              {{- else }}
               value: {{ .Values.database.kasmDbName }}
+              {{- end }}
             - name: POSTGRES_USER
+              {{- if .Values.database.useCnpgCluster.enabled }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "kasm.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.username | quote }}
+              {{- else }}
               value: {{ .Values.database.kasmDbUser }}
+              {{- end }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                 {{- if .Values.database.kasmDbSecret -}}
                 {{ .Values.database.kasmDbSecret | toYaml | nindent 18 }}
+                {{- else if .Values.database.useCnpgCluster.enabled }}
+                  name: {{ include "kasm.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.password | quote }}
                 {{- else }}
                   name: {{ .Release.Name }}-secrets
                   key: "db-password"
