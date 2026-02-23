@@ -1049,6 +1049,45 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/coturn-server-0.1.0/coturn-server-0.1.0.tgz
     version: 0.1.0
+  headscale:
+  - annotations:
+      category: Networking
+      images: |
+        - name: headscale
+          image: headscale/headscale:0.28.0
+      kubeVersion: '>=1.24.0'
+      securityContext: required
+    apiVersion: v2
+    appVersion: 0.28.0
+    created: "2026-02-23T22:02:38.196676789Z"
+    dependencies:
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for an easier headscale (https://headscale.net) deployment
+      on Kubernetes. Please note that this is a private helm chart and not directly
+      or indirectly affiliated with headscale or its authors.
+    digest: ffaafe0c76bf3ed5c670d8a797f77e4f9ee2437b1cd1e0d813e1ce87420a30e4
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - headscale
+    - tailscale
+    - vpn
+    - mesh-network
+    - networking
+    - cloud-native
+    - helm
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: headscale
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/headscale-0.1.0/headscale-0.1.0.tgz
+    version: 0.1.0
   libchart-cnps:
   - apiVersion: v2
     appVersion: 0.2.0
@@ -12712,4 +12751,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-23T21:10:48.521015461Z"
+generated: "2026-02-23T22:02:38.197503793Z"
