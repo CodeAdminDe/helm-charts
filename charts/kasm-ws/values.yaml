@@ -217,8 +217,8 @@ database:
     # database.storage.retentionPolicy -- Configure how the DB volume should be retained or deleted throughout the DB's lifecycle
     #
     retentionPolicy:
-      whenDeleted: Retain
-      whenScaled: Retain
+      whenDeleted: Delete
+      whenScaled: Delete
   # database.annotations -- Custom annotations to add to the Kasm DB StatefulSet
   annotations: {}
   # database.resources -- Manually configure the Kasm DB StatefulSet resources. This overrides the pre-defined `deploymentSize` values.
