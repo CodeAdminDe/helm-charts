@@ -64,7 +64,7 @@ spec:
         {{- include "kasm.podSecurity" . | indent 6 }}
       {{- end }}
       initContainers:
-        {{- include "kasm.initContainer" (dict "serviceName" $constants.api.svc "servicePort" $constants.api.port "path" "/api/__healthcheck" "schema" "http" "image" $constants.api.image) | indent 8 }}
+{{- include "kasm.initContainer" (dict "serviceName" $constants.api.svc "servicePort" $constants.api.port "path" "/api/__healthcheck" "schema" "http" "image" $constants.api.image) | nindent 8 }}
         {{- if and $.Values.applySecurity $.Values.securityCompatibility.rootInitContainers.rdpHttpsGateway }}
         - name: {{ $constants.rdpHttpsGateway.name }}-tmp-perms
           image: {{ $constants.api.image }}
@@ -122,7 +122,7 @@ spec:
           resources: {{- include "resources.preset" (dict "node" $constants.rdpHttpsGateway.component "size" $.Values.deploymentSize) | nindent 12 }}
           {{- end }}
           {{- if $.Values.applySecurity }}
-            {{- include "kasm.containerSecurity" . | indent 10 }}
+{{- include "kasm.containerSecurity" . | nindent 10 }}
           {{- end }}
           volumeMounts:
             - name: {{ $constants.rdpHttpsGateway.name }}-cert
