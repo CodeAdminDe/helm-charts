@@ -65,7 +65,7 @@ spec:
       {{- end }}
       initContainers:
         {{- include "kasm.initContainer" (dict "serviceName" $constants.api.svc "servicePort" $constants.api.port "path" "/api/__healthcheck" "schema" "http" "image" $constants.api.image) | indent 8 }}
-        {{- if $.Values.applySecurity }}
+        {{- if and $.Values.applySecurity $.Values.securityCompatibility.rootInitContainers.rdpHttpsGateway }}
         - name: {{ $constants.rdpHttpsGateway.name }}-tmp-perms
           image: {{ $constants.api.image }}
           imagePullPolicy: IfNotPresent

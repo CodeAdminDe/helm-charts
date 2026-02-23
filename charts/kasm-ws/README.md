@@ -108,7 +108,7 @@ object
 			<td>Configure node affinity settings for Kasm pods - [Kubernetes Affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/). Kasm is not guaranteed to work with Affinity settings - use caution if you must configuring these settings. The below, optional object passes in raw Affinity rules for Pods, Nodes, etc. for your environment. Make sure you use the correct values below as this Helm chart will not do any error checking for you. </td>
 		</tr>
 		<tr>
-			<td id="annotations--certSecret"><a href="./values.yaml#L542">annotations.certSecret</a></td>
+			<td id="annotations--certSecret"><a href="./values.yaml#L559">annotations.certSecret</a></td>
 			<td>
 object
 </td>
@@ -122,7 +122,7 @@ object
 			<td>Additional certSecret annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--configMap"><a href="./values.yaml#L544">annotations.configMap</a></td>
+			<td id="annotations--configMap"><a href="./values.yaml#L561">annotations.configMap</a></td>
 			<td>
 object
 </td>
@@ -136,7 +136,7 @@ object
 			<td>Additional configMap annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--cron"><a href="./values.yaml#L546">annotations.cron</a></td>
+			<td id="annotations--cron"><a href="./values.yaml#L563">annotations.cron</a></td>
 			<td>
 object
 </td>
@@ -150,7 +150,7 @@ object
 			<td>Additional cron pod cron labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--cronPod"><a href="./values.yaml#L548">annotations.cronPod</a></td>
+			<td id="annotations--cronPod"><a href="./values.yaml#L565">annotations.cronPod</a></td>
 			<td>
 object
 </td>
@@ -164,7 +164,7 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="annotations--deployment"><a href="./values.yaml#L550">annotations.deployment</a></td>
+			<td id="annotations--deployment"><a href="./values.yaml#L567">annotations.deployment</a></td>
 			<td>
 object
 </td>
@@ -178,7 +178,7 @@ object
 			<td>Additional deployment annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--pod"><a href="./values.yaml#L552">annotations.pod</a></td>
+			<td id="annotations--pod"><a href="./values.yaml#L569">annotations.pod</a></td>
 			<td>
 object
 </td>
@@ -192,7 +192,7 @@ object
 			<td>Additional pod annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--pvc"><a href="./values.yaml#L554">annotations.pvc</a></td>
+			<td id="annotations--pvc"><a href="./values.yaml#L571">annotations.pvc</a></td>
 			<td>
 object
 </td>
@@ -206,7 +206,7 @@ object
 			<td>Additional PersistentVolumeClaim annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--secret"><a href="./values.yaml#L558">annotations.secret</a></td>
+			<td id="annotations--secret"><a href="./values.yaml#L575">annotations.secret</a></td>
 			<td>
 object
 </td>
@@ -220,7 +220,7 @@ object
 			<td>Additional secret annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--service"><a href="./values.yaml#L556">annotations.service</a></td>
+			<td id="annotations--service"><a href="./values.yaml#L573">annotations.service</a></td>
 			<td>
 object
 </td>
@@ -234,7 +234,7 @@ object
 			<td>Additional service annotations to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="annotations--statefulSet"><a href="./values.yaml#L560">annotations.statefulSet</a></td>
+			<td id="annotations--statefulSet"><a href="./values.yaml#L577">annotations.statefulSet</a></td>
 			<td>
 object
 </td>
@@ -1602,7 +1602,7 @@ string
 			<td>Define the estimated size of the Kasm deployment in expected session load.  small  = Up to 10-15 sessions  medium = Up to 25-30 sessions  large  = Up to 50+ sessions </td>
 		</tr>
 		<tr>
-			<td id="extraLabels--certSecret"><a href="./values.yaml#L568">extraLabels.certSecret</a></td>
+			<td id="extraLabels--certSecret"><a href="./values.yaml#L585">extraLabels.certSecret</a></td>
 			<td>
 object
 </td>
@@ -1616,7 +1616,7 @@ object
 			<td>Additional statefulSet labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--configMap"><a href="./values.yaml#L570">extraLabels.configMap</a></td>
+			<td id="extraLabels--configMap"><a href="./values.yaml#L587">extraLabels.configMap</a></td>
 			<td>
 object
 </td>
@@ -1630,7 +1630,7 @@ object
 			<td>Additional configMap labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--cron"><a href="./values.yaml#L584">extraLabels.cron</a></td>
+			<td id="extraLabels--cron"><a href="./values.yaml#L601">extraLabels.cron</a></td>
 			<td>
 object
 </td>
@@ -1644,7 +1644,7 @@ object
 			<td>Additional cron labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--cronPod"><a href="./values.yaml#L586">extraLabels.cronPod</a></td>
+			<td id="extraLabels--cronPod"><a href="./values.yaml#L603">extraLabels.cronPod</a></td>
 			<td>
 object
 </td>
@@ -1658,7 +1658,7 @@ object
 			<td>Additional cron Pod labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--deployment"><a href="./values.yaml#L572">extraLabels.deployment</a></td>
+			<td id="extraLabels--deployment"><a href="./values.yaml#L589">extraLabels.deployment</a></td>
 			<td>
 object
 </td>
@@ -1672,7 +1672,7 @@ object
 			<td>Additional deployment labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--job"><a href="./values.yaml#L580">extraLabels.job</a></td>
+			<td id="extraLabels--job"><a href="./values.yaml#L597">extraLabels.job</a></td>
 			<td>
 object
 </td>
@@ -1686,7 +1686,7 @@ object
 			<td>Additional job labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--jobPod"><a href="./values.yaml#L582">extraLabels.jobPod</a></td>
+			<td id="extraLabels--jobPod"><a href="./values.yaml#L599">extraLabels.jobPod</a></td>
 			<td>
 object
 </td>
@@ -1700,7 +1700,7 @@ object
 			<td>Additional job Pod labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--pod"><a href="./values.yaml#L574">extraLabels.pod</a></td>
+			<td id="extraLabels--pod"><a href="./values.yaml#L591">extraLabels.pod</a></td>
 			<td>
 object
 </td>
@@ -1714,7 +1714,7 @@ object
 			<td>Additional pod labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--pvc"><a href="./values.yaml#L588">extraLabels.pvc</a></td>
+			<td id="extraLabels--pvc"><a href="./values.yaml#L605">extraLabels.pvc</a></td>
 			<td>
 object
 </td>
@@ -1728,7 +1728,7 @@ object
 			<td>Additional PersistentVolumeClaim labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--secret"><a href="./values.yaml#L576">extraLabels.secret</a></td>
+			<td id="extraLabels--secret"><a href="./values.yaml#L593">extraLabels.secret</a></td>
 			<td>
 object
 </td>
@@ -1742,7 +1742,7 @@ object
 			<td>Additional secret labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--service"><a href="./values.yaml#L578">extraLabels.service</a></td>
+			<td id="extraLabels--service"><a href="./values.yaml#L595">extraLabels.service</a></td>
 			<td>
 object
 </td>
@@ -1756,7 +1756,7 @@ object
 			<td>Additional service labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraLabels--statefulSet"><a href="./values.yaml#L590">extraLabels.statefulSet</a></td>
+			<td id="extraLabels--statefulSet"><a href="./values.yaml#L607">extraLabels.statefulSet</a></td>
 			<td>
 object
 </td>
@@ -1770,7 +1770,7 @@ object
 			<td>Additional statefulSet labels to apply to resources created by this chart</td>
 		</tr>
 		<tr>
-			<td id="extraObjects"><a href="./values.yaml#L595">extraObjects</a></td>
+			<td id="extraObjects"><a href="./values.yaml#L612">extraObjects</a></td>
 			<td>
 list
 </td>
@@ -2047,7 +2047,7 @@ list
 			<td>This is a list of objects defining different Kasm Zone configurations for your deployment. This configuration is typically used for multi-region, large, or custom deployments where the customer requires a high degree of configurability and has multiple resources in disparate areas.  NOTE: If you configure custom zones below, you MUST use a valid `ingress` configuration due to the increased deployment complexity of a multi-zone Kasm deployment. Refer to the Kasm [Deployment Zones](https://docs.kasm.com/docs/guide/deployment_zones) documentation for more information on Kasm Zones.  The first zone in the list is treated as the primary zone. Traffic to the configured `publicAddr` in the ingress rule will be routed to this primary zone. </td>
 		</tr>
 		<tr>
-			<td id="labels"><a href="./values.yaml#L534">labels</a></td>
+			<td id="labels"><a href="./values.yaml#L551">labels</a></td>
 			<td>
 object
 </td>
@@ -2152,7 +2152,7 @@ string
 			<td>Set the access URL to be used for the Kasm deployment. This is the URL you will use to access your Kasm deployment. This URL can be a private address, it just needs to be resolvable by systems you use to interface with Kasm.  If you create a self-signed or custom certificate, this is the value you should assign as the Common Name associated with the certificate. If `certificate.certManager.enabled` is set to true, this is the name used to generate the certificate. </td>
 		</tr>
 		<tr>
-			<td id="restartPolicy"><a href="./values.yaml#L530">restartPolicy</a></td>
+			<td id="restartPolicy"><a href="./values.yaml#L547">restartPolicy</a></td>
 			<td>
 string
 </td>
@@ -2271,6 +2271,113 @@ object
 </div>
 			</td>
 			<td>Sets the runtimeClass for the containers which gets executed by the test hook. Takes the runtimeClass name, or "" (default).</td>
+		</tr>
+		<tr>
+			<td id="securityCompatibility"><a href="./values.yaml#L530">securityCompatibility</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "rootInitContainers": {
+    "db": false,
+    "dbBackupCron": false,
+    "guac": false,
+    "proxy": false,
+    "rdpGateway": false,
+    "rdpHttpsGateway": false
+  }
+}
+</pre>
+</div>
+			</td>
+			<td>Backward-compatibility toggles for permission/bootstrap behavior. @description Enable specific root init containers only if your storage/runtime needs in-place ownership changes.</td>
+		</tr>
+		<tr>
+			<td id="securityCompatibility--rootInitContainers--db"><a href="./values.yaml#L541">securityCompatibility.rootInitContainers.db</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Enable root permission init container for the Kasm DB StatefulSet.</td>
+		</tr>
+		<tr>
+			<td id="securityCompatibility--rootInitContainers--dbBackupCron"><a href="./values.yaml#L543">securityCompatibility.rootInitContainers.dbBackupCron</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Enable root permission init container for the DB backup cron job.</td>
+		</tr>
+		<tr>
+			<td id="securityCompatibility--rootInitContainers--guac"><a href="./values.yaml#L535">securityCompatibility.rootInitContainers.guac</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Enable root permission init container for the Kasm guac deployment.</td>
+		</tr>
+		<tr>
+			<td id="securityCompatibility--rootInitContainers--proxy"><a href="./values.yaml#L533">securityCompatibility.rootInitContainers.proxy</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Enable root permission init container for the Kasm proxy deployment.</td>
+		</tr>
+		<tr>
+			<td id="securityCompatibility--rootInitContainers--rdpGateway"><a href="./values.yaml#L537">securityCompatibility.rootInitContainers.rdpGateway</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Enable root permission init container for the Kasm RDP gateway deployment.</td>
+		</tr>
+		<tr>
+			<td id="securityCompatibility--rootInitContainers--rdpHttpsGateway"><a href="./values.yaml#L539">securityCompatibility.rootInitContainers.rdpHttpsGateway</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Enable root permission init container for the Kasm RDP HTTPS gateway deployment.</td>
 		</tr>
 	</tbody>
 </table>

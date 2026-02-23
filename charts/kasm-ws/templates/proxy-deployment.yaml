@@ -69,7 +69,7 @@ spec:
         {{- include "kasm.podSecurity" . | indent 6 }}
       {{- end }}
       initContainers:
-        {{- if $values.applySecurity }}
+        {{- if and $values.applySecurity $values.securityCompatibility.rootInitContainers.proxy }}
         - name: {{ $constants.proxy.name }}-data-perms
           image: {{ $constants.api.image }}
           imagePullPolicy: IfNotPresent
