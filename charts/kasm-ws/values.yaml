@@ -445,6 +445,36 @@ runtimeClass:
   # -- (string/runtimeClassName) Sets the runtimeClass for the containers which gets executed by the test hook. Takes the runtimeClass name, or "" (default).
   tests: ""
 
+# -- Role-Based Access Control configuration for manager/session orchestration.
+rbac:
+  # -- Create namespace-scoped RBAC resources (Role + RoleBinding).
+  create: false
+  # -- Override Role rules. If empty, a least-privilege baseline is used.
+  # @raw
+  #
+  # <details>
+  # <summary>Default baseline rules (Expand)</summary>
+  #
+  # - apiGroups: [""]
+  #   resources: ["pods", "services", "persistentvolumeclaims"]
+  #   verbs: ["get", "list", "watch", "create", "delete"]
+  # - apiGroups: [""]
+  #   resources: ["pods/log", "pods/status"]
+  #   verbs: ["get"]
+  #
+  # </details>
+  rules: []
+  serviceAccount:
+    # -- Create a dedicated ServiceAccount for manager workloads.
+    create: false
+    # -- Name of the ServiceAccount to use.
+    # @description If create=true and this is empty, defaults to "<release-name>-manager". If create=false, this should reference an existing ServiceAccount.
+    name: ""
+    # -- ServiceAccount annotations (e.g., workload identity / IAM role bindings).
+    annotations: {}
+    # -- Automatically mount ServiceAccount API credentials into manager pods.
+    automountServiceAccountToken: true
+
 # -- Cilium Network Policies configuration
 libchartCnps:
   # -- Enable Cilium Network Policies

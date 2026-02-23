@@ -50,6 +50,8 @@ spec:
       {{- end }}
     spec:
       restartPolicy: {{ $values.restartPolicy }}
+      serviceAccountName: {{ include "kasm.serviceAccountName" $ }}
+      automountServiceAccountToken: {{ $values.rbac.serviceAccount.automountServiceAccountToken }}
       {{- if $values.runtimeClass.pods }}
       runtimeClassName: {{ $values.runtimeClass.pods }}
       {{- end }}
