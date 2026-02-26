@@ -22,6 +22,8 @@ data:
     EmbeddedIdP:
       Enabled: {{ .Values.auth.embeddedIdp.enabled }}
       DataDir: {{ .Values.auth.embeddedIdp.dataDir | quote }}
+    Auth:
+      LocalAuthDisabled: {{ .Values.auth.localAuth.localAuthDisabled }}
     {{- if .Values.turn.enabled }}
     Stuns:
       - Proto: udp

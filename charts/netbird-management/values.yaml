@@ -37,6 +37,9 @@ auth:
     enabled: false
     # -- Data directory inside the container (mapped via PVC)
     dataDir: "/var/lib/netbird/idp"
+  localAuth:
+    # -- Disable local user authentication (server.auth.localAuthDisabled)
+    localAuthDisabled: false
   externalProviders:
     # -- Configure external IdPs via API/UI or legacy Helm-driven config
     managedBy:
