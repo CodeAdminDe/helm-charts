@@ -190,8 +190,8 @@ management:
 
 # -- Combined Server (management + signal + relay)
 server:
-  # -- Enable combined server
-  enabled: true
+  # -- Enable combined server (only applies when mode.architecture is "combined")
+  enabled: false
   # -- Number of server replicas
   replicaCount: 1
   # -- Server image repository, tag and pullPolicy
@@ -512,6 +512,7 @@ authentik:
   # -- Authentik client ID
   clientId: "your-client-id"
   # -- Authentik client secret (only required for confidential clients)
+  # @description Sensitive: prefer existingAuthentikOidcSecret / existingAuthentikDeviceOidcSecret or external secret managers. Leaving this empty uses the chart's secret fallback.
   clientSecret: ""
   # -- OIDC scopes to request
   scopes: "openid profile email offline_access api"
@@ -522,6 +523,7 @@ authentik:
     # -- Service account username
     username: "netbird"
     # -- Service account password
+    # @description Sensitive: prefer existingAuthentikOidcSecret or external secret managers. Leaving this empty uses the chart's secret fallback.
     password: ""
   # -- Device code flow configuration
   device:
@@ -532,6 +534,7 @@ authentik:
     # -- Device code flow client ID
     clientId: "your-client-id"
     # -- Device code flow client secret (only required for confidential clients)
+    # @description Sensitive: prefer existingAuthentikDeviceOidcSecret or external secret managers. Leaving this empty uses the chart's secret fallback.
     clientSecret: ""
     # -- Device code flow OIDC scopes
     scopes: "openid"
