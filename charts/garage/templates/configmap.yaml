@@ -1,0 +1,14 @@
+{{- if not .Values.garage.existingConfigMap.name -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "garage.configMapName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "garage.labels" . | nindent 4 }}
+  annotations:
+    checksum/config: {{ include "garage.generatedConfig" . | sha256sum }}
+data:
+  garage.toml: |-
+{{ include "garage.generatedConfig" . | nindent 4 }}
+{{- end -}}

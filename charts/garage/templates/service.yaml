@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "garage.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "garage.labels" . | nindent 4 }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: s3-api
+      port: {{ .Values.service.s3Api.port }}
+      targetPort: {{ .Values.service.s3Api.targetPort }}
+      protocol: {{ .Values.service.s3Api.targetProtocol }}
+    {{- if and .Values.garage.s3Web.enabled .Values.service.s3Web.enabled }}
+    - name: s3-web
+      port: {{ .Values.service.s3Web.port }}
+      targetPort: {{ .Values.service.s3Web.targetPort }}
+      protocol: {{ .Values.service.s3Web.targetProtocol }}
+    {{- end }}
+    {{- if and .Values.garage.admin.enabled .Values.service.admin.enabled }}
+    - name: admin
+      port: {{ .Values.service.admin.port }}
+      targetPort: {{ .Values.service.admin.targetPort }}
+      protocol: {{ .Values.service.admin.targetProtocol }}
+    {{- end }}
+  selector:
+    {{- include "garage.selectorLabels" . | nindent 4 }}

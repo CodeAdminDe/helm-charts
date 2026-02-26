@@ -1,0 +1,198 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "garage.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "garage.labels" . | nindent 4 }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+spec:
+  serviceName: {{ include "garage.fullname" . }}-headless
+  replicas: {{ .Values.replicaCount }}
+  podManagementPolicy: {{ .Values.podManagementPolicy }}
+  selector:
+    matchLabels:
+      {{- include "garage.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "garage.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/config: {{ include "garage.configChecksum" . }}
+        checksum/secret: {{ include "garage.secretChecksum" . }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      serviceAccountName: {{ include "garage.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      {{- if and .Values.applySecurity .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ include "garage.name" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: rpc
+              containerPort: {{ .Values.service.rpc.targetPort }}
+              protocol: {{ .Values.service.rpc.targetProtocol }}
+            - name: s3-api
+              containerPort: {{ .Values.service.s3Api.targetPort }}
+              protocol: {{ .Values.service.s3Api.targetProtocol }}
+            {{- if .Values.garage.s3Web.enabled }}
+            - name: s3-web
+              containerPort: {{ .Values.service.s3Web.targetPort }}
+              protocol: {{ .Values.service.s3Web.targetProtocol }}
+            {{- end }}
+            {{- if .Values.garage.admin.enabled }}
+            - name: admin
+              containerPort: {{ .Values.service.admin.targetPort }}
+              protocol: {{ .Values.service.admin.targetProtocol }}
+            {{- end }}
+          env:
+            - name: GARAGE_RPC_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "garage.authSecretName" . }}
+                  key: {{ .Values.secrets.existingSecret.keys.rpcSecret | quote }}
+            {{- if .Values.garage.admin.enabled }}
+            - name: GARAGE_ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "garage.authSecretName" . }}
+                  key: {{ .Values.secrets.existingSecret.keys.adminToken | quote }}
+            - name: GARAGE_METRICS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "garage.authSecretName" . }}
+                  key: {{ .Values.secrets.existingSecret.keys.metricsToken | quote }}
+            {{- end }}
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- if kindIs "map" .Values.additionalEnvSecrets }}
+            {{- range $envName, $secretConfig := .Values.additionalEnvSecrets }}
+              {{- if kindIs "string" $secretConfig }}
+            - name: {{ $envName }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretConfig }}
+                  key: {{ $envName | quote }}
+              {{- else if kindIs "map" $secretConfig }}
+            - name: {{ default $envName (index $secretConfig "name") }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "" (index $secretConfig "secretName") }}
+                  key: {{ default $envName (index $secretConfig "secretKey") | quote }}
+              {{- end }}
+            {{- end }}
+            {{- else if kindIs "slice" .Values.additionalEnvSecrets }}
+            {{- range $entry := .Values.additionalEnvSecrets }}
+            - name: {{ $entry.name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $entry.secretName }}
+                  key: {{ default $entry.name $entry.secretKey | quote }}
+            {{- end }}
+            {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/garage.toml
+              subPath: garage.toml
+              readOnly: true
+            - name: meta
+              mountPath: /var/lib/garage/meta
+            - name: data
+              mountPath: /var/lib/garage/data
+            - name: tmp
+              mountPath: /tmp
+            {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- if and .Values.applySecurity .Values.securityContext }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          {{- if .Values.applyHealthChecks }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "garage.configMapName" . }}
+            items:
+              - key: {{ .Values.garage.existingConfigMap.key }}
+                path: garage.toml
+        - name: tmp
+          emptyDir:
+            sizeLimit: {{ .Values.persistence.tmp.emptyDirSizeLimit }}
+        {{- if not .Values.persistence.enabled }}
+        - name: meta
+          emptyDir:
+            sizeLimit: {{ .Values.persistence.meta.emptyDirSizeLimit }}
+        - name: data
+          emptyDir:
+            sizeLimit: {{ .Values.persistence.data.emptyDirSizeLimit }}
+        {{- end }}
+        {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: meta
+      spec:
+        accessModes:
+          {{- toYaml .Values.persistence.meta.accessModes | nindent 10 }}
+        {{- if .Values.persistence.meta.storageClass }}
+        storageClassName: {{ .Values.persistence.meta.storageClass | quote }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.meta.size | quote }}
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          {{- toYaml .Values.persistence.data.accessModes | nindent 10 }}
+        {{- if .Values.persistence.data.storageClass }}
+        storageClassName: {{ .Values.persistence.data.storageClass | quote }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.data.size | quote }}
+  {{- end }}

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "garage.fullname" . }}-headless
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "garage.labels" . | nindent 4 }}
+  {{- with .Values.service.headless.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  publishNotReadyAddresses: true
+  ports:
+    - name: rpc
+      port: {{ .Values.service.rpc.port }}
+      targetPort: {{ .Values.service.rpc.targetPort }}
+      protocol: {{ .Values.service.rpc.targetProtocol }}
+  selector:
+    {{- include "garage.selectorLabels" . | nindent 4 }}

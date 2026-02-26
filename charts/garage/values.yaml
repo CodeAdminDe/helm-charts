@@ -1,0 +1,440 @@
+# -- Number of Garage pod replicas (StatefulSet).
+replicaCount: 3
+
+# -- StatefulSet pod management policy (`OrderedReady` or `Parallel`).
+podManagementPolicy: OrderedReady
+
+# -- Termination grace period in seconds for Garage pods.
+terminationGracePeriodSeconds: 60
+
+# -- Override release-based naming.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- Container image configuration.
+image:
+  # -- Image repository.
+  repository: dxflrs/garage
+  # -- Image pull policy.
+  pullPolicy: IfNotPresent
+  # -- Image tag override (defaults to .Chart.AppVersion when empty).
+  tag: ""
+
+# -- Image pull secrets (for private registries).
+imagePullSecrets: []
+
+# -- RuntimeClass names.
+runtimeClass:
+  # -- RuntimeClass for StatefulSet pods.
+  pods: ""
+  # -- RuntimeClass for helm test pods.
+  tests: ""
+
+# -- Kubernetes Service configuration.
+service:
+  # -- Service type. This chart enforces ClusterIP.
+  type: ClusterIP
+  # -- Service annotations for the primary ClusterIP service.
+  annotations: {}
+  s3Api:
+    # -- Public S3 API service port.
+    port: 3900
+    # -- Container target port for S3 API.
+    targetPort: 3900
+    # -- Service protocol for S3 API.
+    targetProtocol: TCP
+  s3Web:
+    # -- Expose the S3 website endpoint via the ClusterIP service.
+    enabled: true
+    # -- Public S3 website service port.
+    port: 3902
+    # -- Container target port for S3 website endpoint.
+    targetPort: 3902
+    # -- Service protocol for S3 website endpoint.
+    targetProtocol: TCP
+  admin:
+    # -- Expose Garage admin/metrics endpoint via the ClusterIP service.
+    enabled: true
+    # -- Admin API service port.
+    port: 3903
+    # -- Container target port for admin endpoint.
+    targetPort: 3903
+    # -- Service protocol for admin endpoint.
+    targetProtocol: TCP
+  rpc:
+    # -- RPC port used for inter-node Garage communication.
+    port: 3901
+    # -- Container target port for Garage RPC.
+    targetPort: 3901
+    # -- Service protocol for Garage RPC.
+    targetProtocol: TCP
+  headless:
+    # -- Annotations for the headless StatefulSet service.
+    annotations: {}
+
+# -- Ingress resources for Garage endpoints.
+ingress:
+  s3Api:
+    # -- Enable ingress for S3 API endpoint.
+    enabled: false
+    # -- Ingress class name.
+    className: ""
+    # -- Additional ingress annotations.
+    annotations: {}
+    # -- Secure-by-default ingress annotation settings.
+    # @description Applied by default and merged with ingress.s3Api.annotations (custom annotations win on key conflicts).
+    secureDefaults:
+      enabled: true
+      proxyReadTimeoutSeconds: 3600
+      proxySendTimeoutSeconds: 3600
+      proxyBuffering: "off"
+      proxyRequestBuffering: "off"
+      proxyHttpVersion: "1.1"
+    hosts:
+      - host: s3.garage.local
+        paths:
+          - path: /
+            pathType: Prefix
+      - host: "*.s3.garage.local"
+        paths:
+          - path: /
+            pathType: Prefix
+    tls: []
+  s3Web:
+    # -- Enable ingress for S3 website endpoint.
+    enabled: false
+    # -- Ingress class name.
+    className: ""
+    # -- Additional ingress annotations.
+    annotations: {}
+    # -- Secure-by-default ingress annotation settings.
+    # @description Applied by default and merged with ingress.s3Web.annotations (custom annotations win on key conflicts).
+    secureDefaults:
+      enabled: true
+      proxyReadTimeoutSeconds: 3600
+      proxySendTimeoutSeconds: 3600
+      proxyBuffering: "off"
+      proxyRequestBuffering: "off"
+      proxyHttpVersion: "1.1"
+    hosts:
+      - host: "*.web.garage.local"
+        paths:
+          - path: /
+            pathType: Prefix
+    tls: []
+
+# -- Create service account.
+serviceAccount:
+  create: true
+  # -- ServiceAccount annotations.
+  annotations: {}
+  # -- ServiceAccount name override.
+  name: ""
+  # -- Automount SA token on pods.
+  # @description Required when garage.kubernetesDiscovery.enabled=true.
+  automountServiceAccountToken: true
+
+# -- RBAC settings for Kubernetes discovery mode.
+rbac:
+  # -- Create namespace-scoped role + rolebinding.
+  create: true
+  # -- Namespace override for RBAC objects. Empty means release namespace.
+  namespace: ""
+  # -- RBAC rules for namespaced Role.
+  rules:
+    - apiGroups:
+        - deuxfleurs.fr
+      resources:
+        - garagenodes
+      verbs:
+        - get
+        - list
+        - watch
+        - create
+        - update
+        - patch
+        - delete
+  clusterRole:
+    # -- Create a cluster-scoped role/binding for CRD management.
+    # @description Enable only when garage.kubernetesDiscovery.skipCrd=false.
+    create: false
+    # -- Optional ClusterRole name override.
+    name: ""
+    # -- RBAC rules for ClusterRole.
+    rules:
+      - apiGroups:
+          - apiextensions.k8s.io
+        resources:
+          - customresourcedefinitions
+        verbs:
+          - get
+          - list
+          - watch
+          - create
+          - patch
+      - apiGroups:
+          - deuxfleurs.fr
+        resources:
+          - garagenodes
+        verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+
+# -- Apply default pod/container security settings.
+applySecurity: true
+
+# -- Pod-level security context for Garage pods.
+podSecurityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  fsGroupChangePolicy: OnRootMismatch
+  runAsNonRoot: true
+
+# -- Container-level security context for Garage container.
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- Enable liveness/readiness probes.
+applyHealthChecks: true
+
+# -- Liveness probe.
+livenessProbe:
+  tcpSocket:
+    port: s3-api
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+# -- Readiness probe.
+readinessProbe:
+  tcpSocket:
+    port: s3-api
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+# -- Resource requests/limits.
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 2000m
+    memory: 2Gi
+
+# -- Persistent storage configuration for Garage metadata/data.
+persistence:
+  # -- Enable PVC-backed storage for metadata/data.
+  enabled: true
+  meta:
+    # -- PVC size for metadata volume.
+    size: 10Gi
+    # -- PVC storageClass for metadata volume.
+    storageClass: ""
+    # -- PVC accessModes for metadata volume.
+    accessModes:
+      - ReadWriteOnce
+    # -- emptyDir sizeLimit when persistence.enabled=false.
+    emptyDirSizeLimit: 1Gi
+  data:
+    # -- PVC size for data volume.
+    size: 100Gi
+    # -- PVC storageClass for data volume.
+    storageClass: ""
+    # -- PVC accessModes for data volume.
+    accessModes:
+      - ReadWriteOnce
+    # -- emptyDir sizeLimit when persistence.enabled=false.
+    emptyDirSizeLimit: 20Gi
+  tmp:
+    # -- emptyDir sizeLimit for /tmp.
+    emptyDirSizeLimit: 512Mi
+
+# -- Garage daemon configuration rendered into `/etc/garage.toml`.
+garage:
+  # -- Metadata DB engine (`lmdb` or `sqlite`).
+  dbEngine: lmdb
+  # -- Block size in bytes.
+  blockSize: "1048576"
+  # -- Replication factor for the cluster.
+  replicationFactor: 3
+  # -- Consistency mode (`consistent`, `degraded`, `dangerous`).
+  consistencyMode: consistent
+  # -- Compression level for stored blocks.
+  compressionLevel: 1
+  # -- Optional metadata snapshot interval (example: `6h`).
+  metadataAutoSnapshotInterval: ""
+
+  # -- RPC bind address for inter-node communication.
+  rpcBindAddr: "[::]:3901"
+  # -- Optional explicit RPC public address (`host:port`).
+  rpcPublicAddr: ""
+  # -- Optional subnet filter for auto-discovered RPC public addresses.
+  rpcPublicAddrSubnet: ""
+
+  # -- Optional bootstrap peer list.
+  # @description Used when not relying solely on kubernetes discovery.
+  bootstrapPeers: []
+
+  kubernetesDiscovery:
+    # -- Enable Garage kubernetes discovery mode.
+    enabled: true
+    # -- Namespace used by kubernetes discovery. Empty means release namespace.
+    namespace: ""
+    # -- Service label used by kubernetes discovery. Empty means release fullname.
+    serviceName: ""
+    # -- Skip CRD management by Garage.
+    # @description Keep this true when cluster-level CRD handling is managed externally.
+    skipCrd: true
+
+  s3Api:
+    # -- S3 API bind address.
+    bindAddr: "[::]:3900"
+    # -- S3 region name.
+    region: garage
+    # -- Root domain suffix for virtual-hosted-style bucket access.
+    rootDomain: ".s3.garage.local"
+
+  s3Web:
+    # -- Enable S3 website endpoint section in garage.toml.
+    enabled: true
+    # -- S3 website bind address.
+    bindAddr: "[::]:3902"
+    # -- Website root domain suffix.
+    rootDomain: ".web.garage.local"
+    # -- Default website index file.
+    index: index.html
+    # -- Include host dimension in S3 web metrics.
+    addHostToMetrics: false
+
+  admin:
+    # -- Enable Garage admin endpoint section.
+    enabled: true
+    # -- Admin API bind address.
+    apiBindAddr: "0.0.0.0:3903"
+    # -- Require token auth for `/metrics` endpoint.
+    metricsRequireToken: true
+    # -- Optional OpenTelemetry trace sink endpoint.
+    traceSink: ""
+
+  # -- Additional top-level TOML entries appended before endpoint sections.
+  additionalTopLevelConfig: ""
+
+  existingConfigMap:
+    # -- Existing ConfigMap containing garage.toml.
+    # @description When set, generated ConfigMap is skipped.
+    name: ""
+    # -- ConfigMap key containing garage.toml.
+    key: garage.toml
+
+  # -- Raw garage.toml override.
+  # @description When set, this template string replaces generated garage.toml content.
+  garageTomlString: ""
+
+# -- Secret management for Garage runtime secrets.
+secrets:
+  existingSecret:
+    # -- Existing secret to source Garage secrets from.
+    # @description When set, chart-generated secret is skipped.
+    name: ""
+    keys:
+      # -- Secret key containing the Garage RPC secret.
+      rpcSecret: rpcSecret
+      # -- Secret key containing Garage admin token.
+      adminToken: adminToken
+      # -- Secret key containing Garage metrics token.
+      metricsToken: metricsToken
+  values:
+    # -- Optional RPC secret value (hex string). Leave empty for generated/preserved value.
+    rpcSecret: ""
+    # -- Optional admin token. Leave empty for generated/preserved value.
+    adminToken: ""
+    # -- Optional metrics token. Leave empty for generated/preserved value.
+    metricsToken: ""
+
+# -- Optional ServiceMonitor integration for Prometheus Operator.
+monitoring:
+  serviceMonitor:
+    enabled: false
+    namespace: ""
+    labels: {}
+    interval: 30s
+    scrapeTimeout: 10s
+    scheme: http
+    path: /metrics
+    tlsConfig: {}
+    relabelings: []
+    bearerTokenSecret:
+      # -- Name of a secret containing a bearer token for scraping metrics.
+      name: ""
+      # -- Secret key for bearer token value.
+      key: ""
+
+# -- Additional env vars passed to Garage container.
+env: {}
+
+# -- Additional env vars from existing secrets.
+# @description Supports either map style (`ENV: secretName`) or list style entries (`[{name, secretName, secretKey}]`).
+additionalEnvSecrets: {}
+
+# -- CiliumNetworkPolicies dependency toggle.
+libchartCnps:
+  enabled: false
+
+# -- App-specific CiliumNetworkPolicies settings.
+cnps:
+  appTraffic:
+    ingress:
+      allow: true
+      matchLabels: {}
+      # -- Include s3-web service port in allowed ingress to pod endpoints.
+      includeS3WebPort: true
+      # -- Include admin service port in allowed ingress to pod endpoints.
+      includeAdminPort: false
+    egress:
+      allow: true
+      # -- Allow egress to kube-apiserver entity (required for kubernetes discovery).
+      allowKubernetesApi: true
+      matchLabels: {}
+      toPorts:
+        - port: "443"
+          protocol: TCP
+      toEntities: []
+
+# -- Pod annotations.
+podAnnotations: {}
+
+# -- Pod labels.
+podLabels: {}
+
+# -- Extra volumes appended to pod spec.
+extraVolumes: []
+
+# -- Extra volume mounts appended to Garage container.
+extraVolumeMounts: []
+
+# -- Workload node selector.
+nodeSelector: {}
+
+# -- Workload tolerations.
+tolerations: []
+
+# -- Workload affinity.
+affinity: {}
