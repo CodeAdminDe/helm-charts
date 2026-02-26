@@ -1,4 +1,4 @@
-{{- if and .Values.signal.enabled .Values.signal.persistence.enabled (not .Values.signal.persistence.existingClaim) }}
+{{- if and .Values.signal.enabled (eq .Values.mode.architecture "legacy") .Values.signal.persistence.enabled (not .Values.signal.persistence.existingClaim) }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

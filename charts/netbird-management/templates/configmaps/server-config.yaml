@@ -1,0 +1,32 @@
+{{- if and .Values.server.enabled (eq .Values.mode.architecture "combined") }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: netbird-server-config
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+    app.kubernetes.io/component: server
+  annotations:
+    checksum/values: {{ print .Values | sha256sum }}
+data:
+  config.yaml: |-
+    Management:
+      Domain: {{ .Values.global.domain | quote }}
+      Port: {{ .Values.server.port }}
+    Store:
+      Engine: postgres
+      Postgres:
+        DSNFromEnv: NETBIRD_STORE_ENGINE_POSTGRES_DSN
+    EmbeddedIdP:
+      Enabled: {{ .Values.auth.embeddedIdp.enabled }}
+      DataDir: {{ .Values.auth.embeddedIdp.dataDir | quote }}
+    {{- if .Values.turn.enabled }}
+    Stuns:
+      - Proto: udp
+        URI: "stun:{{ .Values.turn.domain | default .Values.global.domain }}:{{ .Values.turn.port | default 3478 }}"
+    {{- end }}
+    {{- with .Values.server.extraConfig }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+{{- end }}

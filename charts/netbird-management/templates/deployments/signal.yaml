@@ -1,4 +1,4 @@
-{{- if .Values.signal.enabled }}
+{{- if and .Values.signal.enabled (eq .Values.mode.architecture "legacy") }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:

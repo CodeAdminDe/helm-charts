@@ -60,6 +60,24 @@ app.kubernetes.io/instance: {{ .Release.Name }}
     sizeLimit: {{ .Values.management.persistence.emptyDirSizeLimit }}
 {{- end -}}
 {{- end -}}
+
+{{- define "common.app.server.pvc" -}}
+{{- if .Values.server.persistence.enabled -}}
+{{- if .Values.server.persistence.existingClaim -}}
+- name: {{ .Release.Name }}-server-data
+  persistentVolumeClaim:
+      claimName: {{ .Values.server.persistence.existingClaim -}}
+{{- else -}}
+- name: {{ .Release.Name }}-server-data
+  persistentVolumeClaim:
+    claimName: {{ .Release.Name }}-server-data
+{{- end -}}
+{{- else -}}
+- name: {{ .Release.Name }}-server-data
+  emptyDir:
+    sizeLimit: {{ .Values.server.persistence.emptyDirSizeLimit }}
+{{- end -}}
+{{- end -}}
 {{- define "common.app.signal.pvc" -}}
 {{- if .Values.signal.persistence.enabled -}}
 {{- if .Values.signal.persistence.existingClaim -}}

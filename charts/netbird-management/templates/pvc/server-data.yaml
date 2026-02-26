@@ -1,0 +1,24 @@
+{{- if and .Values.server.enabled (eq .Values.mode.architecture "combined") .Values.server.persistence.enabled (not .Values.server.persistence.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-server-data
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+    app.kubernetes.io/component: server
+spec:
+  accessModes:
+    {{- range .Values.server.persistence.accessModes }}
+    - {{ . | quote }}
+    {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.server.persistence.size }}
+  {{- if empty .Values.server.persistence.storageClass }}
+  storageClassName: ""
+  {{- else }}
+  storageClassName: {{ .Values.server.persistence.storageClass }}
+  {{- end }}
+{{- end }}
