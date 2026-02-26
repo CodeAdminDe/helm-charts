@@ -1,0 +1,67 @@
+{{- if and .Values.auth.externalProviders.apiJob.enabled (eq .Values.auth.externalProviders.managedBy.mode "api") }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "netbird-management.fullname" . }}-idp-sync
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "netbird-management.labels" . | nindent 4 }}
+    app.kubernetes.io/component: idp-sync
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  template:
+    metadata:
+      labels:
+        {{- include "netbird-management.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: idp-sync
+    spec:
+      {{- if .Values.runtimeClass.jobs }}
+      runtimeClassName: {{ .Values.runtimeClass.jobs }}
+      {{- end }}
+      restartPolicy: OnFailure
+      serviceAccountName: {{ include "netbird-management.serviceAccountName" . }}
+      containers:
+        - name: idp-sync
+          image: "{{ .Values.auth.externalProviders.apiJob.image.repository }}:{{ .Values.auth.externalProviders.apiJob.image.tag }}"
+          imagePullPolicy: {{ .Values.auth.externalProviders.apiJob.image.pullPolicy }}
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              set -euo pipefail
+              if [ -z "${NB_MGMT_URL}" ]; then
+                echo "NB_MGMT_URL is empty" >&2
+                exit 1
+              fi
+              if [ -z "${NB_MGMT_TOKEN}" ]; then
+                echo "NB_MGMT_TOKEN is empty" >&2
+                exit 1
+              fi
+              if [ ! -s /payload/payload.json ]; then
+                echo "payload.json is empty" >&2
+                exit 1
+              fi
+              echo "Posting IdP payload to ${NB_MGMT_URL}/api/identity-providers"
+              curl -sSf -X POST "${NB_MGMT_URL}/api/identity-providers" \
+                -H "Authorization: Bearer ${NB_MGMT_TOKEN}" \
+                -H "Content-Type: application/json" \
+                --data @/payload/payload.json
+          env:
+            - name: NB_MGMT_URL
+              value: {{ .Values.auth.externalProviders.apiJob.managementUrl | quote }}
+            - name: NB_MGMT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.externalProviders.apiJob.tokenSecretName | quote }}
+                  key: {{ .Values.auth.externalProviders.apiJob.tokenSecretKey | quote }}
+          volumeMounts:
+            - name: payload
+              mountPath: /payload
+              readOnly: true
+      volumes:
+        - name: payload
+          configMap:
+            name: {{ include "netbird-management.fullname" . }}-idp-sync-payload
+            defaultMode: 0444
+{{- end }}
