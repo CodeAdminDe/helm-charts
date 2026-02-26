@@ -99,6 +99,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- define "netbird-management.dashboardAuthEnv" -}}
 {{- $dashboardAuthMode := .Values.dashboard.auth.mode | default "legacy" -}}
 {{- $dashboardUseIdToken := false -}}
+{{- $useEmbedded := and (eq .Values.mode.architecture "combined") (.Values.dashboard.auth.autoEmbedded | default true) (eq $dashboardAuthMode "legacy") -}}
 {{- if eq $dashboardAuthMode "legacy" -}}
   {{- if .Values.authentik.useIdToken }}{{- $dashboardUseIdToken = true }}{{- end -}}
 {{- else -}}
@@ -116,11 +117,13 @@ app.kubernetes.io/instance: {{ .Release.Name }}
   value: "false"
 {{- end }}
 - name: AUTH_AUTHORITY
-  value: "{{- if eq $dashboardAuthMode "legacy" -}}{{ .Values.authentik.issuer }}{{- else -}}{{ .Values.dashboard.auth.issuer }}{{- end -}}"
+  value: "{{- if $useEmbedded -}}{{ .Values.dashboard.auth.embeddedIssuer | default (printf "https://%s/oauth2" .Values.global.domain) }}{{- else if eq $dashboardAuthMode "legacy" -}}{{ .Values.authentik.issuer }}{{- else -}}{{ .Values.dashboard.auth.issuer }}{{- end -}}"
 - name: USE_AUTH0
   value: "false"
 - name: AUTH_CLIENT_ID
-  {{- if eq $dashboardAuthMode "legacy" }}
+  {{- if $useEmbedded }}
+  value: "{{ .Values.dashboard.auth.embeddedClientId }}"
+  {{- else if eq $dashboardAuthMode "legacy" }}
   valueFrom:
     secretKeyRef:
       name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
@@ -129,7 +132,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
   value: "{{ .Values.dashboard.auth.clientId }}"
   {{- end }}
 - name: AUTH_AUDIENCE
-  {{- if eq $dashboardAuthMode "legacy" }}
+  {{- if $useEmbedded }}
+  value: "{{ .Values.dashboard.auth.embeddedClientId }}"
+  {{- else if eq $dashboardAuthMode "legacy" }}
   valueFrom:
     secretKeyRef:
       name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}
@@ -138,7 +143,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
   value: "{{ .Values.dashboard.auth.clientId }}"
   {{- end }}
 - name: AUTH_CLIENT_SECRET
-  {{- if eq $dashboardAuthMode "legacy" }}
+  {{- if $useEmbedded }}
+  value: ""
+  {{- else if eq $dashboardAuthMode "legacy" }}
   valueFrom:
     secretKeyRef:
       name: {{ .Values.existingAuthentikOidcSecret | default "netbird-authentik-oidc" }}

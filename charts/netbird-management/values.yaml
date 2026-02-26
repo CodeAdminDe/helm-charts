@@ -448,6 +448,13 @@ dashboard:
   auth:
     # -- Auth mode: "legacy" (use authentik.*) or "custom" (explicit values below)
     mode: "legacy"
+    # -- Auto-configure dashboard for embedded IdP when mode.architecture is "combined"
+    # @description When enabled and mode.architecture=combined, the chart uses embedded IdP defaults for issuer/client.
+    autoEmbedded: true
+    # -- Embedded IdP dashboard client ID/audience (used only when autoEmbedded is true)
+    embeddedClientId: "netbird-dashboard"
+    # -- Embedded IdP issuer URL override (defaults to https://<global.domain>/oauth2 if empty)
+    embeddedIssuer: ""
     # -- OIDC issuer URL
     issuer: ""
     # -- Client ID for the dashboard

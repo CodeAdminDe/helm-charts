@@ -51,3 +51,9 @@
 {{- fail "dashboard.auth.clientId must be set when dashboard.auth.mode is custom" -}}
 {{- end -}}
 {{- end -}}
+
+{{- if and .Values.dashboard.enabled (eq .Values.mode.architecture "combined") (.Values.dashboard.auth.autoEmbedded | default true) (eq .Values.dashboard.auth.mode "legacy") -}}
+{{- if empty .Values.dashboard.auth.embeddedClientId -}}
+{{- fail "dashboard.auth.embeddedClientId must be set when dashboard.auth.autoEmbedded is true and mode.architecture is combined" -}}
+{{- end -}}
+{{- end -}}
