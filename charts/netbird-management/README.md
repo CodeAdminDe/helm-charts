@@ -2,7 +2,7 @@
 
 # netbird-management
 
-![Version: 1.14.5](https://img.shields.io/badge/Version-1.14.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.65.2](https://img.shields.io/badge/AppVersion-0.65.2-informational?style=flat-square)
+![Version: 1.15.0](https://img.shields.io/badge/Version-1.15.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.66.0](https://img.shields.io/badge/AppVersion-0.66.0-informational?style=flat-square)
 
 A Helm chart for an easier NetBird management stack (https://netbird.io) deployment at kubernetes.
 
@@ -857,7 +857,7 @@ object
   "image": {
     "pullPolicy": "IfNotPresent",
     "repository": "netbirdio/dashboard",
-    "tag": "v2.32.4"
+    "tag": "v2.33.0"
   },
   "metricsPort": 9090,
   "port": 80,
@@ -1081,7 +1081,7 @@ object
 {
   "pullPolicy": "IfNotPresent",
   "repository": "netbirdio/dashboard",
-  "tag": "v2.32.4"
+  "tag": "v2.33.0"
 }
 </pre>
 </div>
@@ -1712,7 +1712,7 @@ object
   "image": {
     "pullPolicy": "IfNotPresent",
     "repository": "netbirdio/management",
-    "tag": "0.65.2"
+    "tag": "0.66.0"
   },
   "initConfig": {
     "image": {
@@ -1877,7 +1877,7 @@ object
 {
   "pullPolicy": "IfNotPresent",
   "repository": "netbirdio/management",
-  "tag": "0.65.2"
+  "tag": "0.66.0"
 }
 </pre>
 </div>
@@ -2826,7 +2826,7 @@ object
   "image": {
     "pullPolicy": "IfNotPresent",
     "repository": "netbirdio/relay",
-    "tag": "0.65.2"
+    "tag": "0.66.0"
   },
   "metricsPort": 9090,
   "port": 33080,
@@ -2952,7 +2952,7 @@ object
 {
   "pullPolicy": "IfNotPresent",
   "repository": "netbirdio/relay",
-  "tag": "0.65.2"
+  "tag": "0.66.0"
 }
 </pre>
 </div>
@@ -3940,7 +3940,7 @@ object
   "image": {
     "pullPolicy": "IfNotPresent",
     "repository": "netbirdio/signal",
-    "tag": "0.65.2"
+    "tag": "0.66.0"
   },
   "metricsPort": 9090,
   "persistence": {
@@ -4090,7 +4090,7 @@ object
 {
   "pullPolicy": "IfNotPresent",
   "repository": "netbirdio/signal",
-  "tag": "0.65.2"
+  "tag": "0.66.0"
 }
 </pre>
 </div>
