@@ -1,4 +1,4 @@
-{{- if and .Values.management.enabled (eq .Values.mode.architecture "legacy") .Values.management.podDisruptionBudget.enabled }}
+{{- if and .Values.management.enabled .Values.management.podDisruptionBudget.enabled }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
@@ -12,20 +12,4 @@ spec:
     matchLabels:
       {{- include "netbird-management.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: management
-{{- end }}
-{{- if and .Values.server.enabled (eq .Values.mode.architecture "combined") .Values.server.podDisruptionBudget.enabled }}
----
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: {{ include "netbird-management.fullname" . }}-server
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "netbird-management.labels" . | nindent 4 }}
-spec:
-  minAvailable: {{ .Values.server.podDisruptionBudget.minAvailable }}
-  selector:
-    matchLabels:
-      {{- include "netbird-management.selectorLabels" . | nindent 6 }}
-      app.kubernetes.io/component: server
 {{- end }}

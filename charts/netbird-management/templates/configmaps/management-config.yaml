@@ -1,4 +1,4 @@
-{{- if and .Values.management.enabled (eq .Values.mode.architecture "legacy") -}}
+{{- if .Values.management.enabled -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -10,17 +10,14 @@ metadata:
 data:
   management.json.tmpl: |-
     {
-        "Stuns": {{- if .Values.turn.enabled }}
-        [
+        "Stuns": [
             {
                 "Proto": "udp",
                 "URI": "stun:$TURN_DOMAIN:$TURN_PORT",
                 "Username": "",
                 "Password": null
             }
-        ]
-        {{- else }}[]
-        {{- end }},
+        ],
         "Relay": {
             "Addresses": $NETBIRD_RELAY_ENDPOINT,
             "CredentialsTTL": "24h",
@@ -54,12 +51,7 @@ data:
             "IdpSignKeyRefreshEnabled": $NETBIRD_MGMT_IDP_SIGNKEY_REFRESH,
             "OIDCConfigEndpoint":"$NETBIRD_AUTH_OIDC_CONFIGURATION_ENDPOINT"
         },
-        "EmbeddedIdP": {
-            "Enabled": $NETBIRD_EMBEDDED_IDP_ENABLED,
-            "DataDir": "$NETBIRD_EMBEDDED_IDP_DATA_DIR"
-        },
-        "IdpManagerConfig": {{- if eq .Values.auth.externalProviders.managedBy.mode "helm" }}
-        {
+        "IdpManagerConfig": {
             "ManagerType": "$NETBIRD_MGMT_IDP",
             "ClientConfig": {
                 "Issuer": "$NETBIRD_AUTH_AUTHORITY",
@@ -73,9 +65,7 @@ data:
             "AzureClientCredentials": null,
             "KeycloakClientCredentials": null,
             "ZitadelClientCredentials": null
-         }
-        {{- else }}null
-        {{- end }},
+         },
         "DeviceAuthorizationFlow": {
             "Provider": "$NETBIRD_AUTH_DEVICE_AUTH_PROVIDER",
             "ProviderConfig": {

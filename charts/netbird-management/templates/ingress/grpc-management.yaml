@@ -1,5 +1,4 @@
-{{- $isCombined := eq .Values.mode.architecture "combined" -}}
-{{- if and .Values.ingress.enabled (or (and .Values.management.enabled (not $isCombined)) (and .Values.server.enabled $isCombined)) }}
+{{- if and .Values.ingress.enabled .Values.management.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -29,7 +28,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ include "netbird-management.fullname" . }}{{- if $isCombined -}}-server{{- else -}}-management{{- end }}
+                name: {{ include "netbird-management.fullname" . }}-management
                 port:
-                  number: {{- if $isCombined -}}{{ .Values.server.service.grpcPort }}{{- else -}}{{ .Values.management.service.port }}{{- end }}
+                  number: {{ .Values.management.service.port }}
 {{- end }}
