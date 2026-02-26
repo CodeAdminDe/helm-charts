@@ -33,7 +33,7 @@ spec:
       securityContext:
         runAsNonRoot: {{ .Values.server.securityContext.runAsNonRoot }}
         runAsUser: {{ .Values.server.securityContext.runAsUser }}
-        runAsGroup: {{ .Values.server.securityContext.runAsGroup }}
+        runAsGroup: {{ .Values.server.securityContext.runAsUser }}
         fsGroup: {{ .Values.server.securityContext.fsGroup }}
         seccompProfile:
           type: RuntimeDefault
@@ -144,7 +144,7 @@ spec:
           emptyDir: {}
         - name: {{ .Release.Name }}-server-config
           configMap:
-            name: {{ include "netbird-management.fullname" . }}-server-config
+            name: netbird-server-config
             defaultMode: 0644
 
       terminationGracePeriodSeconds: 30

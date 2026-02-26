@@ -14,16 +14,6 @@
 {{- if empty .Values.auth.externalProviders.apiJob.managementUrl -}}
 {{- fail "auth.externalProviders.apiJob.managementUrl must be set when apiJob.enabled is true" -}}
 {{- end -}}
-{{- if empty .Values.auth.externalProviders.apiJob.tokenSecretName -}}
-{{- fail "auth.externalProviders.apiJob.tokenSecretName must be set when apiJob.enabled is true" -}}
-{{- end -}}
-{{- if empty .Values.auth.externalProviders.apiJob.payloadSecretName -}}
-{{- fail "auth.externalProviders.apiJob.payloadSecretName must be set when apiJob.enabled is true" -}}
-{{- end -}}
-{{- if empty .Values.auth.externalProviders.apiJob.payloadSecretKey -}}
-{{- fail "auth.externalProviders.apiJob.payloadSecretKey must be set when apiJob.enabled is true" -}}
-{{- end -}}
-{{- end -}}
 
 {{- if and .Values.dashboard.enabled (eq .Values.dashboard.auth.mode "custom") -}}
 {{- if empty .Values.dashboard.auth.issuer -}}
@@ -31,5 +21,12 @@
 {{- end -}}
 {{- if empty .Values.dashboard.auth.clientId -}}
 {{- fail "dashboard.auth.clientId must be set when dashboard.auth.mode is custom" -}}
+{{- end -}}
+{{- end -}}
+{{- if empty .Values.auth.externalProviders.apiJob.tokenSecretName -}}
+{{- fail "auth.externalProviders.apiJob.tokenSecretName must be set when apiJob.enabled is true" -}}
+{{- end -}}
+{{- if empty .Values.auth.externalProviders.apiJob.payload -}}
+{{- fail "auth.externalProviders.apiJob.payload must be set when apiJob.enabled is true" -}}
 {{- end -}}
 {{- end -}}

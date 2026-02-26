@@ -56,10 +56,12 @@ auth:
       tokenSecretName: ""
       # -- Key inside the token secret
       tokenSecretKey: "token"
-      # -- Secret containing the JSON payload for /api/identity-providers (single object)
-      payloadSecretName: ""
-      # -- Key inside the payload secret
-      payloadSecretKey: "payload.json"
+      # -- Raw JSON payload for /api/identity-providers (single object)
+      # @raw
+      # Example:
+      # payload: |
+      #   {"name":"authentik","type":"oidc","issuer":"https://auth.example.com","client_id":"...","client_secret":"..."}
+      payload: ""
 
 # -- Management Server - Control Plane
 management:
@@ -163,8 +165,6 @@ management:
     runAsNonRoot: true
     # -- User ID for running container
     runAsUser: 1001
-    # -- Group ID for running container
-    runAsGroup: 1001
     # -- File system group
     fsGroup: 1001
     # -- Use read-only root filesystem

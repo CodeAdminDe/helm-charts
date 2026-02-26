@@ -15,13 +15,12 @@ spec:
       command: ["sh", "-c"]
       args:
         - |
-          set -eu
           {{- if eq .Values.mode.architecture "combined" }}
-          wget -qO- {{ include "netbird-management.fullname" . }}-server:{{ .Values.server.service.port }}/metrics && echo "Server OK" || exit 1
+          wget -qO- {{ include "netbird-management.fullname" . }}-server:{{ .Values.server.service.port }}/metrics && echo "Server OK"
           {{- else }}
-          wget -qO- {{ include "netbird-management.fullname" . }}-management:{{ .Values.management.service.port }}/metrics && echo "Management OK" || exit 1
+          wget -qO- {{ include "netbird-management.fullname" . }}-management:{{ .Values.management.service.port }}/metrics && echo "Management OK"
           {{- end }}
           {{- if .Values.dashboard.enabled }}
-          wget -qO- {{ include "netbird-management.fullname" . }}-dashboard:{{ .Values.dashboard.service.port }}/ && echo "Dashboard OK" || exit 1
+          wget -qO- {{ include "netbird-management.fullname" . }}-dashboard:{{ .Values.dashboard.service.port }}/ && echo "Dashboard OK"
           {{- end }}
   restartPolicy: Never

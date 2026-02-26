@@ -2,14 +2,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "netbird-management.fullname" . }}-server-config
+  name: netbird-server-config
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "netbird-management.labels" . | nindent 4 }}
     app.kubernetes.io/component: server
   annotations:
-    {{- $cfg := dict "global" (dict "domain" .Values.global.domain) "auth" (dict "embeddedIdp" .Values.auth.embeddedIdp) "turn" .Values.turn "server" .Values.server -}}
-    checksum/config: {{ toJson $cfg | sha256sum }}
+    checksum/values: {{ print .Values | sha256sum }}
 data:
   config.yaml: |-
     Management:
