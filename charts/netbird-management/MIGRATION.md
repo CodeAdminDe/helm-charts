@@ -165,3 +165,11 @@ If issues occur after switching to combined mode:
 
 - Defaults preserve legacy deployments.
 - PDB behavior changed for single replicas: `minAvailable` is forced to 0 to avoid blocking node drains.
+
+## Note: Dashboard OIDC Configuration
+
+Embedded IdP only configures the **management service**. The dashboard still requires explicit OIDC client settings. NetBird’s official docs list the required `dashboard.env` variables (issuer, client ID/audience, scopes, etc.) and provide the embedded IdP example (`AUTH_AUTHORITY` is `https://<domain>/oauth2` and the dashboard client ID/audience is `netbird-dashboard`).
+
+References:
+- https://docs.netbird.io/selfhosted/configuration-files
+- https://docs.netbird.io/selfhosted/identity-providers/local
