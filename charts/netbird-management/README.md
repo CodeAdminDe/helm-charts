@@ -291,7 +291,7 @@ string
 			<td>"helm" keeps legacy IdpManagerConfig templating. "api" expects UI/API configuration.</td>
 		</tr>
 		<tr>
-			<td id="authentik"><a href="./values.yaml#L501">authentik</a></td>
+			<td id="authentik"><a href="./values.yaml#L508">authentik</a></td>
 			<td>
 object
 </td>
@@ -327,7 +327,7 @@ object
 			<td>Authentik OIDC configuration (legacy mode + managedBy.helm)</td>
 		</tr>
 		<tr>
-			<td id="authentik--appSlug"><a href="./values.yaml#L507">authentik.appSlug</a></td>
+			<td id="authentik--appSlug"><a href="./values.yaml#L514">authentik.appSlug</a></td>
 			<td>
 string
 </td>
@@ -341,7 +341,7 @@ string
 			<td>Authentik application slug</td>
 		</tr>
 		<tr>
-			<td id="authentik--clientId"><a href="./values.yaml#L513">authentik.clientId</a></td>
+			<td id="authentik--clientId"><a href="./values.yaml#L520">authentik.clientId</a></td>
 			<td>
 string
 </td>
@@ -355,7 +355,7 @@ string
 			<td>Authentik client ID</td>
 		</tr>
 		<tr>
-			<td id="authentik--clientSecret"><a href="./values.yaml#L516">authentik.clientSecret</a></td>
+			<td id="authentik--clientSecret"><a href="./values.yaml#L523">authentik.clientSecret</a></td>
 			<td>
 string
 </td>
@@ -369,7 +369,7 @@ string
 			<td>Authentik client secret (only required for confidential clients) @description Sensitive: prefer existingAuthentikOidcSecret / existingAuthentikDeviceOidcSecret or external secret managers. Leaving this empty uses the chart's secret fallback.</td>
 		</tr>
 		<tr>
-			<td id="authentik--device"><a href="./values.yaml#L529">authentik.device</a></td>
+			<td id="authentik--device"><a href="./values.yaml#L536">authentik.device</a></td>
 			<td>
 object
 </td>
@@ -390,7 +390,7 @@ object
 			<td>Device code flow configuration</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--clientId"><a href="./values.yaml#L535">authentik.device.clientId</a></td>
+			<td id="authentik--device--clientId"><a href="./values.yaml#L542">authentik.device.clientId</a></td>
 			<td>
 string
 </td>
@@ -404,7 +404,7 @@ string
 			<td>Device code flow client ID</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--clientSecret"><a href="./values.yaml#L538">authentik.device.clientSecret</a></td>
+			<td id="authentik--device--clientSecret"><a href="./values.yaml#L545">authentik.device.clientSecret</a></td>
 			<td>
 string
 </td>
@@ -418,7 +418,7 @@ string
 			<td>Device code flow client secret (only required for confidential clients) @description Sensitive: prefer existingAuthentikDeviceOidcSecret or external secret managers. Leaving this empty uses the chart's secret fallback.</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--isPublicClient"><a href="./values.yaml#L533">authentik.device.isPublicClient</a></td>
+			<td id="authentik--device--isPublicClient"><a href="./values.yaml#L540">authentik.device.isPublicClient</a></td>
 			<td>
 bool
 </td>
@@ -432,7 +432,7 @@ true
 			<td>Device code flow client is public</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--scopes"><a href="./values.yaml#L540">authentik.device.scopes</a></td>
+			<td id="authentik--device--scopes"><a href="./values.yaml#L547">authentik.device.scopes</a></td>
 			<td>
 string
 </td>
@@ -446,7 +446,7 @@ string
 			<td>Device code flow OIDC scopes</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--type"><a href="./values.yaml#L531">authentik.device.type</a></td>
+			<td id="authentik--device--type"><a href="./values.yaml#L538">authentik.device.type</a></td>
 			<td>
 string
 </td>
@@ -460,7 +460,7 @@ string
 			<td>Device code flow type (hosted or none to disable)</td>
 		</tr>
 		<tr>
-			<td id="authentik--device--useIdToken"><a href="./values.yaml#L542">authentik.device.useIdToken</a></td>
+			<td id="authentik--device--useIdToken"><a href="./values.yaml#L549">authentik.device.useIdToken</a></td>
 			<td>
 bool
 </td>
@@ -474,7 +474,7 @@ false
 			<td>Use ID token instead of access token for device flow</td>
 		</tr>
 		<tr>
-			<td id="authentik--domain"><a href="./values.yaml#L505">authentik.domain</a></td>
+			<td id="authentik--domain"><a href="./values.yaml#L512">authentik.domain</a></td>
 			<td>
 string
 </td>
@@ -488,7 +488,7 @@ string
 			<td>Authentik domain URL</td>
 		</tr>
 		<tr>
-			<td id="authentik--enabled"><a href="./values.yaml#L503">authentik.enabled</a></td>
+			<td id="authentik--enabled"><a href="./values.yaml#L510">authentik.enabled</a></td>
 			<td>
 bool
 </td>
@@ -502,7 +502,7 @@ true
 			<td>Enable Authentik OIDC</td>
 		</tr>
 		<tr>
-			<td id="authentik--isPublicClient"><a href="./values.yaml#L511">authentik.isPublicClient</a></td>
+			<td id="authentik--isPublicClient"><a href="./values.yaml#L518">authentik.isPublicClient</a></td>
 			<td>
 bool
 </td>
@@ -516,7 +516,7 @@ true
 			<td>Authentik client is public (no client secret required)</td>
 		</tr>
 		<tr>
-			<td id="authentik--issuer"><a href="./values.yaml#L509">authentik.issuer</a></td>
+			<td id="authentik--issuer"><a href="./values.yaml#L516">authentik.issuer</a></td>
 			<td>
 string
 </td>
@@ -530,7 +530,7 @@ string
 			<td>Authentik issuer URL</td>
 		</tr>
 		<tr>
-			<td id="authentik--scopes"><a href="./values.yaml#L518">authentik.scopes</a></td>
+			<td id="authentik--scopes"><a href="./values.yaml#L525">authentik.scopes</a></td>
 			<td>
 string
 </td>
@@ -544,7 +544,7 @@ string
 			<td>OIDC scopes to request</td>
 		</tr>
 		<tr>
-			<td id="authentik--serviceAccount"><a href="./values.yaml#L522">authentik.serviceAccount</a></td>
+			<td id="authentik--serviceAccount"><a href="./values.yaml#L529">authentik.serviceAccount</a></td>
 			<td>
 object
 </td>
@@ -561,7 +561,7 @@ object
 			<td>Service account configuration</td>
 		</tr>
 		<tr>
-			<td id="authentik--serviceAccount--password"><a href="./values.yaml#L527">authentik.serviceAccount.password</a></td>
+			<td id="authentik--serviceAccount--password"><a href="./values.yaml#L534">authentik.serviceAccount.password</a></td>
 			<td>
 string
 </td>
@@ -575,7 +575,7 @@ string
 			<td>Service account password @description Sensitive: prefer existingAuthentikOidcSecret or external secret managers. Leaving this empty uses the chart's secret fallback.</td>
 		</tr>
 		<tr>
-			<td id="authentik--serviceAccount--username"><a href="./values.yaml#L524">authentik.serviceAccount.username</a></td>
+			<td id="authentik--serviceAccount--username"><a href="./values.yaml#L531">authentik.serviceAccount.username</a></td>
 			<td>
 string
 </td>
@@ -589,7 +589,7 @@ string
 			<td>Service account username</td>
 		</tr>
 		<tr>
-			<td id="authentik--useIdToken"><a href="./values.yaml#L520">authentik.useIdToken</a></td>
+			<td id="authentik--useIdToken"><a href="./values.yaml#L527">authentik.useIdToken</a></td>
 			<td>
 bool
 </td>
@@ -603,7 +603,7 @@ false
 			<td>Use ID token instead of access token</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L605">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L612">cnps</a></td>
 			<td>
 object
 </td>
@@ -635,7 +635,7 @@ object
 			<td>Application-specific Cilium Network Policies configuration @description Requires CiliumNetworkPolicies library-chart. These settings will be ignored if the library-chart is not available. These settings are directly related to the application and will not influence namespace-wide policies (e.g., for DNS egress traffic).</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic"><a href="./values.yaml#L607">cnps.appTraffic</a></td>
+			<td id="cnps--appTraffic"><a href="./values.yaml#L614">cnps.appTraffic</a></td>
 			<td>
 object
 </td>
@@ -662,7 +662,7 @@ object
 			<td>Application traffic policies</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress"><a href="./values.yaml#L626">cnps.appTraffic.egress</a></td>
+			<td id="cnps--appTraffic--egress"><a href="./values.yaml#L633">cnps.appTraffic.egress</a></td>
 			<td>
 object
 </td>
@@ -680,7 +680,7 @@ object
 			<td>Egress traffic configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L628">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L635">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -694,7 +694,7 @@ true
 			<td>Allow egress traffic</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--matchLabels"><a href="./values.yaml#L631">cnps.appTraffic.egress.matchLabels</a></td>
+			<td id="cnps--appTraffic--egress--matchLabels"><a href="./values.yaml#L638">cnps.appTraffic.egress.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -708,7 +708,7 @@ object
 			<td>Labels to match egress destinations @description Allows overriding default egress labels to match your security requirements.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L635">cnps.appTraffic.egress.toEntities</a></td>
+			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L642">cnps.appTraffic.egress.toEntities</a></td>
 			<td>
 list
 </td>
@@ -722,7 +722,7 @@ list
 			<td>Entities to allow egress to (e.g., world) @description Allows overriding default egress entities to match your security requirements.   - world</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress"><a href="./values.yaml#L609">cnps.appTraffic.ingress</a></td>
+			<td id="cnps--appTraffic--ingress"><a href="./values.yaml#L616">cnps.appTraffic.ingress</a></td>
 			<td>
 object
 </td>
@@ -742,7 +742,7 @@ object
 			<td>Ingress traffic configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L611">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L618">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -756,7 +756,7 @@ true
 			<td>Allow ingress traffic</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L616">cnps.appTraffic.ingress.matchLabels</a></td>
+			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L623">cnps.appTraffic.ingress.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -770,7 +770,7 @@ object
 			<td>Labels to match ingress controller pods @description Allows overriding default to match your ingress deployment.   app.kubernetes.io/name: ingress-nginx   io.kubernetes.pod.namespace: ingress-nginx</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--metrics"><a href="./values.yaml#L618">cnps.appTraffic.ingress.metrics</a></td>
+			<td id="cnps--appTraffic--ingress--metrics"><a href="./values.yaml#L625">cnps.appTraffic.ingress.metrics</a></td>
 			<td>
 object
 </td>
@@ -786,7 +786,7 @@ object
 			<td>Metrics scraper configuration</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--metrics--matchLabels"><a href="./values.yaml#L624">cnps.appTraffic.ingress.metrics.matchLabels</a></td>
+			<td id="cnps--appTraffic--ingress--metrics--matchLabels"><a href="./values.yaml#L631">cnps.appTraffic.ingress.metrics.matchLabels</a></td>
 			<td>
 object
 </td>
@@ -800,7 +800,7 @@ object
 			<td>Labels to match Prometheus pods @description Allows overriding default to match your prometheus deployment   app.kubernetes.io/name: prometheus   app.kubernetes.io/instance: kube-prometheus-stack-prometheus   io.kubernetes.pod.namespace: monitoring--kube-prometheus-stack</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L637">cnps.cnpgTraffic</a></td>
+			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L644">cnps.cnpgTraffic</a></td>
 			<td>
 object
 </td>
@@ -816,7 +816,7 @@ object
 			<td>CNPG traffic policies</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L655">cnps.cnpgTraffic.instanceExtraEgress</a></td>
+			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L662">cnps.cnpgTraffic.instanceExtraEgress</a></td>
 			<td>
 list
 </td>
@@ -839,7 +839,10 @@ object
 <pre lang="json">
 {
   "auth": {
+    "autoEmbedded": true,
     "clientId": "",
+    "embeddedClientId": "netbird-dashboard",
+    "embeddedIssuer": "",
     "existingSecretKey": "client-secret",
     "existingSecretName": "",
     "issuer": "",
@@ -884,7 +887,21 @@ object
 			<td>Dashboard UI</td>
 		</tr>
 		<tr>
-			<td id="dashboard--auth--clientId"><a href="./values.yaml#L454">dashboard.auth.clientId</a></td>
+			<td id="dashboard--auth--autoEmbedded"><a href="./values.yaml#L453">dashboard.auth.autoEmbedded</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Auto-configure dashboard for embedded IdP when mode.architecture is "combined" @description When enabled and mode.architecture=combined, the chart uses embedded IdP defaults for issuer/client.</td>
+		</tr>
+		<tr>
+			<td id="dashboard--auth--clientId"><a href="./values.yaml#L461">dashboard.auth.clientId</a></td>
 			<td>
 string
 </td>
@@ -898,7 +915,35 @@ string
 			<td>Client ID for the dashboard</td>
 		</tr>
 		<tr>
-			<td id="dashboard--auth--existingSecretKey"><a href="./values.yaml#L458">dashboard.auth.existingSecretKey</a></td>
+			<td id="dashboard--auth--embeddedClientId"><a href="./values.yaml#L455">dashboard.auth.embeddedClientId</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"netbird-dashboard"
+</pre>
+</div>
+			</td>
+			<td>Embedded IdP dashboard client ID/audience (used only when autoEmbedded is true)</td>
+		</tr>
+		<tr>
+			<td id="dashboard--auth--embeddedIssuer"><a href="./values.yaml#L457">dashboard.auth.embeddedIssuer</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Embedded IdP issuer URL override (defaults to https://<global.domain>/oauth2 if empty)</td>
+		</tr>
+		<tr>
+			<td id="dashboard--auth--existingSecretKey"><a href="./values.yaml#L465">dashboard.auth.existingSecretKey</a></td>
 			<td>
 string
 </td>
@@ -912,7 +957,7 @@ string
 			<td>Secret key holding the client secret</td>
 		</tr>
 		<tr>
-			<td id="dashboard--auth--existingSecretName"><a href="./values.yaml#L456">dashboard.auth.existingSecretName</a></td>
+			<td id="dashboard--auth--existingSecretName"><a href="./values.yaml#L463">dashboard.auth.existingSecretName</a></td>
 			<td>
 string
 </td>
@@ -926,7 +971,7 @@ string
 			<td>Existing secret with client secret (optional)</td>
 		</tr>
 		<tr>
-			<td id="dashboard--auth--issuer"><a href="./values.yaml#L452">dashboard.auth.issuer</a></td>
+			<td id="dashboard--auth--issuer"><a href="./values.yaml#L459">dashboard.auth.issuer</a></td>
 			<td>
 string
 </td>
@@ -954,7 +999,7 @@ string
 			<td>Auth mode: "legacy" (use authentik.*) or "custom" (explicit values below)</td>
 		</tr>
 		<tr>
-			<td id="dashboard--auth--scopes"><a href="./values.yaml#L460">dashboard.auth.scopes</a></td>
+			<td id="dashboard--auth--scopes"><a href="./values.yaml#L467">dashboard.auth.scopes</a></td>
 			<td>
 string
 </td>
@@ -968,7 +1013,7 @@ string
 			<td>OIDC scopes to request</td>
 		</tr>
 		<tr>
-			<td id="dashboard--auth--tokenSource"><a href="./values.yaml#L462">dashboard.auth.tokenSource</a></td>
+			<td id="dashboard--auth--tokenSource"><a href="./values.yaml#L469">dashboard.auth.tokenSource</a></td>
 			<td>
 string
 </td>
@@ -1252,7 +1297,7 @@ string
 			<td>Service type</td>
 		</tr>
 		<tr>
-			<td id="encryption"><a href="./values.yaml#L482">encryption</a></td>
+			<td id="encryption"><a href="./values.yaml#L489">encryption</a></td>
 			<td>
 object
 </td>
@@ -1269,7 +1314,7 @@ object
 			<td>Encryption key enforcement and safety</td>
 		</tr>
 		<tr>
-			<td id="encryption--enforceExternalInProduction"><a href="./values.yaml#L484">encryption.enforceExternalInProduction</a></td>
+			<td id="encryption--enforceExternalInProduction"><a href="./values.yaml#L491">encryption.enforceExternalInProduction</a></td>
 			<td>
 bool
 </td>
@@ -1283,7 +1328,7 @@ false
 			<td>Require existingEncryptionKeySecret in production environments</td>
 		</tr>
 		<tr>
-			<td id="encryption--immutableSecrets"><a href="./values.yaml#L486">encryption.immutableSecrets</a></td>
+			<td id="encryption--immutableSecrets"><a href="./values.yaml#L493">encryption.immutableSecrets</a></td>
 			<td>
 bool
 </td>
@@ -1297,7 +1342,7 @@ false
 			<td>Set immutable: true on generated encryption secrets</td>
 		</tr>
 		<tr>
-			<td id="existingAuthentikDeviceOidcSecret"><a href="./values.yaml#L498">existingAuthentikDeviceOidcSecret</a></td>
+			<td id="existingAuthentikDeviceOidcSecret"><a href="./values.yaml#L505">existingAuthentikDeviceOidcSecret</a></td>
 			<td>
 string
 </td>
@@ -1311,7 +1356,7 @@ string
 			<td>Existing Authentik device OIDC secret @description If not provided, Helm creates it automatically on first install based on provided values. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.</td>
 		</tr>
 		<tr>
-			<td id="existingAuthentikOidcSecret"><a href="./values.yaml#L494">existingAuthentikOidcSecret</a></td>
+			<td id="existingAuthentikOidcSecret"><a href="./values.yaml#L501">existingAuthentikOidcSecret</a></td>
 			<td>
 string
 </td>
@@ -1325,7 +1370,7 @@ string
 			<td>Existing Authentik OIDC secret @description If not provided, Helm creates it automatically on first install based on provided values. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.</td>
 		</tr>
 		<tr>
-			<td id="existingEncryptionKeySecret"><a href="./values.yaml#L479">existingEncryptionKeySecret</a></td>
+			<td id="existingEncryptionKeySecret"><a href="./values.yaml#L486">existingEncryptionKeySecret</a></td>
 			<td>
 string
 </td>
@@ -1339,7 +1384,7 @@ string
 			<td>Existing encryption key secret @description Generate a secret with `openssl rand -base64 32` and pre-deploy a secret containing the value with key `encryptionKey`. If not provided, Helm creates it automatically on first install. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.</td>
 		</tr>
 		<tr>
-			<td id="existingRelayAuthSecret"><a href="./values.yaml#L490">existingRelayAuthSecret</a></td>
+			<td id="existingRelayAuthSecret"><a href="./values.yaml#L497">existingRelayAuthSecret</a></td>
 			<td>
 string
 </td>
@@ -1488,7 +1533,7 @@ string
 			<td>Timezone for the deployment</td>
 		</tr>
 		<tr>
-			<td id="ingress"><a href="./values.yaml#L555">ingress</a></td>
+			<td id="ingress"><a href="./values.yaml#L562">ingress</a></td>
 			<td>
 object
 </td>
@@ -1514,7 +1559,7 @@ object
 			<td>Ingress configuration</td>
 		</tr>
 		<tr>
-			<td id="ingress--additionalAnnotations"><a href="./values.yaml#L573">ingress.additionalAnnotations</a></td>
+			<td id="ingress--additionalAnnotations"><a href="./values.yaml#L580">ingress.additionalAnnotations</a></td>
 			<td>
 object
 </td>
@@ -1528,7 +1573,7 @@ object
 			<td>Optional annotations for Ingress configuration</td>
 		</tr>
 		<tr>
-			<td id="ingress--className"><a href="./values.yaml#L559">ingress.className</a></td>
+			<td id="ingress--className"><a href="./values.yaml#L566">ingress.className</a></td>
 			<td>
 string
 </td>
@@ -1542,7 +1587,7 @@ string
 			<td>Ingress class name</td>
 		</tr>
 		<tr>
-			<td id="ingress--consolidationMode"><a href="./values.yaml#L561">ingress.consolidationMode</a></td>
+			<td id="ingress--consolidationMode"><a href="./values.yaml#L568">ingress.consolidationMode</a></td>
 			<td>
 string
 </td>
@@ -1556,7 +1601,7 @@ string
 			<td>HTTP/2 consolidation mode</td>
 		</tr>
 		<tr>
-			<td id="ingress--enabled"><a href="./values.yaml#L557">ingress.enabled</a></td>
+			<td id="ingress--enabled"><a href="./values.yaml#L564">ingress.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1570,7 +1615,7 @@ true
 			<td>Enable Ingress</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls"><a href="./values.yaml#L563">ingress.tls</a></td>
+			<td id="ingress--tls"><a href="./values.yaml#L570">ingress.tls</a></td>
 			<td>
 object
 </td>
@@ -1590,7 +1635,7 @@ object
 			<td>TLS configuration</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls--enabled"><a href="./values.yaml#L565">ingress.tls.enabled</a></td>
+			<td id="ingress--tls--enabled"><a href="./values.yaml#L572">ingress.tls.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1604,7 +1649,7 @@ true
 			<td>Enable TLS</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls--issuer"><a href="./values.yaml#L567">ingress.tls.issuer</a></td>
+			<td id="ingress--tls--issuer"><a href="./values.yaml#L574">ingress.tls.issuer</a></td>
 			<td>
 object
 </td>
@@ -1621,7 +1666,7 @@ object
 			<td>Certificate issuer configuration</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls--issuer--kind"><a href="./values.yaml#L571">ingress.tls.issuer.kind</a></td>
+			<td id="ingress--tls--issuer--kind"><a href="./values.yaml#L578">ingress.tls.issuer.kind</a></td>
 			<td>
 string
 </td>
@@ -1635,7 +1680,7 @@ string
 			<td>Issuer kind (Issuer or ClusterIssuer)</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls--issuer--name"><a href="./values.yaml#L569">ingress.tls.issuer.name</a></td>
+			<td id="ingress--tls--issuer--name"><a href="./values.yaml#L576">ingress.tls.issuer.name</a></td>
 			<td>
 string
 </td>
@@ -1649,7 +1694,7 @@ string
 			<td>Issuer name</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L597">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L604">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -1666,7 +1711,7 @@ object
 			<td>Cilium Network Policies configuration</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--enabled"><a href="./values.yaml#L599">libchartCnps.enabled</a></td>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L606">libchartCnps.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1680,7 +1725,7 @@ false
 			<td>Enable Cilium Network Policies</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L601">libchartCnps.includeCnpgPolicies</a></td>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L608">libchartCnps.includeCnpgPolicies</a></td>
 			<td>
 bool
 </td>
@@ -2604,7 +2649,7 @@ string
 			<td>Architecture mode: legacy (management/signal/relay/dashboard) or combined (netbird-server)</td>
 		</tr>
 		<tr>
-			<td id="monitoring"><a href="./values.yaml#L669">monitoring</a></td>
+			<td id="monitoring"><a href="./values.yaml#L676">monitoring</a></td>
 			<td>
 object
 </td>
@@ -2620,7 +2665,7 @@ object
 			<td>Monitoring configuration</td>
 		</tr>
 		<tr>
-			<td id="monitoring--enabled"><a href="./values.yaml#L671">monitoring.enabled</a></td>
+			<td id="monitoring--enabled"><a href="./values.yaml#L678">monitoring.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2634,7 +2679,7 @@ false
 			<td>Enable monitoring</td>
 		</tr>
 		<tr>
-			<td id="postgresql"><a href="./values.yaml#L465">postgresql</a></td>
+			<td id="postgresql"><a href="./values.yaml#L472">postgresql</a></td>
 			<td>
 object
 </td>
@@ -2655,7 +2700,7 @@ object
 			<td>PostgreSQL configuration</td>
 		</tr>
 		<tr>
-			<td id="postgresql--cnpgCluster"><a href="./values.yaml#L469">postgresql.cnpgCluster</a></td>
+			<td id="postgresql--cnpgCluster"><a href="./values.yaml#L476">postgresql.cnpgCluster</a></td>
 			<td>
 object
 </td>
@@ -2673,7 +2718,7 @@ object
 			<td>CNPG Cluster settings</td>
 		</tr>
 		<tr>
-			<td id="postgresql--cnpgCluster--appConnectionSecretName"><a href="./values.yaml#L473">postgresql.cnpgCluster.appConnectionSecretName</a></td>
+			<td id="postgresql--cnpgCluster--appConnectionSecretName"><a href="./values.yaml#L480">postgresql.cnpgCluster.appConnectionSecretName</a></td>
 			<td>
 string
 </td>
@@ -2687,7 +2732,7 @@ string
 			<td>CNPG application connection secret name</td>
 		</tr>
 		<tr>
-			<td id="postgresql--cnpgCluster--clusterName"><a href="./values.yaml#L471">postgresql.cnpgCluster.clusterName</a></td>
+			<td id="postgresql--cnpgCluster--clusterName"><a href="./values.yaml#L478">postgresql.cnpgCluster.clusterName</a></td>
 			<td>
 string
 </td>
@@ -2701,7 +2746,7 @@ string
 			<td>CNPG Cluster name</td>
 		</tr>
 		<tr>
-			<td id="postgresql--cnpgCluster--port"><a href="./values.yaml#L475">postgresql.cnpgCluster.port</a></td>
+			<td id="postgresql--cnpgCluster--port"><a href="./values.yaml#L482">postgresql.cnpgCluster.port</a></td>
 			<td>
 int
 </td>
@@ -2715,7 +2760,7 @@ int
 			<td>CNPG cluster port</td>
 		</tr>
 		<tr>
-			<td id="postgresql--useCnpgCluster"><a href="./values.yaml#L467">postgresql.useCnpgCluster</a></td>
+			<td id="postgresql--useCnpgCluster"><a href="./values.yaml#L474">postgresql.useCnpgCluster</a></td>
 			<td>
 bool
 </td>
@@ -2729,7 +2774,7 @@ true
 			<td>Use CNPG Cluster for PostgreSQL</td>
 		</tr>
 		<tr>
-			<td id="rbac"><a href="./values.yaml#L658">rbac</a></td>
+			<td id="rbac"><a href="./values.yaml#L665">rbac</a></td>
 			<td>
 object
 </td>
@@ -2749,7 +2794,7 @@ object
 			<td>Role-Based Access Control configuration</td>
 		</tr>
 		<tr>
-			<td id="rbac--create"><a href="./values.yaml#L660">rbac.create</a></td>
+			<td id="rbac--create"><a href="./values.yaml#L667">rbac.create</a></td>
 			<td>
 bool
 </td>
@@ -2763,7 +2808,7 @@ false
 			<td>Create RBAC resources</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount"><a href="./values.yaml#L662">rbac.serviceAccount</a></td>
+			<td id="rbac--serviceAccount"><a href="./values.yaml#L669">rbac.serviceAccount</a></td>
 			<td>
 object
 </td>
@@ -2780,7 +2825,7 @@ object
 			<td>Service account configuration</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount--create"><a href="./values.yaml#L664">rbac.serviceAccount.create</a></td>
+			<td id="rbac--serviceAccount--create"><a href="./values.yaml#L671">rbac.serviceAccount.create</a></td>
 			<td>
 bool
 </td>
@@ -2794,7 +2839,7 @@ true
 			<td>Create service account</td>
 		</tr>
 		<tr>
-			<td id="rbac--serviceAccount--name"><a href="./values.yaml#L666">rbac.serviceAccount.name</a></td>
+			<td id="rbac--serviceAccount--name"><a href="./values.yaml#L673">rbac.serviceAccount.name</a></td>
 			<td>
 string
 </td>
@@ -3123,7 +3168,7 @@ string
 			<td>Service type</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L588">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L595">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -3152,7 +3197,7 @@ object
 </details></td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--jobs"><a href="./values.yaml#L592">runtimeClass.jobs</a></td>
+			<td id="runtimeClass--jobs"><a href="./values.yaml#L599">runtimeClass.jobs</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -3166,7 +3211,7 @@ object
 			<td>Sets the runtimeClass for the pods for the job execution. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--pods"><a href="./values.yaml#L590">runtimeClass.pods</a></td>
+			<td id="runtimeClass--pods"><a href="./values.yaml#L597">runtimeClass.pods</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -3180,7 +3225,7 @@ object
 			<td>Sets the runtimeClass for the DaemonSet / ReplicaSet pods. Takes the runtimeClass name, or "" (default).</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--tests"><a href="./values.yaml#L594">runtimeClass.tests</a></td>
+			<td id="runtimeClass--tests"><a href="./values.yaml#L601">runtimeClass.tests</a></td>
 			<td>
 <a href="#stringruntimeclassname" title="Click to get details">string/runtimeClassName</a>
 </td>
@@ -4355,7 +4400,7 @@ string
 			<td>Service type</td>
 		</tr>
 		<tr>
-			<td id="turn"><a href="./values.yaml#L546">turn</a></td>
+			<td id="turn"><a href="./values.yaml#L553">turn</a></td>
 			<td>
 object
 </td>
@@ -4373,7 +4418,7 @@ object
 			<td>TURN (STUN) configuration @description Configure an external STUN server for better connectivity between your clients (NAT traversal).</td>
 		</tr>
 		<tr>
-			<td id="turn--domain"><a href="./values.yaml#L550">turn.domain</a></td>
+			<td id="turn--domain"><a href="./values.yaml#L557">turn.domain</a></td>
 			<td>
 string
 </td>
@@ -4387,7 +4432,7 @@ string
 			<td>Domain for coturn server to provide STUN/TURN (UDP) (optional, defaults to global.domain value if not provided)</td>
 		</tr>
 		<tr>
-			<td id="turn--enabled"><a href="./values.yaml#L548">turn.enabled</a></td>
+			<td id="turn--enabled"><a href="./values.yaml#L555">turn.enabled</a></td>
 			<td>
 bool
 </td>
@@ -4401,7 +4446,7 @@ true
 			<td>Enable external STUN/TURN configuration (set false to use embedded STUN in combined mode)</td>
 		</tr>
 		<tr>
-			<td id="turn--port"><a href="./values.yaml#L552">turn.port</a></td>
+			<td id="turn--port"><a href="./values.yaml#L559">turn.port</a></td>
 			<td>
 string
 </td>
