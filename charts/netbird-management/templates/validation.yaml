@@ -25,13 +25,6 @@
 {{- end -}}
 {{- end -}}
 
-{{- if and .Values.dashboard.enabled (not (or (eq .Values.dashboard.auth.mode "legacy") (eq .Values.dashboard.auth.mode "custom"))) -}}
-{{- fail "dashboard.auth.mode must be either 'legacy' or 'custom'" -}}
-{{- end -}}
-{{- if and .Values.dashboard.enabled (not (or (eq .Values.dashboard.auth.tokenSource "accessToken") (eq .Values.dashboard.auth.tokenSource "idToken"))) -}}
-{{- fail "dashboard.auth.tokenSource must be either 'accessToken' or 'idToken'" -}}
-{{- end -}}
-
 {{- if and .Values.dashboard.enabled (eq .Values.dashboard.auth.mode "custom") -}}
 {{- if empty .Values.dashboard.auth.issuer -}}
 {{- fail "dashboard.auth.issuer must be set when dashboard.auth.mode is custom" -}}
