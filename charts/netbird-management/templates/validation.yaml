@@ -25,6 +25,9 @@
 {{- if empty .Values.auth.externalProviders.apiJob.tokenSecretName -}}
 {{- fail "auth.externalProviders.apiJob.tokenSecretName must be set when apiJob.enabled is true" -}}
 {{- end -}}
+{{- if empty .Values.auth.externalProviders.apiJob.tokenSecretKey -}}
+{{- fail "auth.externalProviders.apiJob.tokenSecretKey must be set when apiJob.enabled is true" -}}
+{{- end -}}
 {{- if empty .Values.auth.externalProviders.apiJob.payloadSecretName -}}
 {{- fail "auth.externalProviders.apiJob.payloadSecretName must be set when apiJob.enabled is true" -}}
 {{- end -}}

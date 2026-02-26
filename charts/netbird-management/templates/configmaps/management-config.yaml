@@ -73,7 +73,7 @@ data:
             "AzureClientCredentials": null,
             "KeycloakClientCredentials": null,
             "ZitadelClientCredentials": null
-         }
+        }
         {{- else }}null
         {{- end }},
         "DeviceAuthorizationFlow": {
