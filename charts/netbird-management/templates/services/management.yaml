@@ -1,4 +1,4 @@
-{{- if .Values.management.enabled }}
+{{- if and .Values.management.enabled (eq .Values.mode.architecture "legacy") }}
 apiVersion: v1
 kind: Service
 metadata:

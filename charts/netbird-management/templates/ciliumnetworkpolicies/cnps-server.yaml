@@ -1,17 +1,17 @@
-{{- define "netbird-management.CiliumNetworkPolicies-AppSet.relay" -}}
+{{- define "netbird-management.CiliumNetworkPolicies-AppSet.server" -}}
 metadata:
-  name: {{ .Release.Name | printf "%s-%s--03-app-traffic-relay" .Chart.Name  | trunc 63 | trimSuffix "-" }}
+  name: {{ .Release.Name | printf "%s-%s--03-app-traffic-server" .Chart.Name  | trunc 63 | trimSuffix "-" }}
   namespace: {{ .Release.Namespace }}
   annotations:
     checksum/values: {{ print .Values | sha256sum }}
   labels:
     {{- include "netbird-management.labels" . | nindent 4 }}
-    app.kubernetes.io/component: relay
+    app.kubernetes.io/component: server
 spec:
   endpointSelector:
     matchLabels:
     {{- include "netbird-management.selectorLabels" . | nindent 6 }}
-      app.kubernetes.io/component: relay
+      app.kubernetes.io/component: server
   {{- if .Values.cnps.appTraffic.ingress.allow }}
   ingress:
     - fromEndpoints:
@@ -26,7 +26,11 @@ spec:
           {{- end }}
       toPorts:
         - ports:
-            - port: "{{ .Values.relay.port }}"
+            - port: "{{ .Values.server.port }}"
+              protocol: TCP
+            - port: "{{ .Values.server.grpcPort }}"
+              protocol: TCP
+            - port: "{{ .Values.server.signalPort }}"
               protocol: TCP
   {{- end }}
   {{- if and .Values.cnps.appTraffic.ingress.allow .Values.monitoring.enabled }}
@@ -43,7 +47,7 @@ spec:
           {{- end }}
       toPorts:
         - ports:
-            - port: "{{ .Values.relay.metricsPort }}"
+            - port: "{{ .Values.server.metricsPort }}"
               protocol: TCP
   {{- end }}
   {{- if .Values.cnps.appTraffic.egress.allow }}
@@ -77,7 +81,7 @@ spec:
   {{- end }}
 {{- end }}
 
-{{- if and .Values.libchartCnps.enabled .Values.relay.enabled (eq .Values.mode.architecture "legacy") -}}
+{{- if and .Values.libchartCnps.enabled .Values.server.enabled (eq .Values.mode.architecture "combined") -}}
 ---
-{{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "netbird-management.CiliumNetworkPolicies-AppSet.relay") }}
+{{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "netbird-management.CiliumNetworkPolicies-AppSet.server") }}
 {{ end -}}

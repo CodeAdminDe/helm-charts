@@ -80,7 +80,7 @@ spec:
   {{- end }}
 {{- end }}
 
-{{- if and .Values.libchartCnps.enabled .Values.signal.enabled -}}
+{{- if and .Values.libchartCnps.enabled .Values.signal.enabled (eq .Values.mode.architecture "legacy") -}}
 ---
 {{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "netbird-management.CiliumNetworkPolicies-AppSet.signal") }}
 {{ end -}}
