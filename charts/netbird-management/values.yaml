@@ -229,7 +229,7 @@ server:
       memory: 1Gi
   # -- Server persistence configuration.
   persistence:
-    # If persistence.enabled: false, you'd lose your stored data as soon as the container restarts.
+    # If persistence.enabled: false, you'd loose your stored data as soon as the container restarts.
     enabled: true
     # -- Define the max directory size when using persistence.enabled: false
     emptyDirSizeLimit: 1Gi
