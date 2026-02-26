@@ -22,6 +22,7 @@ data:
     EmbeddedIdP:
       Enabled: {{ .Values.auth.embeddedIdp.enabled }}
       DataDir: {{ .Values.auth.embeddedIdp.dataDir | quote }}
+      Issuer: {{ .Values.auth.embeddedIdp.issuer | default (printf "https://%s/oauth2" .Values.global.domain) | quote }}
     {{- if .Values.turn.enabled }}
     Stuns:
       - Proto: udp

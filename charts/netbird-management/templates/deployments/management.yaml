@@ -174,6 +174,8 @@ spec:
           value: "{{ .Values.auth.embeddedIdp.enabled }}"
         - name: NETBIRD_EMBEDDED_IDP_DATA_DIR
           value: "{{ .Values.auth.embeddedIdp.dataDir }}"
+        - name: NETBIRD_EMBEDDED_IDP_ISSUER
+          value: "{{ .Values.auth.embeddedIdp.issuer | default (printf \"https://%s/oauth2\" .Values.global.domain) }}"
 
         # Values from Secrets
         - name: NETBIRD_DATASTORE_ENC_KEY

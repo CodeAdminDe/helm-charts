@@ -37,6 +37,8 @@ auth:
     enabled: false
     # -- Data directory inside the container (mapped via PVC)
     dataDir: "/var/lib/netbird/idp"
+    # -- Issuer URL for embedded IdP (defaults to https://<global.domain>/oauth2 if empty)
+    issuer: ""
   externalProviders:
     # -- Configure external IdPs via API/UI or legacy Helm-driven config
     managedBy:

@@ -56,7 +56,8 @@ data:
         },
         "EmbeddedIdP": {
             "Enabled": $NETBIRD_EMBEDDED_IDP_ENABLED,
-            "DataDir": "$NETBIRD_EMBEDDED_IDP_DATA_DIR"
+            "DataDir": "$NETBIRD_EMBEDDED_IDP_DATA_DIR",
+            "Issuer": "$NETBIRD_EMBEDDED_IDP_ISSUER"
         },
         "IdpManagerConfig": {{- if eq .Values.auth.externalProviders.managedBy.mode "helm" }}
         {
