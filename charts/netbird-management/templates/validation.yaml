@@ -10,14 +10,6 @@
 {{- fail "mode.architecture is 'legacy' but management.enabled is false" -}}
 {{- end }}
 
-{{- if not (or (eq .Values.auth.externalProviders.managedBy.mode "helm") (eq .Values.auth.externalProviders.managedBy.mode "api")) -}}
-{{- fail "auth.externalProviders.managedBy.mode must be either 'helm' or 'api'" -}}
-{{- end -}}
-
-{{- if and .Values.auth.externalProviders.apiJob.enabled (ne .Values.auth.externalProviders.managedBy.mode "api") -}}
-{{- fail "auth.externalProviders.apiJob.enabled requires auth.externalProviders.managedBy.mode to be 'api'" -}}
-{{- end -}}
-
 {{- if and .Values.auth.externalProviders.apiJob.enabled (eq .Values.auth.externalProviders.managedBy.mode "api") -}}
 {{- if empty .Values.auth.externalProviders.apiJob.managementUrl -}}
 {{- fail "auth.externalProviders.apiJob.managementUrl must be set when apiJob.enabled is true" -}}
