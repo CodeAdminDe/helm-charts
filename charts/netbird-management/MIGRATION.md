@@ -52,6 +52,18 @@ auth:
     dataDir: /var/lib/netbird/idp
 ```
 
+Important: embedded IdP requires an issuer. If you enable it without setting an issuer, the management container will fail to start with `issuer is required`.
+
+Example embedded IdP values (adjust to your domain):
+
+```yaml
+auth:
+  embeddedIdp:
+    enabled: true
+    dataDir: /var/lib/netbird/idp
+    issuer: "https://nb.example.com/oauth2"
+```
+
 Ensure a stable encryption key:
 
 ```yaml
