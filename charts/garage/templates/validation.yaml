@@ -6,6 +6,14 @@
 {{- fail "replicaCount must be >= 1." -}}
 {{- end -}}
 
+{{- if and .Values.persistence.enabled (not (or (eq .Values.persistence.pvcRetentionPolicy.whenDeleted "Retain") (eq .Values.persistence.pvcRetentionPolicy.whenDeleted "Delete"))) -}}
+{{- fail "persistence.pvcRetentionPolicy.whenDeleted must be either Retain or Delete." -}}
+{{- end -}}
+
+{{- if and .Values.persistence.enabled (not (or (eq .Values.persistence.pvcRetentionPolicy.whenScaled "Retain") (eq .Values.persistence.pvcRetentionPolicy.whenScaled "Delete"))) -}}
+{{- fail "persistence.pvcRetentionPolicy.whenScaled must be either Retain or Delete." -}}
+{{- end -}}
+
 {{- if and .Values.ingress.s3Api.enabled (not .Values.ingress.s3Api.hosts) -}}
 {{- fail "ingress.s3Api.enabled=true requires at least one ingress.s3Api.hosts entry." -}}
 {{- end -}}

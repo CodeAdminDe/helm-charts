@@ -11,6 +11,11 @@ spec:
   serviceName: {{ include "garage.fullname" . }}-headless
   replicas: {{ .Values.replicaCount }}
   podManagementPolicy: {{ .Values.podManagementPolicy }}
+  {{- if and .Values.persistence.enabled (semverCompare ">=1.25-0" .Capabilities.KubeVersion.GitVersion) }}
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: {{ .Values.persistence.pvcRetentionPolicy.whenDeleted }}
+    whenScaled: {{ .Values.persistence.pvcRetentionPolicy.whenScaled }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "garage.selectorLabels" . | nindent 6 }}
@@ -88,26 +93,34 @@ spec:
             {{- if kindIs "map" .Values.additionalEnvSecrets }}
             {{- range $envName, $secretConfig := .Values.additionalEnvSecrets }}
               {{- if kindIs "string" $secretConfig }}
+                {{- if ne ($secretConfig | toString | trim) "" }}
             - name: {{ $envName }}
               valueFrom:
                 secretKeyRef:
                   name: {{ $secretConfig }}
                   key: {{ $envName | quote }}
+                {{- end }}
               {{- else if kindIs "map" $secretConfig }}
+                {{- $resolvedSecretName := default "" (index $secretConfig "secretName") -}}
+                {{- if ne ($resolvedSecretName | toString | trim) "" }}
             - name: {{ default $envName (index $secretConfig "name") }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ default "" (index $secretConfig "secretName") }}
+                  name: {{ $resolvedSecretName }}
                   key: {{ default $envName (index $secretConfig "secretKey") | quote }}
+                {{- end }}
               {{- end }}
             {{- end }}
             {{- else if kindIs "slice" .Values.additionalEnvSecrets }}
             {{- range $entry := .Values.additionalEnvSecrets }}
+              {{- $entrySecretName := default "" $entry.secretName -}}
+              {{- if ne ($entrySecretName | toString | trim) "" }}
             - name: {{ $entry.name }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ $entry.secretName }}
+                  name: {{ $entrySecretName }}
                   key: {{ default $entry.name $entry.secretKey | quote }}
+              {{- end }}
             {{- end }}
             {{- end }}
           volumeMounts:
