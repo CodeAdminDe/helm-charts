@@ -58,6 +58,9 @@ data:
             "Enabled": $NETBIRD_EMBEDDED_IDP_ENABLED,
             "DataDir": "$NETBIRD_EMBEDDED_IDP_DATA_DIR"
         },
+        "Auth": {
+            "LocalAuthDisabled": $NETBIRD_LOCAL_AUTH_DISABLED
+        },
         "IdpManagerConfig": {{- if eq .Values.auth.externalProviders.managedBy.mode "helm" }}
         {
             "ManagerType": "$NETBIRD_MGMT_IDP",

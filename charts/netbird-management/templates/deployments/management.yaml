@@ -174,6 +174,8 @@ spec:
           value: "{{ .Values.auth.embeddedIdp.enabled }}"
         - name: NETBIRD_EMBEDDED_IDP_DATA_DIR
           value: "{{ .Values.auth.embeddedIdp.dataDir }}"
+        - name: NETBIRD_LOCAL_AUTH_DISABLED
+          value: "{{ .Values.auth.localAuth.localAuthDisabled }}"
 
         # Values from Secrets
         - name: NETBIRD_DATASTORE_ENC_KEY
