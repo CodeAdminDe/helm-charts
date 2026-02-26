@@ -1,3 +1,4 @@
+{{- $testRuntimeClass := (default .Values.runtimeClass.pods .Values.runtimeClass.tests) -}}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -8,12 +9,20 @@ metadata:
   annotations:
     "helm.sh/hook": test
 spec:
-  {{- if .Values.runtimeClass.tests }}
-  runtimeClassName: {{ .Values.runtimeClass.tests }}
+  {{- if $testRuntimeClass }}
+  runtimeClassName: {{ $testRuntimeClass }}
+  {{- end }}
+  {{- if and .Values.tests.applySecurity .Values.tests.podSecurityContext }}
+  securityContext:
+    {{- toYaml .Values.tests.podSecurityContext | nindent 4 }}
   {{- end }}
   containers:
     - name: connectivity
       image: busybox:1.37
+      {{- if and .Values.tests.applySecurity .Values.tests.securityContext }}
+      securityContext:
+        {{- toYaml .Values.tests.securityContext | nindent 8 }}
+      {{- end }}
       command: ["sh", "-c"]
       args:
         - |

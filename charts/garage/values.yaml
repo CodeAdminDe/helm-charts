@@ -30,6 +30,24 @@ runtimeClass:
   # -- RuntimeClass for helm test pods.
   tests: ""
 
+# -- Helm test hook runtime and security settings.
+tests:
+  # -- Apply pod/container security settings on the helm test pod.
+  applySecurity: true
+  podSecurityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  securityContext:
+    capabilities:
+      drop:
+        - ALL
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
+    runAsGroup: 1000
+
 # -- Kubernetes Service configuration.
 service:
   # -- Service type. This chart enforces ClusterIP.
@@ -243,6 +261,11 @@ resources:
 persistence:
   # -- Enable PVC-backed storage for metadata/data.
   enabled: true
+  pvcRetentionPolicy:
+    # -- StatefulSet PVC retention when the StatefulSet is deleted.
+    whenDeleted: Retain
+    # -- StatefulSet PVC retention when replicas are scaled down.
+    whenScaled: Retain
   meta:
     # -- PVC size for metadata volume.
     size: 10Gi
