@@ -1,4 +1,4 @@
-{{- if and .Values.management.enabled (eq .Values.mode.architecture "legacy") }}
+{{- if .Values.management.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -170,18 +170,9 @@ spec:
           value: "" # Assuming no letsencrypt for now, can be configured if needed
         - name: NETBIRD_MGMT_API_CERT_KEY_FILE
           value: "" # Assuming no letsencrypt for now, can be configured if needed
-        - name: NETBIRD_EMBEDDED_IDP_ENABLED
-          value: "{{ .Values.auth.embeddedIdp.enabled }}"
-        - name: NETBIRD_EMBEDDED_IDP_DATA_DIR
-          value: "{{ .Values.auth.embeddedIdp.dataDir }}"
 
         # Values from Secrets
         - name: NETBIRD_DATASTORE_ENC_KEY
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.existingEncryptionKeySecret | default "netbird-datasrc-encryption" }}
-              key: encryptionKey
-        - name: NETBIRD_ENCRYPTION_KEY
           valueFrom:
             secretKeyRef:
               name: {{ .Values.existingEncryptionKeySecret | default "netbird-datasrc-encryption" }}

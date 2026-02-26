@@ -77,7 +77,7 @@ spec:
   {{- end }}
 {{- end }}
 
-{{- if and .Values.libchartCnps.enabled .Values.relay.enabled (eq .Values.mode.architecture "legacy") -}}
+{{- if and .Values.libchartCnps.enabled .Values.relay.enabled -}}
 ---
 {{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "netbird-management.CiliumNetworkPolicies-AppSet.relay") }}
 {{ end -}}

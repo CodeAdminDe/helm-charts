@@ -25,44 +25,6 @@ global:
   # @description WARN: When enabled, debug output will leak credentials and/or secrets into logs. Do not enable in prod envs!
   caDebugOutput: false
 
-# -- Architecture mode selection
-mode:
-  # -- Architecture mode: legacy (management/signal/relay/dashboard) or combined (netbird-server)
-  architecture: "legacy"
-
-# -- Authentication / Identity Provider configuration
-auth:
-  embeddedIdp:
-    # -- Enable embedded IdP (Dex) inside NetBird (recommended for new self-hosted setups)
-    enabled: true
-    # -- Data directory inside the container (mapped via PVC)
-    dataDir: "/var/lib/netbird/idp"
-  externalProviders:
-    # -- Configure external IdPs via API/UI or legacy Helm-driven config
-    managedBy:
-      # -- "helm" keeps legacy IdpManagerConfig templating. "api" expects UI/API configuration.
-      mode: "helm"
-    apiJob:
-      # -- Enable an API job to configure external IdPs (combined mode recommended)
-      enabled: false
-      # -- Job image repository, tag and pullPolicy
-      image:
-        repository: ghcr.io/codeadminde/alpine-toolbox
-        tag: latest
-        pullPolicy: Always
-      # -- Base management URL (example: https://nb.example.com)
-      managementUrl: ""
-      # -- Secret containing a management API token
-      tokenSecretName: ""
-      # -- Key inside the token secret
-      tokenSecretKey: "token"
-      # -- Raw JSON payload for /api/identity-providers (single object)
-      # @raw
-      # Example:
-      # payload: |
-      #   {"name":"authentik","type":"oidc","issuer":"https://auth.example.com","client_id":"...","client_secret":"..."}
-      payload: ""
-
 # -- Management Server - Control Plane
 management:
   # -- Enable Management server
@@ -187,106 +149,6 @@ management:
     trustedProxyIps: []
     trustedPeers:
       - "0.0.0.0/0"
-
-# -- Combined Server (management + signal + relay)
-server:
-  # -- Enable combined server
-  enabled: true
-  # -- Number of server replicas
-  replicaCount: 1
-  # -- Server image repository, tag and pullPolicy
-  image:
-    repository: netbirdio/server
-    tag: "0.65.2"
-    pullPolicy: IfNotPresent
-  # -- Server ports
-  port: 443
-  grpcPort: 443
-  signalPort: 443
-  metricsPort: 9090
-  service:
-    # -- Service type
-    type: ClusterIP
-    # -- Service http port
-    port: 443
-    # -- Service grpc port
-    grpcPort: 443
-    # -- Service signal port
-    signalPort: 443
-    # -- Service metrics port
-    metricsPort: 9090
-  # -- Resource requests and limits
-  resources:
-    requests:
-      # -- CPU request
-      cpu: 200m
-      # -- Memory request
-      memory: 256Mi
-    limits:
-      # -- CPU limit
-      cpu: 1000m
-      # -- Memory limit
-      memory: 1Gi
-  # -- Server persistence configuration.
-  persistence:
-    # If persistence.enabled: false, you'd loose your stored data as soon as the container restarts.
-    enabled: true
-    # -- Define the max directory size when using persistence.enabled: false
-    emptyDirSizeLimit: 1Gi
-    # -- Define the size of the PV when using persistence.enabled: true
-    size: 2Gi
-    # -- Define the storageClass to use when not providing an already existing PVC claim. Provide your cluster storageclass or leave it empty to use the default one.
-    storageClass: "longhorn"
-    # -- Define the accessModes to use when not providing an already existing PVC claim.
-    accessModes:
-    - ReadWriteOnce
-    # -- Define an already existing PVC claim.
-    # The following values will be ignored when providing an existingClaim: persistence.{size, storageClass, accessModes}
-    # existingClaim: "my-pvc"
-  # -- Health probes configuration
-  probes:
-    # -- Liveness probe settings
-    liveness:
-      # -- Enable liveness probe
-      enabled: true
-      # -- Initial delay before first liveness probe
-      initialDelaySeconds: 30
-      # -- Liveness probe interval
-      periodSeconds: 10
-      # -- Liveness probe timeout
-      timeoutSeconds: 5
-      # -- Liveness probe failure threshold
-      failureThreshold: 3
-    # -- Readiness probe settings
-    readiness:
-      # -- Enable readiness probe
-      enabled: true
-      # -- Initial delay before first readiness probe
-      initialDelaySeconds: 10
-      # -- Readiness probe interval
-      periodSeconds: 5
-      # -- Readiness probe timeout
-      timeoutSeconds: 3
-      # -- Readiness probe failure threshold
-      failureThreshold: 2
-  # -- Pod security context
-  securityContext:
-    # -- Run container as non-root user
-    runAsNonRoot: true
-    # -- User ID for running container
-    runAsUser: 1001
-    # -- File system group
-    fsGroup: 1001
-    # -- Use read-only root filesystem
-    readOnlyRootFilesystem: true
-  # -- Pod Disruption Budget
-  podDisruptionBudget:
-    # -- Enable Pod Disruption Budget
-    enabled: true
-    # -- Minimum available replicas
-    minAvailable: 1
-  # -- Additional config to merge into server config.yaml
-  extraConfig: {}
 
 # -- Signal Server
 signal:
@@ -443,21 +305,6 @@ dashboard:
     maxReplicas: 10
     # -- Target CPU utilization percentage
     targetCPUUtilizationPercentage: 70
-  auth:
-    # -- Auth mode: "legacy" (use authentik.*) or "custom" (explicit values below)
-    mode: "legacy"
-    # -- OIDC issuer URL
-    issuer: ""
-    # -- Client ID for the dashboard
-    clientId: ""
-    # -- Existing secret with client secret (optional)
-    existingSecretName: ""
-    # -- Secret key holding the client secret
-    existingSecretKey: "client-secret"
-    # -- OIDC scopes to request
-    scopes: "openid profile email offline_access"
-    # -- Token source (accessToken or idToken)
-    tokenSource: "accessToken"
 
 # -- PostgreSQL configuration
 postgresql:
@@ -476,13 +323,6 @@ postgresql:
 # @description Generate a secret with `openssl rand -base64 32` and pre-deploy a secret containing the value with key `encryptionKey`. If not provided, Helm creates it automatically on first install. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.
 existingEncryptionKeySecret: ""
 
-# -- Encryption key enforcement and safety
-encryption:
-  # -- Require existingEncryptionKeySecret in production environments
-  enforceExternalInProduction: false
-  # -- Set immutable: true on generated encryption secrets
-  immutableSecrets: false
-
 # -- Existing relay authentication secret
 # @description If not provided, Helm creates it automatically on first install. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.
 existingRelayAuthSecret: ""
@@ -495,7 +335,7 @@ existingAuthentikOidcSecret: ""
 # @description If not provided, Helm creates it automatically on first install based on provided values. Configured to not roll-over on upgrades to avoid breaking decryption on release upgrades.
 existingAuthentikDeviceOidcSecret: ""
 
-# -- Authentik OIDC configuration (legacy mode + managedBy.helm)
+# -- Authentik OIDC configuration
 authentik:
   # -- Enable Authentik OIDC
   enabled: true
@@ -539,8 +379,6 @@ authentik:
 # -- TURN (STUN) configuration
 # @description Configure an external STUN server for better connectivity between your clients (NAT traversal).
 turn:
-  # -- Enable external STUN/TURN configuration (set false to use embedded STUN in combined mode)
-  enabled: true
   # -- Domain for coturn server to provide STUN/TURN (UDP) (optional, defaults to global.domain value if not provided)
   domain: ""
   # -- Port for coturn server to provide STUN/TURN (UDP) (optional, defaults to 3478 if not provided)

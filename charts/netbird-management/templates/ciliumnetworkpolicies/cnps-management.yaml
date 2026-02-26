@@ -78,7 +78,7 @@ spec:
 {{- end }}
 
 
-{{- if and .Values.libchartCnps.enabled .Values.management.enabled (eq .Values.mode.architecture "legacy") -}}
+{{- if and .Values.libchartCnps.enabled .Values.management.enabled -}}
 ---
 {{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "netbird-management.CiliumNetworkPolicies-AppSet.management") }}
 {{ end -}}
