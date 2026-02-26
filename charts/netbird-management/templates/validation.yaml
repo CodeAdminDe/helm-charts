@@ -52,7 +52,7 @@
 {{- end -}}
 {{- end -}}
 
-{{- if and .Values.dashboard.enabled (eq .Values.mode.architecture "combined") (.Values.dashboard.auth.autoEmbedded | default true) (eq .Values.dashboard.auth.mode "legacy") -}}
+{{- if and .Values.dashboard.enabled (eq .Values.mode.architecture "combined") (dig "dashboard" "auth" "autoEmbedded" true .Values) (eq .Values.dashboard.auth.mode "legacy") -}}
 {{- if empty .Values.dashboard.auth.embeddedClientId -}}
 {{- fail "dashboard.auth.embeddedClientId must be set when dashboard.auth.autoEmbedded is true and mode.architecture is combined" -}}
 {{- end -}}

@@ -456,7 +456,7 @@ dashboard:
     autoEmbedded: true
     # -- Embedded IdP dashboard client ID/audience (used only when autoEmbedded is true)
     embeddedClientId: "netbird-dashboard"
-    # -- Embedded IdP issuer URL override (defaults to https://<global.domain>/oauth2 if empty)
+    # -- Embedded IdP issuer URL override (defaults to dashboard.auth.issuer or https://{global.domain}/oauth2 if empty)
     embeddedIssuer: ""
     # -- OIDC issuer URL
     issuer: ""
