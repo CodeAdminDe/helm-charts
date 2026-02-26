@@ -31,5 +31,5 @@ spec:
               service:
                 name: {{ include "netbird-management.fullname" . }}{{- if $isCombined -}}-server{{- else -}}-management{{- end }}
                 port:
-                  number: {{- if $isCombined -}}{{ .Values.server.service.grpcPort }}{{- else -}}{{ .Values.management.service.port }}{{- end }}
+                  number: {{ if $isCombined }}{{ .Values.server.service.grpcPort }}{{ else }}{{ .Values.management.service.port }}{{ end }}
 {{- end }}

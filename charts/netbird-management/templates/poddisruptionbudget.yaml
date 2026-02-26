@@ -7,7 +7,7 @@ metadata:
   labels:
     {{- include "netbird-management.labels" . | nindent 4 }}
 spec:
-  minAvailable: {{- if gt .Values.management.replicaCount 1 -}}{{ .Values.management.podDisruptionBudget.minAvailable }}{{- else -}}0{{- end }}
+  minAvailable: {{ if gt .Values.management.replicaCount 1 }}{{ .Values.management.podDisruptionBudget.minAvailable }}{{ else }}0{{ end }}
   selector:
     matchLabels:
       {{- include "netbird-management.selectorLabels" . | nindent 6 }}
@@ -23,7 +23,7 @@ metadata:
   labels:
     {{- include "netbird-management.labels" . | nindent 4 }}
 spec:
-  minAvailable: {{- if gt .Values.server.replicaCount 1 -}}{{ .Values.server.podDisruptionBudget.minAvailable }}{{- else -}}0{{- end }}
+  minAvailable: {{ if gt .Values.server.replicaCount 1 }}{{ .Values.server.podDisruptionBudget.minAvailable }}{{ else }}0{{ end }}
   selector:
     matchLabels:
       {{- include "netbird-management.selectorLabels" . | nindent 6 }}
