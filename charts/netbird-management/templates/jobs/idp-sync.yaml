@@ -44,6 +44,11 @@ spec:
               fi
               echo "Posting IdP payload to ${NB_MGMT_URL}/api/identity-providers"
               curl -sSf -X POST "${NB_MGMT_URL}/api/identity-providers" \
+                --connect-timeout 5 \
+                --max-time 30 \
+                --retry 3 \
+                --retry-delay 5 \
+                --retry-connrefused \
                 -H "Authorization: Bearer ${NB_MGMT_TOKEN}" \
                 -H "Content-Type: application/json" \
                 --data @/payload/payload.json
@@ -61,7 +66,9 @@ spec:
               readOnly: true
       volumes:
         - name: payload
-          configMap:
-            name: {{ include "netbird-management.fullname" . }}-idp-sync-payload
-            defaultMode: 0444
+          secret:
+            secretName: {{ .Values.auth.externalProviders.apiJob.payloadSecretName | quote }}
+            items:
+              - key: {{ .Values.auth.externalProviders.apiJob.payloadSecretKey | quote }}
+                path: payload.json
 {{- end }}
