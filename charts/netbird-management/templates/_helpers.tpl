@@ -117,7 +117,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
   value: "false"
 {{- end }}
 - name: AUTH_AUTHORITY
-  value: "{{- if $useEmbedded -}}{{ .Values.dashboard.auth.embeddedIssuer | default .Values.dashboard.auth.issuer | default (printf "https://%s/oauth2" .Values.global.domain) }}{{- else if eq $dashboardAuthMode "legacy" -}}{{ .Values.authentik.issuer }}{{- else -}}{{ .Values.dashboard.auth.issuer }}{{- end -}}"
+  value: "{{- if $useEmbedded -}}{{ .Values.dashboard.auth.issuer | default (printf "https://%s/oauth2" .Values.global.domain) }}{{- else if eq $dashboardAuthMode "legacy" -}}{{ .Values.authentik.issuer }}{{- else -}}{{ .Values.dashboard.auth.issuer }}{{- end -}}"
 - name: USE_AUTH0
   value: "false"
 - name: AUTH_CLIENT_ID
