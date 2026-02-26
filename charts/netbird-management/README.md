@@ -957,7 +957,7 @@ string
 </pre>
 </div>
 			</td>
-			<td>Embedded IdP issuer URL override (defaults to https://<global.domain>/oauth2 if empty)</td>
+			<td>Embedded IdP issuer URL override (defaults to dashboard.auth.issuer or https://{global.domain}/oauth2 if empty)</td>
 		</tr>
 		<tr>
 			<td id="dashboard--auth--existingSecretKey"><a href="./values.yaml#L468">dashboard.auth.existingSecretKey</a></td>
