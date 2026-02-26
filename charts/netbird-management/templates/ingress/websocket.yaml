@@ -1,4 +1,5 @@
-{{- if and .Values.ingress.enabled (or .Values.signal.enabled .Values.management.enabled .Values.relay.enabled)}}
+{{- $isCombined := eq .Values.mode.architecture "combined" -}}
+{{- if and .Values.ingress.enabled (or (and .Values.signal.enabled (not $isCombined)) (and .Values.management.enabled (not $isCombined)) (and .Values.relay.enabled (not $isCombined)) (and .Values.server.enabled $isCombined))}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -23,7 +24,16 @@ spec:
     - host: {{ .Values.global.domain }}
       http:
         paths:
-        {{- if .Values.signal.enabled }}
+        {{- if and .Values.server.enabled $isCombined }}
+          - path: /ws-proxy/signal
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "netbird-management.fullname" . }}-server
+                port:
+                  number: {{ .Values.server.service.signalPort }}
+        {{- end }}
+        {{- if and .Values.signal.enabled (not $isCombined) }}
           - path: /ws-proxy/signal
             pathType: Prefix
             backend:
@@ -32,7 +42,16 @@ spec:
                 port:
                   number: {{ .Values.signal.service.port }}
         {{- end }}
-        {{- if .Values.management.enabled }}
+        {{- if and .Values.server.enabled $isCombined }}
+          - path: /ws-proxy/management
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "netbird-management.fullname" . }}-server
+                port:
+                  number: {{ .Values.server.service.port }}
+        {{- end }}
+        {{- if and .Values.management.enabled (not $isCombined) }}
           - path: /ws-proxy/management
             pathType: Prefix
             backend:
@@ -41,7 +60,16 @@ spec:
                 port:
                   number: {{ .Values.management.service.port }}
         {{- end }}
-        {{- if .Values.relay.enabled }}
+        {{- if and .Values.server.enabled $isCombined }}
+          - path: /relay
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "netbird-management.fullname" . }}-server
+                port:
+                  number: {{ .Values.server.service.port }}
+        {{- end }}
+        {{- if and .Values.relay.enabled (not $isCombined) }}
           - path: /relay
             pathType: Prefix
             backend:
