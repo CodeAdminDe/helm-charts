@@ -275,8 +275,6 @@ server:
     runAsNonRoot: true
     # -- User ID for running container
     runAsUser: 1001
-    # -- Group ID for running container
-    runAsGroup: 1001
     # -- File system group
     fsGroup: 1001
     # -- Use read-only root filesystem
