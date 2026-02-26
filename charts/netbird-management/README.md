@@ -104,7 +104,7 @@ object
 {
   "embeddedIdp": {
     "dataDir": "/var/lib/netbird/idp",
-    "enabled": true
+    "enabled": false
   },
   "externalProviders": {
     "apiJob": {
@@ -152,7 +152,7 @@ bool
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-true
+false
 </pre>
 </div>
 			</td>
