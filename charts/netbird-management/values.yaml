@@ -34,7 +34,7 @@ mode:
 auth:
   embeddedIdp:
     # -- Enable embedded IdP (Dex) inside NetBird (recommended for new self-hosted setups)
-    enabled: true
+    enabled: false
     # -- Data directory inside the container (mapped via PVC)
     dataDir: "/var/lib/netbird/idp"
   externalProviders:
