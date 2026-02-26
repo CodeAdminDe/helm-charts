@@ -1,0 +1,33 @@
+apiVersion: v2
+name: garage
+description: A Helm chart for an easier Garage (https://garagehq.deuxfleurs.fr) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with Garage or its authors.
+type: application
+# renovate: bumpVersion
+version: 0.1.0
+# renovate: image=dxflrs/garage
+appVersion: "v2.2.0"
+home: https://github.com/CodeAdminDe/helm-charts
+keywords:
+  - garage
+  - s3
+  - object-storage
+  - storage
+  - cloud-native
+  - helm
+maintainers:
+  - name: Frederic Roggon
+    email: frederic.roggon@codeadmin.de
+    url: https://github.com/CodeAdminDe
+dependencies:
+  - name: libchart-cnps
+    version: 0.2.1
+    repository: https://codeadminde.github.io/helm-charts
+    alias: libchart-cnps
+    condition: libchartCnps.enabled
+annotations:
+  category: Storage
+  kubeVersion: ">=1.24.0"
+  securityContext: "required"
+  images: |
+    - name: garage
+      image: dxflrs/garage:v2.2.0

@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "garage.fullname" . }}-test-connection"
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "garage.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  {{- if .Values.runtimeClass.tests }}
+  runtimeClassName: {{ .Values.runtimeClass.tests }}
+  {{- end }}
+  containers:
+    - name: connectivity
+      image: busybox:1.37
+      command: ["sh", "-c"]
+      args:
+        - |
+          set -eu
+          nc -z -w 5 {{ include "garage.fullname" . }} {{ .Values.service.s3Api.port }}
+          {{- if and .Values.garage.s3Web.enabled .Values.service.s3Web.enabled }}
+          nc -z -w 5 {{ include "garage.fullname" . }} {{ .Values.service.s3Web.port }}
+          {{- end }}
+          {{- if and .Values.garage.admin.enabled .Values.service.admin.enabled }}
+          nc -z -w 5 {{ include "garage.fullname" . }} {{ .Values.service.admin.port }}
+          {{- end }}
+  restartPolicy: Never

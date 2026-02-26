@@ -1,0 +1,115 @@
+{{- if .Values.ingress.s3Api.enabled -}}
+{{- $annotations := dict -}}
+{{- if .Values.ingress.s3Api.secureDefaults.enabled -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-read-timeout" (.Values.ingress.s3Api.secureDefaults.proxyReadTimeoutSeconds | toString) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-send-timeout" (.Values.ingress.s3Api.secureDefaults.proxySendTimeoutSeconds | toString) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-buffering" (.Values.ingress.s3Api.secureDefaults.proxyBuffering | toString) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-request-buffering" (.Values.ingress.s3Api.secureDefaults.proxyRequestBuffering | toString) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-http-version" (.Values.ingress.s3Api.secureDefaults.proxyHttpVersion | toString) -}}
+{{- end -}}
+{{- range $key, $val := .Values.ingress.s3Api.annotations -}}
+{{- $_ := set $annotations $key ($val | toString) -}}
+{{- end -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "garage.fullname" . }}-s3-api
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "garage.labels" . | nindent 4 }}
+  {{- if gt (len $annotations) 0 }}
+  annotations:
+    {{- toYaml $annotations | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.ingress.s3Api.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- if .Values.ingress.s3Api.tls }}
+  tls:
+    {{- range .Values.ingress.s3Api.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      {{- with .secretName }}
+      secretName: {{ . }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.ingress.s3Api.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ include "garage.fullname" $ }}
+                port:
+                  number: {{ $.Values.service.s3Api.port }}
+          {{- end }}
+    {{- end }}
+{{- end }}
+
+{{- if and .Values.ingress.s3Api.enabled .Values.ingress.s3Web.enabled -}}
+---
+{{- end }}
+
+{{- if .Values.ingress.s3Web.enabled -}}
+{{- $annotations := dict -}}
+{{- if .Values.ingress.s3Web.secureDefaults.enabled -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-read-timeout" (.Values.ingress.s3Web.secureDefaults.proxyReadTimeoutSeconds | toString) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-send-timeout" (.Values.ingress.s3Web.secureDefaults.proxySendTimeoutSeconds | toString) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-buffering" (.Values.ingress.s3Web.secureDefaults.proxyBuffering | toString) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-request-buffering" (.Values.ingress.s3Web.secureDefaults.proxyRequestBuffering | toString) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-http-version" (.Values.ingress.s3Web.secureDefaults.proxyHttpVersion | toString) -}}
+{{- end -}}
+{{- range $key, $val := .Values.ingress.s3Web.annotations -}}
+{{- $_ := set $annotations $key ($val | toString) -}}
+{{- end -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "garage.fullname" . }}-s3-web
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "garage.labels" . | nindent 4 }}
+  {{- if gt (len $annotations) 0 }}
+  annotations:
+    {{- toYaml $annotations | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.ingress.s3Web.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- if .Values.ingress.s3Web.tls }}
+  tls:
+    {{- range .Values.ingress.s3Web.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      {{- with .secretName }}
+      secretName: {{ . }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.ingress.s3Web.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ include "garage.fullname" $ }}
+                port:
+                  number: {{ $.Values.service.s3Web.port }}
+          {{- end }}
+    {{- end }}
+{{- end }}

@@ -1,0 +1,13 @@
+Garage has been deployed.
+
+Core services:
+  - S3 API: {{ include "garage.fullname" . }}:{{ .Values.service.s3Api.port }}
+  {{- if and .Values.garage.s3Web.enabled .Values.service.s3Web.enabled }}
+  - S3 Web: {{ include "garage.fullname" . }}:{{ .Values.service.s3Web.port }}
+  {{- end }}
+  {{- if and .Values.garage.admin.enabled .Values.service.admin.enabled }}
+  - Admin: {{ include "garage.fullname" . }}:{{ .Values.service.admin.port }}
+  {{- end }}
+
+Important:
+  - Garage cluster layout and storage node assignment still needs to be configured after deployment.

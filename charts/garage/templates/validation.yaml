@@ -1,0 +1,71 @@
+{{- if ne .Values.service.type "ClusterIP" -}}
+{{- fail "service.type must be ClusterIP in this repo style. Expose externally via ingress/reverse-proxy resources." -}}
+{{- end -}}
+
+{{- if lt (int .Values.replicaCount) 1 -}}
+{{- fail "replicaCount must be >= 1." -}}
+{{- end -}}
+
+{{- if and .Values.ingress.s3Api.enabled (not .Values.ingress.s3Api.hosts) -}}
+{{- fail "ingress.s3Api.enabled=true requires at least one ingress.s3Api.hosts entry." -}}
+{{- end -}}
+
+{{- if and .Values.ingress.s3Web.enabled (not .Values.ingress.s3Web.hosts) -}}
+{{- fail "ingress.s3Web.enabled=true requires at least one ingress.s3Web.hosts entry." -}}
+{{- end -}}
+
+{{- if and .Values.ingress.s3Web.enabled (not .Values.garage.s3Web.enabled) -}}
+{{- fail "ingress.s3Web.enabled=true requires garage.s3Web.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.service.s3Web.enabled (not .Values.garage.s3Web.enabled) -}}
+{{- fail "service.s3Web.enabled=true requires garage.s3Web.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.monitoring.serviceMonitor.enabled (not (and .Values.garage.admin.enabled .Values.service.admin.enabled)) -}}
+{{- fail "monitoring.serviceMonitor.enabled=true requires garage.admin.enabled=true and service.admin.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.monitoring.serviceMonitor.enabled .Values.garage.admin.metricsRequireToken (or (empty .Values.monitoring.serviceMonitor.bearerTokenSecret.name) (empty .Values.monitoring.serviceMonitor.bearerTokenSecret.key)) -}}
+{{- fail "monitoring.serviceMonitor.enabled=true with garage.admin.metricsRequireToken=true requires monitoring.serviceMonitor.bearerTokenSecret.name and .key." -}}
+{{- end -}}
+
+{{- if and .Values.garage.kubernetesDiscovery.enabled (not .Values.serviceAccount.automountServiceAccountToken) -}}
+{{- fail "garage.kubernetesDiscovery.enabled=true requires serviceAccount.automountServiceAccountToken=true." -}}
+{{- end -}}
+
+{{- if and .Values.garage.kubernetesDiscovery.enabled (not .Values.rbac.create) -}}
+{{- fail "garage.kubernetesDiscovery.enabled=true requires rbac.create=true." -}}
+{{- end -}}
+
+{{- if and .Values.garage.kubernetesDiscovery.enabled (not .Values.garage.kubernetesDiscovery.skipCrd) (not .Values.rbac.clusterRole.create) -}}
+{{- fail "garage.kubernetesDiscovery.skipCrd=false requires rbac.clusterRole.create=true." -}}
+{{- end -}}
+
+{{- if and .Values.rbac.create (empty .Values.rbac.rules) -}}
+{{- fail "rbac.create=true requires explicit rbac.rules." -}}
+{{- end -}}
+
+{{- if and .Values.rbac.clusterRole.create (empty .Values.rbac.clusterRole.rules) -}}
+{{- fail "rbac.clusterRole.create=true requires explicit rbac.clusterRole.rules." -}}
+{{- end -}}
+
+{{- if and (or .Values.rbac.create .Values.rbac.clusterRole.create) (not .Values.serviceAccount.create) (empty .Values.serviceAccount.name) -}}
+{{- fail "RBAC enabled requires serviceAccount.create=true or a non-empty serviceAccount.name." -}}
+{{- end -}}
+
+{{- if and .Values.garage.existingConfigMap.name (empty .Values.garage.existingConfigMap.key) -}}
+{{- fail "garage.existingConfigMap.key must be set when garage.existingConfigMap.name is provided." -}}
+{{- end -}}
+
+{{- if and .Values.secrets.existingSecret.name (empty .Values.secrets.existingSecret.keys.rpcSecret) -}}
+{{- fail "secrets.existingSecret.keys.rpcSecret must be set when secrets.existingSecret.name is provided." -}}
+{{- end -}}
+
+{{- if and .Values.secrets.existingSecret.name (empty .Values.secrets.existingSecret.keys.adminToken) -}}
+{{- fail "secrets.existingSecret.keys.adminToken must be set when secrets.existingSecret.name is provided." -}}
+{{- end -}}
+
+{{- if and .Values.secrets.existingSecret.name (empty .Values.secrets.existingSecret.keys.metricsToken) -}}
+{{- fail "secrets.existingSecret.keys.metricsToken must be set when secrets.existingSecret.name is provided." -}}
+{{- end -}}
