@@ -21,7 +21,7 @@
         "/(^|/)Chart\\.yaml$/"
       ],
       "matchStrings": [
-        "image:\\s+(?<depName>[\\w./-]+):(?<currentValue>[\\w.+\\-]+)"
+        "image:\\s+['\\\"]?(?<depName>[\\w./:-]+):(?<currentValue>[\\w.+\\-]+)['\\\"]?"
       ]
     },
     {
