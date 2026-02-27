@@ -1451,6 +1451,43 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/local-agi-0.1.0/local-agi-0.1.0.tgz
     version: 0.1.0
+  local-recall:
+  - annotations:
+      category: AI
+      images: |
+        - name: local-recall
+          image: quay.io/mudler/localrecall:v0.5.5
+      securityContext: compatible
+    apiVersion: v2
+    appVersion: v0.5.5
+    created: "2026-02-27T21:54:25.321527678Z"
+    dependencies:
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for deploying LocalRecall on Kubernetes.
+    digest: c604ca21ece000c588d2960ec1328fd114d7469dce33167b92a3827d3a93162d
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - local-recall
+    - rag
+    - vector-db
+    - ai
+    - localai
+    - cloud-native
+    - helm
+    kubeVersion: '>=1.24.0'
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: local-recall
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/local-recall-0.1.0/local-recall-0.1.0.tgz
+    version: 0.1.0
   netbird-agent:
   - annotations:
       category: Networking
@@ -13460,4 +13497,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-27T21:12:34.511590645Z"
+generated: "2026-02-27T21:54:25.322091026Z"
