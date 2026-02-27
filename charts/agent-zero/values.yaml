@@ -428,6 +428,7 @@ podSecurityContext: {}
 # @description Upstream image is multi-process and expects writable filesystem; avoid aggressive hardening unless validated.
 securityContext:
   allowPrivilegeEscalation: false
+  runAsNonRoot: true
   readOnlyRootFilesystem: false
   seccompProfile:
     type: RuntimeDefault

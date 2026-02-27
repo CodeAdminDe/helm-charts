@@ -110,7 +110,7 @@ object
 			<td>Additional env vars from explicit secret refs. @description Supports either map (ENV_NAME -> secretName) or list objects ({name, secretName, secretKey}).</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L475">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L476">affinity</a></td>
 			<td>
 object
 </td>
@@ -152,7 +152,7 @@ list
 			<td>Extra args override.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L448">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L449">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -173,7 +173,7 @@ object
 			<td>HorizontalPodAutoscaler configuration.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--enableMemoryUtilization"><a href="./values.yaml#L458">autoscaling.enableMemoryUtilization</a></td>
+			<td id="autoscaling--enableMemoryUtilization"><a href="./values.yaml#L459">autoscaling.enableMemoryUtilization</a></td>
 			<td>
 bool
 </td>
@@ -187,7 +187,7 @@ false
 			<td>Enable memory utilization metric.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--enabled"><a href="./values.yaml#L450">autoscaling.enabled</a></td>
+			<td id="autoscaling--enabled"><a href="./values.yaml#L451">autoscaling.enabled</a></td>
 			<td>
 bool
 </td>
@@ -201,7 +201,7 @@ false
 			<td>Enable autoscaling.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--maxReplicas"><a href="./values.yaml#L454">autoscaling.maxReplicas</a></td>
+			<td id="autoscaling--maxReplicas"><a href="./values.yaml#L455">autoscaling.maxReplicas</a></td>
 			<td>
 int
 </td>
@@ -215,7 +215,7 @@ int
 			<td>Maximum replicas.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--minReplicas"><a href="./values.yaml#L452">autoscaling.minReplicas</a></td>
+			<td id="autoscaling--minReplicas"><a href="./values.yaml#L453">autoscaling.minReplicas</a></td>
 			<td>
 int
 </td>
@@ -229,7 +229,7 @@ int
 			<td>Minimum replicas.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--targetCPUUtilizationPercentage"><a href="./values.yaml#L456">autoscaling.targetCPUUtilizationPercentage</a></td>
+			<td id="autoscaling--targetCPUUtilizationPercentage"><a href="./values.yaml#L457">autoscaling.targetCPUUtilizationPercentage</a></td>
 			<td>
 int
 </td>
@@ -243,7 +243,7 @@ int
 			<td>Target CPU utilization percentage.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--targetMemoryUtilizationPercentage"><a href="./values.yaml#L460">autoscaling.targetMemoryUtilizationPercentage</a></td>
+			<td id="autoscaling--targetMemoryUtilizationPercentage"><a href="./values.yaml#L461">autoscaling.targetMemoryUtilizationPercentage</a></td>
 			<td>
 int
 </td>
@@ -257,7 +257,7 @@ int
 			<td>Target memory utilization percentage.</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L485">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L486">cnps</a></td>
 			<td>
 object
 </td>
@@ -295,7 +295,7 @@ object
 			<td>App-specific Cilium policy settings.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L497">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L498">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -309,7 +309,7 @@ true
 			<td>Allow egress traffic from app pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L499">cnps.appTraffic.egress.toEntities</a></td>
+			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L500">cnps.appTraffic.egress.toEntities</a></td>
 			<td>
 list
 </td>
@@ -325,7 +325,7 @@ list
 			<td>Optional destination entities.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L502">cnps.appTraffic.egress.toPorts</a></td>
+			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L503">cnps.appTraffic.egress.toPorts</a></td>
 			<td>
 list
 </td>
@@ -348,7 +348,7 @@ list
 			<td>Allowed egress ports.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toPorts[0]"><a href="./values.yaml#L504">cnps.appTraffic.egress.toPorts[0]</a></td>
+			<td id="cnps--appTraffic--egress--toPorts[0]"><a href="./values.yaml#L505">cnps.appTraffic.egress.toPorts[0]</a></td>
 			<td>
 object
 </td>
@@ -365,7 +365,7 @@ object
 			<td>DNS (53/UDP) is already covered by the namespace-wide libchart policy.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L489">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L490">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -379,7 +379,7 @@ true
 			<td>Allow ingress traffic to app pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L492">cnps.appTraffic.ingress.fromEndpoints</a></td>
+			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L493">cnps.appTraffic.ingress.fromEndpoints</a></td>
 			<td>
 list
 </td>
@@ -393,7 +393,7 @@ list
 			<td>Allowed ingress endpoint label sets. @description Leave empty to use conditional defaults from template logic: ingress-nginx labels when ingress.enabled=true, envoy-gateway labels when gatewayApi.enabled=true, or both when both are enabled.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L494">cnps.appTraffic.ingress.fromEntities</a></td>
+			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L495">cnps.appTraffic.ingress.fromEntities</a></td>
 			<td>
 list
 </td>
@@ -1057,7 +1057,7 @@ list
 			<td>TLS host/secret blocks.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L478">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L479">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -1074,7 +1074,7 @@ object
 			<td>Cilium policy library toggle.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--enabled"><a href="./values.yaml#L480">libchartCnps.enabled</a></td>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L481">libchartCnps.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1088,7 +1088,7 @@ true
 			<td>Enable libchart-cnps templates.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L482">libchartCnps.includeCnpgPolicies</a></td>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L483">libchartCnps.includeCnpgPolicies</a></td>
 			<td>
 bool
 </td>
@@ -1139,7 +1139,7 @@ string
 			<td>Override release-based naming.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L469">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L470">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -1307,7 +1307,7 @@ string
 			<td>PVC volumeName binding.</td>
 		</tr>
 		<tr>
-			<td id="podAnnotations"><a href="./values.yaml#L463">podAnnotations</a></td>
+			<td id="podAnnotations"><a href="./values.yaml#L464">podAnnotations</a></td>
 			<td>
 object
 </td>
@@ -1321,7 +1321,7 @@ object
 			<td>Pod annotations.</td>
 		</tr>
 		<tr>
-			<td id="podLabels"><a href="./values.yaml#L466">podLabels</a></td>
+			<td id="podLabels"><a href="./values.yaml#L467">podLabels</a></td>
 			<td>
 object
 </td>
@@ -1446,7 +1446,7 @@ int
 			<td>Number of application pod replicas.</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L439">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L440">resources</a></td>
 			<td>
 object
 </td>
@@ -1529,6 +1529,7 @@ object
     ]
   },
   "readOnlyRootFilesystem": false,
+  "runAsNonRoot": true,
   "seccompProfile": {
     "type": "RuntimeDefault"
   }
@@ -1817,7 +1818,7 @@ string
 			<td>Optional size limit.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L472">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L473">tolerations</a></td>
 			<td>
 list
 </td>
