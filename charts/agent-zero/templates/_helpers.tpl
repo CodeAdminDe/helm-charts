@@ -75,3 +75,40 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- define "agent-zero.httpRouteName" -}}
 {{- printf "%s-route" (include "agent-zero.fullname" .) | trunc 63 | trimSuffix "-" -}}
 {{- end }}
+
+{{/* VPN provider helper. */}}
+{{- define "agent-zero.vpn.provider" -}}
+{{- default "none" .Values.vpn.provider -}}
+{{- end -}}
+
+{{/* NetBird sidecar toggle helper. */}}
+{{- define "agent-zero.vpn.netbird.enabled" -}}
+{{- if eq (include "agent-zero.vpn.provider" .) "netbird" -}}
+true
+{{- else -}}
+false
+{{- end -}}
+{{- end -}}
+
+{{/* NetBird image helper. */}}
+{{- define "agent-zero.vpn.netbird.image" -}}
+{{- printf "%s:%s" .Values.vpn.netbird.image.repository .Values.vpn.netbird.image.tag -}}
+{{- end -}}
+
+{{/* NetBird SOCKS5 proxy URL helper. */}}
+{{- define "agent-zero.vpn.netbird.socksProxyUrl" -}}
+{{- if .Values.vpn.netbird.proxyEnv.proxyUrl -}}
+{{- .Values.vpn.netbird.proxyEnv.proxyUrl -}}
+{{- else -}}
+{{- printf "socks5://127.0.0.1:%v" .Values.vpn.netbird.socks5.port -}}
+{{- end -}}
+{{- end -}}
+
+{{/* NetBird state PVC helper. */}}
+{{- define "agent-zero.vpn.netbird.stateClaimName" -}}
+{{- if .Values.vpn.netbird.persistence.existingClaim -}}
+{{- .Values.vpn.netbird.persistence.existingClaim -}}
+{{- else -}}
+{{- printf "%s-netbird-state" (include "agent-zero.fullname" .) | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}

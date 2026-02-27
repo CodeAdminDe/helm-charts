@@ -20,6 +20,13 @@
 * CNP ingress defaults are conditional: ingress-nginx labels are added when `ingress.enabled=true`, envoy-gateway labels are added when `gatewayApi.enabled=true`, and both are added when both are enabled.
 * DNS port 53 is not included in app egress defaults because namespace-wide DNS policy already comes from `libchart-cnps`.
 
+### VPN sidecar (NetBird netstack mode)
+
+* Provider-aware values are available under `vpn.*`.
+* `vpn.provider=netbird` deploys a rootless NetBird sidecar in netstack mode and can inject proxy env vars into Agent Zero.
+* NetBird setup key must come from an existing Kubernetes secret (`vpn.netbird.setupKeySecret.name/key`).
+* NetBird DNS is disabled in netstack mode (`NB_DISABLE_DNS=true`), so `.netbird.local` hostnames may require `vpn.netbird.hostAliases` or direct peer IP usage.
+
 ### Secrets handling
 
 * Put API keys and credentials into Kubernetes secrets and consume them using `envFromSecrets` or `additionalEnvSecrets`.

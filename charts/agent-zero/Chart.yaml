@@ -32,3 +32,5 @@ annotations:
   images: |
     - name: agent-zero
       image: agent0ai/agent-zero:latest
+    - name: netbird-sidecar
+      image: netbirdio/netbird:rootless-latest

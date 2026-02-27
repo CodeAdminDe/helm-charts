@@ -31,6 +31,10 @@ spec:
       {{- end }}
       serviceAccountName: {{ include "agent-zero.serviceAccountName" . }}
       automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      {{- if and (eq (include "agent-zero.vpn.netbird.enabled" .) "true") .Values.vpn.netbird.hostAliases }}
+      hostAliases:
+        {{- toYaml .Values.vpn.netbird.hostAliases | nindent 8 }}
+      {{- end }}
       {{- if .Values.runtimeClass.pods }}
       runtimeClassName: {{ .Values.runtimeClass.pods }}
       {{- end }}
@@ -65,6 +69,25 @@ spec:
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
               value: {{ $value | quote }}
+            {{- end }}
+            {{- if and (eq (include "agent-zero.vpn.netbird.enabled" .) "true") .Values.vpn.netbird.proxyEnv.enabled }}
+            {{- $netbirdProxyUrl := include "agent-zero.vpn.netbird.socksProxyUrl" . }}
+            {{- if and .Values.vpn.netbird.proxyEnv.injectAllProxy (not (hasKey .Values.env "ALL_PROXY")) }}
+            - name: ALL_PROXY
+              value: {{ $netbirdProxyUrl | quote }}
+            {{- end }}
+            {{- if and .Values.vpn.netbird.proxyEnv.injectHttpProxy (not (hasKey .Values.env "HTTP_PROXY")) }}
+            - name: HTTP_PROXY
+              value: {{ $netbirdProxyUrl | quote }}
+            {{- end }}
+            {{- if and .Values.vpn.netbird.proxyEnv.injectHttpsProxy (not (hasKey .Values.env "HTTPS_PROXY")) }}
+            - name: HTTPS_PROXY
+              value: {{ $netbirdProxyUrl | quote }}
+            {{- end }}
+            {{- if and .Values.vpn.netbird.proxyEnv.noProxy (not (hasKey .Values.env "NO_PROXY")) }}
+            - name: NO_PROXY
+              value: {{ .Values.vpn.netbird.proxyEnv.noProxy | quote }}
+            {{- end }}
             {{- end }}
             {{- if kindIs "map" .Values.additionalEnvSecrets }}
             {{- range $envName, $secretConfig := .Values.additionalEnvSecrets }}
@@ -138,6 +161,54 @@ spec:
             {{- with .Values.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
+        {{- if eq (include "agent-zero.vpn.netbird.enabled" .) "true" }}
+        - name: netbird
+          image: {{ include "agent-zero.vpn.netbird.image" . }}
+          imagePullPolicy: {{ .Values.vpn.netbird.image.pullPolicy }}
+          securityContext:
+            {{- toYaml .Values.vpn.netbird.securityContext | nindent 12 }}
+          env:
+            - name: NB_SETUP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.vpn.netbird.setupKeySecret.name }}
+                  key: {{ .Values.vpn.netbird.setupKeySecret.key | quote }}
+            - name: NB_MANAGEMENT_URL
+              value: {{ .Values.vpn.netbird.managementUrl | quote }}
+            - name: NB_ADMIN_URL
+              value: {{ .Values.vpn.netbird.adminUrl | quote }}
+            - name: NB_HOSTNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NB_USE_NETSTACK_MODE
+              value: "true"
+            - name: NB_ENABLE_NETSTACK_LOCAL_FORWARDING
+              value: "true"
+            - name: NB_DISABLE_DNS
+              value: "true"
+            - name: NB_SOCKS5_LISTENER_PORT
+              value: {{ .Values.vpn.netbird.socks5.port | quote }}
+            - name: NB_STATE_DIR
+              value: /var/lib/netbird
+            - name: NB_CONFIG
+              value: /var/lib/netbird/config.json
+            - name: NB_DAEMON_ADDR
+              value: unix:///var/lib/netbird/netbird.sock
+            - name: NB_LOG_FILE
+              value: console,/var/lib/netbird/client.log
+            {{- if .Values.vpn.netbird.extraDnsLabels }}
+            - name: NB_EXTRA_DNS_LABELS
+              value: {{ .Values.vpn.netbird.extraDnsLabels | quote }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.vpn.netbird.resources | nindent 12 }}
+          volumeMounts:
+            - name: netbird-state
+              mountPath: /var/lib/netbird
+            - name: netbird-tmp
+              mountPath: /tmp
+        {{- end }}
       volumes:
         - name: data
           {{- if .Values.persistence.enabled }}
@@ -158,6 +229,17 @@ spec:
           hostPath:
             path: {{ .Values.hostDockerSocket.hostPath }}
             type: {{ .Values.hostDockerSocket.type }}
+        {{- end }}
+        {{- if eq (include "agent-zero.vpn.netbird.enabled" .) "true" }}
+        - name: netbird-state
+          {{- if .Values.vpn.netbird.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "agent-zero.vpn.netbird.stateClaimName" . }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        - name: netbird-tmp
+          emptyDir: {}
         {{- end }}
         {{- with .Values.extraVolumes }}
         {{- toYaml . | nindent 8 }}

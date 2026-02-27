@@ -94,7 +94,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="additionalEnvSecrets"><a href="./values.yaml#L187">additionalEnvSecrets</a></td>
+			<td id="additionalEnvSecrets"><a href="./values.yaml#L275">additionalEnvSecrets</a></td>
 			<td>
 object
 </td>
@@ -108,7 +108,7 @@ object
 			<td>Additional env vars from explicit secret refs. @description Supports either map (ENV_NAME -> secretName) or list objects ({name, secretName, secretKey}).</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L285">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L373">affinity</a></td>
 			<td>
 object
 </td>
@@ -122,7 +122,7 @@ object
 			<td>Workload affinity.</td>
 		</tr>
 		<tr>
-			<td id="applyHealthChecks"><a href="./values.yaml#L202">applyHealthChecks</a></td>
+			<td id="applyHealthChecks"><a href="./values.yaml#L290">applyHealthChecks</a></td>
 			<td>
 bool
 </td>
@@ -136,7 +136,7 @@ true
 			<td>Enable health probes.</td>
 		</tr>
 		<tr>
-			<td id="args"><a href="./values.yaml#L193">args</a></td>
+			<td id="args"><a href="./values.yaml#L281">args</a></td>
 			<td>
 list
 </td>
@@ -150,7 +150,7 @@ list
 			<td>Extra args override.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L258">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L346">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -171,7 +171,7 @@ object
 			<td>HorizontalPodAutoscaler configuration.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--enableMemoryUtilization"><a href="./values.yaml#L268">autoscaling.enableMemoryUtilization</a></td>
+			<td id="autoscaling--enableMemoryUtilization"><a href="./values.yaml#L356">autoscaling.enableMemoryUtilization</a></td>
 			<td>
 bool
 </td>
@@ -185,7 +185,7 @@ false
 			<td>Enable memory utilization metric.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--enabled"><a href="./values.yaml#L260">autoscaling.enabled</a></td>
+			<td id="autoscaling--enabled"><a href="./values.yaml#L348">autoscaling.enabled</a></td>
 			<td>
 bool
 </td>
@@ -199,7 +199,7 @@ false
 			<td>Enable autoscaling.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--maxReplicas"><a href="./values.yaml#L264">autoscaling.maxReplicas</a></td>
+			<td id="autoscaling--maxReplicas"><a href="./values.yaml#L352">autoscaling.maxReplicas</a></td>
 			<td>
 int
 </td>
@@ -213,7 +213,7 @@ int
 			<td>Maximum replicas.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--minReplicas"><a href="./values.yaml#L262">autoscaling.minReplicas</a></td>
+			<td id="autoscaling--minReplicas"><a href="./values.yaml#L350">autoscaling.minReplicas</a></td>
 			<td>
 int
 </td>
@@ -227,7 +227,7 @@ int
 			<td>Minimum replicas.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--targetCPUUtilizationPercentage"><a href="./values.yaml#L266">autoscaling.targetCPUUtilizationPercentage</a></td>
+			<td id="autoscaling--targetCPUUtilizationPercentage"><a href="./values.yaml#L354">autoscaling.targetCPUUtilizationPercentage</a></td>
 			<td>
 int
 </td>
@@ -241,7 +241,7 @@ int
 			<td>Target CPU utilization percentage.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--targetMemoryUtilizationPercentage"><a href="./values.yaml#L270">autoscaling.targetMemoryUtilizationPercentage</a></td>
+			<td id="autoscaling--targetMemoryUtilizationPercentage"><a href="./values.yaml#L358">autoscaling.targetMemoryUtilizationPercentage</a></td>
 			<td>
 int
 </td>
@@ -255,7 +255,7 @@ int
 			<td>Target memory utilization percentage.</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L295">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L383">cnps</a></td>
 			<td>
 object
 </td>
@@ -293,7 +293,7 @@ object
 			<td>App-specific Cilium policy settings.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L307">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L395">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -307,7 +307,7 @@ true
 			<td>Allow egress traffic from app pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L309">cnps.appTraffic.egress.toEntities</a></td>
+			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L397">cnps.appTraffic.egress.toEntities</a></td>
 			<td>
 list
 </td>
@@ -323,7 +323,7 @@ list
 			<td>Optional destination entities.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L312">cnps.appTraffic.egress.toPorts</a></td>
+			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L400">cnps.appTraffic.egress.toPorts</a></td>
 			<td>
 list
 </td>
@@ -346,7 +346,7 @@ list
 			<td>Allowed egress ports.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toPorts[0]"><a href="./values.yaml#L314">cnps.appTraffic.egress.toPorts[0]</a></td>
+			<td id="cnps--appTraffic--egress--toPorts[0]"><a href="./values.yaml#L402">cnps.appTraffic.egress.toPorts[0]</a></td>
 			<td>
 object
 </td>
@@ -363,7 +363,7 @@ object
 			<td>DNS (53/UDP) is already covered by the namespace-wide libchart policy.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L299">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L387">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -377,7 +377,7 @@ true
 			<td>Allow ingress traffic to app pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L302">cnps.appTraffic.ingress.fromEndpoints</a></td>
+			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L390">cnps.appTraffic.ingress.fromEndpoints</a></td>
 			<td>
 list
 </td>
@@ -391,7 +391,7 @@ list
 			<td>Allowed ingress endpoint label sets. @description Leave empty to use conditional defaults from template logic: ingress-nginx labels when ingress.enabled=true, envoy-gateway labels when gatewayApi.enabled=true, or both when both are enabled.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L304">cnps.appTraffic.ingress.fromEntities</a></td>
+			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L392">cnps.appTraffic.ingress.fromEntities</a></td>
 			<td>
 list
 </td>
@@ -405,7 +405,7 @@ list
 			<td>Optional allowed ingress entities.</td>
 		</tr>
 		<tr>
-			<td id="command"><a href="./values.yaml#L190">command</a></td>
+			<td id="command"><a href="./values.yaml#L278">command</a></td>
 			<td>
 list
 </td>
@@ -419,7 +419,7 @@ list
 			<td>Extra command override.</td>
 		</tr>
 		<tr>
-			<td id="env"><a href="./values.yaml#L177">env</a></td>
+			<td id="env"><a href="./values.yaml#L265">env</a></td>
 			<td>
 object
 </td>
@@ -433,7 +433,7 @@ object
 			<td>Additional plain environment variables. @description Do not place secrets in this map.</td>
 		</tr>
 		<tr>
-			<td id="envFromConfigMaps"><a href="./values.yaml#L183">envFromConfigMaps</a></td>
+			<td id="envFromConfigMaps"><a href="./values.yaml#L271">envFromConfigMaps</a></td>
 			<td>
 list
 </td>
@@ -447,7 +447,7 @@ list
 			<td>Import all keys from listed configmaps as environment variables.</td>
 		</tr>
 		<tr>
-			<td id="envFromSecrets"><a href="./values.yaml#L180">envFromSecrets</a></td>
+			<td id="envFromSecrets"><a href="./values.yaml#L268">envFromSecrets</a></td>
 			<td>
 list
 </td>
@@ -461,7 +461,7 @@ list
 			<td>Import all keys from listed secrets as environment variables.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumeMounts"><a href="./values.yaml#L196">extraVolumeMounts</a></td>
+			<td id="extraVolumeMounts"><a href="./values.yaml#L284">extraVolumeMounts</a></td>
 			<td>
 list
 </td>
@@ -475,7 +475,7 @@ list
 			<td>Mount additional volumeMounts.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumes"><a href="./values.yaml#L199">extraVolumes</a></td>
+			<td id="extraVolumes"><a href="./values.yaml#L287">extraVolumes</a></td>
 			<td>
 list
 </td>
@@ -1055,7 +1055,7 @@ list
 			<td>TLS host/secret blocks.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L288">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L376">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -1072,7 +1072,7 @@ object
 			<td>Cilium policy library toggle.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--enabled"><a href="./values.yaml#L290">libchartCnps.enabled</a></td>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L378">libchartCnps.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1086,7 +1086,7 @@ true
 			<td>Enable libchart-cnps templates.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L292">libchartCnps.includeCnpgPolicies</a></td>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L380">libchartCnps.includeCnpgPolicies</a></td>
 			<td>
 bool
 </td>
@@ -1100,7 +1100,7 @@ false
 			<td>Include CNPG policy set from library.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L205">livenessProbe</a></td>
+			<td id="livenessProbe"><a href="./values.yaml#L293">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -1137,7 +1137,7 @@ string
 			<td>Override release-based naming.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L279">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L367">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -1305,7 +1305,7 @@ string
 			<td>PVC volumeName binding.</td>
 		</tr>
 		<tr>
-			<td id="podAnnotations"><a href="./values.yaml#L273">podAnnotations</a></td>
+			<td id="podAnnotations"><a href="./values.yaml#L361">podAnnotations</a></td>
 			<td>
 object
 </td>
@@ -1319,7 +1319,7 @@ object
 			<td>Pod annotations.</td>
 		</tr>
 		<tr>
-			<td id="podLabels"><a href="./values.yaml#L276">podLabels</a></td>
+			<td id="podLabels"><a href="./values.yaml#L364">podLabels</a></td>
 			<td>
 object
 </td>
@@ -1333,7 +1333,7 @@ object
 			<td>Pod labels.</td>
 		</tr>
 		<tr>
-			<td id="podSecurityContext"><a href="./values.yaml#L235">podSecurityContext</a></td>
+			<td id="podSecurityContext"><a href="./values.yaml#L323">podSecurityContext</a></td>
 			<td>
 object
 </td>
@@ -1407,7 +1407,7 @@ list
 			<td>Explicit RBAC rules required when rbac.create=true.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe"><a href="./values.yaml#L215">readinessProbe</a></td>
+			<td id="readinessProbe"><a href="./values.yaml#L303">readinessProbe</a></td>
 			<td>
 object
 </td>
@@ -1444,7 +1444,7 @@ int
 			<td>Number of application pod replicas.</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L249">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L337">resources</a></td>
 			<td>
 object
 </td>
@@ -1512,7 +1512,7 @@ string
 			<td>RuntimeClass for test pods.</td>
 		</tr>
 		<tr>
-			<td id="securityContext"><a href="./values.yaml#L239">securityContext</a></td>
+			<td id="securityContext"><a href="./values.yaml#L327">securityContext</a></td>
 			<td>
 object
 </td>
@@ -1732,7 +1732,7 @@ string
 			<td>ServiceAccount name override.</td>
 		</tr>
 		<tr>
-			<td id="startupProbe"><a href="./values.yaml#L225">startupProbe</a></td>
+			<td id="startupProbe"><a href="./values.yaml#L313">startupProbe</a></td>
 			<td>
 object
 </td>
@@ -1815,7 +1815,7 @@ string
 			<td>Optional size limit.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L282">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L370">tolerations</a></td>
 			<td>
 list
 </td>
@@ -1827,6 +1827,505 @@ list
 </div>
 			</td>
 			<td>Workload tolerations.</td>
+		</tr>
+		<tr>
+			<td id="vpn"><a href="./values.yaml#L176">vpn</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "netbird": {
+    "adminUrl": "https://app.netbird.io:443",
+    "cnps": {
+      "enableStunAndP2PPorts": false
+    },
+    "extraDnsLabels": "",
+    "hostAliases": [],
+    "image": {
+      "pullPolicy": "IfNotPresent",
+      "repository": "netbirdio/netbird",
+      "tag": "rootless-latest"
+    },
+    "managementUrl": "https://api.netbird.io:443",
+    "persistence": {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "annotations": {},
+      "enabled": false,
+      "existingClaim": "",
+      "retain": false,
+      "size": "250Mi",
+      "storageClass": "",
+      "volumeName": ""
+    },
+    "proxyEnv": {
+      "enabled": true,
+      "injectAllProxy": true,
+      "injectHttpProxy": true,
+      "injectHttpsProxy": true,
+      "noProxy": "127.0.0.1,localhost,.svc,.svc.cluster.local",
+      "proxyUrl": ""
+    },
+    "resources": {
+      "limits": {
+        "cpu": "250m",
+        "memory": "256Mi"
+      },
+      "requests": {
+        "cpu": "50m",
+        "memory": "128Mi"
+      }
+    },
+    "securityContext": {
+      "allowPrivilegeEscalation": false,
+      "capabilities": {
+        "drop": [
+          "ALL"
+        ]
+      },
+      "readOnlyRootFilesystem": true,
+      "runAsGroup": 1000,
+      "runAsNonRoot": true,
+      "runAsUser": 1000,
+      "seccompProfile": {
+        "type": "RuntimeDefault"
+      }
+    },
+    "setupKeySecret": {
+      "key": "",
+      "name": ""
+    },
+    "socks5": {
+      "port": 1080
+    }
+  },
+  "provider": "none"
+}
+</pre>
+</div>
+			</td>
+			<td>Optional VPN sidecar settings.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--adminUrl"><a href="./values.yaml#L196">vpn.netbird.adminUrl</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"https://app.netbird.io:443"
+</pre>
+</div>
+			</td>
+			<td>NetBird admin URL.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--cnps--enableStunAndP2PPorts"><a href="./values.yaml#L241">vpn.netbird.cnps.enableStunAndP2PPorts</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Append NetBird STUN/P2P egress defaults (UDP/3478 and UDP/49152-65535) to app CNP egress rules. @description Keep disabled in restricted environments that only allow HTTPS egress.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--extraDnsLabels"><a href="./values.yaml#L198">vpn.netbird.extraDnsLabels</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Optional extra DNS labels (comma-separated).</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--hostAliases"><a href="./values.yaml#L216">vpn.netbird.hostAliases</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Optional host aliases used by all pod containers (for example mapping `ollama.netbird.local` to a peer IP).</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--image--pullPolicy"><a href="./values.yaml#L185">vpn.netbird.image.pullPolicy</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"IfNotPresent"
+</pre>
+</div>
+			</td>
+			<td>NetBird sidecar image pull policy.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--image--repository"><a href="./values.yaml#L183">vpn.netbird.image.repository</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"netbirdio/netbird"
+</pre>
+</div>
+			</td>
+			<td>NetBird sidecar image repository.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--image--tag"><a href="./values.yaml#L187">vpn.netbird.image.tag</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"rootless-latest"
+</pre>
+</div>
+			</td>
+			<td>NetBird sidecar image tag.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--managementUrl"><a href="./values.yaml#L194">vpn.netbird.managementUrl</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"https://api.netbird.io:443"
+</pre>
+</div>
+			</td>
+			<td>NetBird management URL.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--persistence--accessModes"><a href="./values.yaml#L232">vpn.netbird.persistence.accessModes</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[
+  "ReadWriteOnce"
+]
+</pre>
+</div>
+			</td>
+			<td>NetBird state PVC access modes.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--persistence--annotations"><a href="./values.yaml#L235">vpn.netbird.persistence.annotations</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>NetBird state PVC annotations.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--persistence--enabled"><a href="./values.yaml#L222">vpn.netbird.persistence.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Persist NetBird state (`/var/lib/netbird`).</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--persistence--existingClaim"><a href="./values.yaml#L226">vpn.netbird.persistence.existingClaim</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Existing PVC to use for NetBird state.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--persistence--retain"><a href="./values.yaml#L224">vpn.netbird.persistence.retain</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Keep NetBird state PVC when Helm release is deleted.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--persistence--size"><a href="./values.yaml#L228">vpn.netbird.persistence.size</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"250Mi"
+</pre>
+</div>
+			</td>
+			<td>NetBird state PVC storage size.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--persistence--storageClass"><a href="./values.yaml#L230">vpn.netbird.persistence.storageClass</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>NetBird state PVC storageClass.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--persistence--volumeName"><a href="./values.yaml#L237">vpn.netbird.persistence.volumeName</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>NetBird state PVC volumeName binding.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--proxyEnv--enabled"><a href="./values.yaml#L204">vpn.netbird.proxyEnv.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Inject proxy environment variables into the Agent Zero container.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--proxyEnv--injectAllProxy"><a href="./values.yaml#L208">vpn.netbird.proxyEnv.injectAllProxy</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Inject `ALL_PROXY`.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--proxyEnv--injectHttpProxy"><a href="./values.yaml#L210">vpn.netbird.proxyEnv.injectHttpProxy</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Inject `HTTP_PROXY`.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--proxyEnv--injectHttpsProxy"><a href="./values.yaml#L212">vpn.netbird.proxyEnv.injectHttpsProxy</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Inject `HTTPS_PROXY`.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--proxyEnv--noProxy"><a href="./values.yaml#L214">vpn.netbird.proxyEnv.noProxy</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"127.0.0.1,localhost,.svc,.svc.cluster.local"
+</pre>
+</div>
+			</td>
+			<td>`NO_PROXY` value injected when `enabled=true`.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--proxyEnv--proxyUrl"><a href="./values.yaml#L206">vpn.netbird.proxyEnv.proxyUrl</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Optional full proxy URL override. When empty, `socks5://127.0.0.1:<socks5.port>` is used.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--resources"><a href="./values.yaml#L243">vpn.netbird.resources</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "limits": {
+    "cpu": "250m",
+    "memory": "256Mi"
+  },
+  "requests": {
+    "cpu": "50m",
+    "memory": "128Mi"
+  }
+}
+</pre>
+</div>
+			</td>
+			<td>NetBird sidecar resource requests and limits.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--securityContext"><a href="./values.yaml#L251">vpn.netbird.securityContext</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "allowPrivilegeEscalation": false,
+  "capabilities": {
+    "drop": [
+      "ALL"
+    ]
+  },
+  "readOnlyRootFilesystem": true,
+  "runAsGroup": 1000,
+  "runAsNonRoot": true,
+  "runAsUser": 1000,
+  "seccompProfile": {
+    "type": "RuntimeDefault"
+  }
+}
+</pre>
+</div>
+			</td>
+			<td>NetBird sidecar security context.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--setupKeySecret--key"><a href="./values.yaml#L192">vpn.netbird.setupKeySecret.key</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Secret key name containing NetBird setup key.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--setupKeySecret--name"><a href="./values.yaml#L190">vpn.netbird.setupKeySecret.name</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Secret name containing NetBird setup key.</td>
+		</tr>
+		<tr>
+			<td id="vpn--netbird--socks5--port"><a href="./values.yaml#L201">vpn.netbird.socks5.port</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+1080
+</pre>
+</div>
+			</td>
+			<td>SOCKS5 listener port for NetBird netstack mode.</td>
+		</tr>
+		<tr>
+			<td id="vpn--provider"><a href="./values.yaml#L179">vpn.provider</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"none"
+</pre>
+</div>
+			</td>
+			<td>VPN sidecar provider. @description Supported: `none`, `netbird`. Keep `tailscale` reserved for upcoming implementation.</td>
 		</tr>
 	</tbody>
 </table>
@@ -1881,6 +2380,13 @@ Autogenerated from chart metadata using [helm-docs](https://github.com/norwoodj/
 * Optional upstream ports (for example SSH/auxiliary ports) can be exposed with `service.extraPorts`.
 * CNP ingress defaults are conditional: ingress-nginx labels are added when `ingress.enabled=true`, envoy-gateway labels are added when `gatewayApi.enabled=true`, and both are added when both are enabled.
 * DNS port 53 is not included in app egress defaults because namespace-wide DNS policy already comes from `libchart-cnps`.
+
+### VPN sidecar (NetBird netstack mode)
+
+* Provider-aware values are available under `vpn.*`.
+* `vpn.provider=netbird` deploys a rootless NetBird sidecar in netstack mode and can inject proxy env vars into Agent Zero.
+* NetBird setup key must come from an existing Kubernetes secret (`vpn.netbird.setupKeySecret.name/key`).
+* NetBird DNS is disabled in netstack mode (`NB_DISABLE_DNS=true`), so `.netbird.local` hostnames may require `vpn.netbird.hostAliases` or direct peer IP usage.
 
 ### Secrets handling
 

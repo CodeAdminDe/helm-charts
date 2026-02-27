@@ -172,6 +172,94 @@ hostDockerSocket:
   # -- Read-only mount for docker socket.
   readOnly: false
 
+# -- Optional VPN sidecar settings.
+vpn:
+  # -- VPN sidecar provider.
+  # @description Supported: `none`, `netbird`. Keep `tailscale` reserved for upcoming implementation.
+  provider: none
+  netbird:
+    image:
+      # -- NetBird sidecar image repository.
+      repository: netbirdio/netbird
+      # -- NetBird sidecar image pull policy.
+      pullPolicy: IfNotPresent
+      # -- NetBird sidecar image tag.
+      tag: rootless-latest
+    setupKeySecret:
+      # -- Secret name containing NetBird setup key.
+      name: ""
+      # -- Secret key name containing NetBird setup key.
+      key: ""
+    # -- NetBird management URL.
+    managementUrl: https://api.netbird.io:443
+    # -- NetBird admin URL.
+    adminUrl: https://app.netbird.io:443
+    # -- Optional extra DNS labels (comma-separated).
+    extraDnsLabels: ""
+    socks5:
+      # -- SOCKS5 listener port for NetBird netstack mode.
+      port: 1080
+    proxyEnv:
+      # -- Inject proxy environment variables into the Agent Zero container.
+      enabled: true
+      # -- Optional full proxy URL override. When empty, `socks5://127.0.0.1:<socks5.port>` is used.
+      proxyUrl: ""
+      # -- Inject `ALL_PROXY`.
+      injectAllProxy: true
+      # -- Inject `HTTP_PROXY`.
+      injectHttpProxy: true
+      # -- Inject `HTTPS_PROXY`.
+      injectHttpsProxy: true
+      # -- `NO_PROXY` value injected when `enabled=true`.
+      noProxy: "127.0.0.1,localhost,.svc,.svc.cluster.local"
+    # -- Optional host aliases used by all pod containers (for example mapping `ollama.netbird.local` to a peer IP).
+    hostAliases: []
+    # - ip: "100.80.12.10"
+    #   hostnames:
+    #     - ollama.netbird.local
+    persistence:
+      # -- Persist NetBird state (`/var/lib/netbird`).
+      enabled: false
+      # -- Keep NetBird state PVC when Helm release is deleted.
+      retain: false
+      # -- Existing PVC to use for NetBird state.
+      existingClaim: ""
+      # -- NetBird state PVC storage size.
+      size: 250Mi
+      # -- NetBird state PVC storageClass.
+      storageClass: ""
+      # -- NetBird state PVC access modes.
+      accessModes:
+        - ReadWriteOnce
+      # -- NetBird state PVC annotations.
+      annotations: {}
+      # -- NetBird state PVC volumeName binding.
+      volumeName: ""
+    cnps:
+      # -- Append NetBird STUN/P2P egress defaults (UDP/3478 and UDP/49152-65535) to app CNP egress rules.
+      # @description Keep disabled in restricted environments that only allow HTTPS egress.
+      enableStunAndP2PPorts: false
+    # -- NetBird sidecar resource requests and limits.
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+    # -- NetBird sidecar security context.
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      seccompProfile:
+        type: RuntimeDefault
+      capabilities:
+        drop:
+          - ALL
+
 # -- Additional plain environment variables.
 # @description Do not place secrets in this map.
 env: {}
