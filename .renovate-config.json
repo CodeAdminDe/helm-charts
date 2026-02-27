@@ -16,6 +16,16 @@
     },
     {
       "customType": "regex",
+      "datasourceTemplate": "docker",
+      "managerFilePatterns": [
+        "/(^|/)Chart\\.yaml$/"
+      ],
+      "matchStrings": [
+        "image:\\s+(?<depName>[\\w./-]+):(?<currentValue>[\\w.+\\-]+)"
+      ]
+    },
+    {
+      "customType": "regex",
       "datasourceTemplate": "helm",
       "managerFilePatterns": [
         "/(^|/)Chart\\.yaml$/"
