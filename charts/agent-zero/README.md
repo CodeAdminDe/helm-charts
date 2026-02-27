@@ -2,7 +2,7 @@
 
 # agent-zero
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.9.8.2](https://img.shields.io/badge/AppVersion-v0.9.8.2-informational?style=flat-square)
 
 A Helm chart for deploying Agent Zero (AI Operating System) on Kubernetes.
 
@@ -1847,7 +1847,7 @@ object
     "image": {
       "pullPolicy": "IfNotPresent",
       "repository": "netbirdio/netbird",
-      "tag": "rootless-latest"
+      "tag": "0.66.0-rootless"
     },
     "managementUrl": "https://api.netbird.io:443",
     "persistence": {
@@ -1926,7 +1926,7 @@ object
     "image": {
       "pullPolicy": "IfNotPresent",
       "repository": "ghcr.io/tailscale/tailscale",
-      "tag": "latest"
+      "tag": "v1.94.2"
     },
     "kubeSecretStateName": "",
     "persistence": {
@@ -2081,7 +2081,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"rootless-latest"
+"0.66.0-rootless"
 </pre>
 </div>
 			</td>
@@ -2610,7 +2610,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"latest"
+"v1.94.2"
 </pre>
 </div>
 			</td>

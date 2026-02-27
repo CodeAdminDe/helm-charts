@@ -184,7 +184,7 @@ vpn:
       # -- NetBird sidecar image pull policy.
       pullPolicy: IfNotPresent
       # -- NetBird sidecar image tag.
-      tag: rootless-latest
+      tag: 0.66.0-rootless
     setupKeySecret:
       # -- Secret name containing NetBird setup key.
       name: ""
@@ -266,7 +266,7 @@ vpn:
       # -- Tailscale sidecar image pull policy.
       pullPolicy: IfNotPresent
       # -- Tailscale sidecar image tag.
-      tag: latest
+      tag: v1.94.2
     authKeySecret:
       # -- Secret name containing Tailscale auth key.
       name: ""

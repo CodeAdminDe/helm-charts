@@ -5,7 +5,7 @@ type: application
 # renovate: bumpVersion
 version: 0.1.0
 # renovate: image=agent0ai/agent-zero
-appVersion: "latest"
+appVersion: "v0.9.8.2"
 home: https://github.com/CodeAdminDe/helm-charts
 keywords:
   - agent-zero
@@ -31,8 +31,8 @@ annotations:
   securityContext: "compatible"
   images: |
     - name: agent-zero
-      image: agent0ai/agent-zero:latest
+      image: agent0ai/agent-zero:v0.9.8.2
     - name: netbird-sidecar
-      image: netbirdio/netbird:rootless-latest
+      image: netbirdio/netbird:0.66.0-rootless
     - name: tailscale-sidecar
-      image: ghcr.io/tailscale/tailscale:latest
+      image: ghcr.io/tailscale/tailscale:v1.94.2
