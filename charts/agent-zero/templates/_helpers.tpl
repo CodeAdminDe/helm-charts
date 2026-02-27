@@ -112,3 +112,44 @@ false
 {{- printf "%s-netbird-state" (include "agent-zero.fullname" .) | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
+
+{{/* Tailscale sidecar toggle helper. */}}
+{{- define "agent-zero.vpn.tailscale.enabled" -}}
+{{- if eq (include "agent-zero.vpn.provider" .) "tailscale" -}}
+true
+{{- else -}}
+false
+{{- end -}}
+{{- end -}}
+
+{{/* Tailscale image helper. */}}
+{{- define "agent-zero.vpn.tailscale.image" -}}
+{{- printf "%s:%s" .Values.vpn.tailscale.image.repository .Values.vpn.tailscale.image.tag -}}
+{{- end -}}
+
+{{/* Tailscale SOCKS5 proxy URL helper. */}}
+{{- define "agent-zero.vpn.tailscale.socksProxyUrl" -}}
+{{- if .Values.vpn.tailscale.proxyEnv.socksProxyUrl -}}
+{{- .Values.vpn.tailscale.proxyEnv.socksProxyUrl -}}
+{{- else -}}
+{{- printf "socks5h://%s:%v" .Values.vpn.tailscale.socks5.bindAddress .Values.vpn.tailscale.socks5.port -}}
+{{- end -}}
+{{- end -}}
+
+{{/* Tailscale HTTP proxy URL helper. */}}
+{{- define "agent-zero.vpn.tailscale.httpProxyUrl" -}}
+{{- if .Values.vpn.tailscale.proxyEnv.httpProxyUrl -}}
+{{- .Values.vpn.tailscale.proxyEnv.httpProxyUrl -}}
+{{- else -}}
+{{- printf "http://%s:%v" .Values.vpn.tailscale.httpProxy.bindAddress .Values.vpn.tailscale.httpProxy.port -}}
+{{- end -}}
+{{- end -}}
+
+{{/* Tailscale state PVC helper. */}}
+{{- define "agent-zero.vpn.tailscale.stateClaimName" -}}
+{{- if .Values.vpn.tailscale.persistence.existingClaim -}}
+{{- .Values.vpn.tailscale.persistence.existingClaim -}}
+{{- else -}}
+{{- printf "%s-tailscale-state" (include "agent-zero.fullname" .) | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}

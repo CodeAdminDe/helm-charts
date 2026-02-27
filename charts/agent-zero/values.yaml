@@ -175,7 +175,7 @@ hostDockerSocket:
 # -- Optional VPN sidecar settings.
 vpn:
   # -- VPN sidecar provider.
-  # @description Supported: `none`, `netbird`. Keep `tailscale` reserved for upcoming implementation.
+  # @description Supported: `none`, `netbird`, `tailscale`.
   provider: none
   netbird:
     image:
@@ -248,6 +248,108 @@ vpn:
         cpu: 250m
         memory: 256Mi
     # -- NetBird sidecar security context.
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      seccompProfile:
+        type: RuntimeDefault
+      capabilities:
+        drop:
+          - ALL
+  tailscale:
+    image:
+      # -- Tailscale sidecar image repository.
+      repository: ghcr.io/tailscale/tailscale
+      # -- Tailscale sidecar image pull policy.
+      pullPolicy: IfNotPresent
+      # -- Tailscale sidecar image tag.
+      tag: latest
+    authKeySecret:
+      # -- Secret name containing Tailscale auth key.
+      name: ""
+      # -- Secret key name containing Tailscale auth key.
+      key: ""
+    # -- Optional explicit node hostname. Defaults to pod name when empty.
+    hostname: ""
+    # -- Keep userspace mode enabled (restricted-env baseline).
+    userspace: true
+    # -- Only authenticate when the node is not already logged in.
+    authOnce: true
+    # -- Accept tailnet DNS settings on the sidecar.
+    acceptDns: false
+    # -- Additional `tailscale up` args.
+    extraArgs: ""
+    # -- Additional `tailscaled` args.
+    tailscaledExtraArgs: ""
+    # -- Optional Kubernetes Secret state backend name.
+    # @description Empty value disables kube-API state storage (`TS_KUBE_SECRET=""`) and uses filesystem state.
+    kubeSecretStateName: ""
+    socks5:
+      # -- Enable SOCKS5 proxy listener for pod-local traffic.
+      enabled: true
+      # -- SOCKS5 listener bind address.
+      bindAddress: 127.0.0.1
+      # -- SOCKS5 listener port.
+      port: 1055
+    httpProxy:
+      # -- Enable outbound HTTP proxy listener for pod-local traffic.
+      enabled: true
+      # -- HTTP proxy listener bind address.
+      bindAddress: 127.0.0.1
+      # -- HTTP proxy listener port.
+      port: 1056
+    proxyEnv:
+      # -- Inject proxy environment variables into the Agent Zero container.
+      enabled: true
+      # -- Optional explicit SOCKS proxy URL override.
+      socksProxyUrl: ""
+      # -- Optional explicit HTTP proxy URL override.
+      httpProxyUrl: ""
+      # -- Inject `ALL_PROXY`.
+      injectAllProxy: true
+      # -- Inject `HTTP_PROXY`.
+      injectHttpProxy: true
+      # -- Inject `HTTPS_PROXY`.
+      injectHttpsProxy: true
+      # -- `NO_PROXY` value injected when `enabled=true`.
+      noProxy: "127.0.0.1,localhost,.svc,.svc.cluster.local"
+    # -- Optional host aliases used by all pod containers.
+    hostAliases: []
+    persistence:
+      # -- Persist Tailscale state (`/var/lib/tailscale`).
+      enabled: false
+      # -- Keep Tailscale state PVC when Helm release is deleted.
+      retain: false
+      # -- Existing PVC to use for Tailscale state.
+      existingClaim: ""
+      # -- Tailscale state PVC storage size.
+      size: 250Mi
+      # -- Tailscale state PVC storageClass.
+      storageClass: ""
+      # -- Tailscale state PVC access modes.
+      accessModes:
+        - ReadWriteOnce
+      # -- Tailscale state PVC annotations.
+      annotations: {}
+      # -- Tailscale state PVC volumeName binding.
+      volumeName: ""
+    cnps:
+      # -- Append Tailscale STUN egress port (UDP/3478) to app CNP egress rules.
+      enableStunPort: false
+      # -- Append Tailscale direct-connect egress port (UDP/41641) to app CNP egress rules.
+      enableDirectUdpPort: false
+    # -- Tailscale sidecar resource requests and limits.
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+    # -- Tailscale sidecar security context.
     securityContext:
       runAsNonRoot: true
       runAsUser: 1000

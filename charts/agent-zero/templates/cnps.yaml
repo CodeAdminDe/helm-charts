@@ -58,6 +58,16 @@ metadata:
   (dict "port" "49152" "endPort" 65535 "protocol" "UDP")
 ) -}}
 {{- end -}}
+{{- if and (eq (include "agent-zero.vpn.tailscale.enabled" .) "true") .Values.vpn.tailscale.cnps.enableStunPort -}}
+{{- $effectiveEgressPorts = concat $effectiveEgressPorts (list
+  (dict "port" "3478" "protocol" "UDP")
+) -}}
+{{- end -}}
+{{- if and (eq (include "agent-zero.vpn.tailscale.enabled" .) "true") .Values.vpn.tailscale.cnps.enableDirectUdpPort -}}
+{{- $effectiveEgressPorts = concat $effectiveEgressPorts (list
+  (dict "port" "41641" "protocol" "UDP")
+) -}}
+{{- end -}}
 metadata:
   namespace: {{ .Release.Namespace }}
   annotations:

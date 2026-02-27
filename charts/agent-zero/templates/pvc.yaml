@@ -60,3 +60,35 @@ spec:
   volumeName: {{ . }}
   {{- end }}
 {{- end }}
+
+{{- if and (eq (include "agent-zero.vpn.tailscale.enabled" .) "true") .Values.vpn.tailscale.persistence.enabled (not .Values.vpn.tailscale.persistence.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "agent-zero.vpn.tailscale.stateClaimName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "agent-zero.labels" . | nindent 4 }}
+  {{- if or .Values.vpn.tailscale.persistence.retain .Values.vpn.tailscale.persistence.annotations }}
+  annotations:
+    {{- if .Values.vpn.tailscale.persistence.retain }}
+    helm.sh/resource-policy: keep
+    {{- end }}
+    {{- with .Values.vpn.tailscale.persistence.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  accessModes:
+    {{- toYaml .Values.vpn.tailscale.persistence.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.vpn.tailscale.persistence.size }}
+  {{- with .Values.vpn.tailscale.persistence.storageClass }}
+  storageClassName: {{ . }}
+  {{- end }}
+  {{- with .Values.vpn.tailscale.persistence.volumeName }}
+  volumeName: {{ . }}
+  {{- end }}
+{{- end }}
