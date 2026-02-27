@@ -262,10 +262,10 @@ persistence:
   # -- Enable PVC-backed storage for metadata/data.
   enabled: true
   pvcRetentionPolicy:
-    # -- StatefulSet PVC retention when the StatefulSet is deleted.
-    whenDeleted: Retain
-    # -- StatefulSet PVC retention when replicas are scaled down.
-    whenScaled: Retain
+    # -- StatefulSet PVC retention when the StatefulSet is deleted (Delete / Retain).
+    whenDeleted: Delete
+    # -- StatefulSet PVC retention when replicas are scaled down (Delete / Retain).
+    whenScaled: Delete
   meta:
     # -- PVC size for metadata volume.
     size: 10Gi
