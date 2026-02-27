@@ -1,0 +1,385 @@
+# -- Number of application pod replicas.
+replicaCount: 1
+
+# -- Override release-based naming.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- Container image configuration.
+image:
+  # -- Image repository.
+  repository: quay.io/mudler/localrecall
+  # -- Image pull policy.
+  pullPolicy: IfNotPresent
+  # -- Image tag override (defaults to .Chart.AppVersion when empty).
+  tag: ""
+
+# -- Image pull secrets (for private registries).
+imagePullSecrets: []
+
+# -- Service account configuration.
+serviceAccount:
+  # -- Create a service account.
+  create: true
+  # -- ServiceAccount annotations.
+  annotations: {}
+  # -- ServiceAccount name override.
+  name: ""
+  # -- Automount SA token.
+  automountServiceAccountToken: false
+
+# -- Optional namespace-scoped RBAC configuration.
+rbac:
+  # -- Create Role + RoleBinding.
+  create: false
+  # -- Namespace override for RBAC resources.
+  namespace: ""
+  # -- Explicit RBAC rules required when rbac.create=true.
+  rules: []
+
+# -- Kubernetes Service configuration.
+service:
+  # -- Service type. This chart enforces ClusterIP.
+  type: ClusterIP
+  # -- Service annotations.
+  annotations: {}
+  # -- Service labels.
+  labels: {}
+  # -- Service port.
+  port: 80
+  # -- Container target port.
+  targetPort: 8080
+  # -- Service protocol.
+  targetProtocol: TCP
+
+# -- Ingress configuration (ingress-nginx style).
+ingress:
+  # -- Enable ingress resource creation.
+  enabled: false
+  # -- Ingress class name.
+  className: ""
+  # -- Additional ingress annotations.
+  annotations: {}
+  # -- Secure defaults for long-lived API and upload operations.
+  secureDefaults:
+    # -- Enable secure default ingress annotations.
+    enabled: true
+    # -- Proxy read timeout in seconds.
+    proxyReadTimeoutSeconds: 3600
+    # -- Proxy send timeout in seconds.
+    proxySendTimeoutSeconds: 3600
+    # -- Disable proxy buffering.
+    proxyBuffering: "off"
+    # -- Disable request buffering.
+    proxyRequestBuffering: "off"
+    # -- HTTP version for proxy upstream.
+    proxyHttpVersion: "1.1"
+  # -- Host/path rules.
+  hosts:
+    - host: local-recall.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  # -- TLS host/secret blocks.
+  tls: []
+
+# -- Gateway API HTTPRoute configuration (for example Envoy Gateway).
+gatewayApi:
+  # -- Enable HTTPRoute resource creation.
+  enabled: false
+  # -- HTTPRoute annotations.
+  annotations: {}
+  # -- HTTPRoute labels.
+  labels: {}
+  # -- ParentRefs for HTTPRoute.
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
+      sectionName: http
+  # -- Hostnames served by this route.
+  hostnames:
+    - local-recall.example.com
+  # -- Match rules for the HTTPRoute rule.
+  matches:
+    - path:
+        type: PathPrefix
+        value: "/"
+  # -- Optional filters for the HTTPRoute rule.
+  filters: []
+  # -- Optional backend references. Defaults to this chart service when empty.
+  backendRefs: []
+
+# -- RuntimeClass names.
+runtimeClass:
+  # -- RuntimeClass for deployment pods.
+  pods: ""
+  # -- RuntimeClass for test pods.
+  tests: ""
+
+# -- Persistence settings for LocalRecall state directory.
+persistence:
+  # -- Enable persistent storage.
+  enabled: true
+  # -- Keep PVC when Helm release is deleted (`true` keeps data on uninstall; scale up/down does not delete PVCs either way).
+  retain: false
+  # -- Existing PVC to use instead of creating one.
+  existingClaim: ""
+  # -- PVC storage size.
+  size: 10Gi
+  # -- PVC storageClass.
+  storageClass: ""
+  # -- PVC access modes.
+  accessModes:
+    - ReadWriteOnce
+  # -- PVC annotations.
+  annotations: {}
+  # -- PVC volumeName binding.
+  volumeName: ""
+  # -- Mount path inside container.
+  mountPath: /state
+
+# -- Optional tmp volume for readOnlyRootFilesystem mode.
+tmpVolume:
+  # -- Mount writable emptyDir at /tmp.
+  enabled: true
+  # -- Mount path inside container.
+  mountPath: /tmp
+  # -- Optional size limit.
+  sizeLimit: 1Gi
+
+# -- LocalRecall runtime options.
+localRecall:
+  # -- Listening address (`LISTENING_ADDRESS`).
+  listeningAddress: ":8080"
+  # -- Vector engine (`VECTOR_ENGINE`).
+  # @description Supported values: `chromem`, `postgres`, `localai`.
+  vectorEngine: chromem
+  # -- Collection DB path (`COLLECTION_DB_PATH`).
+  collectionDbPath: /state/collections
+  # -- File assets directory (`FILE_ASSETS`).
+  fileAssets: /state/assets
+  # -- Embedding model (`EMBEDDING_MODEL`).
+  embeddingModel: granite-embedding-107m-multilingual
+  # -- OpenAI-compatible endpoint used for embeddings (`OPENAI_BASE_URL`).
+  openAIBaseUrl: http://localai:8080
+  openAIApiKeySecret:
+    # -- Existing secret name containing `OPENAI_API_KEY`.
+    name: ""
+    # -- Secret key containing `OPENAI_API_KEY`.
+    key: apiKey
+  apiKeysSecret:
+    # -- Existing secret name containing comma-separated `API_KEYS` for LocalRecall API auth.
+    name: ""
+    # -- Secret key containing `API_KEYS`.
+    key: apiKeys
+  gitPrivateKeySecret:
+    # -- Existing secret name containing base64-encoded SSH private key (`GIT_PRIVATE_KEY`) for private Git sources.
+    name: ""
+    # -- Secret key containing `GIT_PRIVATE_KEY`.
+    key: privateKey
+  # -- Maximum chunk size for ingestion (`MAX_CHUNKING_SIZE`).
+  maxChunkingSize: 400
+  # -- Chunk overlap for ingestion (`CHUNK_OVERLAP`).
+  chunkOverlap: 0
+
+# -- Optional PostgreSQL mode for vector engine.
+database:
+  postgres:
+    # -- PostgreSQL host when `localRecall.vectorEngine=postgres` and CNPG mode is disabled.
+    host: ""
+    # -- PostgreSQL port.
+    port: 5432
+    # -- PostgreSQL database name.
+    database: ""
+    # -- PostgreSQL username.
+    user: ""
+    # -- SSL mode appended to PostgreSQL DSN.
+    ssl: require
+    passwordSecret:
+      # -- Existing secret name containing PostgreSQL password.
+      name: ""
+      # -- Secret key containing PostgreSQL password.
+      key: password
+  useCnpgCluster:
+    # -- Resolve PostgreSQL credentials from an existing CNPG cluster app secret.
+    enabled: false
+    # -- CNPG cluster name (RW service `<clusterName>-rw`).
+    clusterName: cnpg-cluster
+    # -- CNPG RW service port.
+    port: 5432
+    # -- Explicit CNPG app secret name (defaults to `<clusterName>-app`).
+    appConnectionSecretName: ""
+    secretKeys:
+      # -- Key for database name in app secret.
+      database: dbname
+      # -- Key for username in app secret.
+      username: user
+      # -- Key for password in app secret.
+      password: password
+  hybridSearch:
+    # -- BM25 weight (`HYBRID_SEARCH_BM25_WEIGHT`) for postgres vector engine.
+    bm25Weight: 0.5
+    # -- Vector weight (`HYBRID_SEARCH_VECTOR_WEIGHT`) for postgres vector engine.
+    vectorWeight: 0.5
+
+# -- Optional command override.
+command: []
+
+# -- Optional args override.
+args: []
+
+# -- Additional non-sensitive environment variables.
+extraEnv: {}
+
+# -- Additional env vars from existing secrets.
+# @description Supports both map and list forms.
+# @raw
+# ```yaml
+# additionalEnvSecrets:
+#   TOKEN: my-secret
+#   PASSWORD:
+#     secretName: my-secret
+#     secretKey: password
+#
+# additionalEnvSecrets:
+#   - name: TOKEN
+#     secretName: my-secret
+#     secretKey: token
+# ```
+additionalEnvSecrets: {}
+
+# -- Import all keys from listed existing secrets.
+envFromSecrets: []
+
+# -- Import all keys from listed existing configmaps.
+envFromConfigMaps: []
+
+# -- Additional volumes.
+extraVolumes: []
+
+# -- Additional volume mounts.
+extraVolumeMounts: []
+
+# -- Enable liveness/readiness/startup probes.
+applyHealthChecks: true
+
+# -- Liveness probe.
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+
+# -- Readiness probe.
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+
+# -- Startup probe.
+startupProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 30
+
+# -- Pod-level security context.
+podSecurityContext:
+  fsGroup: 1000
+
+# -- Container-level security context.
+securityContext:
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  readOnlyRootFilesystem: true
+  seccompProfile:
+    type: RuntimeDefault
+  capabilities:
+    drop:
+      - ALL
+
+# -- Resource requests and limits.
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 1000m
+    memory: 2Gi
+
+# -- HorizontalPodAutoscaler configuration.
+autoscaling:
+  # -- Enable autoscaling.
+  enabled: false
+  # -- Minimum replicas.
+  minReplicas: 1
+  # -- Maximum replicas.
+  maxReplicas: 3
+  # -- Target CPU utilization percentage.
+  targetCPUUtilizationPercentage: 80
+  # -- Enable memory utilization metric.
+  enableMemoryUtilization: false
+  # -- Target memory utilization percentage.
+  targetMemoryUtilizationPercentage: 80
+
+# -- Pod annotations.
+podAnnotations: {}
+
+# -- Pod labels.
+podLabels: {}
+
+# -- Workload node selector.
+nodeSelector: {}
+
+# -- Workload tolerations.
+tolerations: []
+
+# -- Workload affinity.
+affinity: {}
+
+# -- Cilium policy library toggle.
+libchartCnps:
+  # -- Enable libchart-cnps templates.
+  enabled: true
+  # -- Include CNPG policy set from library.
+  includeCnpgPolicies: false
+
+# -- App-specific Cilium policy settings.
+cnps:
+  appTraffic:
+    ingress:
+      # -- Allow ingress traffic to app pods.
+      allow: true
+      # -- Allowed ingress endpoint label sets.
+      # @description Leave empty to use conditional defaults from template logic: ingress-nginx labels when ingress.enabled=true, envoy-gateway labels when gatewayApi.enabled=true, or both when both are enabled.
+      fromEndpoints: []
+      # -- Optional allowed ingress entities.
+      fromEntities: []
+    egress:
+      # -- Allow egress traffic from app pods.
+      allow: true
+      # -- Optional destination entities.
+      toEntities:
+        - cluster
+        - world
+      # -- Allowed egress ports.
+      # -- DNS (53/UDP) is already covered by the namespace-wide libchart policy.
+      toPorts:
+        - port: "8080"
+          protocol: TCP
+        - port: "80"
+          protocol: TCP
+        - port: "443"
+          protocol: TCP

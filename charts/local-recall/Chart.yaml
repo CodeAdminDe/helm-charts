@@ -1,0 +1,34 @@
+apiVersion: v2
+name: local-recall
+description: A Helm chart for deploying LocalRecall on Kubernetes.
+type: application
+# renovate: bumpVersion
+version: 0.1.0
+# renovate: image=quay.io/mudler/localrecall
+appVersion: "v0.5.5"
+kubeVersion: ">=1.24.0"
+home: https://github.com/CodeAdminDe/helm-charts
+keywords:
+  - local-recall
+  - rag
+  - vector-db
+  - ai
+  - localai
+  - cloud-native
+  - helm
+maintainers:
+  - name: Frederic Roggon
+    email: frederic.roggon@codeadmin.de
+    url: https://github.com/CodeAdminDe
+dependencies:
+  - name: libchart-cnps
+    version: 0.2.1
+    repository: https://codeadminde.github.io/helm-charts
+    alias: libchart-cnps
+    condition: libchartCnps.enabled
+annotations:
+  category: AI
+  securityContext: "compatible"
+  images: |
+    - name: local-recall
+      image: quay.io/mudler/localrecall:v0.5.5
