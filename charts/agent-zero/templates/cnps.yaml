@@ -51,6 +51,13 @@ metadata:
 {{- $hasIngressEndpoints = true -}}
 {{- end -}}
 {{- $includeIngressRule := or $hasIngressEndpoints $hasIngressEntities -}}
+{{- $effectiveEgressPorts := .Values.cnps.appTraffic.egress.toPorts | default (list) -}}
+{{- if and (eq (include "agent-zero.vpn.netbird.enabled" .) "true") .Values.vpn.netbird.cnps.enableStunAndP2PPorts -}}
+{{- $effectiveEgressPorts = concat $effectiveEgressPorts (list
+  (dict "port" "3478" "protocol" "UDP")
+  (dict "port" "49152" "endPort" 65535 "protocol" "UDP")
+) -}}
+{{- end -}}
 metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
@@ -93,10 +100,13 @@ spec:
       {{- end }}
       toPorts:
         - ports:
-          {{- if .Values.cnps.appTraffic.egress.toPorts }}
-          {{- range .Values.cnps.appTraffic.egress.toPorts }}
+          {{- if $effectiveEgressPorts }}
+          {{- range $effectiveEgressPorts }}
             - port: {{ .port | quote }}
-              protocol: {{ .protocol }}
+              {{- if hasKey . "endPort" }}
+              endPort: {{ .endPort }}
+              {{- end }}
+              protocol: {{ .protocol | default "TCP" }}
           {{- end }}
           {{- else }}
             - port: "443"

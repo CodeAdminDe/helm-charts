@@ -28,3 +28,35 @@ spec:
   volumeName: {{ . }}
   {{- end }}
 {{- end }}
+
+{{- if and (eq (include "agent-zero.vpn.netbird.enabled" .) "true") .Values.vpn.netbird.persistence.enabled (not .Values.vpn.netbird.persistence.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "agent-zero.vpn.netbird.stateClaimName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "agent-zero.labels" . | nindent 4 }}
+  {{- if or .Values.vpn.netbird.persistence.retain .Values.vpn.netbird.persistence.annotations }}
+  annotations:
+    {{- if .Values.vpn.netbird.persistence.retain }}
+    helm.sh/resource-policy: keep
+    {{- end }}
+    {{- with .Values.vpn.netbird.persistence.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  accessModes:
+    {{- toYaml .Values.vpn.netbird.persistence.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.vpn.netbird.persistence.size }}
+  {{- with .Values.vpn.netbird.persistence.storageClass }}
+  storageClassName: {{ . }}
+  {{- end }}
+  {{- with .Values.vpn.netbird.persistence.volumeName }}
+  volumeName: {{ . }}
+  {{- end }}
+{{- end }}
