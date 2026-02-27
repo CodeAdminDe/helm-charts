@@ -8,20 +8,10 @@
       "customType": "regex",
       "datasourceTemplate": "docker",
       "managerFilePatterns": [
-        "/(^|/)values\\.yaml$/"
-      ],
-      "matchStrings": [
-        "image:\\s?\\s?\\s?repository:\\s?\"?(?<depName>[\\w+\\.\\-\/]*)\"?\\s?\\s?\\s?pullPolicy:\\s?\\w+\\s?\\s?\\s?tag:\\s?\"?(?<currentValue>[\\w+\\.\\-]*)\"?\\s?\\s?\\s?digest:\\s?\"?(?<currentDigest>sha256:[A-Fa-f0-9]{64})\"?"
-      ]
-    },
-    {
-      "customType": "regex",
-      "datasourceTemplate": "docker",
-      "managerFilePatterns": [
         "/(^|/)Chart\\.yaml$/"
       ],
       "matchStrings": [
-        "#\\s?renovate: image=(?<depName>.*?)\\s?(appVersion|version):\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\"?"
+        "#\\s?renovate:?\\s*image=(?<depName>.*?)\\s*(appVersion|version):\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\\\"?"
       ]
     },
     {
@@ -31,7 +21,7 @@
         "/(^|/)Chart\\.yaml$/"
       ],
       "matchStrings": [
-        "#\\s?renovate: chart=(?<depName>.*?)\\srepository=(?<registryUrl>.*?)\\s?(appVersion|version):\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\"?"
+        "#\\s?renovate:?\\s*chart=(?<depName>.*?)\\s+repository=(?<registryUrl>.*?)\\s*(appVersion|version):\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\\\"?"
       ]
     }
   ],
@@ -64,7 +54,7 @@
             "{{packageFileDir}}/Chart.{yaml,yml}"
           ],
           "matchStrings": [
-            "#\\s?renovate: bumpVersion\\s?(appVersion|version):\\s?\\\"?(?<version>[\\w+\\.\\-]*)\"?"
+            "#\\s?renovate:?\\s*bumpVersion\\s*(appVersion|version):\\s?\\\"?(?<version>[\\w+\\.\\-]*)\\\"?"
           ],
           "bumpType": "{{#if isMajor}}major{{else}}{{#if isMinor}}minor{{else}}patch{{/if}}{{/if}}"
         }
