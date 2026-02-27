@@ -7,6 +7,13 @@
 {{- $image = .Values.ui.headplane.image -}}
 {{- $service = .Values.ui.headplane.service -}}
 {{- end -}}
+{{- $podAnnotations := dict "checksum/values" (toJson .Values.ui | sha256sum) -}}
+{{- if $isHeadplane -}}
+{{- $_ := set $podAnnotations "checksum/config" (include "headscale.ui.headplane.configChecksum" .) -}}
+{{- end -}}
+{{- range $key, $val := .Values.ui.podAnnotations -}}
+{{- $_ := set $podAnnotations $key ($val | toString) -}}
+{{- end -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,11 +21,6 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "headscale.ui.labels" . | nindent 4 }}
-  annotations:
-    checksum/values: {{ toJson .Values.ui | sha256sum }}
-    {{- if $isHeadplane }}
-    checksum/config: {{ include "headscale.ui.headplane.configChecksum" . }}
-    {{- end }}
 spec:
   replicas: {{ .Values.ui.replicaCount }}
   selector:
@@ -31,10 +33,8 @@ spec:
         {{- with .Values.ui.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
-      {{- with .Values.ui.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- toYaml $podAnnotations | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

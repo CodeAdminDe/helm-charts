@@ -249,30 +249,108 @@ ui:
       # -- Override internal URL for connecting to headscale API.
       # @description Empty uses in-cluster service URL.
       headscaleUrl: ""
-      # -- Bind host for headplane server.
+      # -- Optional public URL for headscale shown in UI (headscale.public_url).
+      headscalePublicUrl: ""
+      # -- Optional path to headscale config file (headscale.config_path).
+      headscaleConfigPath: ""
+      # -- Strict validation mode for headscale config parsing.
+      headscaleConfigStrict: true
+      # -- Optional path to headscale TLS cert (headscale.tls_cert_path).
+      headscaleTlsCertPath: ""
+      # -- Optional path to headscale DNS records file (headscale.dns_records_path).
+      headscaleDnsRecordsPath: ""
+      # -- Bind host for headplane server (server.host).
       serverHost: "0.0.0.0"
-      # -- Optional externally reachable URL for headplane.
+      # -- Optional base URL for headplane (server.base_url), without `/admin` suffix.
+      baseUrl: ""
+      # -- Optional legacy alias for public headscale URL.
+      # @description Deprecated. Prefer `headscalePublicUrl`.
       publicUrl: ""
-      # -- Integration mode.
-      # @description This chart currently supports `simple` mode.
-      integrationMode: simple
-      # -- UI prefix path.
-      integrationPrefix: /admin
-      # -- Disable CSRF protections (not recommended).
-      disableCsrf: false
-      # -- Writable data path inside container.
+      # -- Whether cookies should be marked secure.
+      cookieSecure: true
+      # -- Session cookie max age in seconds.
+      cookieMaxAge: 86400
+      # -- Optional cookie domain.
+      cookieDomain: ""
+      # -- Writable data path inside container (server.data_path).
       dataPath: /var/lib/headplane
-      # -- Enable debug mode.
-      debug: false
+      # -- Optional info secret value.
+      infoSecret: ""
+      integration:
+        agent:
+          # -- Enable headplane agent integration.
+          enabled: false
+          # -- Pre-auth key for agent integration.
+          preAuthKey: ""
+          # -- Optional agent hostname.
+          hostName: headplane-agent
+          # -- Optional cache TTL in milliseconds.
+          cacheTtl: 180000
+          # -- Optional agent cache file path.
+          cachePath: /var/lib/headplane/agent_cache.json
+          # -- Optional agent work directory.
+          workDir: /var/lib/headplane/agent
+        docker:
+          # -- Enable docker integration.
+          enabled: false
+          # -- Optional target container name.
+          containerName: ""
+          # -- Target container label selector.
+          containerLabel: me.tale.headplane.target=headscale
+          # -- Docker socket URL.
+          socket: unix:///var/run/docker.sock
+        kubernetes:
+          # -- Enable kubernetes integration.
+          enabled: false
+          # -- Validate target pod manifest for required properties.
+          validateManifest: true
+          # -- Target pod name for integrated mode.
+          podName: ""
+        proc:
+          # -- Enable native /proc integration.
+          enabled: false
+      oidc:
+        # -- Enable OIDC SSO.
+        enabled: false
+        # -- OIDC issuer URL.
+        issuer: ""
+        # -- OIDC client ID.
+        clientId: ""
+        # -- OIDC client secret value.
+        clientSecret: ""
+        # -- OIDC client secret path (alternative to clientSecret).
+        clientSecretPath: ""
+        # -- Headscale API key for SSO session login.
+        headscaleApiKey: ""
+        # -- Headscale API key path (alternative to headscaleApiKey).
+        headscaleApiKeyPath: ""
+        # -- Use PKCE for OIDC auth.
+        usePkce: false
+        # -- Disable API key login when OIDC enabled.
+        disableApiKeyLogin: false
+        # -- OIDC scope list.
+        scope: "openid email profile"
+        # -- Profile picture source (`oidc` or `gravatar`).
+        profilePictureSource: oidc
+        # -- Optional OIDC authorization endpoint override.
+        authorizationEndpoint: ""
+        # -- Optional OIDC token endpoint override.
+        tokenEndpoint: ""
+        # -- Optional OIDC userinfo endpoint override.
+        userinfoEndpoint: ""
+        # -- Optional token endpoint auth method.
+        tokenEndpointAuthMethod: ""
+        # -- Optional extra OIDC authorization query parameters.
+        extraParams: {}
       # -- Additional raw config to merge into generated config.
       extraConfig: {}
     # -- Existing secret containing headplane session secrets.
-    # @description Must contain both cookie and csrf keys when provider=headplane.
+    # @description Must contain the cookie key when provider=headplane.
     secret:
       name: ""
       cookieKey: cookie-secret
-      csrfKey: csrf-secret
     # -- Optional existing secret with a headscale API key for simple mode auth.
+    # @description Legacy helper for `HEADPLANE_HEADSCALE__API_KEY` env injection.
     apiKeySecret:
       name: ""
       key: api-key

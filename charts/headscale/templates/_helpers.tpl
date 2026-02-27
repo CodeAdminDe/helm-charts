@@ -283,26 +283,119 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/* Render generated headplane config file content. */}}
 {{- define "headscale.ui.headplane.config" -}}
 {{- $cookiePath := printf "/var/run/headplane-secrets/%s" .Values.ui.headplane.secret.cookieKey -}}
-{{- $csrfPath := printf "/var/run/headplane-secrets/%s" .Values.ui.headplane.secret.csrfKey -}}
-{{- $cfg := dict
-  "server" (dict
-    "host" .Values.ui.headplane.config.serverHost
-    "port" .Values.ui.headplane.service.targetPort
-    "public_url" .Values.ui.headplane.config.publicUrl
-    "cookie_secret_path" $cookiePath
-    "csrf_secret_path" $csrfPath
-    "disable_csrf" .Values.ui.headplane.config.disableCsrf
-    "data_path" .Values.ui.headplane.config.dataPath
-    "debug" .Values.ui.headplane.config.debug
+{{- $headscalePublicUrl := .Values.ui.headplane.config.headscalePublicUrl -}}
+{{- if and (empty $headscalePublicUrl) .Values.ui.headplane.config.publicUrl -}}
+{{- $headscalePublicUrl = .Values.ui.headplane.config.publicUrl -}}
+{{- end -}}
+{{- $serverBaseUrl := .Values.ui.headplane.config.baseUrl -}}
+{{- if and (empty $serverBaseUrl) .Values.ui.headplane.config.publicUrl -}}
+{{- $serverBaseUrl = .Values.ui.headplane.config.publicUrl -}}
+{{- end -}}
+
+{{- $server := dict
+  "host" .Values.ui.headplane.config.serverHost
+  "port" .Values.ui.headplane.service.targetPort
+  "cookie_secret_path" $cookiePath
+  "cookie_secure" .Values.ui.headplane.config.cookieSecure
+  "cookie_max_age" .Values.ui.headplane.config.cookieMaxAge
+  "data_path" .Values.ui.headplane.config.dataPath
+-}}
+{{- with $serverBaseUrl }}
+{{- $_ := set $server "base_url" . -}}
+{{- end -}}
+{{- with .Values.ui.headplane.config.cookieDomain }}
+{{- $_ := set $server "cookie_domain" . -}}
+{{- end -}}
+{{- with .Values.ui.headplane.config.infoSecret }}
+{{- $_ := set $server "info_secret" . -}}
+{{- end -}}
+
+{{- $headscale := dict
+  "url" (include "headscale.ui.headplane.headscaleUrl" .)
+  "config_strict" .Values.ui.headplane.config.headscaleConfigStrict
+-}}
+{{- with $headscalePublicUrl }}
+{{- $_ := set $headscale "public_url" . -}}
+{{- end -}}
+{{- with .Values.ui.headplane.config.headscaleConfigPath }}
+{{- $_ := set $headscale "config_path" . -}}
+{{- end -}}
+{{- with .Values.ui.headplane.config.headscaleTlsCertPath }}
+{{- $_ := set $headscale "tls_cert_path" . -}}
+{{- end -}}
+{{- with .Values.ui.headplane.config.headscaleDnsRecordsPath }}
+{{- $_ := set $headscale "dns_records_path" . -}}
+{{- end -}}
+
+{{- $integration := dict
+  "agent" (dict
+    "enabled" .Values.ui.headplane.config.integration.agent.enabled
+    "pre_authkey" .Values.ui.headplane.config.integration.agent.preAuthKey
+    "host_name" .Values.ui.headplane.config.integration.agent.hostName
+    "cache_ttl" .Values.ui.headplane.config.integration.agent.cacheTtl
+    "cache_path" .Values.ui.headplane.config.integration.agent.cachePath
+    "work_dir" .Values.ui.headplane.config.integration.agent.workDir
   )
-  "headscale" (dict
-    "url" (include "headscale.ui.headplane.headscaleUrl" .)
+  "docker" (dict
+    "enabled" .Values.ui.headplane.config.integration.docker.enabled
+    "container_name" .Values.ui.headplane.config.integration.docker.containerName
+    "container_label" .Values.ui.headplane.config.integration.docker.containerLabel
+    "socket" .Values.ui.headplane.config.integration.docker.socket
   )
-  "integration" (dict
-    "mode" .Values.ui.headplane.config.integrationMode
-    "prefix" .Values.ui.headplane.config.integrationPrefix
+  "kubernetes" (dict
+    "enabled" .Values.ui.headplane.config.integration.kubernetes.enabled
+    "validate_manifest" .Values.ui.headplane.config.integration.kubernetes.validateManifest
+    "pod_name" .Values.ui.headplane.config.integration.kubernetes.podName
+  )
+  "proc" (dict
+    "enabled" .Values.ui.headplane.config.integration.proc.enabled
   )
 -}}
+
+{{- $cfg := dict
+  "server" $server
+  "headscale" $headscale
+  "integration" $integration
+-}}
+
+{{- $oidc := .Values.ui.headplane.config.oidc -}}
+{{- if or $oidc.enabled $oidc.issuer $oidc.clientId $oidc.clientSecret $oidc.clientSecretPath $oidc.headscaleApiKey $oidc.headscaleApiKeyPath -}}
+{{- $oidcCfg := dict
+  "enabled" $oidc.enabled
+  "issuer" $oidc.issuer
+  "client_id" $oidc.clientId
+  "use_pkce" $oidc.usePkce
+  "disable_api_key_login" $oidc.disableApiKeyLogin
+  "scope" $oidc.scope
+  "profile_picture_source" $oidc.profilePictureSource
+-}}
+{{- if $oidc.clientSecretPath -}}
+{{- $_ := set $oidcCfg "client_secret_path" $oidc.clientSecretPath -}}
+{{- else -}}
+{{- $_ := set $oidcCfg "client_secret" $oidc.clientSecret -}}
+{{- end -}}
+{{- if $oidc.headscaleApiKeyPath -}}
+{{- $_ := set $oidcCfg "headscale_api_key_path" $oidc.headscaleApiKeyPath -}}
+{{- else -}}
+{{- $_ := set $oidcCfg "headscale_api_key" $oidc.headscaleApiKey -}}
+{{- end -}}
+{{- with $oidc.authorizationEndpoint }}
+{{- $_ := set $oidcCfg "authorization_endpoint" . -}}
+{{- end -}}
+{{- with $oidc.tokenEndpoint }}
+{{- $_ := set $oidcCfg "token_endpoint" . -}}
+{{- end -}}
+{{- with $oidc.userinfoEndpoint }}
+{{- $_ := set $oidcCfg "userinfo_endpoint" . -}}
+{{- end -}}
+{{- with $oidc.tokenEndpointAuthMethod }}
+{{- $_ := set $oidcCfg "token_endpoint_auth_method" . -}}
+{{- end -}}
+{{- with $oidc.extraParams }}
+{{- $_ := set $oidcCfg "extra_params" . -}}
+{{- end -}}
+{{- $_ := set $cfg "oidc" $oidcCfg -}}
+{{- end -}}
 
 {{- with .Values.ui.headplane.config.extraConfig -}}
 {{- $cfg = mergeOverwrite $cfg . -}}

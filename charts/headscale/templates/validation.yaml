@@ -17,14 +17,22 @@
     {{- if empty .Values.ui.headplane.secret.cookieKey -}}
       {{- fail "ui.headplane.secret.cookieKey must be set when ui.provider=headplane." -}}
     {{- end -}}
-    {{- if empty .Values.ui.headplane.secret.csrfKey -}}
-      {{- fail "ui.headplane.secret.csrfKey must be set when ui.provider=headplane." -}}
-    {{- end -}}
     {{- if and .Values.ui.headplane.apiKeySecret.name (empty .Values.ui.headplane.apiKeySecret.key) -}}
       {{- fail "ui.headplane.apiKeySecret.key must be set when ui.headplane.apiKeySecret.name is provided." -}}
     {{- end -}}
-    {{- if ne .Values.ui.headplane.config.integrationMode "simple" -}}
-      {{- fail "ui.headplane.config.integrationMode currently supports only 'simple' in this chart." -}}
+    {{- if .Values.ui.headplane.config.oidc.enabled -}}
+      {{- if empty .Values.ui.headplane.config.oidc.issuer -}}
+        {{- fail "ui.headplane.config.oidc.issuer must be set when ui.headplane.config.oidc.enabled=true." -}}
+      {{- end -}}
+      {{- if empty .Values.ui.headplane.config.oidc.clientId -}}
+        {{- fail "ui.headplane.config.oidc.clientId must be set when ui.headplane.config.oidc.enabled=true." -}}
+      {{- end -}}
+      {{- if and (empty .Values.ui.headplane.config.oidc.clientSecret) (empty .Values.ui.headplane.config.oidc.clientSecretPath) -}}
+        {{- fail "ui.headplane.config.oidc.clientSecret or ui.headplane.config.oidc.clientSecretPath must be set when ui.headplane.config.oidc.enabled=true." -}}
+      {{- end -}}
+      {{- if and (empty .Values.ui.headplane.config.oidc.headscaleApiKey) (empty .Values.ui.headplane.config.oidc.headscaleApiKeyPath) -}}
+        {{- fail "ui.headplane.config.oidc.headscaleApiKey or ui.headplane.config.oidc.headscaleApiKeyPath must be set when ui.headplane.config.oidc.enabled=true." -}}
+      {{- end -}}
     {{- end -}}
   {{- else -}}
     {{- if ne .Values.ui.service.type "ClusterIP" -}}
