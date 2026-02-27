@@ -1187,7 +1187,7 @@ object
   "enabled": true,
   "existingClaim": "",
   "mountPath": "/a0",
-  "retain": true,
+  "retain": false,
   "size": "10Gi",
   "storageClass": "",
   "volumeName": ""
@@ -1277,7 +1277,7 @@ bool
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-true
+false
 </pre>
 </div>
 			</td>
