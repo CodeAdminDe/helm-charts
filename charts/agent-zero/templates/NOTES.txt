@@ -1,0 +1,20 @@
+1. Access Agent Zero inside the cluster:
+   kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "agent-zero.fullname" . }} {{ .Values.service.port }}:{{ .Values.service.port }}
+
+2. Ingress hosts (if enabled):
+   {{- if .Values.ingress.enabled }}
+   {{- range .Values.ingress.hosts }}
+   - {{ .host }}
+   {{- end }}
+   {{- else }}
+   ingress disabled
+   {{- end }}
+
+3. Gateway API hostnames (if enabled):
+   {{- if .Values.gatewayApi.enabled }}
+   {{- range .Values.gatewayApi.hostnames }}
+   - {{ . }}
+   {{- end }}
+   {{- else }}
+   gatewayApi disabled
+   {{- end }}

@@ -1,0 +1,315 @@
+# -- Number of application pod replicas.
+replicaCount: 1
+
+# -- Override release-based naming.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- Container image configuration.
+image:
+  # -- Image repository.
+  repository: frdel/agent-zero-run
+  # -- Image pull policy.
+  pullPolicy: IfNotPresent
+  # -- Image tag override (defaults to .Chart.AppVersion when empty).
+  tag: ""
+
+# -- Image pull secrets (for private registries).
+imagePullSecrets: []
+
+# -- Service account configuration.
+serviceAccount:
+  # -- Create a service account.
+  create: true
+  # -- ServiceAccount annotations.
+  annotations: {}
+  # -- ServiceAccount name override.
+  name: ""
+  # -- Automount SA token.
+  automountServiceAccountToken: false
+
+# -- Optional namespace-scoped RBAC configuration.
+rbac:
+  # -- Create Role + RoleBinding.
+  create: false
+  # -- Namespace override for RBAC resources.
+  namespace: ""
+  # -- Explicit RBAC rules required when rbac.create=true.
+  rules: []
+
+# -- Kubernetes Service configuration.
+service:
+  # -- Service type. This chart enforces ClusterIP.
+  type: ClusterIP
+  # -- Service annotations.
+  annotations: {}
+  # -- Service labels.
+  labels: {}
+  # -- Service port.
+  port: 80
+  # -- Container target port.
+  targetPort: 80
+  # -- Service protocol.
+  targetProtocol: TCP
+
+# -- Ingress configuration (ingress-nginx style).
+ingress:
+  # -- Enable ingress resource creation.
+  enabled: false
+  # -- Ingress class name.
+  className: ""
+  # -- Additional ingress annotations.
+  annotations: {}
+  # -- Secure defaults for websocket and long-lived sessions.
+  secureDefaults:
+    # -- Enable secure default ingress annotations.
+    enabled: true
+    # -- Proxy read timeout in seconds.
+    proxyReadTimeoutSeconds: 3600
+    # -- Proxy send timeout in seconds.
+    proxySendTimeoutSeconds: 3600
+    # -- Disable proxy buffering.
+    proxyBuffering: "off"
+    # -- Disable request buffering.
+    proxyRequestBuffering: "off"
+    # -- HTTP version for proxy upstream.
+    proxyHttpVersion: "1.1"
+  # -- Host/path rules.
+  hosts:
+    - host: agent-zero.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  # -- TLS host/secret blocks.
+  tls: []
+
+# -- Gateway API HTTPRoute configuration (for example Envoy Gateway).
+gatewayApi:
+  # -- Enable HTTPRoute resource creation.
+  enabled: false
+  # -- HTTPRoute annotations.
+  annotations: {}
+  # -- HTTPRoute labels.
+  labels: {}
+  # -- ParentRefs for HTTPRoute.
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
+      sectionName: http
+  # -- Hostnames served by this route.
+  hostnames:
+    - agent-zero.example.com
+  # -- Match rules for the HTTPRoute rule.
+  matches:
+    - path:
+        type: PathPrefix
+        value: "/"
+  # -- Optional filters for the HTTPRoute rule.
+  filters: []
+  # -- Optional backend references. Defaults to this chart service when empty.
+  backendRefs: []
+
+# -- RuntimeClass names.
+runtimeClass:
+  # -- RuntimeClass for deployment pods.
+  pods: ""
+  # -- RuntimeClass for test pods.
+  tests: ""
+
+# -- Persistence settings for Agent Zero data directory (`/a0`).
+persistence:
+  # -- Enable persistent storage.
+  enabled: true
+  # -- Keep PVC when Helm release is deleted.
+  retain: true
+  # -- Existing PVC to use instead of creating one.
+  existingClaim: ""
+  # -- PVC storage size.
+  size: 10Gi
+  # -- PVC storageClass.
+  storageClass: ""
+  # -- PVC access modes.
+  accessModes:
+    - ReadWriteOnce
+  # -- PVC annotations.
+  annotations: {}
+  # -- PVC volumeName binding.
+  volumeName: ""
+  # -- Mount path inside container.
+  mountPath: /a0
+
+# -- Optional tmp volume.
+tmpVolume:
+  # -- Mount writable emptyDir at /tmp.
+  enabled: true
+  # -- Mount path inside container.
+  mountPath: /tmp
+  # -- Optional size limit.
+  sizeLimit: 1Gi
+
+# -- Optional host docker socket mount.
+# @description High-risk option. Enable only when your workload explicitly needs host Docker access.
+hostDockerSocket:
+  # -- Mount host docker socket into the pod.
+  enabled: false
+  # -- Host socket path.
+  hostPath: /var/run/docker.sock
+  # -- Container mount path.
+  mountPath: /var/run/docker.sock
+  # -- HostPath type.
+  type: Socket
+  # -- Read-only mount for docker socket.
+  readOnly: true
+
+# -- Additional plain environment variables.
+# @description Do not place secrets in this map.
+env:
+  PORT: "80"
+  WEB_UI_PORT: "80"
+  DEFAULT_LLM: "model=gpt-4.1-mini"
+
+# -- Import all keys from listed secrets as environment variables.
+envFromSecrets: []
+
+# -- Import all keys from listed configmaps as environment variables.
+envFromConfigMaps: []
+
+# -- Additional env vars from explicit secret refs.
+# @description Supports either map (ENV_NAME -> secretName) or list objects ({name, secretName, secretKey}).
+additionalEnvSecrets: {}
+
+# -- Extra command override.
+command: []
+
+# -- Extra args override.
+args: []
+
+# -- Mount additional volumeMounts.
+extraVolumeMounts: []
+
+# -- Add additional pod volumes.
+extraVolumes: []
+
+# -- Enable health probes.
+applyHealthChecks: true
+
+# -- Liveness probe.
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 60
+  periodSeconds: 20
+  timeoutSeconds: 5
+  failureThreshold: 6
+
+# -- Readiness probe.
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+
+# -- Startup probe.
+startupProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 30
+
+# -- Pod-level security context.
+podSecurityContext: {}
+
+# -- Container-level security context.
+# @description Upstream image is multi-process and expects writable filesystem; avoid aggressive hardening unless validated.
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false
+  seccompProfile:
+    type: RuntimeDefault
+  capabilities:
+    drop:
+      - NET_RAW
+
+# -- Resource requests and limits.
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 2000m
+    memory: 4Gi
+
+# -- HorizontalPodAutoscaler configuration.
+autoscaling:
+  # -- Enable autoscaling.
+  enabled: false
+  # -- Minimum replicas.
+  minReplicas: 1
+  # -- Maximum replicas.
+  maxReplicas: 3
+  # -- Target CPU utilization percentage.
+  targetCPUUtilizationPercentage: 80
+  # -- Enable memory utilization metric.
+  enableMemoryUtilization: false
+  # -- Target memory utilization percentage.
+  targetMemoryUtilizationPercentage: 80
+
+# -- Pod annotations.
+podAnnotations: {}
+
+# -- Pod labels.
+podLabels: {}
+
+# -- Workload node selector.
+nodeSelector: {}
+
+# -- Workload tolerations.
+tolerations: []
+
+# -- Workload affinity.
+affinity: {}
+
+# -- Cilium policy library toggle.
+libchartCnps:
+  # -- Enable libchart-cnps templates.
+  enabled: false
+  # -- Include CNPG policy set from library.
+  includeCnpgPolicies: false
+
+# -- App-specific Cilium policy settings.
+cnps:
+  appTraffic:
+    ingress:
+      # -- Allow ingress traffic to app pods.
+      allow: true
+      # -- Allowed ingress endpoint label sets.
+      fromEndpoints:
+        - app.kubernetes.io/name: ingress-nginx
+          io.kubernetes.pod.namespace: ingress-nginx
+        - app.kubernetes.io/name: envoy-gateway
+          io.kubernetes.pod.namespace: envoy-gateway-system
+      # -- Optional allowed ingress entities.
+      fromEntities: []
+    egress:
+      # -- Allow egress traffic from app pods.
+      allow: true
+      # -- Optional destination entities.
+      toEntities:
+        - world
+      # -- Allowed egress ports.
+      toPorts:
+        - port: "53"
+          protocol: UDP
+        - port: "53"
+          protocol: TCP
+        - port: "80"
+          protocol: TCP
+        - port: "443"
+          protocol: TCP
