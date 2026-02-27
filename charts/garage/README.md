@@ -1182,8 +1182,8 @@ object
     "storageClass": ""
   },
   "pvcRetentionPolicy": {
-    "whenDeleted": "Retain",
-    "whenScaled": "Retain"
+    "whenDeleted": "Delete",
+    "whenScaled": "Delete"
   },
   "tmp": {
     "emptyDirSizeLimit": "512Mi"
@@ -1332,11 +1332,11 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"Retain"
+"Delete"
 </pre>
 </div>
 			</td>
-			<td>StatefulSet PVC retention when the StatefulSet is deleted.</td>
+			<td>StatefulSet PVC retention when the StatefulSet is deleted (Delete / Retain).</td>
 		</tr>
 		<tr>
 			<td id="persistence--pvcRetentionPolicy--whenScaled"><a href="./values.yaml#L268">persistence.pvcRetentionPolicy.whenScaled</a></td>
@@ -1346,11 +1346,11 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"Retain"
+"Delete"
 </pre>
 </div>
 			</td>
-			<td>StatefulSet PVC retention when replicas are scaled down.</td>
+			<td>StatefulSet PVC retention when replicas are scaled down (Delete / Retain).</td>
 		</tr>
 		<tr>
 			<td id="persistence--tmp--emptyDirSizeLimit"><a href="./values.yaml#L291">persistence.tmp.emptyDirSizeLimit</a></td>
