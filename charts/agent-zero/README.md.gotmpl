@@ -9,6 +9,7 @@
 * The container is multi-process (supervisord + nginx + app services). Keep security hardening changes incremental and validate in your environment.
 * Persistent `/a0/usr` storage is enabled by default because upstream recommends persisting user data there while keeping bundled app files intact.
 * `hostDockerSocket.enabled` is intentionally disabled by default due to hostPath risk.
+* `libchartCnps.enabled=true` by default. Disable only if your cluster does not run Cilium.
 * External exposure defaults to `ClusterIP` + optional ingress/gateway resources. Ingress/Gateway controller deployments are intentionally out of scope.
 
 ### Exposure guidance
@@ -16,7 +17,8 @@
 * For ingress-nginx clusters, use `ingress.enabled=true` and provide hosts/TLS as required.
 * For Gateway API (for example Envoy Gateway), use `gatewayApi.enabled=true` and set `gatewayApi.parentRefs` to your Gateway.
 * Optional upstream ports (for example SSH/auxiliary ports) can be exposed with `service.extraPorts`.
-* If you enable Cilium policies (`libchartCnps.enabled=true`), verify ingress source labels in `cnps.appTraffic.ingress.fromEndpoints` match your controller namespace labels.
+* CNP ingress defaults are conditional: ingress-nginx labels are added when `ingress.enabled=true`, envoy-gateway labels are added when `gatewayApi.enabled=true`, and both are added when both are enabled.
+* DNS port 53 is not included in app egress defaults because namespace-wide DNS policy already comes from `libchart-cnps`.
 
 ### Secrets handling
 
