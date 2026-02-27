@@ -1,0 +1,34 @@
+apiVersion: v2
+name: agent-zero
+description: A Helm chart for deploying Agent Zero (AI Operating System) on Kubernetes.
+type: application
+# renovate: bumpVersion
+version: 0.1.0
+# renovate: image=frdel/agent-zero-run
+appVersion: "latest"
+home: https://github.com/CodeAdminDe/helm-charts
+keywords:
+  - agent-zero
+  - ai
+  - llm
+  - mcp
+  - automation
+  - cloud-native
+  - helm
+maintainers:
+  - name: Frederic Roggon
+    email: frederic.roggon@codeadmin.de
+    url: https://github.com/CodeAdminDe
+dependencies:
+  - name: libchart-cnps
+    version: 0.2.1
+    repository: https://codeadminde.github.io/helm-charts
+    alias: libchart-cnps
+    condition: libchartCnps.enabled
+annotations:
+  category: AI
+  kubeVersion: ">=1.24.0"
+  securityContext: "compatible"
+  images: |
+    - name: agent-zero
+      image: frdel/agent-zero-run:latest
