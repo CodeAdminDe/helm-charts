@@ -1,0 +1,291 @@
+{{- $postgresMode := eq (default "none" .Values.database.mode) "postgres" -}}
+{{- $cnpgMode := and $postgresMode .Values.database.useCnpgCluster.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "local-agi.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "local-agi.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "local-agi.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "local-agi.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/values: {{ toJson .Values | sha256sum }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "local-agi.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ include "local-agi.name" . }}
+          image: {{ include "local-agi.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.command }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: {{ .Values.service.targetProtocol }}
+          env:
+            - name: LOCALAGI_MODEL
+              value: {{ .Values.localAgi.model | quote }}
+            - name: LOCALAGI_LLM_API_URL
+              value: {{ .Values.localAgi.llmApiUrl | quote }}
+            - name: LOCALAGI_STATE_DIR
+              value: {{ .Values.localAgi.stateDir | quote }}
+            - name: LOCALAGI_TIMEOUT
+              value: {{ .Values.localAgi.timeout | quote }}
+            - name: LOCALAGI_ENABLE_CONVERSATIONS_LOGGING
+              value: {{ ternary "true" "false" .Values.localAgi.enableConversationsLogging | quote }}
+            {{- if .Values.localAgi.multimodalModel }}
+            - name: LOCALAGI_MULTIMODAL_MODEL
+              value: {{ .Values.localAgi.multimodalModel | quote }}
+            {{- end }}
+            {{- if .Values.localAgi.transcriptionModel }}
+            - name: LOCALAGI_TRANSCRIPTION_MODEL
+              value: {{ .Values.localAgi.transcriptionModel | quote }}
+            {{- end }}
+            {{- if .Values.localAgi.transcriptionLanguage }}
+            - name: LOCALAGI_TRANSCRIPTION_LANGUAGE
+              value: {{ .Values.localAgi.transcriptionLanguage | quote }}
+            {{- end }}
+            {{- if .Values.localAgi.ttsModel }}
+            - name: LOCALAGI_TTS_MODEL
+              value: {{ .Values.localAgi.ttsModel | quote }}
+            {{- end }}
+            {{- if .Values.localAgi.conversationDuration }}
+            - name: LOCALAGI_CONVERSATION_DURATION
+              value: {{ .Values.localAgi.conversationDuration | quote }}
+            {{- end }}
+            {{- if .Values.localAgi.customActionsDir }}
+            - name: LOCALAGI_CUSTOM_ACTIONS_DIR
+              value: {{ .Values.localAgi.customActionsDir | quote }}
+            {{- end }}
+            {{- if .Values.localAgi.localRagUrl }}
+            - name: LOCALAGI_LOCALRAG_URL
+              value: {{ .Values.localAgi.localRagUrl | quote }}
+            {{- end }}
+            {{- if .Values.localAgi.sshboxUrl }}
+            - name: LOCALAGI_SSHBOX_URL
+              value: {{ .Values.localAgi.sshboxUrl | quote }}
+            {{- end }}
+            {{- if .Values.localAgi.dockerHost }}
+            - name: DOCKER_HOST
+              value: {{ .Values.localAgi.dockerHost | quote }}
+            {{- end }}
+            {{- if .Values.localAgi.llmApiKeySecret.name }}
+            - name: LOCALAGI_LLM_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.localAgi.llmApiKeySecret.name }}
+                  key: {{ .Values.localAgi.llmApiKeySecret.key | quote }}
+            {{- end }}
+            {{- if .Values.localAgi.apiKeysSecret.name }}
+            - name: LOCALAGI_API_KEYS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.localAgi.apiKeysSecret.name }}
+                  key: {{ .Values.localAgi.apiKeysSecret.key | quote }}
+            {{- end }}
+            {{- if .Values.localAgi.localRagApiKeySecret.name }}
+            - name: LOCALAGI_LOCALRAG_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.localAgi.localRagApiKeySecret.name }}
+                  key: {{ .Values.localAgi.localRagApiKeySecret.key | quote }}
+            {{- end }}
+            {{- if $postgresMode }}
+            - name: VECTOR_ENGINE
+              value: "postgres"
+            {{- if $cnpgMode }}
+            - name: DB_HOST
+              value: {{ printf "%s-rw" .Values.database.useCnpgCluster.clusterName | quote }}
+            - name: DB_PORT
+              value: {{ printf "%v" .Values.database.useCnpgCluster.port | quote }}
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "local-agi.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.database | quote }}
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "local-agi.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.username | quote }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "local-agi.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.password | quote }}
+            {{- else }}
+            - name: DB_HOST
+              value: {{ .Values.database.postgres.host | quote }}
+            - name: DB_PORT
+              value: {{ printf "%v" .Values.database.postgres.port | quote }}
+            - name: DB_NAME
+              value: {{ .Values.database.postgres.database | quote }}
+            - name: DB_USER
+              value: {{ .Values.database.postgres.user | quote }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.postgres.passwordSecret.name }}
+                  key: {{ .Values.database.postgres.passwordSecret.key | quote }}
+            {{- end }}
+            - name: DB_SSL_MODE
+              value: {{ .Values.database.postgres.ssl | quote }}
+            - name: DATABASE_URL
+              value: "postgresql://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=$(DB_SSL_MODE)"
+            {{- else }}
+            {{- if .Values.knowledgeBase.vectorEngine }}
+            - name: VECTOR_ENGINE
+              value: {{ .Values.knowledgeBase.vectorEngine | quote }}
+            {{- end }}
+            {{- end }}
+            {{- if .Values.knowledgeBase.embeddingModel }}
+            - name: EMBEDDING_MODEL
+              value: {{ .Values.knowledgeBase.embeddingModel | quote }}
+            {{- end }}
+            {{- if .Values.knowledgeBase.collectionDbPath }}
+            - name: COLLECTION_DB_PATH
+              value: {{ .Values.knowledgeBase.collectionDbPath | quote }}
+            {{- end }}
+            {{- if .Values.knowledgeBase.fileAssets }}
+            - name: FILE_ASSETS
+              value: {{ .Values.knowledgeBase.fileAssets | quote }}
+            {{- end }}
+            - name: MAX_CHUNKING_SIZE
+              value: {{ printf "%v" .Values.knowledgeBase.maxChunkingSize | quote }}
+            - name: CHUNK_OVERLAP
+              value: {{ printf "%v" .Values.knowledgeBase.chunkOverlap | quote }}
+            {{- range $key, $value := .Values.extraEnv }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- if kindIs "map" .Values.additionalEnvSecrets }}
+            {{- range $envName, $secretConfig := .Values.additionalEnvSecrets }}
+            {{- if kindIs "string" $secretConfig }}
+            - name: {{ $envName }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretConfig }}
+                  key: {{ $envName | quote }}
+            {{- else if kindIs "map" $secretConfig }}
+            {{- $secretName := (default "" (index $secretConfig "secretName")) }}
+            {{- if $secretName }}
+            - name: {{ default $envName (index $secretConfig "name") }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretName }}
+                  key: {{ default $envName (index $secretConfig "secretKey") | quote }}
+            {{- end }}
+            {{- end }}
+            {{- end }}
+            {{- else if kindIs "slice" .Values.additionalEnvSecrets }}
+            {{- range $secretConfig := .Values.additionalEnvSecrets }}
+            {{- $secretName := (default "" (index $secretConfig "secretName")) }}
+            {{- $envName := (default "" (index $secretConfig "name")) }}
+            {{- if and $secretName $envName }}
+            - name: {{ $envName }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretName }}
+                  key: {{ default $envName (index $secretConfig "secretKey") | quote }}
+            {{- end }}
+            {{- end }}
+            {{- end }}
+          {{- if or .Values.envFromSecrets .Values.envFromConfigMaps }}
+          envFrom:
+            {{- range .Values.envFromSecrets }}
+            - secretRef:
+                name: {{ . }}
+            {{- end }}
+            {{- range .Values.envFromConfigMaps }}
+            - configMapRef:
+                name: {{ . }}
+            {{- end }}
+          {{- end }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.applyHealthChecks }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          startupProbe:
+            {{- toYaml .Values.startupProbe | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.persistence.mountPath }}
+            {{- if .Values.tmpVolume.enabled }}
+            - name: tmp
+              mountPath: {{ .Values.tmpVolume.mountPath }}
+            {{- end }}
+            {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+      volumes:
+        - name: data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "local-agi.persistenceClaimName" . }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        {{- if .Values.tmpVolume.enabled }}
+        - name: tmp
+          emptyDir:
+            {{- with .Values.tmpVolume.sizeLimit }}
+            sizeLimit: {{ . }}
+            {{- end }}
+        {{- end }}
+        {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

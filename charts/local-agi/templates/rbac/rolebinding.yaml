@@ -1,0 +1,17 @@
+{{- if .Values.rbac.create }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "local-agi.rbacRoleName" . }}
+  namespace: {{ include "local-agi.rbacNamespace" . }}
+  labels:
+    {{- include "local-agi.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "local-agi.rbacRoleName" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "local-agi.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+{{- end }}
