@@ -8,7 +8,7 @@ fullnameOverride: ""
 # -- Container image configuration.
 image:
   # -- Image repository.
-  repository: frdel/agent-zero-run
+  repository: agent0ai/agent-zero
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image tag override (defaults to .Chart.AppVersion when empty).
