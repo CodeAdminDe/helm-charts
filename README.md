@@ -27,6 +27,7 @@ The following charts are currently available:
 
 | Name | Version | AppVersion | Description |
 |------|---------|------------|-------------|
+| agent-zero | 0.1.0 | v0.9.8.2 | A Helm chart for deploying Agent Zero (AI Operating System) on Kubernetes. |
 | bind9-hidden-primary | 0.4.3 | 9.20 | A Helm chart for bind9 to use as hidden primary, based on the offical Docker Image by InternetSystemsConsortium (ISC) |
 | coturn-server | 0.4.0 | 4.9.0 | A Helm chart for an easier coturn deployment at kubernetes. |
 | headscale | 0.1.1 | 0.28.0 | A Helm chart for an easier headscale (https://headscale.net) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with headscale or its authors. |
