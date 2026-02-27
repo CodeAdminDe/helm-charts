@@ -9,6 +9,8 @@
 * PostgreSQL support stays optional for integration scenarios and is exposed via `database.mode=postgres`.
 * Service exposure is intentionally ClusterIP-only. External access should be done via ingress/reverse-proxy according to your platform standards.
 * The chart supports consuming an existing in-namespace CNPG app secret (`database.useCnpgCluster.*`) for PostgreSQL credentials.
+* Optional `headscale-ui` deployment is available under `ui.enabled=true` and stays disabled by default.
+* `headscale-ui` should usually be exposed on the same host via `/web` (for CORS compatibility with headscale API), using `ui.ingress.*`.
 
 {{- end -}}
 
