@@ -34,6 +34,7 @@ The following charts are currently available:
 | kasm-agent | 0.1.0 | 1.18.1 | A Helm chart for deploying a Kasm agent workload in Kubernetes (advanced/unsupported static-agent model). |
 | kasm-ws | 0.1.0 | 1.18.1 | A Helm chart for an easier Kasm Workspaces (https://kasm.com) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with Kasm Technologies, Inc. or its authors. |
 | libchart-cnps | 0.2.1 | 0.2.0 | A (experimental) Helm chart of cilium network policies for usage as a library chart. |
+| local-agi | 0.1.0 | v2.8.1 | A Helm chart for deploying LocalAGI on Kubernetes. |
 | netbird-agent | 0.11.0 | 0.66.0 | A Helm chart for an easier NetBird agent (https://netbird.io) deployment at kubernetes. |
 | netbird-management | 1.15.0 | 0.66.0 | A Helm chart for an easier NetBird management stack (https://netbird.io) deployment at kubernetes. |
 | ollama | 0.19.3 | 0.17.4 | A Helm chart for an easier ollama (https://ollama.com) deployment on k8s. Please note that this is a private helm chart and not directly or indirectly affiliated with ollama or its authors. |
