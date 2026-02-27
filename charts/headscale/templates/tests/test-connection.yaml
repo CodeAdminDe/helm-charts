@@ -21,6 +21,6 @@ spec:
         - |
           wget {{- if $tlsEnabled }} --no-check-certificate{{- end }} -qO- {{ $scheme }}://{{ include "headscale.fullname" . }}:{{ .Values.service.http.port }}/health
           {{- if .Values.ui.enabled }}
-          wget -qO- http://{{ include "headscale.ui.fullname" . }}:{{ .Values.ui.service.port }}/web
+          wget -qO- http://{{ include "headscale.ui.fullname" . }}:{{ include "headscale.ui.servicePort" . }}{{ include "headscale.ui.testPath" . }}
           {{- end }}
   restartPolicy: Never

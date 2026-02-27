@@ -1,0 +1,14 @@
+{{- if and .Values.ui.enabled (eq (include "headscale.ui.provider" .) "headplane") }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "headscale.ui.generatedConfigName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "headscale.ui.labels" . | nindent 4 }}
+  annotations:
+    checksum/config: {{ include "headscale.ui.headplane.configChecksum" . }}
+data:
+  config.yaml: |
+    {{- include "headscale.ui.headplane.config" . | nindent 4 }}
+{{- end }}

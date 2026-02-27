@@ -128,8 +128,8 @@ spec:
           {{- end }}
       toPorts:
         - ports:
-            - port: {{ printf "%v" .Values.ui.service.targetPort | quote }}
-              protocol: {{ .Values.ui.service.targetProtocol | default "TCP" }}
+            - port: {{ printf "%v" (include "headscale.ui.targetPort" .) | quote }}
+              protocol: {{ include "headscale.ui.targetProtocol" . | default "TCP" }}
   {{- end }}
   {{- if .Values.cnps.appTraffic.egress.allow }}
   egress:

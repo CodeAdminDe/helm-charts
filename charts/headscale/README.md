@@ -2,7 +2,7 @@
 
 # headscale
 
-![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.28.0](https://img.shields.io/badge/AppVersion-0.28.0-informational?style=flat-square)
+![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.28.0](https://img.shields.io/badge/AppVersion-0.28.0-informational?style=flat-square)
 
 A Helm chart for an easier headscale (https://headscale.net) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with headscale or its authors.
 
@@ -94,7 +94,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="additionalEnvSecrets"><a href="./values.yaml#L423">additionalEnvSecrets</a></td>
+			<td id="additionalEnvSecrets"><a href="./values.yaml#L479">additionalEnvSecrets</a></td>
 			<td>
 object
 </td>
@@ -108,7 +108,7 @@ object
 			<td>Additional env vars from existing secrets. @description Supports either map style (`ENV: secretName`) or list style entries (`[{name, secretName, secretKey}]`).</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L462">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L518">affinity</a></td>
 			<td>
 object
 </td>
@@ -122,7 +122,7 @@ object
 			<td>Workload affinity.</td>
 		</tr>
 		<tr>
-			<td id="applyHealthChecks"><a href="./values.yaml#L372">applyHealthChecks</a></td>
+			<td id="applyHealthChecks"><a href="./values.yaml#L428">applyHealthChecks</a></td>
 			<td>
 bool
 </td>
@@ -136,7 +136,7 @@ true
 			<td>Enable liveness and readiness probes.</td>
 		</tr>
 		<tr>
-			<td id="applySecurity"><a href="./values.yaml#L352">applySecurity</a></td>
+			<td id="applySecurity"><a href="./values.yaml#L408">applySecurity</a></td>
 			<td>
 bool
 </td>
@@ -150,7 +150,7 @@ true
 			<td>Apply default pod/container security settings.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L404">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L460">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -171,7 +171,7 @@ object
 			<td>HorizontalPodAutoscaler configuration.</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L431">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L487">cnps</a></td>
 			<td>
 object
 </td>
@@ -208,7 +208,7 @@ object
 			<td>App-specific CiliumNetworkPolicies settings.</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L434">cnps.cnpgTraffic.instanceExtraEgress</a></td>
+			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L490">cnps.cnpgTraffic.instanceExtraEgress</a></td>
 			<td>
 list
 </td>
@@ -483,7 +483,7 @@ string
 			<td>SSL mode override for CNPG connectivity.</td>
 		</tr>
 		<tr>
-			<td id="env"><a href="./values.yaml#L419">env</a></td>
+			<td id="env"><a href="./values.yaml#L475">env</a></td>
 			<td>
 object
 </td>
@@ -945,7 +945,7 @@ list
 			<td>Image pull secrets (for private registries).</td>
 		</tr>
 		<tr>
-			<td id="ingress"><a href="./values.yaml#L309">ingress</a></td>
+			<td id="ingress"><a href="./values.yaml#L365">ingress</a></td>
 			<td>
 object
 </td>
@@ -987,7 +987,7 @@ object
 			<td>Ingress configuration for headscale HTTP endpoint.</td>
 		</tr>
 		<tr>
-			<td id="ingress--secureDefaults"><a href="./values.yaml#L315">ingress.secureDefaults</a></td>
+			<td id="ingress--secureDefaults"><a href="./values.yaml#L371">ingress.secureDefaults</a></td>
 			<td>
 object
 </td>
@@ -1012,7 +1012,7 @@ object
 			<td>Secure-by-default ingress annotation settings. @description Applied by default and merged with ingress.annotations (custom annotations win on key conflicts).</td>
 		</tr>
 		<tr>
-			<td id="ingress--secureDefaults--websocket--annotationKey"><a href="./values.yaml#L327">ingress.secureDefaults.websocket.annotationKey</a></td>
+			<td id="ingress--secureDefaults--websocket--annotationKey"><a href="./values.yaml#L383">ingress.secureDefaults.websocket.annotationKey</a></td>
 			<td>
 string
 </td>
@@ -1026,7 +1026,7 @@ string
 			<td>Annotation key to use when websocket annotation injection is enabled. Example for NGINX Plus: nginx.org/websocket-services</td>
 		</tr>
 		<tr>
-			<td id="ingress--secureDefaults--websocket--enabled"><a href="./values.yaml#L324">ingress.secureDefaults.websocket.enabled</a></td>
+			<td id="ingress--secureDefaults--websocket--enabled"><a href="./values.yaml#L380">ingress.secureDefaults.websocket.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1040,7 +1040,7 @@ false
 			<td>Inject websocket annotation. Keep disabled for ingress-nginx defaults.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L426">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L482">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -1057,7 +1057,7 @@ object
 			<td>CiliumNetworkPolicies dependency toggle.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L375">livenessProbe</a></td>
+			<td id="livenessProbe"><a href="./values.yaml#L431">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -1094,7 +1094,7 @@ string
 			<td>Override release-based naming.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L456">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L512">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -1247,7 +1247,7 @@ string
 			<td>emptyDir size limit for `/tmp`.</td>
 		</tr>
 		<tr>
-			<td id="podAnnotations"><a href="./values.yaml#L450">podAnnotations</a></td>
+			<td id="podAnnotations"><a href="./values.yaml#L506">podAnnotations</a></td>
 			<td>
 object
 </td>
@@ -1261,7 +1261,7 @@ object
 			<td>Pod annotations.</td>
 		</tr>
 		<tr>
-			<td id="podLabels"><a href="./values.yaml#L453">podLabels</a></td>
+			<td id="podLabels"><a href="./values.yaml#L509">podLabels</a></td>
 			<td>
 object
 </td>
@@ -1275,7 +1275,7 @@ object
 			<td>Pod labels.</td>
 		</tr>
 		<tr>
-			<td id="podSecurityContext"><a href="./values.yaml#L355">podSecurityContext</a></td>
+			<td id="podSecurityContext"><a href="./values.yaml#L411">podSecurityContext</a></td>
 			<td>
 object
 </td>
@@ -1291,7 +1291,7 @@ object
 			<td>Pod-level security context for workload pods.</td>
 		</tr>
 		<tr>
-			<td id="rbac"><a href="./values.yaml#L343">rbac</a></td>
+			<td id="rbac"><a href="./values.yaml#L399">rbac</a></td>
 			<td>
 object
 </td>
@@ -1309,7 +1309,7 @@ object
 			<td>RBAC settings.</td>
 		</tr>
 		<tr>
-			<td id="rbac--create"><a href="./values.yaml#L345">rbac.create</a></td>
+			<td id="rbac--create"><a href="./values.yaml#L401">rbac.create</a></td>
 			<td>
 bool
 </td>
@@ -1323,7 +1323,7 @@ false
 			<td>Create namespace-scoped role + rolebinding.</td>
 		</tr>
 		<tr>
-			<td id="rbac--namespace"><a href="./values.yaml#L347">rbac.namespace</a></td>
+			<td id="rbac--namespace"><a href="./values.yaml#L403">rbac.namespace</a></td>
 			<td>
 string
 </td>
@@ -1337,7 +1337,7 @@ string
 			<td>Namespace override for RBAC objects. Empty means release namespace.</td>
 		</tr>
 		<tr>
-			<td id="rbac--rules"><a href="./values.yaml#L349">rbac.rules</a></td>
+			<td id="rbac--rules"><a href="./values.yaml#L405">rbac.rules</a></td>
 			<td>
 list
 </td>
@@ -1351,7 +1351,7 @@ list
 			<td>RBAC rules for Role when rbac.create=true.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe"><a href="./values.yaml#L385">readinessProbe</a></td>
+			<td id="readinessProbe"><a href="./values.yaml#L441">readinessProbe</a></td>
 			<td>
 object
 </td>
@@ -1388,7 +1388,7 @@ int
 			<td>Number of headscale pod replicas. Note: SQLite mode is single-writer. Keep this at 1 when database.mode=sqlite.</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L395">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L451">resources</a></td>
 			<td>
 object
 </td>
@@ -1411,7 +1411,7 @@ object
 			<td>Resource requests/limits.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L413">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L469">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -1428,7 +1428,7 @@ object
 			<td>RuntimeClass names.</td>
 		</tr>
 		<tr>
-			<td id="securityContext"><a href="./values.yaml#L359">securityContext</a></td>
+			<td id="securityContext"><a href="./values.yaml#L415">securityContext</a></td>
 			<td>
 object
 </td>
@@ -1518,7 +1518,7 @@ string
 			<td>Service type. This chart enforces ClusterIP.</td>
 		</tr>
 		<tr>
-			<td id="serviceAccount"><a href="./values.yaml#L336">serviceAccount</a></td>
+			<td id="serviceAccount"><a href="./values.yaml#L392">serviceAccount</a></td>
 			<td>
 object
 </td>
@@ -1537,7 +1537,7 @@ object
 			<td>Create service account.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L459">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L515">tolerations</a></td>
 			<td>
 list
 </td>
@@ -1562,6 +1562,41 @@ object
   "affinity": {},
   "enabled": false,
   "env": {},
+  "headplane": {
+    "apiKeySecret": {
+      "key": "api-key",
+      "name": ""
+    },
+    "config": {
+      "dataPath": "/var/lib/headplane",
+      "debug": false,
+      "disableCsrf": false,
+      "extraConfig": {},
+      "headscaleUrl": "",
+      "integrationMode": "simple",
+      "integrationPrefix": "/admin",
+      "publicUrl": "",
+      "serverHost": "0.0.0.0"
+    },
+    "env": {},
+    "image": {
+      "pullPolicy": "IfNotPresent",
+      "repository": "ghcr.io/tale/headplane",
+      "tag": "0.6.1"
+    },
+    "secret": {
+      "cookieKey": "cookie-secret",
+      "csrfKey": "csrf-secret",
+      "name": ""
+    },
+    "service": {
+      "annotations": {},
+      "port": 3000,
+      "targetPort": 3000,
+      "targetProtocol": "TCP",
+      "type": "ClusterIP"
+    }
+  },
   "image": {
     "pullPolicy": "IfNotPresent",
     "repository": "ghcr.io/gurucomputing/headscale-ui",
@@ -1605,6 +1640,7 @@ object
   "podAnnotations": {},
   "podLabels": {},
   "podSecurityContext": {},
+  "provider": "headscale-ui",
   "readinessProbe": {
     "failureThreshold": 3,
     "initialDelaySeconds": 10,
@@ -1654,10 +1690,10 @@ object
 </pre>
 </div>
 			</td>
-			<td>Optional Headscale UI deployment (https://github.com/gurucomputing/headscale-ui).</td>
+			<td>Optional Headscale UI deployment.</td>
 		</tr>
 		<tr>
-			<td id="ui--affinity"><a href="./values.yaml#L306">ui.affinity</a></td>
+			<td id="ui--affinity"><a href="./values.yaml#L362">ui.affinity</a></td>
 			<td>
 object
 </td>
@@ -1668,7 +1704,7 @@ object
 </pre>
 </div>
 			</td>
-			<td>Workload affinity for headscale-ui pods.</td>
+			<td>Workload affinity for UI pods.</td>
 		</tr>
 		<tr>
 			<td id="ui--enabled"><a href="./values.yaml#L210">ui.enabled</a></td>
@@ -1682,10 +1718,10 @@ false
 </pre>
 </div>
 			</td>
-			<td>Enable headscale-ui deployment.</td>
+			<td>Enable UI deployment.</td>
 		</tr>
 		<tr>
-			<td id="ui--env"><a href="./values.yaml#L222">ui.env</a></td>
+			<td id="ui--env"><a href="./values.yaml#L224">ui.env</a></td>
 			<td>
 object
 </td>
@@ -1696,10 +1732,369 @@ object
 </pre>
 </div>
 			</td>
-			<td>Additional environment variables for headscale-ui container.</td>
+			<td>Additional environment variables for `headscale-ui` container.</td>
 		</tr>
 		<tr>
-			<td id="ui--image"><a href="./values.yaml#L214">ui.image</a></td>
+			<td id="ui--headplane"><a href="./values.yaml#L226">ui.headplane</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "apiKeySecret": {
+    "key": "api-key",
+    "name": ""
+  },
+  "config": {
+    "dataPath": "/var/lib/headplane",
+    "debug": false,
+    "disableCsrf": false,
+    "extraConfig": {},
+    "headscaleUrl": "",
+    "integrationMode": "simple",
+    "integrationPrefix": "/admin",
+    "publicUrl": "",
+    "serverHost": "0.0.0.0"
+  },
+  "env": {},
+  "image": {
+    "pullPolicy": "IfNotPresent",
+    "repository": "ghcr.io/tale/headplane",
+    "tag": "0.6.1"
+  },
+  "secret": {
+    "cookieKey": "cookie-secret",
+    "csrfKey": "csrf-secret",
+    "name": ""
+  },
+  "service": {
+    "annotations": {},
+    "port": 3000,
+    "targetPort": 3000,
+    "targetProtocol": "TCP",
+    "type": "ClusterIP"
+  }
+}
+</pre>
+</div>
+			</td>
+			<td>`headplane` specific settings (https://github.com/tale/headplane).</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--apiKeySecret"><a href="./values.yaml#L276">ui.headplane.apiKeySecret</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "key": "api-key",
+  "name": ""
+}
+</pre>
+</div>
+			</td>
+			<td>Optional existing secret with a headscale API key for simple mode auth.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--config"><a href="./values.yaml#L248">ui.headplane.config</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "dataPath": "/var/lib/headplane",
+  "debug": false,
+  "disableCsrf": false,
+  "extraConfig": {},
+  "headscaleUrl": "",
+  "integrationMode": "simple",
+  "integrationPrefix": "/admin",
+  "publicUrl": "",
+  "serverHost": "0.0.0.0"
+}
+</pre>
+</div>
+			</td>
+			<td>Headplane runtime config rendering settings.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--config--dataPath"><a href="./values.yaml#L264">ui.headplane.config.dataPath</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"/var/lib/headplane"
+</pre>
+</div>
+			</td>
+			<td>Writable data path inside container.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--config--debug"><a href="./values.yaml#L266">ui.headplane.config.debug</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Enable debug mode.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--config--disableCsrf"><a href="./values.yaml#L262">ui.headplane.config.disableCsrf</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Disable CSRF protections (not recommended).</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--config--extraConfig"><a href="./values.yaml#L268">ui.headplane.config.extraConfig</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>Additional raw config to merge into generated config.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--config--headscaleUrl"><a href="./values.yaml#L251">ui.headplane.config.headscaleUrl</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Override internal URL for connecting to headscale API. @description Empty uses in-cluster service URL.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--config--integrationMode"><a href="./values.yaml#L258">ui.headplane.config.integrationMode</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"simple"
+</pre>
+</div>
+			</td>
+			<td>Integration mode. @description This chart currently supports `simple` mode.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--config--integrationPrefix"><a href="./values.yaml#L260">ui.headplane.config.integrationPrefix</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"/admin"
+</pre>
+</div>
+			</td>
+			<td>UI prefix path.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--config--publicUrl"><a href="./values.yaml#L255">ui.headplane.config.publicUrl</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Optional externally reachable URL for headplane.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--config--serverHost"><a href="./values.yaml#L253">ui.headplane.config.serverHost</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"0.0.0.0"
+</pre>
+</div>
+			</td>
+			<td>Bind host for headplane server.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--env"><a href="./values.yaml#L235">ui.headplane.env</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>Additional environment variables for `headplane` container.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--image--pullPolicy"><a href="./values.yaml#L231">ui.headplane.image.pullPolicy</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"IfNotPresent"
+</pre>
+</div>
+			</td>
+			<td>Image pull policy.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--image--repository"><a href="./values.yaml#L229">ui.headplane.image.repository</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"ghcr.io/tale/headplane"
+</pre>
+</div>
+			</td>
+			<td>Image repository.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--image--tag"><a href="./values.yaml#L233">ui.headplane.image.tag</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"0.6.1"
+</pre>
+</div>
+			</td>
+			<td>Image tag.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--secret"><a href="./values.yaml#L271">ui.headplane.secret</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "cookieKey": "cookie-secret",
+  "csrfKey": "csrf-secret",
+  "name": ""
+}
+</pre>
+</div>
+			</td>
+			<td>Existing secret containing headplane session secrets. @description Must contain both cookie and csrf keys when provider=headplane.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--service--annotations"><a href="./values.yaml#L240">ui.headplane.service.annotations</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>Service annotations.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--service--port"><a href="./values.yaml#L242">ui.headplane.service.port</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+3000
+</pre>
+</div>
+			</td>
+			<td>Service port.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--service--targetPort"><a href="./values.yaml#L244">ui.headplane.service.targetPort</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+3000
+</pre>
+</div>
+			</td>
+			<td>Container target port.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--service--targetProtocol"><a href="./values.yaml#L246">ui.headplane.service.targetProtocol</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"TCP"
+</pre>
+</div>
+			</td>
+			<td>Service protocol.</td>
+		</tr>
+		<tr>
+			<td id="ui--headplane--service--type"><a href="./values.yaml#L238">ui.headplane.service.type</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"ClusterIP"
+</pre>
+</div>
+			</td>
+			<td>Service type. This chart enforces ClusterIP.</td>
+		</tr>
+		<tr>
+			<td id="ui--image"><a href="./values.yaml#L216">ui.image</a></td>
 			<td>
 object
 </td>
@@ -1714,10 +2109,10 @@ object
 </pre>
 </div>
 			</td>
-			<td>Headscale UI image configuration.</td>
+			<td>`headscale-ui` image configuration.</td>
 		</tr>
 		<tr>
-			<td id="ui--image--pullPolicy"><a href="./values.yaml#L218">ui.image.pullPolicy</a></td>
+			<td id="ui--image--pullPolicy"><a href="./values.yaml#L220">ui.image.pullPolicy</a></td>
 			<td>
 string
 </td>
@@ -1731,7 +2126,7 @@ string
 			<td>Image pull policy.</td>
 		</tr>
 		<tr>
-			<td id="ui--image--repository"><a href="./values.yaml#L216">ui.image.repository</a></td>
+			<td id="ui--image--repository"><a href="./values.yaml#L218">ui.image.repository</a></td>
 			<td>
 string
 </td>
@@ -1745,7 +2140,7 @@ string
 			<td>Image repository.</td>
 		</tr>
 		<tr>
-			<td id="ui--image--tag"><a href="./values.yaml#L220">ui.image.tag</a></td>
+			<td id="ui--image--tag"><a href="./values.yaml#L222">ui.image.tag</a></td>
 			<td>
 string
 </td>
@@ -1759,7 +2154,7 @@ string
 			<td>Image tag.</td>
 		</tr>
 		<tr>
-			<td id="ui--ingress"><a href="./values.yaml#L278">ui.ingress</a></td>
+			<td id="ui--ingress"><a href="./values.yaml#L334">ui.ingress</a></td>
 			<td>
 object
 </td>
@@ -1794,10 +2189,10 @@ object
 </pre>
 </div>
 			</td>
-			<td>Ingress configuration for headscale-ui. @description Use the same host as headscale and path `/web` unless your reverse proxy injects CORS headers.</td>
+			<td>Ingress configuration for selected UI provider. @description Use path `/web` for `headscale-ui` and `/admin` for `headplane` unless your reverse proxy setup differs.</td>
 		</tr>
 		<tr>
-			<td id="ui--ingress--secureDefaults"><a href="./values.yaml#L284">ui.ingress.secureDefaults</a></td>
+			<td id="ui--ingress--secureDefaults"><a href="./values.yaml#L340">ui.ingress.secureDefaults</a></td>
 			<td>
 object
 </td>
@@ -1818,7 +2213,7 @@ object
 			<td>Secure-by-default ingress annotation settings. @description Applied by default and merged with ui.ingress.annotations (custom annotations win on key conflicts).</td>
 		</tr>
 		<tr>
-			<td id="ui--livenessProbe"><a href="./values.yaml#L248">ui.livenessProbe</a></td>
+			<td id="ui--livenessProbe"><a href="./values.yaml#L304">ui.livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -1837,10 +2232,10 @@ object
 </pre>
 </div>
 			</td>
-			<td>Liveness probe for headscale-ui.</td>
+			<td>Liveness probe for UI container.</td>
 		</tr>
 		<tr>
-			<td id="ui--nodeSelector"><a href="./values.yaml#L302">ui.nodeSelector</a></td>
+			<td id="ui--nodeSelector"><a href="./values.yaml#L358">ui.nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -1851,10 +2246,10 @@ object
 </pre>
 </div>
 			</td>
-			<td>Workload node selector for headscale-ui pods.</td>
+			<td>Workload node selector for UI pods.</td>
 		</tr>
 		<tr>
-			<td id="ui--podAnnotations"><a href="./values.yaml#L298">ui.podAnnotations</a></td>
+			<td id="ui--podAnnotations"><a href="./values.yaml#L354">ui.podAnnotations</a></td>
 			<td>
 object
 </td>
@@ -1865,10 +2260,10 @@ object
 </pre>
 </div>
 			</td>
-			<td>Pod annotations for headscale-ui pods.</td>
+			<td>Pod annotations for UI pods.</td>
 		</tr>
 		<tr>
-			<td id="ui--podLabels"><a href="./values.yaml#L300">ui.podLabels</a></td>
+			<td id="ui--podLabels"><a href="./values.yaml#L356">ui.podLabels</a></td>
 			<td>
 object
 </td>
@@ -1879,10 +2274,10 @@ object
 </pre>
 </div>
 			</td>
-			<td>Pod labels for headscale-ui pods.</td>
+			<td>Pod labels for UI pods.</td>
 		</tr>
 		<tr>
-			<td id="ui--podSecurityContext"><a href="./values.yaml#L232">ui.podSecurityContext</a></td>
+			<td id="ui--podSecurityContext"><a href="./values.yaml#L288">ui.podSecurityContext</a></td>
 			<td>
 object
 </td>
@@ -1893,10 +2288,24 @@ object
 </pre>
 </div>
 			</td>
-			<td>Pod-level security context for headscale-ui pods.</td>
+			<td>Pod-level security context for UI pods.</td>
 		</tr>
 		<tr>
-			<td id="ui--readinessProbe"><a href="./values.yaml#L256">ui.readinessProbe</a></td>
+			<td id="ui--provider"><a href="./values.yaml#L212">ui.provider</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"headscale-ui"
+</pre>
+</div>
+			</td>
+			<td>UI provider (`headscale-ui` or `headplane`).</td>
+		</tr>
+		<tr>
+			<td id="ui--readinessProbe"><a href="./values.yaml#L312">ui.readinessProbe</a></td>
 			<td>
 object
 </td>
@@ -1915,10 +2324,10 @@ object
 </pre>
 </div>
 			</td>
-			<td>Readiness probe for headscale-ui.</td>
+			<td>Readiness probe for UI container.</td>
 		</tr>
 		<tr>
-			<td id="ui--replicaCount"><a href="./values.yaml#L212">ui.replicaCount</a></td>
+			<td id="ui--replicaCount"><a href="./values.yaml#L214">ui.replicaCount</a></td>
 			<td>
 int
 </td>
@@ -1929,10 +2338,10 @@ int
 </pre>
 </div>
 			</td>
-			<td>Number of headscale-ui pod replicas.</td>
+			<td>Number of UI pod replicas.</td>
 		</tr>
 		<tr>
-			<td id="ui--resources"><a href="./values.yaml#L224">ui.resources</a></td>
+			<td id="ui--resources"><a href="./values.yaml#L280">ui.resources</a></td>
 			<td>
 object
 </td>
@@ -1952,10 +2361,10 @@ object
 </pre>
 </div>
 			</td>
-			<td>Headscale UI resource requests/limits.</td>
+			<td>UI resource requests/limits.</td>
 		</tr>
 		<tr>
-			<td id="ui--securityContext"><a href="./values.yaml#L234">ui.securityContext</a></td>
+			<td id="ui--securityContext"><a href="./values.yaml#L290">ui.securityContext</a></td>
 			<td>
 object
 </td>
@@ -1978,10 +2387,10 @@ object
 </pre>
 </div>
 			</td>
-			<td>Container-level security context for headscale-ui container.</td>
+			<td>Container-level security context for UI container.</td>
 		</tr>
 		<tr>
-			<td id="ui--service"><a href="./values.yaml#L264">ui.service</a></td>
+			<td id="ui--service"><a href="./values.yaml#L320">ui.service</a></td>
 			<td>
 object
 </td>
@@ -1998,10 +2407,10 @@ object
 </pre>
 </div>
 			</td>
-			<td>Kubernetes Service configuration for headscale-ui.</td>
+			<td>Kubernetes Service configuration for `headscale-ui` provider.</td>
 		</tr>
 		<tr>
-			<td id="ui--service--annotations"><a href="./values.yaml#L268">ui.service.annotations</a></td>
+			<td id="ui--service--annotations"><a href="./values.yaml#L324">ui.service.annotations</a></td>
 			<td>
 object
 </td>
@@ -2015,7 +2424,7 @@ object
 			<td>Service annotations.</td>
 		</tr>
 		<tr>
-			<td id="ui--service--port"><a href="./values.yaml#L270">ui.service.port</a></td>
+			<td id="ui--service--port"><a href="./values.yaml#L326">ui.service.port</a></td>
 			<td>
 int
 </td>
@@ -2029,7 +2438,7 @@ int
 			<td>Service port.</td>
 		</tr>
 		<tr>
-			<td id="ui--service--targetPort"><a href="./values.yaml#L273">ui.service.targetPort</a></td>
+			<td id="ui--service--targetPort"><a href="./values.yaml#L329">ui.service.targetPort</a></td>
 			<td>
 int
 </td>
@@ -2043,7 +2452,7 @@ int
 			<td>Container target port. @description If you override this, also set ui.env.HTTP_PORT to the same value.</td>
 		</tr>
 		<tr>
-			<td id="ui--service--targetProtocol"><a href="./values.yaml#L275">ui.service.targetProtocol</a></td>
+			<td id="ui--service--targetProtocol"><a href="./values.yaml#L331">ui.service.targetProtocol</a></td>
 			<td>
 string
 </td>
@@ -2057,7 +2466,7 @@ string
 			<td>Service protocol.</td>
 		</tr>
 		<tr>
-			<td id="ui--service--type"><a href="./values.yaml#L266">ui.service.type</a></td>
+			<td id="ui--service--type"><a href="./values.yaml#L322">ui.service.type</a></td>
 			<td>
 string
 </td>
@@ -2071,7 +2480,7 @@ string
 			<td>Service type. This chart enforces ClusterIP.</td>
 		</tr>
 		<tr>
-			<td id="ui--storage"><a href="./values.yaml#L244">ui.storage</a></td>
+			<td id="ui--storage"><a href="./values.yaml#L300">ui.storage</a></td>
 			<td>
 object
 </td>
@@ -2085,10 +2494,10 @@ object
 </pre>
 </div>
 			</td>
-			<td>Ephemeral directory sizing for headscale-ui runtime.</td>
+			<td>Ephemeral directory sizing for UI runtime.</td>
 		</tr>
 		<tr>
-			<td id="ui--tolerations"><a href="./values.yaml#L304">ui.tolerations</a></td>
+			<td id="ui--tolerations"><a href="./values.yaml#L360">ui.tolerations</a></td>
 			<td>
 list
 </td>
@@ -2099,7 +2508,7 @@ list
 </pre>
 </div>
 			</td>
-			<td>Workload tolerations for headscale-ui pods.</td>
+			<td>Workload tolerations for UI pods.</td>
 		</tr>
 	</tbody>
 </table>
@@ -2144,5 +2553,7 @@ Autogenerated from chart metadata using [helm-docs](https://github.com/norwoodj/
 * PostgreSQL support stays optional for integration scenarios and is exposed via `database.mode=postgres`.
 * Service exposure is intentionally ClusterIP-only. External access should be done via ingress/reverse-proxy according to your platform standards.
 * The chart supports consuming an existing in-namespace CNPG app secret (`database.useCnpgCluster.*`) for PostgreSQL credentials.
-* Optional `headscale-ui` deployment is available under `ui.enabled=true` and stays disabled by default.
+* Optional UI deployment is available under `ui.enabled=true` and stays disabled by default.
+* `ui.provider` supports `headscale-ui` (default) and `headplane`.
 * `headscale-ui` should usually be exposed on the same host via `/web` (for CORS compatibility with headscale API), using `ui.ingress.*`.
+* `headplane` is rendered in simple mode and requires an existing secret (`ui.headplane.secret.*`) for cookie/csrf session secrets.
