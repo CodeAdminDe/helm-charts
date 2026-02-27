@@ -1,0 +1,37 @@
+{{- define "extra.specifics.fromchart.atom.opinionated" -}}
+<hr /><hr />
+
+## Appendix - Chart-specifics
+
+### Upstream behavior and chart scope
+
+* Upstream LocalAGI is documented primarily with Docker Compose that includes LocalAI, PostgreSQL, and optional execution helpers.
+* This chart deploys LocalAGI itself and keeps external dependencies environment-agnostic (for example an existing LocalAI endpoint and optional external/CNPG PostgreSQL).
+* Default runtime expects an OpenAI-compatible backend configured via `localAgi.llmApiUrl`.
+* Service exposure is intentionally ClusterIP-only. External access should be done via ingress or Gateway API resources.
+* `libchartCnps.enabled=true` by default. Disable only if your cluster does not run Cilium.
+* App CNP egress defaults include both `cluster` and `world` entities to support in-cluster LocalAI/PostgreSQL and outbound internet access.
+
+### Persistence and state
+
+* LocalAGI state is mounted at `/pool` by default (`localAgi.stateDir` and `persistence.mountPath`).
+* PVC lifecycle defaults to Kubernetes behavior: scaling keeps PVC data; uninstall deletes PVC unless `persistence.retain=true`.
+* If persistence is disabled, the chart falls back to `emptyDir` state storage.
+
+### Knowledge base and database mode
+
+* Built-in knowledge base defaults to `chromem` (`knowledgeBase.vectorEngine=chromem`) for minimal standalone deployment.
+* Optional PostgreSQL mode is enabled with `database.mode=postgres`.
+* CNPG integration is supported with `database.useCnpgCluster.enabled=true`, reading credentials from the existing CNPG app secret.
+* PostgreSQL SSL mode defaults to `require` for encrypted transport baseline.
+
+### Secrets handling
+
+* Keep API keys and DB passwords in Kubernetes secrets.
+* Use `localAgi.*Secret` references, `database.postgres.passwordSecret`, `envFromSecrets`, or `additionalEnvSecrets`.
+* Keep `extraEnv` for non-sensitive values only.
+
+{{- end -}}
+
+{{ template "extra.templates.readme.complexvalues" . }}
+{{ template "extra.specifics.fromchart.atom.opinionated" . }}

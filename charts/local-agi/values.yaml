@@ -1,0 +1,410 @@
+# -- Number of application pod replicas.
+replicaCount: 1
+
+# -- Override release-based naming.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- Container image configuration.
+image:
+  # -- Image repository.
+  repository: quay.io/mudler/localagi
+  # -- Image pull policy.
+  pullPolicy: IfNotPresent
+  # -- Image tag override (defaults to .Chart.AppVersion when empty).
+  tag: ""
+
+# -- Image pull secrets (for private registries).
+imagePullSecrets: []
+
+# -- Service account configuration.
+serviceAccount:
+  # -- Create a service account.
+  create: true
+  # -- ServiceAccount annotations.
+  annotations: {}
+  # -- ServiceAccount name override.
+  name: ""
+  # -- Automount SA token.
+  automountServiceAccountToken: false
+
+# -- Optional namespace-scoped RBAC configuration.
+rbac:
+  # -- Create Role + RoleBinding.
+  create: false
+  # -- Namespace override for RBAC resources.
+  namespace: ""
+  # -- Explicit RBAC rules required when rbac.create=true.
+  rules: []
+
+# -- Kubernetes Service configuration.
+service:
+  # -- Service type. This chart enforces ClusterIP.
+  type: ClusterIP
+  # -- Service annotations.
+  annotations: {}
+  # -- Service labels.
+  labels: {}
+  # -- Service port.
+  port: 80
+  # -- Container target port.
+  targetPort: 3000
+  # -- Service protocol.
+  targetProtocol: TCP
+
+# -- Ingress configuration (ingress-nginx style).
+ingress:
+  # -- Enable ingress resource creation.
+  enabled: false
+  # -- Ingress class name.
+  className: ""
+  # -- Additional ingress annotations.
+  annotations: {}
+  # -- Secure defaults for long-lived API and streaming connections.
+  secureDefaults:
+    # -- Enable secure default ingress annotations.
+    enabled: true
+    # -- Proxy read timeout in seconds.
+    proxyReadTimeoutSeconds: 3600
+    # -- Proxy send timeout in seconds.
+    proxySendTimeoutSeconds: 3600
+    # -- Disable proxy buffering.
+    proxyBuffering: "off"
+    # -- Disable request buffering.
+    proxyRequestBuffering: "off"
+    # -- HTTP version for proxy upstream.
+    proxyHttpVersion: "1.1"
+  # -- Host/path rules.
+  hosts:
+    - host: local-agi.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  # -- TLS host/secret blocks.
+  tls: []
+
+# -- Gateway API HTTPRoute configuration (for example Envoy Gateway).
+gatewayApi:
+  # -- Enable HTTPRoute resource creation.
+  enabled: false
+  # -- HTTPRoute annotations.
+  annotations: {}
+  # -- HTTPRoute labels.
+  labels: {}
+  # -- ParentRefs for HTTPRoute.
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
+      sectionName: http
+  # -- Hostnames served by this route.
+  hostnames:
+    - local-agi.example.com
+  # -- Match rules for the HTTPRoute rule.
+  matches:
+    - path:
+        type: PathPrefix
+        value: "/"
+  # -- Optional filters for the HTTPRoute rule.
+  filters: []
+  # -- Optional backend references. Defaults to this chart service when empty.
+  backendRefs: []
+
+# -- RuntimeClass names.
+runtimeClass:
+  # -- RuntimeClass for deployment pods.
+  pods: ""
+  # -- RuntimeClass for test pods.
+  tests: ""
+
+# -- Persistence settings for LocalAGI state directory.
+persistence:
+  # -- Enable persistent storage.
+  enabled: true
+  # -- Keep PVC when Helm release is deleted (`true` keeps data on uninstall; scale up/down does not delete PVCs either way).
+  retain: false
+  # -- Existing PVC to use instead of creating one.
+  existingClaim: ""
+  # -- PVC storage size.
+  size: 10Gi
+  # -- PVC storageClass.
+  storageClass: ""
+  # -- PVC access modes.
+  accessModes:
+    - ReadWriteOnce
+  # -- PVC annotations.
+  annotations: {}
+  # -- PVC volumeName binding.
+  volumeName: ""
+  # -- Mount path inside container.
+  mountPath: /pool
+
+# -- Optional tmp volume.
+tmpVolume:
+  # -- Mount writable emptyDir at /tmp.
+  enabled: true
+  # -- Mount path inside container.
+  mountPath: /tmp
+  # -- Optional size limit.
+  sizeLimit: 1Gi
+
+# -- LocalAGI runtime options.
+localAgi:
+  # -- Base model used by agents (`LOCALAGI_MODEL`).
+  model: gemma-3-4b-it-qat
+  # -- OpenAI-compatible endpoint used by LocalAGI (`LOCALAGI_LLM_API_URL`).
+  llmApiUrl: http://localai:8080
+  llmApiKeySecret:
+    # -- Existing secret name containing `LOCALAGI_LLM_API_KEY`.
+    name: ""
+    # -- Secret key containing `LOCALAGI_LLM_API_KEY`.
+    key: apiKey
+  # -- Optional multimodal model (`LOCALAGI_MULTIMODAL_MODEL`).
+  multimodalModel: moondream2-20250414
+  # -- Optional transcription model (`LOCALAGI_TRANSCRIPTION_MODEL`).
+  transcriptionModel: ""
+  # -- Optional transcription language (`LOCALAGI_TRANSCRIPTION_LANGUAGE`).
+  transcriptionLanguage: ""
+  # -- Optional text-to-speech model (`LOCALAGI_TTS_MODEL`).
+  ttsModel: ""
+  # -- Request timeout (`LOCALAGI_TIMEOUT`).
+  timeout: 5m
+  # -- LocalAGI state directory (`LOCALAGI_STATE_DIR`). Should match persistence.mountPath.
+  stateDir: /pool
+  # -- Enable conversation logging (`LOCALAGI_ENABLE_CONVERSATIONS_LOGGING`).
+  enableConversationsLogging: false
+  # -- Optional conversation retention duration (`LOCALAGI_CONVERSATION_DURATION`).
+  conversationDuration: ""
+  # -- Optional custom actions directory (`LOCALAGI_CUSTOM_ACTIONS_DIR`).
+  customActionsDir: ""
+  apiKeysSecret:
+    # -- Existing secret name containing comma-separated `LOCALAGI_API_KEYS`.
+    name: ""
+    # -- Secret key containing `LOCALAGI_API_KEYS`.
+    key: apiKeys
+  # -- Optional external LocalRAG URL (`LOCALAGI_LOCALRAG_URL`).
+  localRagUrl: ""
+  localRagApiKeySecret:
+    # -- Existing secret name containing LocalRAG API key.
+    name: ""
+    # -- Secret key containing LocalRAG API key.
+    key: apiKey
+  # -- Optional SSHBox endpoint used by selected actions (`LOCALAGI_SSHBOX_URL`).
+  sshboxUrl: ""
+  # -- Optional Docker endpoint used by selected actions (`DOCKER_HOST`).
+  dockerHost: ""
+
+# -- Built-in knowledge base tuning.
+knowledgeBase:
+  # -- Vector backend for built-in knowledge base when database.mode is not postgres.
+  vectorEngine: chromem
+  # -- Embedding model used by built-in knowledge base.
+  embeddingModel: granite-embedding-107m-multilingual
+  # -- Optional collection DB path override (`COLLECTION_DB_PATH`).
+  collectionDbPath: ""
+  # -- Optional file assets path override (`FILE_ASSETS`).
+  fileAssets: ""
+  # -- Max chunk size for ingestion (`MAX_CHUNKING_SIZE`).
+  maxChunkingSize: 400
+  # -- Chunk overlap for ingestion (`CHUNK_OVERLAP`).
+  chunkOverlap: 0
+
+# -- Optional PostgreSQL mode for built-in knowledge base.
+database:
+  # -- Database mode for LocalAGI knowledge base.
+  # @description Supported values: `none`, `postgres`.
+  mode: none
+  postgres:
+    # -- PostgreSQL host when database.mode=postgres and CNPG mode is disabled.
+    host: ""
+    # -- PostgreSQL port.
+    port: 5432
+    # -- PostgreSQL database name.
+    database: ""
+    # -- PostgreSQL username.
+    user: ""
+    # -- SSL mode appended to PostgreSQL DSN.
+    ssl: require
+    passwordSecret:
+      # -- Existing secret name containing PostgreSQL password.
+      name: ""
+      # -- Secret key containing PostgreSQL password.
+      key: password
+  useCnpgCluster:
+    # -- Resolve PostgreSQL credentials from an existing CNPG cluster app secret.
+    enabled: false
+    # -- CNPG cluster name (RW service `<clusterName>-rw`).
+    clusterName: cnpg-cluster
+    # -- CNPG RW service port.
+    port: 5432
+    # -- Explicit CNPG app secret name (defaults to `<clusterName>-app`).
+    appConnectionSecretName: ""
+    secretKeys:
+      # -- Key for database name in app secret.
+      database: dbname
+      # -- Key for username in app secret.
+      username: user
+      # -- Key for password in app secret.
+      password: password
+
+# -- Optional command override.
+command: []
+
+# -- Optional args override.
+args: []
+
+# -- Additional non-sensitive environment variables.
+extraEnv: {}
+
+# -- Additional env vars from existing secrets.
+# @description Supports both map and list forms.
+# @raw
+# ```yaml
+# additionalEnvSecrets:
+#   TOKEN: my-secret
+#   PASSWORD:
+#     secretName: my-secret
+#     secretKey: password
+#
+# additionalEnvSecrets:
+#   - name: TOKEN
+#     secretName: my-secret
+#     secretKey: token
+# ```
+additionalEnvSecrets: {}
+
+# -- Import all keys from listed existing secrets.
+envFromSecrets: []
+
+# -- Import all keys from listed existing configmaps.
+envFromConfigMaps: []
+
+# -- Additional volumes.
+extraVolumes: []
+
+# -- Additional volume mounts.
+extraVolumeMounts: []
+
+# -- Enable liveness/readiness/startup probes.
+applyHealthChecks: true
+
+# -- Liveness probe.
+livenessProbe:
+  httpGet:
+    path: /readyz
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+
+# -- Readiness probe.
+readinessProbe:
+  httpGet:
+    path: /readyz
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+
+# -- Startup probe.
+startupProbe:
+  httpGet:
+    path: /readyz
+    port: http
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 30
+
+# -- Pod-level security context.
+podSecurityContext:
+  fsGroup: 1000
+
+# -- Container-level security context.
+# @description Upstream image is Ubuntu-based and writes to mounted paths; keep root filesystem writable by default unless validated otherwise.
+securityContext:
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  readOnlyRootFilesystem: false
+  seccompProfile:
+    type: RuntimeDefault
+  capabilities:
+    drop:
+      - ALL
+
+# -- Resource requests and limits.
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 2000m
+    memory: 4Gi
+
+# -- HorizontalPodAutoscaler configuration.
+autoscaling:
+  # -- Enable autoscaling.
+  enabled: false
+  # -- Minimum replicas.
+  minReplicas: 1
+  # -- Maximum replicas.
+  maxReplicas: 3
+  # -- Target CPU utilization percentage.
+  targetCPUUtilizationPercentage: 80
+  # -- Enable memory utilization metric.
+  enableMemoryUtilization: false
+  # -- Target memory utilization percentage.
+  targetMemoryUtilizationPercentage: 80
+
+# -- Pod annotations.
+podAnnotations: {}
+
+# -- Pod labels.
+podLabels: {}
+
+# -- Workload node selector.
+nodeSelector: {}
+
+# -- Workload tolerations.
+tolerations: []
+
+# -- Workload affinity.
+affinity: {}
+
+# -- Cilium policy library toggle.
+libchartCnps:
+  # -- Enable libchart-cnps templates.
+  enabled: true
+  # -- Include CNPG policy set from library.
+  includeCnpgPolicies: false
+
+# -- App-specific Cilium policy settings.
+cnps:
+  appTraffic:
+    ingress:
+      # -- Allow ingress traffic to app pods.
+      allow: true
+      # -- Allowed ingress endpoint label sets.
+      # @description Leave empty to use conditional defaults from template logic: ingress-nginx labels when ingress.enabled=true, envoy-gateway labels when gatewayApi.enabled=true, or both when both are enabled.
+      fromEndpoints: []
+      # -- Optional allowed ingress entities.
+      fromEntities: []
+    egress:
+      # -- Allow egress traffic from app pods.
+      allow: true
+      # -- Optional destination entities.
+      toEntities:
+        - cluster
+        - world
+      # -- Allowed egress ports.
+      # -- DNS (53/UDP) is already covered by the namespace-wide libchart policy.
+      toPorts:
+        - port: "8080"
+          protocol: TCP
+        - port: "80"
+          protocol: TCP
+        - port: "443"
+          protocol: TCP
