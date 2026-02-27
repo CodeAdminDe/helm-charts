@@ -316,6 +316,8 @@ ui:
         issuer: ""
         # -- OIDC client ID.
         clientId: ""
+        # -- Security note: prefer `clientSecretPath` and `headscaleApiKeyPath` in production.
+        # @description Avoid storing plaintext `clientSecret` / `headscaleApiKey` in values.yaml. Mount Kubernetes Secret files and reference them via the `*Path` fields.
         # -- OIDC client secret value.
         clientSecret: ""
         # -- OIDC client secret path (alternative to clientSecret).
