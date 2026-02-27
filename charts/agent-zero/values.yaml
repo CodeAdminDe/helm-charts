@@ -243,7 +243,7 @@ securityContext:
     type: RuntimeDefault
   capabilities:
     drop:
-      - NET_RAW
+      - ALL
 
 # -- Resource requests and limits.
 resources:
@@ -287,7 +287,7 @@ affinity: {}
 # -- Cilium policy library toggle.
 libchartCnps:
   # -- Enable libchart-cnps templates.
-  enabled: false
+  enabled: true
   # -- Include CNPG policy set from library.
   includeCnpgPolicies: false
 
@@ -298,11 +298,8 @@ cnps:
       # -- Allow ingress traffic to app pods.
       allow: true
       # -- Allowed ingress endpoint label sets.
-      fromEndpoints:
-        - app.kubernetes.io/name: ingress-nginx
-          io.kubernetes.pod.namespace: ingress-nginx
-        - app.kubernetes.io/name: envoy-gateway
-          io.kubernetes.pod.namespace: envoy-gateway-system
+      # @description Leave empty to use conditional defaults from template logic: ingress-nginx labels when ingress.enabled=true, envoy-gateway labels when gatewayApi.enabled=true, or both when both are enabled.
+      fromEndpoints: []
       # -- Optional allowed ingress entities.
       fromEntities: []
     egress:
@@ -313,10 +310,7 @@ cnps:
         - world
       # -- Allowed egress ports.
       toPorts:
-        - port: "53"
-          protocol: UDP
-        - port: "53"
-          protocol: TCP
+        # -- DNS (53/UDP) is already covered by the namespace-wide libchart policy.
         - port: "80"
           protocol: TCP
         - port: "443"

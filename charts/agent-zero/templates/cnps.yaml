@@ -27,8 +27,30 @@ metadata:
 {{- end -}}
 
 {{- define "agent-zero.CiliumNetworkPolicies-AppSet" -}}
-{{- $hasIngressEndpoints := not (empty .Values.cnps.appTraffic.ingress.fromEndpoints) -}}
-{{- $hasIngressEntities := not (empty .Values.cnps.appTraffic.ingress.fromEntities) -}}
+{{- $defaultIngressEndpoints := list -}}
+{{- if .Values.ingress.enabled -}}
+{{- $defaultIngressEndpoints = append $defaultIngressEndpoints (dict "app.kubernetes.io/name" "ingress-nginx" "io.kubernetes.pod.namespace" "ingress-nginx") -}}
+{{- end -}}
+{{- if .Values.gatewayApi.enabled -}}
+{{- $defaultIngressEndpoints = append $defaultIngressEndpoints (dict "app.kubernetes.io/name" "envoy-gateway" "io.kubernetes.pod.namespace" "envoy-gateway-system") -}}
+{{- end -}}
+{{- $defaultDenyMatchLabel := dict "agent-zero.cnp/default-deny" "true" -}}
+{{- $effectiveIngressEndpoints := .Values.cnps.appTraffic.ingress.fromEndpoints | default (list) -}}
+{{- $effectiveIngressEntities := .Values.cnps.appTraffic.ingress.fromEntities | default (list) -}}
+{{- if and (empty $effectiveIngressEndpoints) (gt (len $defaultIngressEndpoints) 0) -}}
+{{- $effectiveIngressEndpoints = $defaultIngressEndpoints -}}
+{{- end -}}
+{{- if not .Values.cnps.appTraffic.ingress.allow -}}
+{{- $effectiveIngressEndpoints = list $defaultDenyMatchLabel -}}
+{{- $effectiveIngressEntities = list -}}
+{{- end -}}
+{{- $hasIngressEndpoints := gt (len $effectiveIngressEndpoints) 0 -}}
+{{- $hasIngressEntities := not (empty $effectiveIngressEntities) -}}
+{{- if and .Values.cnps.appTraffic.ingress.allow (not $hasIngressEndpoints) (not $hasIngressEntities) -}}
+{{- $effectiveIngressEndpoints = list $defaultDenyMatchLabel -}}
+{{- $hasIngressEndpoints = true -}}
+{{- end -}}
+{{- $includeIngressRule := or $hasIngressEndpoints $hasIngressEntities -}}
 metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
@@ -39,11 +61,11 @@ spec:
   endpointSelector:
     matchLabels:
       {{- include "agent-zero.selectorLabels" . | nindent 6 }}
-  {{- if .Values.cnps.appTraffic.ingress.allow }}
+  {{- if $includeIngressRule }}
   ingress:
     - {{- if $hasIngressEndpoints }}
       fromEndpoints:
-        {{- range .Values.cnps.appTraffic.ingress.fromEndpoints }}
+        {{- range $effectiveIngressEndpoints }}
         - matchLabels:
           {{- range $k, $v := . }}
             {{ $k }}: {{ $v | quote }}
@@ -52,18 +74,14 @@ spec:
       {{- end }}
       {{- if $hasIngressEntities }}
       fromEntities:
-        {{- toYaml .Values.cnps.appTraffic.ingress.fromEntities | nindent 8 }}
-      {{- end }}
-      {{- if and (not $hasIngressEndpoints) (not $hasIngressEntities) }}
-      fromEndpoints:
-        - matchLabels:
-            app.kubernetes.io/name: ingress-nginx
-            io.kubernetes.pod.namespace: ingress-nginx
+        {{- toYaml $effectiveIngressEntities | nindent 8 }}
       {{- end }}
       toPorts:
         - ports:
             - port: {{ printf "%v" .Values.service.targetPort | quote }}
               protocol: {{ .Values.service.targetProtocol | default "TCP" }}
+  {{- else }}
+  ingress: []
   {{- end }}
   {{- if .Values.cnps.appTraffic.egress.allow }}
   egress:
@@ -84,6 +102,15 @@ spec:
             - port: "443"
               protocol: TCP
           {{- end }}
+  {{- else }}
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            agent-zero.cnp/default-deny: "true"
+      toPorts:
+        - ports:
+            - port: "65535"
+              protocol: TCP
   {{- end }}
 {{- end -}}
 
