@@ -359,7 +359,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 -}}
 
 {{- $oidc := .Values.ui.headplane.config.oidc -}}
-{{- if or $oidc.enabled $oidc.issuer $oidc.clientId $oidc.clientSecret $oidc.clientSecretPath $oidc.headscaleApiKey $oidc.headscaleApiKeyPath -}}
+{{- if $oidc.enabled -}}
 {{- $oidcCfg := dict
   "enabled" $oidc.enabled
   "issuer" $oidc.issuer
