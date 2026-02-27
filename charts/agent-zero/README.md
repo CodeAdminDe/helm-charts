@@ -788,7 +788,7 @@ object
 <pre lang="json">
 {
   "pullPolicy": "IfNotPresent",
-  "repository": "frdel/agent-zero-run",
+  "repository": "agent0ai/agent-zero",
   "tag": ""
 }
 </pre>
@@ -818,7 +818,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"frdel/agent-zero-run"
+"agent0ai/agent-zero"
 </pre>
 </div>
 			</td>
