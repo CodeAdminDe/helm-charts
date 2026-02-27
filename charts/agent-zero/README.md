@@ -94,7 +94,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="additionalEnvSecrets"><a href="./values.yaml#L275">additionalEnvSecrets</a></td>
+			<td id="additionalEnvSecrets"><a href="./values.yaml#L377">additionalEnvSecrets</a></td>
 			<td>
 object
 </td>
@@ -108,7 +108,7 @@ object
 			<td>Additional env vars from explicit secret refs. @description Supports either map (ENV_NAME -> secretName) or list objects ({name, secretName, secretKey}).</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L373">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L475">affinity</a></td>
 			<td>
 object
 </td>
@@ -122,7 +122,7 @@ object
 			<td>Workload affinity.</td>
 		</tr>
 		<tr>
-			<td id="applyHealthChecks"><a href="./values.yaml#L290">applyHealthChecks</a></td>
+			<td id="applyHealthChecks"><a href="./values.yaml#L392">applyHealthChecks</a></td>
 			<td>
 bool
 </td>
@@ -136,7 +136,7 @@ true
 			<td>Enable health probes.</td>
 		</tr>
 		<tr>
-			<td id="args"><a href="./values.yaml#L281">args</a></td>
+			<td id="args"><a href="./values.yaml#L383">args</a></td>
 			<td>
 list
 </td>
@@ -150,7 +150,7 @@ list
 			<td>Extra args override.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L346">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L448">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -171,7 +171,7 @@ object
 			<td>HorizontalPodAutoscaler configuration.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--enableMemoryUtilization"><a href="./values.yaml#L356">autoscaling.enableMemoryUtilization</a></td>
+			<td id="autoscaling--enableMemoryUtilization"><a href="./values.yaml#L458">autoscaling.enableMemoryUtilization</a></td>
 			<td>
 bool
 </td>
@@ -185,7 +185,7 @@ false
 			<td>Enable memory utilization metric.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--enabled"><a href="./values.yaml#L348">autoscaling.enabled</a></td>
+			<td id="autoscaling--enabled"><a href="./values.yaml#L450">autoscaling.enabled</a></td>
 			<td>
 bool
 </td>
@@ -199,7 +199,7 @@ false
 			<td>Enable autoscaling.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--maxReplicas"><a href="./values.yaml#L352">autoscaling.maxReplicas</a></td>
+			<td id="autoscaling--maxReplicas"><a href="./values.yaml#L454">autoscaling.maxReplicas</a></td>
 			<td>
 int
 </td>
@@ -213,7 +213,7 @@ int
 			<td>Maximum replicas.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--minReplicas"><a href="./values.yaml#L350">autoscaling.minReplicas</a></td>
+			<td id="autoscaling--minReplicas"><a href="./values.yaml#L452">autoscaling.minReplicas</a></td>
 			<td>
 int
 </td>
@@ -227,7 +227,7 @@ int
 			<td>Minimum replicas.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--targetCPUUtilizationPercentage"><a href="./values.yaml#L354">autoscaling.targetCPUUtilizationPercentage</a></td>
+			<td id="autoscaling--targetCPUUtilizationPercentage"><a href="./values.yaml#L456">autoscaling.targetCPUUtilizationPercentage</a></td>
 			<td>
 int
 </td>
@@ -241,7 +241,7 @@ int
 			<td>Target CPU utilization percentage.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--targetMemoryUtilizationPercentage"><a href="./values.yaml#L358">autoscaling.targetMemoryUtilizationPercentage</a></td>
+			<td id="autoscaling--targetMemoryUtilizationPercentage"><a href="./values.yaml#L460">autoscaling.targetMemoryUtilizationPercentage</a></td>
 			<td>
 int
 </td>
@@ -255,7 +255,7 @@ int
 			<td>Target memory utilization percentage.</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L383">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L485">cnps</a></td>
 			<td>
 object
 </td>
@@ -293,7 +293,7 @@ object
 			<td>App-specific Cilium policy settings.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L395">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L497">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -307,7 +307,7 @@ true
 			<td>Allow egress traffic from app pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L397">cnps.appTraffic.egress.toEntities</a></td>
+			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L499">cnps.appTraffic.egress.toEntities</a></td>
 			<td>
 list
 </td>
@@ -323,7 +323,7 @@ list
 			<td>Optional destination entities.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L400">cnps.appTraffic.egress.toPorts</a></td>
+			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L502">cnps.appTraffic.egress.toPorts</a></td>
 			<td>
 list
 </td>
@@ -346,7 +346,7 @@ list
 			<td>Allowed egress ports.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toPorts[0]"><a href="./values.yaml#L402">cnps.appTraffic.egress.toPorts[0]</a></td>
+			<td id="cnps--appTraffic--egress--toPorts[0]"><a href="./values.yaml#L504">cnps.appTraffic.egress.toPorts[0]</a></td>
 			<td>
 object
 </td>
@@ -363,7 +363,7 @@ object
 			<td>DNS (53/UDP) is already covered by the namespace-wide libchart policy.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L387">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L489">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -377,7 +377,7 @@ true
 			<td>Allow ingress traffic to app pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L390">cnps.appTraffic.ingress.fromEndpoints</a></td>
+			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L492">cnps.appTraffic.ingress.fromEndpoints</a></td>
 			<td>
 list
 </td>
@@ -391,7 +391,7 @@ list
 			<td>Allowed ingress endpoint label sets. @description Leave empty to use conditional defaults from template logic: ingress-nginx labels when ingress.enabled=true, envoy-gateway labels when gatewayApi.enabled=true, or both when both are enabled.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L392">cnps.appTraffic.ingress.fromEntities</a></td>
+			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L494">cnps.appTraffic.ingress.fromEntities</a></td>
 			<td>
 list
 </td>
@@ -405,7 +405,7 @@ list
 			<td>Optional allowed ingress entities.</td>
 		</tr>
 		<tr>
-			<td id="command"><a href="./values.yaml#L278">command</a></td>
+			<td id="command"><a href="./values.yaml#L380">command</a></td>
 			<td>
 list
 </td>
@@ -419,7 +419,7 @@ list
 			<td>Extra command override.</td>
 		</tr>
 		<tr>
-			<td id="env"><a href="./values.yaml#L265">env</a></td>
+			<td id="env"><a href="./values.yaml#L367">env</a></td>
 			<td>
 object
 </td>
@@ -433,7 +433,7 @@ object
 			<td>Additional plain environment variables. @description Do not place secrets in this map.</td>
 		</tr>
 		<tr>
-			<td id="envFromConfigMaps"><a href="./values.yaml#L271">envFromConfigMaps</a></td>
+			<td id="envFromConfigMaps"><a href="./values.yaml#L373">envFromConfigMaps</a></td>
 			<td>
 list
 </td>
@@ -447,7 +447,7 @@ list
 			<td>Import all keys from listed configmaps as environment variables.</td>
 		</tr>
 		<tr>
-			<td id="envFromSecrets"><a href="./values.yaml#L268">envFromSecrets</a></td>
+			<td id="envFromSecrets"><a href="./values.yaml#L370">envFromSecrets</a></td>
 			<td>
 list
 </td>
@@ -461,7 +461,7 @@ list
 			<td>Import all keys from listed secrets as environment variables.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumeMounts"><a href="./values.yaml#L284">extraVolumeMounts</a></td>
+			<td id="extraVolumeMounts"><a href="./values.yaml#L386">extraVolumeMounts</a></td>
 			<td>
 list
 </td>
@@ -475,7 +475,7 @@ list
 			<td>Mount additional volumeMounts.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumes"><a href="./values.yaml#L287">extraVolumes</a></td>
+			<td id="extraVolumes"><a href="./values.yaml#L389">extraVolumes</a></td>
 			<td>
 list
 </td>
@@ -1055,7 +1055,7 @@ list
 			<td>TLS host/secret blocks.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L376">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L478">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -1072,7 +1072,7 @@ object
 			<td>Cilium policy library toggle.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--enabled"><a href="./values.yaml#L378">libchartCnps.enabled</a></td>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L480">libchartCnps.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1086,7 +1086,7 @@ true
 			<td>Enable libchart-cnps templates.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L380">libchartCnps.includeCnpgPolicies</a></td>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L482">libchartCnps.includeCnpgPolicies</a></td>
 			<td>
 bool
 </td>
@@ -1100,7 +1100,7 @@ false
 			<td>Include CNPG policy set from library.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L293">livenessProbe</a></td>
+			<td id="livenessProbe"><a href="./values.yaml#L395">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -1137,7 +1137,7 @@ string
 			<td>Override release-based naming.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L367">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L469">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -1305,7 +1305,7 @@ string
 			<td>PVC volumeName binding.</td>
 		</tr>
 		<tr>
-			<td id="podAnnotations"><a href="./values.yaml#L361">podAnnotations</a></td>
+			<td id="podAnnotations"><a href="./values.yaml#L463">podAnnotations</a></td>
 			<td>
 object
 </td>
@@ -1319,7 +1319,7 @@ object
 			<td>Pod annotations.</td>
 		</tr>
 		<tr>
-			<td id="podLabels"><a href="./values.yaml#L364">podLabels</a></td>
+			<td id="podLabels"><a href="./values.yaml#L466">podLabels</a></td>
 			<td>
 object
 </td>
@@ -1333,7 +1333,7 @@ object
 			<td>Pod labels.</td>
 		</tr>
 		<tr>
-			<td id="podSecurityContext"><a href="./values.yaml#L323">podSecurityContext</a></td>
+			<td id="podSecurityContext"><a href="./values.yaml#L425">podSecurityContext</a></td>
 			<td>
 object
 </td>
@@ -1407,7 +1407,7 @@ list
 			<td>Explicit RBAC rules required when rbac.create=true.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe"><a href="./values.yaml#L303">readinessProbe</a></td>
+			<td id="readinessProbe"><a href="./values.yaml#L405">readinessProbe</a></td>
 			<td>
 object
 </td>
@@ -1444,7 +1444,7 @@ int
 			<td>Number of application pod replicas.</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L337">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L439">resources</a></td>
 			<td>
 object
 </td>
@@ -1512,7 +1512,7 @@ string
 			<td>RuntimeClass for test pods.</td>
 		</tr>
 		<tr>
-			<td id="securityContext"><a href="./values.yaml#L327">securityContext</a></td>
+			<td id="securityContext"><a href="./values.yaml#L429">securityContext</a></td>
 			<td>
 object
 </td>
@@ -1732,7 +1732,7 @@ string
 			<td>ServiceAccount name override.</td>
 		</tr>
 		<tr>
-			<td id="startupProbe"><a href="./values.yaml#L313">startupProbe</a></td>
+			<td id="startupProbe"><a href="./values.yaml#L415">startupProbe</a></td>
 			<td>
 object
 </td>
@@ -1815,7 +1815,7 @@ string
 			<td>Optional size limit.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L370">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L472">tolerations</a></td>
 			<td>
 list
 </td>
@@ -1903,7 +1903,86 @@ object
       "port": 1080
     }
   },
-  "provider": "none"
+  "provider": "none",
+  "tailscale": {
+    "acceptDns": false,
+    "authKeySecret": {
+      "key": "",
+      "name": ""
+    },
+    "authOnce": true,
+    "cnps": {
+      "enableDirectUdpPort": false,
+      "enableStunPort": false
+    },
+    "extraArgs": "",
+    "hostAliases": [],
+    "hostname": "",
+    "httpProxy": {
+      "bindAddress": "127.0.0.1",
+      "enabled": true,
+      "port": 1056
+    },
+    "image": {
+      "pullPolicy": "IfNotPresent",
+      "repository": "ghcr.io/tailscale/tailscale",
+      "tag": "latest"
+    },
+    "kubeSecretStateName": "",
+    "persistence": {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "annotations": {},
+      "enabled": false,
+      "existingClaim": "",
+      "retain": false,
+      "size": "250Mi",
+      "storageClass": "",
+      "volumeName": ""
+    },
+    "proxyEnv": {
+      "enabled": true,
+      "httpProxyUrl": "",
+      "injectAllProxy": true,
+      "injectHttpProxy": true,
+      "injectHttpsProxy": true,
+      "noProxy": "127.0.0.1,localhost,.svc,.svc.cluster.local",
+      "socksProxyUrl": ""
+    },
+    "resources": {
+      "limits": {
+        "cpu": "250m",
+        "memory": "256Mi"
+      },
+      "requests": {
+        "cpu": "50m",
+        "memory": "128Mi"
+      }
+    },
+    "securityContext": {
+      "allowPrivilegeEscalation": false,
+      "capabilities": {
+        "drop": [
+          "ALL"
+        ]
+      },
+      "readOnlyRootFilesystem": true,
+      "runAsGroup": 1000,
+      "runAsNonRoot": true,
+      "runAsUser": 1000,
+      "seccompProfile": {
+        "type": "RuntimeDefault"
+      }
+    },
+    "socks5": {
+      "bindAddress": "127.0.0.1",
+      "enabled": true,
+      "port": 1055
+    },
+    "tailscaledExtraArgs": "",
+    "userspace": true
+  }
 }
 </pre>
 </div>
@@ -2325,7 +2404,564 @@ string
 </pre>
 </div>
 			</td>
-			<td>VPN sidecar provider. @description Supported: `none`, `netbird`. Keep `tailscale` reserved for upcoming implementation.</td>
+			<td>VPN sidecar provider. @description Supported: `none`, `netbird`, `tailscale`.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--acceptDns"><a href="./values.yaml#L282">vpn.tailscale.acceptDns</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Accept tailnet DNS settings on the sidecar.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--authKeySecret--key"><a href="./values.yaml#L274">vpn.tailscale.authKeySecret.key</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Secret key name containing Tailscale auth key.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--authKeySecret--name"><a href="./values.yaml#L272">vpn.tailscale.authKeySecret.name</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Secret name containing Tailscale auth key.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--authOnce"><a href="./values.yaml#L280">vpn.tailscale.authOnce</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Only authenticate when the node is not already logged in.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--cnps--enableDirectUdpPort"><a href="./values.yaml#L343">vpn.tailscale.cnps.enableDirectUdpPort</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Append Tailscale direct-connect egress port (UDP/41641) to app CNP egress rules.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--cnps--enableStunPort"><a href="./values.yaml#L341">vpn.tailscale.cnps.enableStunPort</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Append Tailscale STUN egress port (UDP/3478) to app CNP egress rules.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--extraArgs"><a href="./values.yaml#L284">vpn.tailscale.extraArgs</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Additional `tailscale up` args.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--hostAliases"><a href="./values.yaml#L320">vpn.tailscale.hostAliases</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Optional host aliases used by all pod containers.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--hostname"><a href="./values.yaml#L276">vpn.tailscale.hostname</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Optional explicit node hostname. Defaults to pod name when empty.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--httpProxy--bindAddress"><a href="./values.yaml#L301">vpn.tailscale.httpProxy.bindAddress</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"127.0.0.1"
+</pre>
+</div>
+			</td>
+			<td>HTTP proxy listener bind address.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--httpProxy--enabled"><a href="./values.yaml#L299">vpn.tailscale.httpProxy.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Enable outbound HTTP proxy listener for pod-local traffic.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--httpProxy--port"><a href="./values.yaml#L303">vpn.tailscale.httpProxy.port</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+1056
+</pre>
+</div>
+			</td>
+			<td>HTTP proxy listener port.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--image--pullPolicy"><a href="./values.yaml#L267">vpn.tailscale.image.pullPolicy</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"IfNotPresent"
+</pre>
+</div>
+			</td>
+			<td>Tailscale sidecar image pull policy.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--image--repository"><a href="./values.yaml#L265">vpn.tailscale.image.repository</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"ghcr.io/tailscale/tailscale"
+</pre>
+</div>
+			</td>
+			<td>Tailscale sidecar image repository.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--image--tag"><a href="./values.yaml#L269">vpn.tailscale.image.tag</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"latest"
+</pre>
+</div>
+			</td>
+			<td>Tailscale sidecar image tag.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--kubeSecretStateName"><a href="./values.yaml#L289">vpn.tailscale.kubeSecretStateName</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Optional Kubernetes Secret state backend name. @description Empty value disables kube-API state storage (`TS_KUBE_SECRET=""`) and uses filesystem state.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--persistence--accessModes"><a href="./values.yaml#L333">vpn.tailscale.persistence.accessModes</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[
+  "ReadWriteOnce"
+]
+</pre>
+</div>
+			</td>
+			<td>Tailscale state PVC access modes.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--persistence--annotations"><a href="./values.yaml#L336">vpn.tailscale.persistence.annotations</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>Tailscale state PVC annotations.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--persistence--enabled"><a href="./values.yaml#L323">vpn.tailscale.persistence.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Persist Tailscale state (`/var/lib/tailscale`).</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--persistence--existingClaim"><a href="./values.yaml#L327">vpn.tailscale.persistence.existingClaim</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Existing PVC to use for Tailscale state.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--persistence--retain"><a href="./values.yaml#L325">vpn.tailscale.persistence.retain</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Keep Tailscale state PVC when Helm release is deleted.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--persistence--size"><a href="./values.yaml#L329">vpn.tailscale.persistence.size</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"250Mi"
+</pre>
+</div>
+			</td>
+			<td>Tailscale state PVC storage size.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--persistence--storageClass"><a href="./values.yaml#L331">vpn.tailscale.persistence.storageClass</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Tailscale state PVC storageClass.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--persistence--volumeName"><a href="./values.yaml#L338">vpn.tailscale.persistence.volumeName</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Tailscale state PVC volumeName binding.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--proxyEnv--enabled"><a href="./values.yaml#L306">vpn.tailscale.proxyEnv.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Inject proxy environment variables into the Agent Zero container.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--proxyEnv--httpProxyUrl"><a href="./values.yaml#L310">vpn.tailscale.proxyEnv.httpProxyUrl</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Optional explicit HTTP proxy URL override.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--proxyEnv--injectAllProxy"><a href="./values.yaml#L312">vpn.tailscale.proxyEnv.injectAllProxy</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Inject `ALL_PROXY`.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--proxyEnv--injectHttpProxy"><a href="./values.yaml#L314">vpn.tailscale.proxyEnv.injectHttpProxy</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Inject `HTTP_PROXY`.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--proxyEnv--injectHttpsProxy"><a href="./values.yaml#L316">vpn.tailscale.proxyEnv.injectHttpsProxy</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Inject `HTTPS_PROXY`.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--proxyEnv--noProxy"><a href="./values.yaml#L318">vpn.tailscale.proxyEnv.noProxy</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"127.0.0.1,localhost,.svc,.svc.cluster.local"
+</pre>
+</div>
+			</td>
+			<td>`NO_PROXY` value injected when `enabled=true`.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--proxyEnv--socksProxyUrl"><a href="./values.yaml#L308">vpn.tailscale.proxyEnv.socksProxyUrl</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Optional explicit SOCKS proxy URL override.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--resources"><a href="./values.yaml#L345">vpn.tailscale.resources</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "limits": {
+    "cpu": "250m",
+    "memory": "256Mi"
+  },
+  "requests": {
+    "cpu": "50m",
+    "memory": "128Mi"
+  }
+}
+</pre>
+</div>
+			</td>
+			<td>Tailscale sidecar resource requests and limits.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--securityContext"><a href="./values.yaml#L353">vpn.tailscale.securityContext</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "allowPrivilegeEscalation": false,
+  "capabilities": {
+    "drop": [
+      "ALL"
+    ]
+  },
+  "readOnlyRootFilesystem": true,
+  "runAsGroup": 1000,
+  "runAsNonRoot": true,
+  "runAsUser": 1000,
+  "seccompProfile": {
+    "type": "RuntimeDefault"
+  }
+}
+</pre>
+</div>
+			</td>
+			<td>Tailscale sidecar security context.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--socks5--bindAddress"><a href="./values.yaml#L294">vpn.tailscale.socks5.bindAddress</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"127.0.0.1"
+</pre>
+</div>
+			</td>
+			<td>SOCKS5 listener bind address.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--socks5--enabled"><a href="./values.yaml#L292">vpn.tailscale.socks5.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Enable SOCKS5 proxy listener for pod-local traffic.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--socks5--port"><a href="./values.yaml#L296">vpn.tailscale.socks5.port</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+1055
+</pre>
+</div>
+			</td>
+			<td>SOCKS5 listener port.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--tailscaledExtraArgs"><a href="./values.yaml#L286">vpn.tailscale.tailscaledExtraArgs</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Additional `tailscaled` args.</td>
+		</tr>
+		<tr>
+			<td id="vpn--tailscale--userspace"><a href="./values.yaml#L278">vpn.tailscale.userspace</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Keep userspace mode enabled (restricted-env baseline).</td>
 		</tr>
 	</tbody>
 </table>
@@ -2387,6 +3023,15 @@ Autogenerated from chart metadata using [helm-docs](https://github.com/norwoodj/
 * `vpn.provider=netbird` deploys a rootless NetBird sidecar in netstack mode and can inject proxy env vars into Agent Zero.
 * NetBird setup key must come from an existing Kubernetes secret (`vpn.netbird.setupKeySecret.name/key`).
 * NetBird DNS is disabled in netstack mode (`NB_DISABLE_DNS=true`), so `.netbird.local` hostnames may require `vpn.netbird.hostAliases` or direct peer IP usage.
+
+### VPN sidecar (Tailscale userspace mode)
+
+* `vpn.provider=tailscale` deploys a userspace Tailscale sidecar with restricted security defaults (non-root, dropped capabilities, read-only root filesystem).
+* The sidecar supports both proxy types:
+  * SOCKS5 via `TS_SOCKS5_SERVER` (`vpn.tailscale.socks5.*`)
+  * HTTP proxy via `TS_OUTBOUND_HTTP_PROXY_LISTEN` (`vpn.tailscale.httpProxy.*`)
+* Proxy env injection into Agent Zero is available via `vpn.tailscale.proxyEnv.*` (`ALL_PROXY`, `HTTP_PROXY`, `HTTPS_PROXY`, `NO_PROXY`).
+* By default, Kubernetes Secret state backend is disabled (`TS_KUBE_SECRET=""`) to avoid extra RBAC requirements. Use filesystem state (`emptyDir`/PVC via `vpn.tailscale.persistence.*`) or explicitly configure `vpn.tailscale.kubeSecretStateName`.
 
 ### Secrets handling
 

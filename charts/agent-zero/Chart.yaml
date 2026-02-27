@@ -34,3 +34,5 @@ annotations:
       image: agent0ai/agent-zero:latest
     - name: netbird-sidecar
       image: netbirdio/netbird:rootless-latest
+    - name: tailscale-sidecar
+      image: ghcr.io/tailscale/tailscale:latest

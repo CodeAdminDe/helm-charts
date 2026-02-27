@@ -27,6 +27,15 @@
 * NetBird setup key must come from an existing Kubernetes secret (`vpn.netbird.setupKeySecret.name/key`).
 * NetBird DNS is disabled in netstack mode (`NB_DISABLE_DNS=true`), so `.netbird.local` hostnames may require `vpn.netbird.hostAliases` or direct peer IP usage.
 
+### VPN sidecar (Tailscale userspace mode)
+
+* `vpn.provider=tailscale` deploys a userspace Tailscale sidecar with restricted security defaults (non-root, dropped capabilities, read-only root filesystem).
+* The sidecar supports both proxy types:
+  * SOCKS5 via `TS_SOCKS5_SERVER` (`vpn.tailscale.socks5.*`)
+  * HTTP proxy via `TS_OUTBOUND_HTTP_PROXY_LISTEN` (`vpn.tailscale.httpProxy.*`)
+* Proxy env injection into Agent Zero is available via `vpn.tailscale.proxyEnv.*` (`ALL_PROXY`, `HTTP_PROXY`, `HTTPS_PROXY`, `NO_PROXY`).
+* By default, Kubernetes Secret state backend is disabled (`TS_KUBE_SECRET=""`) to avoid extra RBAC requirements. Use filesystem state (`emptyDir`/PVC via `vpn.tailscale.persistence.*`) or explicitly configure `vpn.tailscale.kubeSecretStateName`.
+
 ### Secrets handling
 
 * Put API keys and credentials into Kubernetes secrets and consume them using `envFromSecrets` or `additionalEnvSecrets`.

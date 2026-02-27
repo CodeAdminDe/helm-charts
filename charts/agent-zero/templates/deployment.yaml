@@ -34,6 +34,9 @@ spec:
       {{- if and (eq (include "agent-zero.vpn.netbird.enabled" .) "true") .Values.vpn.netbird.hostAliases }}
       hostAliases:
         {{- toYaml .Values.vpn.netbird.hostAliases | nindent 8 }}
+      {{- else if and (eq (include "agent-zero.vpn.tailscale.enabled" .) "true") .Values.vpn.tailscale.hostAliases }}
+      hostAliases:
+        {{- toYaml .Values.vpn.tailscale.hostAliases | nindent 8 }}
       {{- end }}
       {{- if .Values.runtimeClass.pods }}
       runtimeClassName: {{ .Values.runtimeClass.pods }}
@@ -87,6 +90,26 @@ spec:
             {{- if and .Values.vpn.netbird.proxyEnv.noProxy (not (hasKey .Values.env "NO_PROXY")) }}
             - name: NO_PROXY
               value: {{ .Values.vpn.netbird.proxyEnv.noProxy | quote }}
+            {{- end }}
+            {{- end }}
+            {{- if and (eq (include "agent-zero.vpn.tailscale.enabled" .) "true") .Values.vpn.tailscale.proxyEnv.enabled }}
+            {{- $tailscaleSocksProxyUrl := include "agent-zero.vpn.tailscale.socksProxyUrl" . }}
+            {{- $tailscaleHttpProxyUrl := include "agent-zero.vpn.tailscale.httpProxyUrl" . }}
+            {{- if and .Values.vpn.tailscale.proxyEnv.injectAllProxy (not (hasKey .Values.env "ALL_PROXY")) }}
+            - name: ALL_PROXY
+              value: {{ $tailscaleSocksProxyUrl | quote }}
+            {{- end }}
+            {{- if and .Values.vpn.tailscale.proxyEnv.injectHttpProxy (not (hasKey .Values.env "HTTP_PROXY")) }}
+            - name: HTTP_PROXY
+              value: {{ $tailscaleHttpProxyUrl | quote }}
+            {{- end }}
+            {{- if and .Values.vpn.tailscale.proxyEnv.injectHttpsProxy (not (hasKey .Values.env "HTTPS_PROXY")) }}
+            - name: HTTPS_PROXY
+              value: {{ $tailscaleHttpProxyUrl | quote }}
+            {{- end }}
+            {{- if and .Values.vpn.tailscale.proxyEnv.noProxy (not (hasKey .Values.env "NO_PROXY")) }}
+            - name: NO_PROXY
+              value: {{ .Values.vpn.tailscale.proxyEnv.noProxy | quote }}
             {{- end }}
             {{- end }}
             {{- if kindIs "map" .Values.additionalEnvSecrets }}
@@ -209,6 +232,76 @@ spec:
             - name: netbird-tmp
               mountPath: /tmp
         {{- end }}
+        {{- if eq (include "agent-zero.vpn.tailscale.enabled" .) "true" }}
+        - name: tailscale
+          image: {{ include "agent-zero.vpn.tailscale.image" . }}
+          imagePullPolicy: {{ .Values.vpn.tailscale.image.pullPolicy }}
+          securityContext:
+            {{- toYaml .Values.vpn.tailscale.securityContext | nindent 12 }}
+          env:
+            - name: TS_AUTHKEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.vpn.tailscale.authKeySecret.name }}
+                  key: {{ .Values.vpn.tailscale.authKeySecret.key | quote }}
+            {{- if .Values.vpn.tailscale.hostname }}
+            - name: TS_HOSTNAME
+              value: {{ .Values.vpn.tailscale.hostname | quote }}
+            {{- else }}
+            - name: TS_HOSTNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            {{- end }}
+            - name: TS_USERSPACE
+              value: {{ ternary "true" "false" .Values.vpn.tailscale.userspace | quote }}
+            - name: TS_AUTH_ONCE
+              value: {{ ternary "true" "false" .Values.vpn.tailscale.authOnce | quote }}
+            - name: TS_ACCEPT_DNS
+              value: {{ ternary "true" "false" .Values.vpn.tailscale.acceptDns | quote }}
+            {{- if .Values.vpn.tailscale.kubeSecretStateName }}
+            - name: TS_KUBE_SECRET
+              value: {{ .Values.vpn.tailscale.kubeSecretStateName | quote }}
+            {{- else }}
+            - name: TS_KUBE_SECRET
+              value: ""
+            {{- end }}
+            - name: TS_STATE_DIR
+              value: /var/lib/tailscale
+            - name: TS_SOCKET
+              value: /tmp/tailscaled.sock
+            {{- if .Values.vpn.tailscale.socks5.enabled }}
+            - name: TS_SOCKS5_SERVER
+              value: {{ printf "%s:%v" .Values.vpn.tailscale.socks5.bindAddress .Values.vpn.tailscale.socks5.port | quote }}
+            {{- end }}
+            {{- if .Values.vpn.tailscale.httpProxy.enabled }}
+            - name: TS_OUTBOUND_HTTP_PROXY_LISTEN
+              value: {{ printf "%s:%v" .Values.vpn.tailscale.httpProxy.bindAddress .Values.vpn.tailscale.httpProxy.port | quote }}
+            {{- end }}
+            {{- if .Values.vpn.tailscale.extraArgs }}
+            - name: TS_EXTRA_ARGS
+              value: {{ .Values.vpn.tailscale.extraArgs | quote }}
+            {{- end }}
+            {{- if .Values.vpn.tailscale.tailscaledExtraArgs }}
+            - name: TS_TAILSCALED_EXTRA_ARGS
+              value: {{ .Values.vpn.tailscale.tailscaledExtraArgs | quote }}
+            {{- end }}
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_UID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.uid
+          resources:
+            {{- toYaml .Values.vpn.tailscale.resources | nindent 12 }}
+          volumeMounts:
+            - name: tailscale-state
+              mountPath: /var/lib/tailscale
+            - name: tailscale-tmp
+              mountPath: /tmp
+        {{- end }}
       volumes:
         - name: data
           {{- if .Values.persistence.enabled }}
@@ -239,6 +332,17 @@ spec:
           emptyDir: {}
           {{- end }}
         - name: netbird-tmp
+          emptyDir: {}
+        {{- end }}
+        {{- if eq (include "agent-zero.vpn.tailscale.enabled" .) "true" }}
+        - name: tailscale-state
+          {{- if .Values.vpn.tailscale.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "agent-zero.vpn.tailscale.stateClaimName" . }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        - name: tailscale-tmp
           emptyDir: {}
         {{- end }}
         {{- with .Values.extraVolumes }}

@@ -43,10 +43,6 @@
 {{- fail "vpn.provider must be one of: none, netbird, tailscale." -}}
 {{- end -}}
 
-{{- if eq (default "none" .Values.vpn.provider) "tailscale" -}}
-{{- fail "vpn.provider=tailscale is reserved but not implemented yet in this chart. Use vpn.provider=none or vpn.provider=netbird." -}}
-{{- end -}}
-
 {{- if eq (default "none" .Values.vpn.provider) "netbird" -}}
   {{- if empty .Values.vpn.netbird.setupKeySecret.name -}}
     {{- fail "vpn.netbird.setupKeySecret.name must be set when vpn.provider=netbird." -}}
@@ -61,6 +57,38 @@
 
 {{- if and (eq (default "none" .Values.vpn.provider) "netbird") (not .Values.vpn.netbird.persistence.enabled) (not (empty .Values.vpn.netbird.persistence.existingClaim)) -}}
 {{- fail "vpn.netbird.persistence.existingClaim requires vpn.netbird.persistence.enabled=true." -}}
+{{- end -}}
+
+{{- if eq (default "none" .Values.vpn.provider) "tailscale" -}}
+  {{- if empty .Values.vpn.tailscale.authKeySecret.name -}}
+    {{- fail "vpn.tailscale.authKeySecret.name must be set when vpn.provider=tailscale." -}}
+  {{- end -}}
+  {{- if empty .Values.vpn.tailscale.authKeySecret.key -}}
+    {{- fail "vpn.tailscale.authKeySecret.key must be set when vpn.provider=tailscale." -}}
+  {{- end -}}
+  {{- if not .Values.vpn.tailscale.userspace -}}
+    {{- fail "vpn.tailscale.userspace must be true for this sidecar implementation (restricted-env baseline)." -}}
+  {{- end -}}
+  {{- if and .Values.vpn.tailscale.socks5.enabled (or (lt (int .Values.vpn.tailscale.socks5.port) 1) (gt (int .Values.vpn.tailscale.socks5.port) 65535)) -}}
+    {{- fail "vpn.tailscale.socks5.port must be in range 1..65535 when vpn.tailscale.socks5.enabled=true." -}}
+  {{- end -}}
+  {{- if and .Values.vpn.tailscale.httpProxy.enabled (or (lt (int .Values.vpn.tailscale.httpProxy.port) 1) (gt (int .Values.vpn.tailscale.httpProxy.port) 65535)) -}}
+    {{- fail "vpn.tailscale.httpProxy.port must be in range 1..65535 when vpn.tailscale.httpProxy.enabled=true." -}}
+  {{- end -}}
+  {{- if and .Values.vpn.tailscale.proxyEnv.enabled .Values.vpn.tailscale.proxyEnv.injectAllProxy (not .Values.vpn.tailscale.socks5.enabled) (empty .Values.vpn.tailscale.proxyEnv.socksProxyUrl) -}}
+    {{- fail "vpn.tailscale.proxyEnv.injectAllProxy=true requires vpn.tailscale.socks5.enabled=true or vpn.tailscale.proxyEnv.socksProxyUrl to be set." -}}
+  {{- end -}}
+  {{- if and .Values.vpn.tailscale.proxyEnv.enabled (or .Values.vpn.tailscale.proxyEnv.injectHttpProxy .Values.vpn.tailscale.proxyEnv.injectHttpsProxy) (not .Values.vpn.tailscale.httpProxy.enabled) (empty .Values.vpn.tailscale.proxyEnv.httpProxyUrl) -}}
+    {{- fail "vpn.tailscale.proxyEnv.injectHttpProxy/injectHttpsProxy requires vpn.tailscale.httpProxy.enabled=true or vpn.tailscale.proxyEnv.httpProxyUrl to be set." -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and (eq (default "none" .Values.vpn.provider) "tailscale") (not .Values.vpn.tailscale.persistence.enabled) (not (empty .Values.vpn.tailscale.persistence.existingClaim)) -}}
+{{- fail "vpn.tailscale.persistence.existingClaim requires vpn.tailscale.persistence.enabled=true." -}}
+{{- end -}}
+
+{{- if and (eq (default "none" .Values.vpn.provider) "tailscale") .Values.vpn.tailscale.persistence.enabled (not (empty .Values.vpn.tailscale.kubeSecretStateName)) -}}
+{{- fail "vpn.tailscale.persistence.enabled cannot be combined with vpn.tailscale.kubeSecretStateName; choose filesystem state PVC/emptyDir or Kubernetes Secret state backend." -}}
 {{- end -}}
 
 {{- range $idx, $port := .Values.service.extraPorts }}
