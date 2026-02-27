@@ -38,6 +38,34 @@ app.kubernetes.io/name: {{ include "headscale.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
+{{/* Expand headscale-ui component name. */}}
+{{- define "headscale.ui.name" -}}
+{{- printf "%s-ui" (include "headscale.name" .) | trunc 63 | trimSuffix "-" -}}
+{{- end }}
+
+{{/* Build headscale-ui fullname. */}}
+{{- define "headscale.ui.fullname" -}}
+{{- printf "%s-ui" (include "headscale.fullname" .) | trunc 63 | trimSuffix "-" -}}
+{{- end }}
+
+{{/* Selector labels for headscale-ui component. */}}
+{{- define "headscale.ui.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "headscale.ui.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/component: ui
+{{- end }}
+
+{{/* Common labels for headscale-ui component. */}}
+{{- define "headscale.ui.labels" -}}
+helm.sh/chart: {{ include "headscale.chart" . }}
+{{ include "headscale.ui.selectorLabels" . }}
+app.kubernetes.io/part-of: {{ include "headscale.name" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
 {{/* ServiceAccount name helper. */}}
 {{- define "headscale.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}

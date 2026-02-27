@@ -204,6 +204,107 @@ service:
     targetPort: 50443
     targetProtocol: TCP
 
+# -- Optional Headscale UI deployment (https://github.com/gurucomputing/headscale-ui).
+ui:
+  # -- Enable headscale-ui deployment.
+  enabled: false
+  # -- Number of headscale-ui pod replicas.
+  replicaCount: 1
+  # -- Headscale UI image configuration.
+  image:
+    # -- Image repository.
+    repository: ghcr.io/gurucomputing/headscale-ui
+    # -- Image pull policy.
+    pullPolicy: IfNotPresent
+    # -- Image tag.
+    tag: "2025.08.23"
+  # -- Additional environment variables for headscale-ui container.
+  env: {}
+  # -- Headscale UI resource requests/limits.
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  # -- Pod-level security context for headscale-ui pods.
+  podSecurityContext: {}
+  # -- Container-level security context for headscale-ui container.
+  securityContext:
+    capabilities:
+      drop:
+        - ALL
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  # -- Ephemeral directory sizing for headscale-ui runtime.
+  storage:
+    dataDirSizeLimit: 128Mi
+    tmpDirSizeLimit: 32Mi
+  # -- Liveness probe for headscale-ui.
+  livenessProbe:
+    tcpSocket:
+      port: http
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  # -- Readiness probe for headscale-ui.
+  readinessProbe:
+    tcpSocket:
+      port: http
+    initialDelaySeconds: 10
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
+  # -- Kubernetes Service configuration for headscale-ui.
+  service:
+    # -- Service type. This chart enforces ClusterIP.
+    type: ClusterIP
+    # -- Service annotations.
+    annotations: {}
+    # -- Service port.
+    port: 8080
+    # -- Container target port.
+    # @description If you override this, also set ui.env.HTTP_PORT to the same value.
+    targetPort: 8080
+    # -- Service protocol.
+    targetProtocol: TCP
+  # -- Ingress configuration for headscale-ui.
+  # @description Use the same host as headscale and path `/web` unless your reverse proxy injects CORS headers.
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    # -- Secure-by-default ingress annotation settings.
+    # @description Applied by default and merged with ui.ingress.annotations (custom annotations win on key conflicts).
+    secureDefaults:
+      enabled: true
+      proxyReadTimeoutSeconds: 3600
+      proxySendTimeoutSeconds: 3600
+      proxyBuffering: "off"
+      proxyRequestBuffering: "off"
+      proxyHttpVersion: "1.1"
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /web
+            pathType: Prefix
+    tls: []
+  # -- Pod annotations for headscale-ui pods.
+  podAnnotations: {}
+  # -- Pod labels for headscale-ui pods.
+  podLabels: {}
+  # -- Workload node selector for headscale-ui pods.
+  nodeSelector: {}
+  # -- Workload tolerations for headscale-ui pods.
+  tolerations: []
+  # -- Workload affinity for headscale-ui pods.
+  affinity: {}
+
 # -- Ingress configuration for headscale HTTP endpoint.
 ingress:
   enabled: false

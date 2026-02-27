@@ -2,8 +2,20 @@
 {{- fail "service.type must be ClusterIP in this repo style. Expose externally via ingress/reverse-proxy resources." -}}
 {{- end -}}
 
+{{- if and .Values.ui.enabled (ne .Values.ui.service.type "ClusterIP") -}}
+{{- fail "ui.service.type must be ClusterIP in this repo style. Expose headscale-ui externally via ingress/reverse-proxy resources." -}}
+{{- end -}}
+
 {{- if and .Values.ingress.enabled (not .Values.ingress.hosts) -}}
 {{- fail "ingress.enabled=true requires at least one ingress.hosts entry." -}}
+{{- end -}}
+
+{{- if and .Values.ui.ingress.enabled (not .Values.ui.enabled) -}}
+{{- fail "ui.ingress.enabled=true requires ui.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.ui.ingress.enabled (not .Values.ui.ingress.hosts) -}}
+{{- fail "ui.ingress.enabled=true requires at least one ui.ingress.hosts entry." -}}
 {{- end -}}
 
 {{- if and .Values.ingress.enabled .Values.ingress.secureDefaults.enabled .Values.ingress.secureDefaults.websocket.enabled (empty .Values.ingress.secureDefaults.websocket.annotationKey) -}}

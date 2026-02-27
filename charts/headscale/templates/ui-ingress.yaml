@@ -1,0 +1,55 @@
+{{- if and .Values.ui.enabled .Values.ui.ingress.enabled -}}
+{{- $annotations := dict -}}
+{{- if .Values.ui.ingress.secureDefaults.enabled -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-read-timeout" (.Values.ui.ingress.secureDefaults.proxyReadTimeoutSeconds | toString) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-send-timeout" (.Values.ui.ingress.secureDefaults.proxySendTimeoutSeconds | toString) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-buffering" (.Values.ui.ingress.secureDefaults.proxyBuffering | toString) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-request-buffering" (.Values.ui.ingress.secureDefaults.proxyRequestBuffering | toString) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-http-version" (.Values.ui.ingress.secureDefaults.proxyHttpVersion | toString) -}}
+{{- end -}}
+{{- range $key, $val := .Values.ui.ingress.annotations -}}
+{{- $_ := set $annotations $key ($val | toString) -}}
+{{- end -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "headscale.ui.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "headscale.ui.labels" . | nindent 4 }}
+  {{- if gt (len $annotations) 0 }}
+  annotations:
+    {{- toYaml $annotations | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.ui.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- if .Values.ui.ingress.tls }}
+  tls:
+    {{- range .Values.ui.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      {{- with .secretName }}
+      secretName: {{ . }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.ui.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ include "headscale.ui.fullname" $ }}
+                port:
+                  number: {{ $.Values.ui.service.port }}
+          {{- end }}
+    {{- end }}
+{{- end }}
