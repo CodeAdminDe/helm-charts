@@ -51,6 +51,16 @@ service:
   targetPort: 80
   # -- Service protocol.
   targetProtocol: TCP
+  # -- Additional service ports for optional upstream features (for example SSH or tool/tunnel ports).
+  extraPorts: []
+  # - name: ssh
+  #   port: 22
+  #   targetPort: 22
+  #   protocol: TCP
+  # - name: tool-9000
+  #   port: 9000
+  #   targetPort: 9000
+  #   protocol: TCP
 
 # -- Ingress configuration (ingress-nginx style).
 ingress:
@@ -116,7 +126,7 @@ runtimeClass:
   # -- RuntimeClass for test pods.
   tests: ""
 
-# -- Persistence settings for Agent Zero data directory (`/a0`).
+# -- Persistence settings for Agent Zero user data directory (`/a0/usr`).
 persistence:
   # -- Enable persistent storage.
   enabled: true
@@ -136,7 +146,8 @@ persistence:
   # -- PVC volumeName binding.
   volumeName: ""
   # -- Mount path inside container.
-  mountPath: /a0
+  # @description Upstream recommends persisting `/a0/usr` and avoiding full `/a0` mounts.
+  mountPath: /a0/usr
 
 # -- Optional tmp volume.
 tmpVolume:
@@ -159,14 +170,11 @@ hostDockerSocket:
   # -- HostPath type.
   type: Socket
   # -- Read-only mount for docker socket.
-  readOnly: true
+  readOnly: false
 
 # -- Additional plain environment variables.
 # @description Do not place secrets in this map.
-env:
-  PORT: "80"
-  WEB_UI_PORT: "80"
-  DEFAULT_LLM: "model=gpt-4.1-mini"
+env: {}
 
 # -- Import all keys from listed secrets as environment variables.
 envFromSecrets: []

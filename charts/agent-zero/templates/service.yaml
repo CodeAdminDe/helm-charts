@@ -19,5 +19,13 @@ spec:
       port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
       protocol: {{ .Values.service.targetProtocol }}
+    {{- with .Values.service.extraPorts }}
+    {{- range . }}
+    - name: {{ .name }}
+      port: {{ .port }}
+      targetPort: {{ .targetPort }}
+      protocol: {{ .protocol | default "TCP" }}
+    {{- end }}
+    {{- end }}
   selector:
     {{- include "agent-zero.selectorLabels" . | nindent 4 }}

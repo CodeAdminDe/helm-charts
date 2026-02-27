@@ -54,6 +54,13 @@ spec:
             - name: http
               containerPort: {{ .Values.service.targetPort }}
               protocol: {{ .Values.service.targetProtocol }}
+            {{- with .Values.service.extraPorts }}
+            {{- range . }}
+            - name: {{ .name }}
+              containerPort: {{ .targetPort }}
+              protocol: {{ .protocol | default "TCP" }}
+            {{- end }}
+            {{- end }}
           env:
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}

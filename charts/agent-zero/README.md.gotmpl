@@ -7,7 +7,7 @@
 
 * Upstream Agent Zero is primarily documented with Docker/Compose workflows; this chart maps that runtime model to Kubernetes with minimal behavioral changes.
 * The container is multi-process (supervisord + nginx + app services). Keep security hardening changes incremental and validate in your environment.
-* Persistent `/a0` storage is enabled by default because Agent Zero stores project state, memory, and runtime data there.
+* Persistent `/a0/usr` storage is enabled by default because upstream recommends persisting user data there while keeping bundled app files intact.
 * `hostDockerSocket.enabled` is intentionally disabled by default due hostPath risk.
 * External exposure defaults to `ClusterIP` + optional ingress/gateway resources. Ingress/Gateway controller deployments are intentionally out of scope.
 
@@ -15,6 +15,7 @@
 
 * For ingress-nginx clusters, use `ingress.enabled=true` and provide hosts/TLS as required.
 * For Gateway API (for example Envoy Gateway), use `gatewayApi.enabled=true` and set `gatewayApi.parentRefs` to your Gateway.
+* Optional upstream ports (for example SSH/auxiliary ports) can be exposed with `service.extraPorts`.
 * If you enable Cilium policies (`libchartCnps.enabled=true`), verify ingress source labels in `cnps.appTraffic.ingress.fromEndpoints` match your controller namespace labels.
 
 ### Secrets handling

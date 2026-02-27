@@ -34,3 +34,19 @@
 {{- if and (not .Values.persistence.enabled) (not (empty .Values.persistence.existingClaim)) -}}
 {{- fail "persistence.existingClaim requires persistence.enabled=true." -}}
 {{- end -}}
+
+{{- if eq .Values.persistence.mountPath "/a0" -}}
+{{- fail "persistence.mountPath=/a0 is not supported for upstream compatibility; use /a0/usr to avoid overriding bundled application files." -}}
+{{- end -}}
+
+{{- range $idx, $port := .Values.service.extraPorts }}
+  {{- if empty $port.name -}}
+    {{- fail (printf "service.extraPorts[%d].name must be set." $idx) -}}
+  {{- end -}}
+  {{- if not $port.port -}}
+    {{- fail (printf "service.extraPorts[%d].port must be set." $idx) -}}
+  {{- end -}}
+  {{- if not $port.targetPort -}}
+    {{- fail (printf "service.extraPorts[%d].targetPort must be set." $idx) -}}
+  {{- end -}}
+{{- end -}}
