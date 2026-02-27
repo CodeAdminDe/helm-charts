@@ -204,13 +204,15 @@ service:
     targetPort: 50443
     targetProtocol: TCP
 
-# -- Optional Headscale UI deployment (https://github.com/gurucomputing/headscale-ui).
+# -- Optional Headscale UI deployment.
 ui:
-  # -- Enable headscale-ui deployment.
+  # -- Enable UI deployment.
   enabled: false
-  # -- Number of headscale-ui pod replicas.
+  # -- UI provider (`headscale-ui` or `headplane`).
+  provider: headscale-ui
+  # -- Number of UI pod replicas.
   replicaCount: 1
-  # -- Headscale UI image configuration.
+  # -- `headscale-ui` image configuration.
   image:
     # -- Image repository.
     repository: ghcr.io/gurucomputing/headscale-ui
@@ -218,9 +220,63 @@ ui:
     pullPolicy: IfNotPresent
     # -- Image tag.
     tag: "2025.08.23"
-  # -- Additional environment variables for headscale-ui container.
+  # -- Additional environment variables for `headscale-ui` container.
   env: {}
-  # -- Headscale UI resource requests/limits.
+  # -- `headplane` specific settings (https://github.com/tale/headplane).
+  headplane:
+    image:
+      # -- Image repository.
+      repository: ghcr.io/tale/headplane
+      # -- Image pull policy.
+      pullPolicy: IfNotPresent
+      # -- Image tag.
+      tag: "0.6.1"
+    # -- Additional environment variables for `headplane` container.
+    env: {}
+    service:
+      # -- Service type. This chart enforces ClusterIP.
+      type: ClusterIP
+      # -- Service annotations.
+      annotations: {}
+      # -- Service port.
+      port: 3000
+      # -- Container target port.
+      targetPort: 3000
+      # -- Service protocol.
+      targetProtocol: TCP
+    # -- Headplane runtime config rendering settings.
+    config:
+      # -- Override internal URL for connecting to headscale API.
+      # @description Empty uses in-cluster service URL.
+      headscaleUrl: ""
+      # -- Bind host for headplane server.
+      serverHost: "0.0.0.0"
+      # -- Optional externally reachable URL for headplane.
+      publicUrl: ""
+      # -- Integration mode.
+      # @description This chart currently supports `simple` mode.
+      integrationMode: simple
+      # -- UI prefix path.
+      integrationPrefix: /admin
+      # -- Disable CSRF protections (not recommended).
+      disableCsrf: false
+      # -- Writable data path inside container.
+      dataPath: /var/lib/headplane
+      # -- Enable debug mode.
+      debug: false
+      # -- Additional raw config to merge into generated config.
+      extraConfig: {}
+    # -- Existing secret containing headplane session secrets.
+    # @description Must contain both cookie and csrf keys when provider=headplane.
+    secret:
+      name: ""
+      cookieKey: cookie-secret
+      csrfKey: csrf-secret
+    # -- Optional existing secret with a headscale API key for simple mode auth.
+    apiKeySecret:
+      name: ""
+      key: api-key
+  # -- UI resource requests/limits.
   resources:
     requests:
       cpu: 50m
@@ -228,9 +284,9 @@ ui:
     limits:
       cpu: 500m
       memory: 256Mi
-  # -- Pod-level security context for headscale-ui pods.
+  # -- Pod-level security context for UI pods.
   podSecurityContext: {}
-  # -- Container-level security context for headscale-ui container.
+  # -- Container-level security context for UI container.
   securityContext:
     capabilities:
       drop:
@@ -240,11 +296,11 @@ ui:
     runAsNonRoot: true
     seccompProfile:
       type: RuntimeDefault
-  # -- Ephemeral directory sizing for headscale-ui runtime.
+  # -- Ephemeral directory sizing for UI runtime.
   storage:
     dataDirSizeLimit: 128Mi
     tmpDirSizeLimit: 32Mi
-  # -- Liveness probe for headscale-ui.
+  # -- Liveness probe for UI container.
   livenessProbe:
     tcpSocket:
       port: http
@@ -252,7 +308,7 @@ ui:
     periodSeconds: 10
     timeoutSeconds: 5
     failureThreshold: 3
-  # -- Readiness probe for headscale-ui.
+  # -- Readiness probe for UI container.
   readinessProbe:
     tcpSocket:
       port: http
@@ -260,7 +316,7 @@ ui:
     periodSeconds: 5
     timeoutSeconds: 3
     failureThreshold: 3
-  # -- Kubernetes Service configuration for headscale-ui.
+  # -- Kubernetes Service configuration for `headscale-ui` provider.
   service:
     # -- Service type. This chart enforces ClusterIP.
     type: ClusterIP
@@ -273,8 +329,8 @@ ui:
     targetPort: 8080
     # -- Service protocol.
     targetProtocol: TCP
-  # -- Ingress configuration for headscale-ui.
-  # @description Use the same host as headscale and path `/web` unless your reverse proxy injects CORS headers.
+  # -- Ingress configuration for selected UI provider.
+  # @description Use path `/web` for `headscale-ui` and `/admin` for `headplane` unless your reverse proxy setup differs.
   ingress:
     enabled: false
     className: ""
@@ -294,15 +350,15 @@ ui:
           - path: /web
             pathType: Prefix
     tls: []
-  # -- Pod annotations for headscale-ui pods.
+  # -- Pod annotations for UI pods.
   podAnnotations: {}
-  # -- Pod labels for headscale-ui pods.
+  # -- Pod labels for UI pods.
   podLabels: {}
-  # -- Workload node selector for headscale-ui pods.
+  # -- Workload node selector for UI pods.
   nodeSelector: {}
-  # -- Workload tolerations for headscale-ui pods.
+  # -- Workload tolerations for UI pods.
   tolerations: []
-  # -- Workload affinity for headscale-ui pods.
+  # -- Workload affinity for UI pods.
   affinity: {}
 
 # -- Ingress configuration for headscale HTTP endpoint.

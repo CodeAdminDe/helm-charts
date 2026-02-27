@@ -1,4 +1,12 @@
 {{- if .Values.ui.enabled }}
+{{- $provider := include "headscale.ui.provider" . -}}
+{{- $isHeadplane := eq $provider "headplane" -}}
+{{- $image := .Values.ui.image -}}
+{{- $service := .Values.ui.service -}}
+{{- if $isHeadplane -}}
+{{- $image = .Values.ui.headplane.image -}}
+{{- $service = .Values.ui.headplane.service -}}
+{{- end -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -8,6 +16,9 @@ metadata:
     {{- include "headscale.ui.labels" . | nindent 4 }}
   annotations:
     checksum/values: {{ toJson .Values.ui | sha256sum }}
+    {{- if $isHeadplane }}
+    checksum/config: {{ include "headscale.ui.headplane.configChecksum" . }}
+    {{- end }}
 spec:
   replicas: {{ .Values.ui.replicaCount }}
   selector:
@@ -39,25 +50,54 @@ spec:
         {{- toYaml .Values.ui.podSecurityContext | nindent 8 }}
       {{- end }}
       containers:
-        - name: headscale-ui
-          image: "{{ .Values.ui.image.repository }}:{{ .Values.ui.image.tag }}"
-          imagePullPolicy: {{ .Values.ui.image.pullPolicy }}
+        - name: {{ ternary "headplane" "headscale-ui" $isHeadplane }}
+          image: "{{ $image.repository }}:{{ $image.tag }}"
+          imagePullPolicy: {{ $image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.ui.service.targetPort }}
-              protocol: {{ .Values.ui.service.targetProtocol }}
-          {{- if .Values.ui.env }}
+              containerPort: {{ $service.targetPort }}
+              protocol: {{ $service.targetProtocol }}
+          {{- if or .Values.ui.env $isHeadplane }}
           env:
             {{- range $key, $value := .Values.ui.env }}
             - name: {{ $key }}
               value: {{ $value | quote }}
             {{- end }}
+            {{- if $isHeadplane }}
+            - name: HEADPLANE_CONFIG_PATH
+              value: /etc/headplane/config.yaml
+            {{- range $key, $value := .Values.ui.headplane.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- if .Values.ui.headplane.apiKeySecret.name }}
+            - name: HEADPLANE_HEADSCALE__API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.ui.headplane.apiKeySecret.name }}
+                  key: {{ .Values.ui.headplane.apiKeySecret.key | quote }}
+            {{- end }}
+            {{- end }}
           {{- end }}
           volumeMounts:
+            {{- if $isHeadplane }}
+            - name: headplane-data
+              mountPath: /var/lib/headplane
+            - name: headplane-tmp
+              mountPath: /tmp
+            - name: headplane-config
+              mountPath: /etc/headplane/config.yaml
+              subPath: config.yaml
+              readOnly: true
+            - name: headplane-secrets
+              mountPath: /var/run/headplane-secrets
+              readOnly: true
+            {{- else }}
             - name: headscale-ui-data
               mountPath: /data
             - name: headscale-ui-tmp
               mountPath: /tmp
+            {{- end }}
           {{- if and .Values.applySecurity .Values.ui.securityContext }}
           securityContext:
             {{- toYaml .Values.ui.securityContext | nindent 12 }}
@@ -73,12 +113,27 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
       volumes:
+        {{- if $isHeadplane }}
+        - name: headplane-data
+          emptyDir:
+            sizeLimit: {{ .Values.ui.storage.dataDirSizeLimit }}
+        - name: headplane-tmp
+          emptyDir:
+            sizeLimit: {{ .Values.ui.storage.tmpDirSizeLimit }}
+        - name: headplane-config
+          configMap:
+            name: {{ include "headscale.ui.generatedConfigName" . }}
+        - name: headplane-secrets
+          secret:
+            secretName: {{ .Values.ui.headplane.secret.name }}
+        {{- else }}
         - name: headscale-ui-data
           emptyDir:
             sizeLimit: {{ .Values.ui.storage.dataDirSizeLimit }}
         - name: headscale-ui-tmp
           emptyDir:
             sizeLimit: {{ .Values.ui.storage.tmpDirSizeLimit }}
+        {{- end }}
       {{- with .Values.ui.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

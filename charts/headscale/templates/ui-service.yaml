@@ -1,4 +1,8 @@
 {{- if .Values.ui.enabled }}
+{{- $service := .Values.ui.service -}}
+{{- if eq (include "headscale.ui.provider" .) "headplane" -}}
+{{- $service = .Values.ui.headplane.service -}}
+{{- end -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -6,17 +10,17 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "headscale.ui.labels" . | nindent 4 }}
-  {{- with .Values.ui.service.annotations }}
+  {{- with $service.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  type: {{ .Values.ui.service.type }}
+  type: {{ $service.type }}
   ports:
     - name: http
-      port: {{ .Values.ui.service.port }}
-      targetPort: {{ .Values.ui.service.targetPort }}
-      protocol: {{ .Values.ui.service.targetProtocol }}
+      port: {{ $service.port }}
+      targetPort: {{ $service.targetPort }}
+      protocol: {{ $service.targetProtocol }}
   selector:
     {{- include "headscale.ui.selectorLabels" . | nindent 4 }}
 {{- end }}
