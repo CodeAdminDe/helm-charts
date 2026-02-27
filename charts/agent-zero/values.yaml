@@ -130,7 +130,7 @@ runtimeClass:
 persistence:
   # -- Enable persistent storage.
   enabled: true
-  # -- Keep PVC when Helm release is deleted.
+  # -- Keep PVC when Helm release is deleted (`true` keeps data on uninstall; scale up/down does not delete PVCs either way).
   retain: false
   # -- Existing PVC to use instead of creating one.
   existingClaim: ""

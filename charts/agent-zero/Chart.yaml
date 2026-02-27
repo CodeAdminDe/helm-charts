@@ -6,6 +6,7 @@ type: application
 version: 0.1.0
 # renovate: image=agent0ai/agent-zero
 appVersion: "v0.9.8.2"
+kubeVersion: ">=1.24.0"
 home: https://github.com/CodeAdminDe/helm-charts
 keywords:
   - agent-zero
@@ -27,7 +28,6 @@ dependencies:
     condition: libchartCnps.enabled
 annotations:
   category: AI
-  kubeVersion: ">=1.24.0"
   securityContext: "compatible"
   images: |
     - name: agent-zero
