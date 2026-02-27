@@ -121,7 +121,7 @@ persistence:
   # -- Enable persistent storage.
   enabled: true
   # -- Keep PVC when Helm release is deleted.
-  retain: true
+  retain: false
   # -- Existing PVC to use instead of creating one.
   existingClaim: ""
   # -- PVC storage size.
