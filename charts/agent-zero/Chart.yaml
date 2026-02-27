@@ -3,7 +3,7 @@ name: agent-zero
 description: A Helm chart for deploying Agent Zero (AI Operating System) on Kubernetes.
 type: application
 # renovate: bumpVersion
-version: 0.1.0
+version: 0.1.1
 # renovate: image=agent0ai/agent-zero
 appVersion: "v0.9.8.2"
 kubeVersion: ">=1.24.0"
