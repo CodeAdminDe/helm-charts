@@ -1,5 +1,46 @@
 apiVersion: v1
 entries:
+  agent-zero:
+  - annotations:
+      category: AI
+      images: |
+        - name: agent-zero
+          image: agent0ai/agent-zero:v0.9.8.2
+        - name: netbird-sidecar
+          image: netbirdio/netbird:0.66.0-rootless
+        - name: tailscale-sidecar
+          image: ghcr.io/tailscale/tailscale:v1.94.2
+      securityContext: compatible
+    apiVersion: v2
+    appVersion: v0.9.8.2
+    created: "2026-02-27T15:39:42.883221554Z"
+    dependencies:
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for deploying Agent Zero (AI Operating System) on Kubernetes.
+    digest: e96b8f5d6e957f987b4c79f17f03f52678147a971e1996fe412cf429870900a6
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - agent-zero
+    - ai
+    - llm
+    - mcp
+    - automation
+    - cloud-native
+    - helm
+    kubeVersion: '>=1.24.0'
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: agent-zero
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/agent-zero-0.1.0/agent-zero-0.1.0.tgz
+    version: 0.1.0
   bind9-hidden-primary:
   - apiVersion: v2
     appVersion: "9.20"
@@ -13306,4 +13347,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-27T13:24:58.243705072Z"
+generated: "2026-02-27T15:39:43.032516436Z"
