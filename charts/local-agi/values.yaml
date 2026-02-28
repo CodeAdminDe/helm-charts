@@ -300,7 +300,7 @@ livenessProbe:
 # -- Readiness probe.
 readinessProbe:
   httpGet:
-    path: /readyz
+    path: /app
     port: http
   initialDelaySeconds: 10
   periodSeconds: 10
@@ -310,7 +310,7 @@ readinessProbe:
 # -- Startup probe.
 startupProbe:
   httpGet:
-    path: /readyz
+    path: /app
     port: http
   initialDelaySeconds: 20
   periodSeconds: 10
