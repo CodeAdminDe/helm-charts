@@ -290,7 +290,7 @@ applyHealthChecks: true
 # -- Liveness probe.
 livenessProbe:
   httpGet:
-    path: /readyz
+    path: /app
     port: http
   initialDelaySeconds: 30
   periodSeconds: 10
