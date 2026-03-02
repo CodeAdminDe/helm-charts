@@ -1423,6 +1423,42 @@ entries:
       securityContext: compatible
     apiVersion: v2
     appVersion: v2.8.1
+    created: "2026-03-02T16:33:38.60072914Z"
+    dependencies:
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for deploying LocalAGI on Kubernetes.
+    digest: 7b48e48dbbb545dee1c2e29eed644f1abd5751b1390813515543c479cd234454
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - local-agi
+    - localai
+    - ai
+    - agent
+    - llm
+    - cloud-native
+    - helm
+    kubeVersion: '>=1.24.0'
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: local-agi
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/local-agi-0.1.2/local-agi-0.1.2.tgz
+    version: 0.1.2
+  - annotations:
+      category: AI
+      images: |
+        - name: local-agi
+          image: quay.io/mudler/localagi:v2.8.1
+      securityContext: compatible
+    apiVersion: v2
+    appVersion: v2.8.1
     created: "2026-02-28T00:21:09.296557181Z"
     dependencies:
     - alias: libchart-cnps
@@ -13564,4 +13600,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-02T16:25:33.086339836Z"
+generated: "2026-03-02T16:33:38.601715741Z"
