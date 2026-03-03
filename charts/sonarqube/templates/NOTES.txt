@@ -1,0 +1,20 @@
+1. Access SonarQube inside the cluster:
+   kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "sonarqube.fullname" . }} {{ .Values.service.port }}:{{ .Values.service.port }}
+
+2. If ingress is enabled, use one of the configured hosts:
+   {{- if .Values.ingress.enabled }}
+   {{- range .Values.ingress.hosts }}
+   - {{ .host }}
+   {{- end }}
+   {{- else }}
+   ingress disabled
+   {{- end }}
+
+3. If Gateway API is enabled, use one of the configured hostnames:
+   {{- if .Values.gatewayApi.enabled }}
+   {{- range .Values.gatewayApi.hostnames }}
+   - {{ . }}
+   {{- end }}
+   {{- else }}
+   gatewayApi disabled
+   {{- end }}

@@ -1,0 +1,266 @@
+{{- $cnpgMode := .Values.database.useCnpgCluster.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sonarqube.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "sonarqube.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "sonarqube.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "sonarqube.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/values: {{ toJson .Values | sha256sum }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "sonarqube.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      {{- if and .Values.applySecurity .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
+      {{- $pluginInstallerEnabled := and .Values.initContainers.plugins.enabled (gt (len .Values.initContainers.plugins.install) 0) -}}
+      {{- if or .Values.initContainers.sysctl.enabled $pluginInstallerEnabled .Values.extraInitContainers }}
+      initContainers:
+        {{- if .Values.initContainers.sysctl.enabled }}
+        - name: init-sysctl
+          image: "{{ .Values.initContainers.sysctl.image.repository }}:{{ .Values.initContainers.sysctl.image.tag }}"
+          imagePullPolicy: {{ .Values.initContainers.sysctl.image.pullPolicy }}
+          command: ["sh", "-ec"]
+          args:
+            - |
+              set -euo pipefail
+              sysctl -w vm.max_map_count={{ .Values.initContainers.sysctl.vmMaxMapCount }}
+              sysctl -w fs.file-max={{ .Values.initContainers.sysctl.fsFileMax }}
+          securityContext:
+            {{- toYaml .Values.initContainers.sysctl.securityContext | nindent 12 }}
+          resources:
+            {{- toYaml (.Values.initContainers.sysctl.resources | default dict) | nindent 12 }}
+        {{- end }}
+        {{- if $pluginInstallerEnabled }}
+        - name: install-plugins
+          image: "{{ .Values.initContainers.plugins.image.repository }}:{{ .Values.initContainers.plugins.image.tag }}"
+          imagePullPolicy: {{ .Values.initContainers.plugins.image.pullPolicy }}
+          command: ["sh", "-ec"]
+          args:
+            - |
+              set -euo pipefail
+              mkdir -p /opt/sonarqube/extensions/plugins /tmp/plugins
+              {{- range $url := .Values.initContainers.plugins.install }}
+              curl --fail --show-error --location {{- if $.Values.initContainers.plugins.noCheckCertificate }} --insecure{{- end }} \
+                --output "/tmp/plugins/$(basename '{{ $url }}')" \
+                "{{ $url }}"
+              mv "/tmp/plugins/$(basename '{{ $url }}')" /opt/sonarqube/extensions/plugins/
+              {{- end }}
+          {{- with .Values.initContainers.plugins.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          securityContext:
+            {{- toYaml .Values.initContainers.plugins.securityContext | nindent 12 }}
+          volumeMounts:
+            - name: extensions
+              mountPath: /opt/sonarqube/extensions
+            - name: tmp
+              mountPath: /tmp
+        {{- end }}
+        {{- with .Values.extraInitContainers }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- end }}
+      containers:
+        - name: {{ include "sonarqube.name" . }}
+          image: {{ include "sonarqube.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: {{ .Values.service.targetProtocol }}
+          env:
+            - name: SONAR_WEB_CONTEXT
+              value: {{ .Values.sonarqube.webContext | quote }}
+            - name: SONAR_JDBC_URL
+              value: {{ include "sonarqube.jdbcUrl" . | quote }}
+            {{- if $cnpgMode }}
+            - name: SONAR_JDBC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "sonarqube.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.username | quote }}
+            {{- else }}
+            - name: SONAR_JDBC_USERNAME
+              value: {{ .Values.database.postgres.user | quote }}
+            {{- end }}
+            - name: SONAR_JDBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  {{- if $cnpgMode }}
+                  name: {{ include "sonarqube.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.password | quote }}
+                  {{- else }}
+                  name: {{ .Values.database.postgres.passwordSecret.name }}
+                  key: {{ .Values.database.postgres.passwordSecret.key | quote }}
+                  {{- end }}
+            {{- with .Values.sonarqube.monitoringPasscodeSecret.name }}
+            - name: SONAR_WEB_SYSTEMPASSCODE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ . }}
+                  key: {{ $.Values.sonarqube.monitoringPasscodeSecret.key | quote }}
+            {{- end }}
+            {{- with .Values.sonarqube.javaOpts.web }}
+            - name: SONAR_WEB_JAVAOPTS
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.sonarqube.javaOpts.ce }}
+            - name: SONAR_CE_JAVAOPTS
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.sonarqube.javaOpts.search }}
+            - name: SONAR_SEARCH_JAVAOPTS
+              value: {{ . | quote }}
+            {{- end }}
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- if kindIs "map" .Values.additionalEnvSecrets }}
+            {{- range $envName, $secretConfig := .Values.additionalEnvSecrets }}
+            {{- if kindIs "string" $secretConfig }}
+            - name: {{ $envName }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretConfig }}
+                  key: {{ $envName | quote }}
+            {{- else if kindIs "map" $secretConfig }}
+            {{- $secretName := (default "" (index $secretConfig "secretName")) }}
+            {{- if $secretName }}
+            - name: {{ default $envName (index $secretConfig "name") }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretName }}
+                  key: {{ default $envName (index $secretConfig "secretKey") | quote }}
+            {{- end }}
+            {{- end }}
+            {{- end }}
+            {{- else if kindIs "slice" .Values.additionalEnvSecrets }}
+            {{- range $secretConfig := .Values.additionalEnvSecrets }}
+            {{- $secretName := (default "" (index $secretConfig "secretName")) }}
+            {{- $envName := (default "" (index $secretConfig "name")) }}
+            {{- if and $secretName $envName }}
+            - name: {{ $envName }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretName }}
+                  key: {{ default $envName (index $secretConfig "secretKey") | quote }}
+            {{- end }}
+            {{- end }}
+            {{- end }}
+          {{- if or .Values.envFromSecrets .Values.envFromConfigMaps }}
+          envFrom:
+            {{- range .Values.envFromSecrets }}
+            - secretRef:
+                name: {{ . }}
+            {{- end }}
+            {{- range .Values.envFromConfigMaps }}
+            - configMapRef:
+                name: {{ . }}
+            {{- end }}
+          {{- end }}
+          {{- if and .Values.applySecurity .Values.securityContext }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          {{- if .Values.applyHealthChecks }}
+          startupProbe:
+            {{- toYaml .Values.startupProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /opt/sonarqube/data
+            - name: extensions
+              mountPath: /opt/sonarqube/extensions
+            - name: logs
+              mountPath: /opt/sonarqube/logs
+            - name: temp
+              mountPath: /opt/sonarqube/temp
+            - name: tmp
+              mountPath: /tmp
+            {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+      volumes:
+        - name: data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "sonarqube.persistenceClaimName" . }}
+          {{- else }}
+          emptyDir:
+            {{- with .Values.persistence.emptyDirSizeLimit }}
+            sizeLimit: {{ . }}
+            {{- end }}
+          {{- end }}
+        - name: extensions
+          {{- if .Values.extensionsPersistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "sonarqube.extensionsPersistenceClaimName" . }}
+          {{- else }}
+          emptyDir:
+            {{- with .Values.extensionsPersistence.emptyDirSizeLimit }}
+            sizeLimit: {{ . }}
+            {{- end }}
+          {{- end }}
+        - name: logs
+          emptyDir:
+            {{- with .Values.logsVolume.sizeLimit }}
+            sizeLimit: {{ . }}
+            {{- end }}
+        - name: temp
+          emptyDir:
+            {{- with .Values.sonarTempVolume.sizeLimit }}
+            sizeLimit: {{ . }}
+            {{- end }}
+        - name: tmp
+          emptyDir:
+            {{- with .Values.tmpVolume.sizeLimit }}
+            sizeLimit: {{ . }}
+            {{- end }}
+        {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

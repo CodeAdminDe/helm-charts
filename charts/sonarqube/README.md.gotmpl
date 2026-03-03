@@ -1,0 +1,43 @@
+{{- define "extra.specifics.fromchart.sonarqube.opinionated" -}}
+<hr /><hr />
+
+## Appendix - Chart-specifics
+
+### Upstream behavior and chart scope
+
+* This chart intentionally deploys SonarQube Server with a single `Deployment` replica.
+* External infrastructure components (Ingress Controller / Gateway Controller / PostgreSQL operator installation) are out of scope.
+* The runtime model follows SonarSource Kubernetes guidance: external PostgreSQL, persistent SonarQube data, and explicit security context choices.
+
+### Database model
+
+* SonarQube requires PostgreSQL. This chart supports:
+  * direct PostgreSQL configuration (`database.postgres.*`)
+  * CNPG app-secret integration (`database.useCnpgCluster.*`)
+* For CNPG mode, JDBC URL host/port/sslmode are resolved from chart values while username/password come from the CNPG app secret.
+
+### Security defaults
+
+* Service exposure defaults to `ClusterIP`; use ingress or Gateway API resources for north-south traffic.
+* Container hardening defaults are enabled (`runAsNonRoot`, dropped capabilities, no privilege escalation, `RuntimeDefault` seccomp).
+* `readOnlyRootFilesystem=true` is paired with explicit writable volumes (`/opt/sonarqube/{data,extensions,logs,temp}` and `/tmp`).
+* Privileged sysctl init behavior is available but disabled by default (`initContainers.sysctl.enabled=false`).
+
+### Persistence behavior
+
+* Data PVC (`/opt/sonarqube/data`) is enabled by default.
+* Extensions persistence is optional (`extensionsPersistence.enabled=false` by default).
+* PVC lifecycle defaults to Kubernetes behavior: scaling keeps PVCs, uninstall removes them unless `*.retain=true` is set.
+
+### Cilium network policies
+
+* `libchartCnps` integration is enabled by default.
+* Ingress source defaults are conditional:
+  * ingress-nginx labels are added when `ingress.enabled=true`
+  * envoy-gateway labels are added when `gatewayApi.enabled=true`
+  * both sets are added when both are enabled
+
+{{- end -}}
+
+{{ template "extra.templates.readme.complexvalues" . }}
+{{ template "extra.specifics.fromchart.sonarqube.opinionated" . }}
