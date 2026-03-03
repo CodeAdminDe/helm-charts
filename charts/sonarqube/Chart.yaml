@@ -1,0 +1,32 @@
+apiVersion: v2
+name: sonarqube
+description: A Helm chart for deploying SonarQube Server on Kubernetes.
+type: application
+# renovate: bumpVersion
+version: 0.1.0
+# renovate: image=sonarqube
+appVersion: "26.2.0.119303-community"
+kubeVersion: ">=1.24.0"
+home: https://github.com/CodeAdminDe/helm-charts
+keywords:
+  - sonarqube
+  - code-quality
+  - devsecops
+  - static-analysis
+  - helm
+maintainers:
+  - name: Frederic Roggon
+    email: frederic.roggon@codeadmin.de
+    url: https://github.com/CodeAdminDe
+dependencies:
+  - name: libchart-cnps
+    version: 0.2.1
+    repository: https://codeadminde.github.io/helm-charts
+    alias: libchart-cnps
+    condition: libchartCnps.enabled
+annotations:
+  category: DevSecOps
+  securityContext: "compatible"
+  images: |
+    - name: sonarqube
+      image: sonarqube:26.2.0.119303-community

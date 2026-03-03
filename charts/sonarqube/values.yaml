@@ -1,0 +1,444 @@
+# -- Number of SonarQube pod replicas.
+# @description SonarQube Server is designed for a single application pod in this chart.
+replicaCount: 1
+
+# -- Override release-based naming.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- Container image configuration.
+image:
+  # -- Image repository.
+  repository: sonarqube
+  # -- Image pull policy.
+  pullPolicy: IfNotPresent
+  # -- Image tag override (defaults to .Chart.AppVersion when empty).
+  tag: ""
+
+# -- Image pull secrets (for private registries).
+imagePullSecrets: []
+
+# -- SonarQube runtime configuration.
+sonarqube:
+  # -- SonarQube edition hint for operators.
+  # @description This chart does not auto-select image tags based on edition; set `image.tag` explicitly for non-community editions.
+  edition: community
+
+  # -- Web context path exposed by SonarQube.
+  # @description Keep `/` unless you intentionally serve SonarQube below a path prefix.
+  webContext: "/"
+
+  # -- Optional secret containing the monitoring passcode (`SONAR_WEB_SYSTEMPASSCODE`).
+  # @description Strongly recommended when exposing monitoring endpoints.
+  monitoringPasscodeSecret:
+    name: ""
+    key: passcode
+
+  javaOpts:
+    # -- Optional `SONAR_WEB_JAVAOPTS` value.
+    web: ""
+    # -- Optional `SONAR_CE_JAVAOPTS` value.
+    ce: ""
+    # -- Optional `SONAR_SEARCH_JAVAOPTS` value.
+    search: ""
+
+# -- Kubernetes Service configuration.
+service:
+  # -- Service type. This chart enforces ClusterIP.
+  type: ClusterIP
+  # -- Service annotations.
+  annotations: {}
+  # -- Service labels.
+  labels: {}
+  # -- Service port.
+  port: 9000
+  # -- Container target port.
+  targetPort: 9000
+  # -- Service protocol.
+  targetProtocol: TCP
+
+# -- Ingress configuration (ingress-nginx style).
+ingress:
+  # -- Enable ingress resource creation.
+  enabled: false
+  # -- Ingress class name.
+  className: ""
+  # -- Additional ingress annotations.
+  annotations: {}
+  # -- Secure defaults for long-lived analysis and UI/API requests.
+  secureDefaults:
+    # -- Enable secure default ingress annotations.
+    enabled: true
+    # -- Proxy read timeout in seconds.
+    proxyReadTimeoutSeconds: 3600
+    # -- Proxy send timeout in seconds.
+    proxySendTimeoutSeconds: 3600
+    # -- Disable proxy buffering.
+    proxyBuffering: "off"
+    # -- Disable request buffering.
+    proxyRequestBuffering: "off"
+    # -- HTTP version for proxy upstream.
+    proxyHttpVersion: "1.1"
+    # -- Maximum accepted request body size.
+    proxyBodySize: "64m"
+  # -- Host/path rules.
+  hosts:
+    - host: sonarqube.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  # -- TLS host/secret blocks.
+  tls: []
+
+# -- Gateway API HTTPRoute configuration (for example Envoy Gateway).
+gatewayApi:
+  # -- Enable HTTPRoute resource creation.
+  enabled: false
+  # -- HTTPRoute annotations.
+  annotations: {}
+  # -- HTTPRoute labels.
+  labels: {}
+  # -- ParentRefs for HTTPRoute.
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
+      sectionName: http
+  # -- Hostnames served by this route.
+  hostnames:
+    - sonarqube.example.com
+  # -- Match rules for the HTTPRoute rule.
+  matches:
+    - path:
+        type: PathPrefix
+        value: "/"
+  # -- Optional filters for the HTTPRoute rule.
+  filters: []
+  # -- Optional backend references. Defaults to this chart service when empty.
+  backendRefs: []
+
+# -- Service account configuration.
+serviceAccount:
+  # -- Create a service account.
+  create: true
+  # -- ServiceAccount annotations.
+  annotations: {}
+  # -- ServiceAccount name override.
+  name: ""
+  # -- Automount SA token.
+  automountServiceAccountToken: false
+
+# -- Optional namespace-scoped RBAC configuration.
+rbac:
+  # -- Create Role + RoleBinding.
+  create: false
+  # -- Namespace override for RBAC resources.
+  namespace: ""
+  # -- Explicit RBAC rules required when rbac.create=true.
+  rules: []
+
+# -- RuntimeClass names.
+runtimeClass:
+  # -- RuntimeClass for deployment pods.
+  pods: ""
+  # -- RuntimeClass for test pods.
+  tests: ""
+
+# -- Persistent storage for SonarQube data directory.
+persistence:
+  # -- Enable persistent storage for `/opt/sonarqube/data`.
+  enabled: true
+  # -- Keep PVC when Helm release is deleted (`true` keeps data on uninstall; scale up/down does not delete PVCs either way).
+  retain: false
+  # -- Existing PVC to use instead of creating one.
+  existingClaim: ""
+  # -- PVC storage size.
+  size: 20Gi
+  # -- PVC storageClass.
+  storageClass: ""
+  # -- PVC access modes.
+  accessModes:
+    - ReadWriteOnce
+  # -- PVC annotations.
+  annotations: {}
+  # -- PVC volumeName binding.
+  volumeName: ""
+  # -- emptyDir size limit when persistence is disabled.
+  emptyDirSizeLimit: 20Gi
+
+# -- Optional persistent storage for SonarQube extensions directory.
+extensionsPersistence:
+  # -- Enable dedicated persistent storage for `/opt/sonarqube/extensions`.
+  enabled: false
+  # -- Keep extensions PVC when Helm release is deleted.
+  retain: false
+  # -- Existing PVC to use for extensions.
+  existingClaim: ""
+  # -- Extensions PVC storage size.
+  size: 5Gi
+  # -- Extensions PVC storageClass.
+  storageClass: ""
+  # -- Extensions PVC access modes.
+  accessModes:
+    - ReadWriteOnce
+  # -- Extensions PVC annotations.
+  annotations: {}
+  # -- Extensions PVC volumeName binding.
+  volumeName: ""
+  # -- emptyDir size limit when extensions persistence is disabled.
+  emptyDirSizeLimit: 2Gi
+
+# -- Writable temp volume mounted at `/tmp`.
+tmpVolume:
+  # -- Optional size limit.
+  sizeLimit: 2Gi
+
+# -- Writable logs volume mounted at `/opt/sonarqube/logs`.
+logsVolume:
+  # -- Optional size limit.
+  sizeLimit: 2Gi
+
+# -- Writable temp volume mounted at `/opt/sonarqube/temp`.
+sonarTempVolume:
+  # -- Optional size limit.
+  sizeLimit: 2Gi
+
+# -- Apply default pod/container security settings.
+applySecurity: true
+
+# -- Pod-level security context for workload pods.
+podSecurityContext:
+  fsGroup: 1000
+
+# -- Container-level security context for workload containers.
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- Init container settings.
+initContainers:
+  sysctl:
+    # -- Enable privileged sysctl init container for Elasticsearch kernel prerequisites.
+    # @description Keep disabled unless your nodes are not pre-configured with required kernel values.
+    enabled: false
+    image:
+      repository: busybox
+      tag: "1.37"
+      pullPolicy: IfNotPresent
+    vmMaxMapCount: 524288
+    fsFileMax: 131072
+    securityContext:
+      privileged: true
+      runAsUser: 0
+      runAsGroup: 0
+      runAsNonRoot: false
+      allowPrivilegeEscalation: true
+      readOnlyRootFilesystem: false
+      capabilities:
+        add:
+          - SYS_RESOURCE
+      seccompProfile:
+        type: Unconfined
+
+  plugins:
+    # -- Enable plugin download init container.
+    enabled: false
+    image:
+      repository: curlimages/curl
+      tag: "8.13.0"
+      pullPolicy: IfNotPresent
+    # -- Skip TLS certificate verification during plugin download.
+    noCheckCertificate: false
+    # -- Plugin URLs downloaded into `/opt/sonarqube/extensions/plugins` before startup.
+    install: []
+    # -- Plugin installer resource requests/limits.
+    resources: {}
+    securityContext:
+      capabilities:
+        drop:
+          - ALL
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
+      seccompProfile:
+        type: RuntimeDefault
+
+# -- Additional custom init containers appended after built-in init containers.
+extraInitContainers: []
+
+# -- PostgreSQL connection settings.
+database:
+  # -- Optional full JDBC URL override.
+  # @description When empty, the chart builds `jdbc:postgresql://host:port/db?sslmode=...` from values.
+  jdbcUrl: ""
+
+  postgres:
+    # -- PostgreSQL host (used when CNPG mode is disabled and jdbcUrl is empty).
+    host: postgresql.default.svc.cluster.local
+    # -- PostgreSQL port.
+    port: 5432
+    # -- PostgreSQL database name.
+    name: sonarqube
+    # -- PostgreSQL username (used when CNPG mode is disabled).
+    user: sonarqube
+    # -- PostgreSQL SSL mode (for generated JDBC URL).
+    sslMode: require
+    passwordSecret:
+      # -- Existing secret containing PostgreSQL password.
+      name: sonarqube-postgresql-app
+      # -- Secret key containing PostgreSQL password.
+      key: password
+
+  useCnpgCluster:
+    # -- Resolve DB credentials from an existing CNPG cluster app secret.
+    enabled: false
+    # -- CNPG cluster name (RW service `<clusterName>-rw`).
+    clusterName: cnpg-cluster
+    # -- Explicit CNPG app secret name (defaults to `<clusterName>-app`).
+    appConnectionSecretName: ""
+    # -- CNPG RW service port.
+    port: 5432
+    # -- SSL mode for generated CNPG JDBC URL.
+    sslMode: require
+    secretKeys:
+      # -- Key for username in app secret.
+      username: username
+      # -- Key for password in app secret.
+      password: password
+
+# -- Apply health checks from values.
+applyHealthChecks: true
+
+# -- Startup probe for SonarQube bootstrap.
+startupProbe:
+  httpGet:
+    path: /api/system/status
+    port: http
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 60
+
+# -- Liveness probe for SonarQube runtime.
+livenessProbe:
+  httpGet:
+    path: /api/system/status
+    port: http
+  initialDelaySeconds: 60
+  periodSeconds: 20
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+# -- Readiness probe for SonarQube runtime.
+readinessProbe:
+  httpGet:
+    path: /api/system/status
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+
+# -- Resource requests/limits.
+resources:
+  requests:
+    cpu: 500m
+    memory: 2Gi
+  limits:
+    cpu: "2"
+    memory: 4Gi
+
+# -- HorizontalPodAutoscaler configuration.
+autoscaling:
+  # -- Enable HPA generation.
+  # @description Not supported by this chart because SonarQube Server deployment is single-replica.
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 80
+
+# -- Additional non-sensitive environment variables.
+env: {}
+
+# -- Additional env vars from existing secrets.
+# @description Supports both map and list forms.
+# @raw
+# ```yaml
+# additionalEnvSecrets:
+#   SONAR_AUTH_GITHUB_CLIENTSECRET: my-secret
+#   SONAR_AUTH_GITHUB_CLIENTID:
+#     secretName: my-secret
+#     secretKey: clientId
+#
+# additionalEnvSecrets:
+#   - name: SONAR_AUTH_GITHUB_CLIENTSECRET
+#     secretName: my-secret
+#     secretKey: clientSecret
+# ```
+additionalEnvSecrets: {}
+
+# -- Import all keys from listed existing secrets.
+envFromSecrets: []
+
+# -- Import all keys from listed existing configmaps.
+envFromConfigMaps: []
+
+# -- Additional volumes.
+extraVolumes: []
+
+# -- Additional volume mounts.
+extraVolumeMounts: []
+
+# -- CiliumNetworkPolicies dependency toggle.
+libchartCnps:
+  enabled: true
+  includeCnpgPolicies: true
+
+# -- App-specific CiliumNetworkPolicies settings.
+cnps:
+  cnpgTraffic:
+    # -- Additional Cilium egress rules for CNPG instance pods when libchartCnps.includeCnpgPolicies=true.
+    instanceExtraEgress: []
+  appTraffic:
+    ingress:
+      # -- Allow ingress traffic to SonarQube pods.
+      allow: true
+      # -- Explicit source endpoint selectors.
+      fromEndpoints: []
+      # -- Explicit source entities.
+      fromEntities: []
+    egress:
+      # -- Allow egress traffic from SonarQube pods.
+      allow: true
+      # -- Explicit destination endpoint selectors.
+      toEndpoints: []
+      # -- Explicit destination entities.
+      toEntities: []
+      # -- Allowed egress ports.
+      toPorts:
+        - port: "443"
+          protocol: TCP
+
+# -- Pod annotations.
+podAnnotations: {}
+
+# -- Pod labels.
+podLabels: {}
+
+# -- Workload node selector.
+nodeSelector: {}
+
+# -- Workload tolerations.
+tolerations: []
+
+# -- Workload affinity.
+affinity: {}
