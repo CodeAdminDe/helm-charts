@@ -3,7 +3,7 @@ name: sonarqube
 description: A Helm chart for deploying SonarQube Server on Kubernetes.
 type: application
 # renovate: bumpVersion
-version: 0.1.0
+version: 0.2.0
 # renovate: image=sonarqube
 appVersion: "26.2.0.119303-community"
 kubeVersion: ">=1.24.0"
