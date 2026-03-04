@@ -1,0 +1,678 @@
+# -- Override release-based naming.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- Override the namespace used for kagent resources.
+# @default -- `.Release.Namespace`
+namespaceOverride: ""
+
+# -- Global image settings.
+global:
+  # -- Global image registry used when component image.registry is empty.
+  registry: cr.kagent.dev
+  # -- Global image pull policy fallback.
+  imagePullPolicy: IfNotPresent
+  # -- Global image tag fallback (defaults to `.Chart.AppVersion` when empty).
+  tag: ""
+  # -- Global image pull secrets.
+  imagePullSecrets: []
+
+# -- Additional labels added to all resources.
+labels: {}
+
+# -- Common pod annotations.
+podAnnotations: {}
+
+# -- RuntimeClass names.
+runtimeClass:
+  # -- RuntimeClass for controller and UI pods.
+  pods: ""
+  # -- RuntimeClass for test pods.
+  tests: ""
+
+# -- Database configuration.
+database:
+  # -- Database type used by controller.
+  # @description Supported values: `sqlite`, `postgres`.
+  type: sqlite
+  sqlite:
+    # -- Enable vector features for sqlite mode.
+    vectorEnabled: true
+    # -- SQLite database file name.
+    databaseName: kagent.db
+  postgres:
+    # -- Enable vector features for postgres mode.
+    vectorEnabled: true
+    # -- Direct postgres URL (discouraged for production due to plaintext risk).
+    url: ""
+    # -- Path to a file containing postgres URL (`POSTGRES_DATABASE_URL_FILE`).
+    urlFile: ""
+    urlSecret:
+      # -- Existing secret containing a postgres URL.
+      name: ""
+      # -- Secret key containing a postgres URL.
+      key: url
+  useCnpgCluster:
+    # -- Resolve postgres URL from a CNPG app secret (`<clusterName>-app` by default).
+    enabled: false
+    # -- CNPG cluster name.
+    clusterName: cnpg-cluster
+    # -- Explicit CNPG app connection secret name.
+    appConnectionSecretName: ""
+    secretKeys:
+      # -- Secret key containing DSN/URI in CNPG app secret.
+      uri: uri
+
+# -- Persistence for sqlite mode.
+persistence:
+  # -- Enable PVC-backed sqlite storage.
+  enabled: true
+  # -- Keep PVC when Helm release is deleted.
+  # @description Set `true` to annotate PVC with `helm.sh/resource-policy: keep`.
+  retain: false
+  # -- Existing claim to use instead of creating a new PVC.
+  existingClaim: ""
+  # -- PVC storage size.
+  size: 2Gi
+  # -- PVC storageClass.
+  storageClass: ""
+  # -- PVC access modes.
+  accessModes:
+    - ReadWriteOnce
+  # -- PVC annotations.
+  annotations: {}
+  # -- PVC volumeName binding.
+  volumeName: ""
+  # -- SQLite data mount path.
+  mountPath: /sqlite-volume
+  emptyDir:
+    # -- Enable emptyDir fallback when persistence is disabled.
+    enabled: true
+    # -- Optional emptyDir size limit.
+    sizeLimit: 500Mi
+    # -- Optional emptyDir medium (`""` or `Memory`).
+    medium: ""
+
+# -- Controller deployment settings.
+controller:
+  # -- Number of controller replicas.
+  # @description Keep at `1` when `database.type=sqlite`.
+  replicas: 1
+  # -- Controller log level (`debug`, `info`, ...).
+  logLevel: info
+  # -- Optional explicit A2A base URL advertised by controller.
+  # @default -- `http://<fullname>-controller.<namespace>.svc.cluster.local:<port>`
+  a2aBaseUrl: ""
+  image:
+    # -- Controller image registry override.
+    registry: ""
+    # -- Controller image repository.
+    repository: kagent-dev/kagent/controller
+    # -- Controller image tag override.
+    tag: ""
+    # -- Controller image pull policy override.
+    pullPolicy: ""
+  agentImage:
+    # -- Agent runtime image registry override.
+    registry: ""
+    # -- Agent runtime image repository used by controller-managed agent workloads.
+    repository: kagent-dev/kagent/app
+    # -- Agent runtime image tag override.
+    tag: ""
+    # -- Agent runtime image pull policy override.
+    pullPolicy: ""
+  skillsInitImage:
+    # -- Skills init image registry override.
+    registry: ""
+    # -- Skills init image repository.
+    repository: kagent-dev/kagent/skills-init
+    # -- Skills init image tag override.
+    tag: ""
+    # -- Skills init image pull policy override.
+    pullPolicy: ""
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: "2"
+      memory: 512Mi
+  service:
+    # -- Controller Service type. This chart enforces ClusterIP.
+    type: ClusterIP
+    # -- Controller service annotations.
+    annotations: {}
+    # -- Controller service labels.
+    labels: {}
+    # -- Controller service port.
+    port: 8083
+    # -- Controller container target port.
+    targetPort: 8083
+    # -- Controller service protocol.
+    targetProtocol: TCP
+  streaming:
+    # -- Initial A2A streaming buffer size.
+    initialBufSize: 4Ki
+    # -- Max A2A streaming buffer size.
+    maxBufSize: 1Mi
+    # -- A2A streaming timeout.
+    timeout: 600s
+  # -- Namespaces watched by the controller. Empty means all namespaces.
+  watchNamespaces: []
+  # -- Additional controller environment variables (list form).
+  env: []
+  # -- Additional `envFrom` entries for controller.
+  envFrom: []
+  # -- Additional volumes for controller pod.
+  volumes: []
+  # -- Additional volumeMounts for controller container.
+  volumeMounts: []
+  # -- Controller pod annotations.
+  podAnnotations: {}
+  # -- Controller pod labels.
+  podLabels: {}
+  # -- Controller node selector.
+  nodeSelector: {}
+  # -- Controller tolerations.
+  tolerations: []
+  # -- Controller affinity.
+  affinity: {}
+  # -- Controller pod security context.
+  podSecurityContext: {}
+  # -- Controller container security context.
+  securityContext:
+    capabilities:
+      drop:
+        - ALL
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: false
+    runAsNonRoot: true
+    runAsUser: 65532
+    runAsGroup: 65532
+    seccompProfile:
+      type: RuntimeDefault
+  # -- Controller health probes.
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+  readinessProbe:
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+  startupProbe:
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 15
+    periodSeconds: 15
+    timeoutSeconds: 5
+    failureThreshold: 20
+  # -- Controller HPA settings.
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 80
+    enableMemoryUtilization: false
+    targetMemoryUtilizationPercentage: 80
+
+# -- UI deployment settings.
+ui:
+  # -- Enable kagent UI deployment.
+  enabled: true
+  # -- Number of UI replicas.
+  replicas: 1
+  # -- Optional UI backend URL override.
+  # @description Defaults to `http://<fullname>-controller.<namespace>.svc.cluster.local:<controllerPort>/api`.
+  backendUrl: ""
+  image:
+    # -- UI image registry override.
+    registry: ""
+    # -- UI image repository.
+    repository: kagent-dev/kagent/ui
+    # -- UI image tag override.
+    tag: ""
+    # -- UI image pull policy override.
+    pullPolicy: ""
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+  service:
+    # -- UI Service type. This chart enforces ClusterIP.
+    type: ClusterIP
+    # -- UI service annotations.
+    annotations: {}
+    # -- UI service labels.
+    labels: {}
+    # -- UI service port.
+    port: 8080
+    # -- UI container target port.
+    targetPort: 8080
+    # -- UI service protocol.
+    targetProtocol: TCP
+  # -- Extra UI env variables.
+  env: {}
+  # -- UI pod annotations.
+  podAnnotations: {}
+  # -- UI pod labels.
+  podLabels: {}
+  # -- UI node selector.
+  nodeSelector: {}
+  # -- UI tolerations.
+  tolerations: []
+  # -- UI affinity.
+  affinity: {}
+  # -- UI pod security context.
+  podSecurityContext: {}
+  # -- UI container security context.
+  securityContext:
+    capabilities:
+      drop:
+        - ALL
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: false
+    runAsNonRoot: true
+    runAsUser: 1001
+    runAsGroup: 1001
+    seccompProfile:
+      type: RuntimeDefault
+  tmpVolume:
+    # -- Mount a writable emptyDir at `/tmp` for nginx/supervisord runtime files.
+    enabled: true
+    # -- Optional tmp emptyDir size limit.
+    sizeLimit: 256Mi
+  # -- UI health probes.
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+  readinessProbe:
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+  startupProbe:
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 5
+    failureThreshold: 20
+
+# -- Ingress configuration for kagent UI.
+ingress:
+  # -- Enable ingress resource creation.
+  enabled: false
+  # -- Ingress class name.
+  className: ""
+  # -- Additional ingress annotations.
+  annotations: {}
+  secureDefaults:
+    # -- Enable secure ingress defaults.
+    enabled: true
+    # -- NGINX proxy read timeout in seconds.
+    proxyReadTimeoutSeconds: 3600
+    # -- NGINX proxy send timeout in seconds.
+    proxySendTimeoutSeconds: 3600
+    # -- NGINX proxy buffering mode.
+    proxyBuffering: "off"
+    # -- NGINX proxy request buffering mode.
+    proxyRequestBuffering: "off"
+    # -- NGINX proxy http version.
+    proxyHttpVersion: "1.1"
+  # -- Host/path rules.
+  hosts:
+    - host: kagent.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  # -- TLS host/secret blocks.
+  tls: []
+
+# -- Gateway API HTTPRoute configuration for kagent UI.
+gatewayApi:
+  # -- Enable HTTPRoute resource creation.
+  enabled: false
+  # -- HTTPRoute annotations.
+  annotations: {}
+  # -- HTTPRoute labels.
+  labels: {}
+  # -- ParentRefs for HTTPRoute.
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
+      sectionName: http
+  # -- Hostnames served by this route.
+  hostnames:
+    - kagent.example.com
+  # -- Match rules for HTTPRoute.
+  matches:
+    - path:
+        type: PathPrefix
+        value: "/"
+  # -- Optional filters.
+  filters: []
+  # -- Optional backend references (defaults to UI service when empty).
+  backendRefs: []
+
+# -- Service account settings.
+serviceAccount:
+  controller:
+    # -- Create controller service account.
+    create: true
+    # -- Controller service account annotations.
+    annotations: {}
+    # -- Controller service account name override.
+    name: ""
+    # -- Automount service account token for controller.
+    automountServiceAccountToken: true
+  ui:
+    # -- Create UI service account.
+    create: true
+    # -- UI service account annotations.
+    annotations: {}
+    # -- UI service account name override.
+    name: ""
+    # -- Automount service account token for UI.
+    automountServiceAccountToken: false
+
+# -- RBAC for controller.
+rbac:
+  # -- Create RBAC resources required by the controller.
+  create: true
+  # -- Create leader-election Role/RoleBinding when replicas > 1.
+  createLeaderElectionRole: true
+  # -- ClusterRole rules used for read/watch operations.
+  getterRules:
+    - apiGroups:
+        - kagent.dev
+      resources:
+        - agents
+        - modelconfigs
+        - modelproviderconfigs
+        - toolservers
+        - memories
+        - remotemcpservers
+        - mcpservers
+      verbs:
+        - get
+        - list
+        - watch
+    - apiGroups:
+        - kagent.dev
+      resources:
+        - agents/finalizers
+        - modelconfigs/finalizers
+        - modelproviderconfigs/finalizers
+        - toolservers/finalizers
+        - memories/finalizers
+        - remotemcpservers/finalizers
+        - mcpservers/finalizers
+      verbs:
+        - update
+    - apiGroups:
+        - kagent.dev
+      resources:
+        - agents/status
+        - modelconfigs/status
+        - modelproviderconfigs/status
+        - toolservers/status
+        - memories/status
+        - remotemcpservers/status
+        - mcpservers/status
+      verbs:
+        - get
+        - patch
+        - update
+    - apiGroups:
+        - ""
+      resources:
+        - "*"
+      verbs:
+        - get
+        - list
+        - watch
+    - apiGroups:
+        - apps
+      resources:
+        - "*"
+      verbs:
+        - get
+        - list
+        - watch
+    - apiGroups:
+        - batch
+      resources:
+        - "*"
+      verbs:
+        - get
+        - list
+        - watch
+    - apiGroups:
+        - rbac.authorization.k8s.io
+      resources:
+        - "*"
+      verbs:
+        - get
+        - list
+        - watch
+    - apiGroups:
+        - apiextensions.k8s.io
+      resources:
+        - "*"
+      verbs:
+        - get
+        - list
+        - watch
+    - apiGroups:
+        - gateway.networking.k8s.io
+      resources:
+        - "*"
+      verbs:
+        - get
+        - list
+        - watch
+  # -- ClusterRole rules used for write operations.
+  writerRules:
+    - apiGroups:
+        - kagent.dev
+      resources:
+        - agents
+        - modelconfigs
+        - modelproviderconfigs
+        - toolservers
+        - memories
+        - remotemcpservers
+        - mcpservers
+      verbs:
+        - create
+        - update
+        - patch
+        - delete
+    - apiGroups:
+        - kagent.dev
+      resources:
+        - agents/finalizers
+        - modelconfigs/finalizers
+        - modelproviderconfigs/finalizers
+        - toolservers/finalizers
+        - memories/finalizers
+        - remotemcpservers/finalizers
+        - mcpservers/finalizers
+      verbs:
+        - update
+    - apiGroups:
+        - ""
+      resources:
+        - "*"
+      verbs:
+        - create
+        - update
+        - patch
+        - delete
+    - apiGroups:
+        - apps
+      resources:
+        - "*"
+      verbs:
+        - create
+        - update
+        - patch
+        - delete
+    - apiGroups:
+        - batch
+      resources:
+        - "*"
+      verbs:
+        - create
+        - update
+        - patch
+        - delete
+    - apiGroups:
+        - apiextensions.k8s.io
+      resources:
+        - "*"
+      verbs:
+        - create
+        - update
+        - patch
+        - delete
+    - apiGroups:
+        - gateway.networking.k8s.io
+      resources:
+        - "*"
+      verbs:
+        - create
+        - update
+        - patch
+        - delete
+
+# -- Default ModelConfig generation.
+modelConfig:
+  # -- Create a default `kagent.dev/v1alpha2` ModelConfig object.
+  enabled: true
+  # -- Name of the generated ModelConfig.
+  name: default-model-config
+  # -- Create provider API key secret from plaintext values (not recommended for production).
+  createSecretFromApiKeyValues: true
+
+# -- LLM provider settings.
+# @description Selected provider key is taken from `providers.default` and rendered into ModelConfig.
+providers:
+  # -- Default provider key.
+  default: openAI
+  openAI:
+    provider: OpenAI
+    model: gpt-4.1-mini
+    apiKeySecretRef: kagent-openai
+    apiKeySecretKey: OPENAI_API_KEY
+    # -- Optional plaintext API key used when `modelConfig.createSecretFromApiKeyValues=true`.
+    apiKey: ""
+    config: {}
+  anthropic:
+    provider: Anthropic
+    model: claude-3-5-haiku-20241022
+    apiKeySecretRef: kagent-anthropic
+    apiKeySecretKey: ANTHROPIC_API_KEY
+    apiKey: ""
+    config: {}
+  azureOpenAI:
+    provider: AzureOpenAI
+    model: gpt-4.1-mini
+    apiKeySecretRef: kagent-azure-openai
+    apiKeySecretKey: AZUREOPENAI_API_KEY
+    apiKey: ""
+    config:
+      apiVersion: "2023-05-15"
+      azureAdToken: ""
+      azureDeployment: ""
+      azureEndpoint: ""
+  gemini:
+    provider: Gemini
+    model: gemini-2.0-flash-lite
+    apiKeySecretRef: kagent-gemini
+    apiKeySecretKey: GOOGLE_API_KEY
+    apiKey: ""
+    config: {}
+  ollama:
+    provider: Ollama
+    model: llama3.2
+    config:
+      host: host.docker.internal:11434
+      options:
+        num_ctx: "64000"
+
+# -- OpenTelemetry integration.
+otel:
+  tracing:
+    enabled: false
+    exporter:
+      otlp:
+        endpoint: ""
+        timeout: 15
+        insecure: true
+  logging:
+    enabled: false
+    exporter:
+      otlp:
+        endpoint: ""
+        timeout: 15
+        insecure: true
+
+# -- Optional proxy URL used by controller for internal URL routing.
+proxy:
+  url: ""
+
+# -- Optional namespace-scoped Cilium policy library integration.
+libchartCnps:
+  # -- Enable libchart-cnps templates.
+  enabled: false
+  # -- Include CNPG ruleset from the library.
+  includeCnpgPolicies: false
+
+# -- App-specific Cilium policy settings.
+cnps:
+  appTraffic:
+    ingress:
+      # -- Allow ingress to app pods selected by app CNP.
+      allow: true
+      # -- Optional explicit endpoint label selectors for ingress sources.
+      fromEndpoints: []
+      # -- Optional explicit entities for ingress sources.
+      fromEntities: []
+    egress:
+      # -- Allow egress for app pods selected by app CNP.
+      allow: true
+      # -- Destination entities for outbound traffic.
+      toEntities:
+        - world
+      # -- Destination ports for outbound traffic.
+      toPorts:
+        - port: "443"
+          protocol: TCP
+      # -- Allow controller egress to Kubernetes API server.
+      allowKubeApiServer: true
+  cnpgTraffic:
+    # -- Extra egress entries appended to CNPG instance policy when includeCnpgPolicies=true.
+    instanceExtraEgress: []

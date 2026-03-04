@@ -1,0 +1,31 @@
+{{- if .Values.modelConfig.enabled }}
+{{- $providerKey := .Values.providers.default | default "openAI" -}}
+{{- if not (hasKey .Values.providers $providerKey) -}}
+{{- fail (printf "providers.default=%s is not defined under .Values.providers" $providerKey) -}}
+{{- end -}}
+{{- $provider := index .Values.providers $providerKey -}}
+apiVersion: kagent.dev/v1alpha2
+kind: ModelConfig
+metadata:
+  name: {{ include "kagent.defaultModelConfigName" . | quote }}
+  namespace: {{ include "kagent.namespace" . }}
+  labels:
+    {{- include "kagent.labels" . | nindent 4 }}
+spec:
+  provider: {{ $provider.provider | quote }}
+  model: {{ $provider.model | quote }}
+  {{- if $provider.apiKeySecretRef }}
+  apiKeySecret: {{ $provider.apiKeySecretRef | quote }}
+  {{- end }}
+  {{- if $provider.apiKeySecretKey }}
+  apiKeySecretKey: {{ $provider.apiKeySecretKey | quote }}
+  {{- end }}
+  {{- if hasKey $provider "defaultHeaders" }}
+  defaultHeaders:
+    {{- toYaml $provider.defaultHeaders | nindent 4 }}
+  {{- end }}
+  {{- if $provider.config }}
+  {{ $providerKey }}:
+    {{- toYaml $provider.config | nindent 4 }}
+  {{- end }}
+{{- end }}

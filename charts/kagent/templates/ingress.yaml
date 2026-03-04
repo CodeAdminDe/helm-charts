@@ -1,0 +1,55 @@
+{{- if and .Values.ui.enabled .Values.ingress.enabled -}}
+{{- $annotations := dict -}}
+{{- if .Values.ingress.secureDefaults.enabled -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-read-timeout" (.Values.ingress.secureDefaults.proxyReadTimeoutSeconds | toString) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-send-timeout" (.Values.ingress.secureDefaults.proxySendTimeoutSeconds | toString) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-buffering" (.Values.ingress.secureDefaults.proxyBuffering | toString) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-request-buffering" (.Values.ingress.secureDefaults.proxyRequestBuffering | toString) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-http-version" (.Values.ingress.secureDefaults.proxyHttpVersion | toString) -}}
+{{- end -}}
+{{- range $key, $val := .Values.ingress.annotations -}}
+{{- $_ := set $annotations $key ($val | toString) -}}
+{{- end -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "kagent.fullname" . }}-ui
+  namespace: {{ include "kagent.namespace" . }}
+  labels:
+    {{- include "kagent.ui.labels" . | nindent 4 }}
+  {{- if gt (len $annotations) 0 }}
+  annotations:
+    {{- toYaml $annotations | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- if .Values.ingress.tls }}
+  tls:
+    {{- range .Values.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      {{- with .secretName }}
+      secretName: {{ . }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ include "kagent.fullname" $ }}-ui
+                port:
+                  number: {{ $.Values.ui.service.port }}
+          {{- end }}
+    {{- end }}
+{{- end }}

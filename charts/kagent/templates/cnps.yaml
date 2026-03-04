@@ -1,0 +1,130 @@
+{{- define "kagent.CiliumNetworkPolicies-NamespaceSet" -}}
+metadata:
+  namespace: {{ include "kagent.namespace" . }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "kagent.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-NamespaceSet" (list . "kagent.CiliumNetworkPolicies-NamespaceSet") }}
+---
+{{- end -}}
+
+{{- define "kagent.CiliumNetworkPolicies-CnpgSet" -}}
+metadata:
+  namespace: {{ include "kagent.namespace" . }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "kagent.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if and .Values.libchartCnps.enabled .Values.libchartCnps.includeCnpgPolicies -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-CnpgSet" (list . "kagent.CiliumNetworkPolicies-CnpgSet") }}
+---
+{{- end -}}
+
+{{- define "kagent.CiliumNetworkPolicies-AppSet" -}}
+{{- $defaultIngressEndpoints := list -}}
+{{- if .Values.ingress.enabled -}}
+{{- $defaultIngressEndpoints = append $defaultIngressEndpoints (dict "app.kubernetes.io/name" "ingress-nginx" "io.kubernetes.pod.namespace" "ingress-nginx") -}}
+{{- end -}}
+{{- if .Values.gatewayApi.enabled -}}
+{{- $defaultIngressEndpoints = append $defaultIngressEndpoints (dict "app.kubernetes.io/name" "envoy-gateway" "io.kubernetes.pod.namespace" "envoy-gateway-system") -}}
+{{- end -}}
+{{- $defaultDenyMatchLabel := dict "kagent.cnp/default-deny" "true" -}}
+{{- $effectiveIngressEndpoints := .Values.cnps.appTraffic.ingress.fromEndpoints | default (list) -}}
+{{- $effectiveIngressEntities := .Values.cnps.appTraffic.ingress.fromEntities | default (list) -}}
+{{- if and (empty $effectiveIngressEndpoints) (gt (len $defaultIngressEndpoints) 0) -}}
+{{- $effectiveIngressEndpoints = $defaultIngressEndpoints -}}
+{{- end -}}
+{{- if not .Values.cnps.appTraffic.ingress.allow -}}
+{{- $effectiveIngressEndpoints = list $defaultDenyMatchLabel -}}
+{{- $effectiveIngressEntities = list -}}
+{{- end -}}
+{{- $hasIngressEndpoints := gt (len $effectiveIngressEndpoints) 0 -}}
+{{- $hasIngressEntities := not (empty $effectiveIngressEntities) -}}
+{{- if and .Values.cnps.appTraffic.ingress.allow (not $hasIngressEndpoints) (not $hasIngressEntities) -}}
+{{- $effectiveIngressEndpoints = list $defaultDenyMatchLabel -}}
+{{- $hasIngressEndpoints = true -}}
+{{- end -}}
+{{- $includeIngressRule := or $hasIngressEndpoints $hasIngressEntities -}}
+metadata:
+  namespace: {{ include "kagent.namespace" . }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "kagent.labels" . | nindent 4 }}
+spec:
+  endpointSelector:
+    matchLabels:
+      {{- include "kagent.selectorLabels" . | nindent 6 }}
+  {{- if $includeIngressRule }}
+  ingress:
+    - {{- if $hasIngressEndpoints }}
+      fromEndpoints:
+        {{- range $effectiveIngressEndpoints }}
+        - matchLabels:
+          {{- range $k, $v := . }}
+            {{ $k }}: {{ $v | quote }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+      {{- if $hasIngressEntities }}
+      fromEntities:
+        {{- toYaml $effectiveIngressEntities | nindent 8 }}
+      {{- end }}
+      toPorts:
+        - ports:
+            - port: {{ printf "%v" .Values.ui.service.targetPort | quote }}
+              protocol: {{ .Values.ui.service.targetProtocol | default "TCP" }}
+  {{- else }}
+  ingress: []
+  {{- end }}
+  {{- if .Values.cnps.appTraffic.egress.allow }}
+  egress:
+    - toEntities:
+      {{- if .Values.cnps.appTraffic.egress.toEntities }}
+        {{- toYaml .Values.cnps.appTraffic.egress.toEntities | nindent 8 }}
+      {{- else }}
+        - world
+      {{- end }}
+      toPorts:
+        - ports:
+          {{- if .Values.cnps.appTraffic.egress.toPorts }}
+          {{- range .Values.cnps.appTraffic.egress.toPorts }}
+            - port: {{ .port | quote }}
+              {{- if hasKey . "endPort" }}
+              endPort: {{ .endPort }}
+              {{- end }}
+              protocol: {{ .protocol | default "TCP" }}
+          {{- end }}
+          {{- else }}
+            - port: "443"
+              protocol: TCP
+          {{- end }}
+    {{- if .Values.cnps.appTraffic.egress.allowKubeApiServer }}
+    - toEntities:
+        - kube-apiserver
+      toPorts:
+        - ports:
+            - port: "6443"
+              protocol: TCP
+    {{- end }}
+  {{- else }}
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            kagent.cnp/default-deny: "true"
+      toPorts:
+        - ports:
+            - port: "65535"
+              protocol: TCP
+  {{- end }}
+{{- end -}}
+
+{{- if .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "kagent.CiliumNetworkPolicies-AppSet") }}
+{{- end -}}
