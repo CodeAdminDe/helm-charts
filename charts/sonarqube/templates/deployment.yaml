@@ -64,11 +64,71 @@ spec:
             - |
               set -euo pipefail
               mkdir -p /opt/sonarqube/extensions/plugins /tmp/plugins
-              {{- range $url := .Values.initContainers.plugins.install }}
-              curl --fail --show-error --location {{- if $.Values.initContainers.plugins.noCheckCertificate }} --insecure{{- end }} \
-                --output "/tmp/plugins/$(basename '{{ $url }}')" \
-                "{{ $url }}"
-              mv "/tmp/plugins/$(basename '{{ $url }}')" /opt/sonarqube/extensions/plugins/
+              {{- range $plugin := .Values.initContainers.plugins.install }}
+              {{- $url := "" -}}
+              {{- $checksum := "" -}}
+              {{- if kindIs "string" $plugin -}}
+              {{- $url = $plugin -}}
+              {{- else if kindIs "map" $plugin -}}
+              {{- $url = (default "" (index $plugin "url")) -}}
+              {{- $checksum = (default "" (index $plugin "checksum")) -}}
+              {{- end -}}
+              {{- if $url }}
+              plugin_url={{ $url | quote }}
+              plugin_checksum={{ $checksum | quote }}
+              plugin_filename="$(basename "${plugin_url%%\?*}")"
+              plugin_path="/tmp/plugins/${plugin_filename}"
+              if [ -z "${plugin_filename}" ]; then
+                echo "invalid plugin url: ${plugin_url}" >&2
+                exit 1
+              fi
+
+              curl --fail --show-error --location --proto '=https' --tlsv1.2 \
+                --connect-timeout 10 --max-time 300 --retry 3 --retry-delay 2 --retry-all-errors \
+                {{- if $.Values.initContainers.plugins.noCheckCertificate }}
+                --insecure \
+                {{- end }}
+                --output "${plugin_path}" \
+                "${plugin_url}"
+
+              if [ -n "${plugin_checksum}" ]; then
+                echo "${plugin_checksum}  ${plugin_path}" | sha256sum -c -
+              elif curl --fail --show-error --location --proto '=https' --tlsv1.2 \
+                --connect-timeout 10 --max-time 120 --retry 2 --retry-delay 2 --retry-all-errors \
+                {{- if $.Values.initContainers.plugins.noCheckCertificate }}
+                --insecure \
+                {{- end }}
+                --output "${plugin_path}.sha256" \
+                "${plugin_url}.sha256"; then
+                plugin_sha256="$(awk '{print $1}' "${plugin_path}.sha256")"
+                if [ -z "${plugin_sha256}" ]; then
+                  echo "empty sha256 checksum for ${plugin_url}" >&2
+                  exit 1
+                fi
+                echo "${plugin_sha256}  ${plugin_path}" | sha256sum -c -
+              elif curl --fail --show-error --location --proto '=https' --tlsv1.2 \
+                --connect-timeout 10 --max-time 120 --retry 2 --retry-delay 2 --retry-all-errors \
+                {{- if $.Values.initContainers.plugins.noCheckCertificate }}
+                --insecure \
+                {{- end }}
+                --output "${plugin_path}.sha512" \
+                "${plugin_url}.sha512"; then
+                plugin_sha512="$(awk '{print $1}' "${plugin_path}.sha512")"
+                if [ -z "${plugin_sha512}" ]; then
+                  echo "empty sha512 checksum for ${plugin_url}" >&2
+                  exit 1
+                fi
+                echo "${plugin_sha512}  ${plugin_path}" | sha512sum -c -
+              else
+                echo "no checksum provided/found for ${plugin_url}; provide initContainers.plugins.install[*].checksum or host ${plugin_url}.sha256/.sha512" >&2
+                exit 1
+              fi
+
+              mv "${plugin_path}" /opt/sonarqube/extensions/plugins/
+              {{- else }}
+              echo "invalid plugin entry without url: {{ toJson $plugin }}" >&2
+              exit 1
+              {{- end }}
               {{- end }}
           {{- with .Values.initContainers.plugins.resources }}
           resources:
@@ -138,12 +198,13 @@ spec:
             - name: SONAR_SEARCH_JAVAOPTS
               value: {{ . | quote }}
             {{- end }}
-            {{- range $key, $value := .Values.env }}
+            {{- range $key := (keys .Values.env | sortAlpha) }}
             - name: {{ $key }}
-              value: {{ $value | quote }}
+              value: {{ index $.Values.env $key | quote }}
             {{- end }}
             {{- if kindIs "map" .Values.additionalEnvSecrets }}
-            {{- range $envName, $secretConfig := .Values.additionalEnvSecrets }}
+            {{- range $envName := (keys .Values.additionalEnvSecrets | sortAlpha) }}
+            {{- $secretConfig := index $.Values.additionalEnvSecrets $envName }}
             {{- if kindIs "string" $secretConfig }}
             - name: {{ $envName }}
               valueFrom:
@@ -191,11 +252,29 @@ spec:
           {{- end }}
           {{- if .Values.applyHealthChecks }}
           startupProbe:
-            {{- toYaml .Values.startupProbe | nindent 12 }}
+            httpGet:
+              path: {{ include "sonarqube.statusPath" . }}
+              port: {{ default "http" .Values.startupProbe.httpGet.port }}
+            initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.startupProbe.failureThreshold }}
           livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
+            httpGet:
+              path: {{ include "sonarqube.statusPath" . }}
+              port: {{ default "http" .Values.livenessProbe.httpGet.port }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
           readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+            httpGet:
+              path: {{ include "sonarqube.statusPath" . }}
+              port: {{ default "http" .Values.readinessProbe.httpGet.port }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

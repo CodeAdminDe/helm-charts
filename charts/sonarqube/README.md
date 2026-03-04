@@ -96,7 +96,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="additionalEnvSecrets"><a href="./values.yaml#L387">additionalEnvSecrets</a></td>
+			<td id="additionalEnvSecrets"><a href="./values.yaml#L395">additionalEnvSecrets</a></td>
 			<td>
 object
 </td>
@@ -122,7 +122,7 @@ additionalEnvSecrets:
 ```</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L444">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L452">affinity</a></td>
 			<td>
 object
 </td>
@@ -136,7 +136,7 @@ object
 			<td>Workload affinity.</td>
 		</tr>
 		<tr>
-			<td id="applyHealthChecks"><a href="./values.yaml#L319">applyHealthChecks</a></td>
+			<td id="applyHealthChecks"><a href="./values.yaml#L327">applyHealthChecks</a></td>
 			<td>
 bool
 </td>
@@ -164,7 +164,7 @@ true
 			<td>Apply default pod/container security settings.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L361">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L369">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -183,7 +183,7 @@ object
 			<td>HorizontalPodAutoscaler configuration.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--enabled"><a href="./values.yaml#L364">autoscaling.enabled</a></td>
+			<td id="autoscaling--enabled"><a href="./values.yaml#L372">autoscaling.enabled</a></td>
 			<td>
 bool
 </td>
@@ -197,7 +197,7 @@ false
 			<td>Enable HPA generation. @description Not supported by this chart because SonarQube Server deployment is single-replica.</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L407">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L415">cnps</a></td>
 			<td>
 object
 </td>
@@ -233,7 +233,7 @@ object
 			<td>App-specific CiliumNetworkPolicies settings.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L421">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L429">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -247,7 +247,7 @@ true
 			<td>Allow egress traffic from SonarQube pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEndpoints"><a href="./values.yaml#L423">cnps.appTraffic.egress.toEndpoints</a></td>
+			<td id="cnps--appTraffic--egress--toEndpoints"><a href="./values.yaml#L431">cnps.appTraffic.egress.toEndpoints</a></td>
 			<td>
 list
 </td>
@@ -261,7 +261,7 @@ list
 			<td>Explicit destination endpoint selectors.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L425">cnps.appTraffic.egress.toEntities</a></td>
+			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L433">cnps.appTraffic.egress.toEntities</a></td>
 			<td>
 list
 </td>
@@ -275,7 +275,7 @@ list
 			<td>Explicit destination entities.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L427">cnps.appTraffic.egress.toPorts</a></td>
+			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L435">cnps.appTraffic.egress.toPorts</a></td>
 			<td>
 list
 </td>
@@ -294,7 +294,7 @@ list
 			<td>Allowed egress ports.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L414">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L422">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -308,7 +308,7 @@ true
 			<td>Allow ingress traffic to SonarQube pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L416">cnps.appTraffic.ingress.fromEndpoints</a></td>
+			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L424">cnps.appTraffic.ingress.fromEndpoints</a></td>
 			<td>
 list
 </td>
@@ -322,7 +322,7 @@ list
 			<td>Explicit source endpoint selectors.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L418">cnps.appTraffic.ingress.fromEntities</a></td>
+			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L426">cnps.appTraffic.ingress.fromEntities</a></td>
 			<td>
 list
 </td>
@@ -336,7 +336,7 @@ list
 			<td>Explicit source entities.</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L410">cnps.cnpgTraffic.instanceExtraEgress</a></td>
+			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L418">cnps.cnpgTraffic.instanceExtraEgress</a></td>
 			<td>
 list
 </td>
@@ -350,7 +350,7 @@ list
 			<td>Additional Cilium egress rules for CNPG instance pods when libchartCnps.includeCnpgPolicies=true.</td>
 		</tr>
 		<tr>
-			<td id="database"><a href="./values.yaml#L279">database</a></td>
+			<td id="database"><a href="./values.yaml#L287">database</a></td>
 			<td>
 object
 </td>
@@ -388,7 +388,7 @@ object
 			<td>PostgreSQL connection settings.</td>
 		</tr>
 		<tr>
-			<td id="database--jdbcUrl"><a href="./values.yaml#L282">database.jdbcUrl</a></td>
+			<td id="database--jdbcUrl"><a href="./values.yaml#L290">database.jdbcUrl</a></td>
 			<td>
 string
 </td>
@@ -402,7 +402,7 @@ string
 			<td>Optional full JDBC URL override. @description When empty, the chart builds `jdbc:postgresql://host:port/db?sslmode=...` from values.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--host"><a href="./values.yaml#L286">database.postgres.host</a></td>
+			<td id="database--postgres--host"><a href="./values.yaml#L294">database.postgres.host</a></td>
 			<td>
 string
 </td>
@@ -416,7 +416,7 @@ string
 			<td>PostgreSQL host (used when CNPG mode is disabled and jdbcUrl is empty).</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--name"><a href="./values.yaml#L290">database.postgres.name</a></td>
+			<td id="database--postgres--name"><a href="./values.yaml#L298">database.postgres.name</a></td>
 			<td>
 string
 </td>
@@ -430,7 +430,7 @@ string
 			<td>PostgreSQL database name.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--passwordSecret--key"><a href="./values.yaml#L299">database.postgres.passwordSecret.key</a></td>
+			<td id="database--postgres--passwordSecret--key"><a href="./values.yaml#L307">database.postgres.passwordSecret.key</a></td>
 			<td>
 string
 </td>
@@ -444,7 +444,7 @@ string
 			<td>Secret key containing PostgreSQL password.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--passwordSecret--name"><a href="./values.yaml#L297">database.postgres.passwordSecret.name</a></td>
+			<td id="database--postgres--passwordSecret--name"><a href="./values.yaml#L305">database.postgres.passwordSecret.name</a></td>
 			<td>
 string
 </td>
@@ -458,7 +458,7 @@ string
 			<td>Existing secret containing PostgreSQL password.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--port"><a href="./values.yaml#L288">database.postgres.port</a></td>
+			<td id="database--postgres--port"><a href="./values.yaml#L296">database.postgres.port</a></td>
 			<td>
 int
 </td>
@@ -472,7 +472,7 @@ int
 			<td>PostgreSQL port.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--sslMode"><a href="./values.yaml#L294">database.postgres.sslMode</a></td>
+			<td id="database--postgres--sslMode"><a href="./values.yaml#L302">database.postgres.sslMode</a></td>
 			<td>
 string
 </td>
@@ -486,7 +486,7 @@ string
 			<td>PostgreSQL SSL mode (for generated JDBC URL).</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--user"><a href="./values.yaml#L292">database.postgres.user</a></td>
+			<td id="database--postgres--user"><a href="./values.yaml#L300">database.postgres.user</a></td>
 			<td>
 string
 </td>
@@ -500,7 +500,7 @@ string
 			<td>PostgreSQL username (used when CNPG mode is disabled).</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--appConnectionSecretName"><a href="./values.yaml#L307">database.useCnpgCluster.appConnectionSecretName</a></td>
+			<td id="database--useCnpgCluster--appConnectionSecretName"><a href="./values.yaml#L315">database.useCnpgCluster.appConnectionSecretName</a></td>
 			<td>
 string
 </td>
@@ -514,7 +514,7 @@ string
 			<td>Explicit CNPG app secret name (defaults to `<clusterName>-app`).</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--clusterName"><a href="./values.yaml#L305">database.useCnpgCluster.clusterName</a></td>
+			<td id="database--useCnpgCluster--clusterName"><a href="./values.yaml#L313">database.useCnpgCluster.clusterName</a></td>
 			<td>
 string
 </td>
@@ -528,7 +528,7 @@ string
 			<td>CNPG cluster name (RW service `<clusterName>-rw`).</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--enabled"><a href="./values.yaml#L303">database.useCnpgCluster.enabled</a></td>
+			<td id="database--useCnpgCluster--enabled"><a href="./values.yaml#L311">database.useCnpgCluster.enabled</a></td>
 			<td>
 bool
 </td>
@@ -542,7 +542,7 @@ false
 			<td>Resolve DB credentials from an existing CNPG cluster app secret.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--port"><a href="./values.yaml#L309">database.useCnpgCluster.port</a></td>
+			<td id="database--useCnpgCluster--port"><a href="./values.yaml#L317">database.useCnpgCluster.port</a></td>
 			<td>
 int
 </td>
@@ -556,7 +556,7 @@ int
 			<td>CNPG RW service port.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--secretKeys--password"><a href="./values.yaml#L316">database.useCnpgCluster.secretKeys.password</a></td>
+			<td id="database--useCnpgCluster--secretKeys--password"><a href="./values.yaml#L324">database.useCnpgCluster.secretKeys.password</a></td>
 			<td>
 string
 </td>
@@ -570,7 +570,7 @@ string
 			<td>Key for password in app secret.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--secretKeys--username"><a href="./values.yaml#L314">database.useCnpgCluster.secretKeys.username</a></td>
+			<td id="database--useCnpgCluster--secretKeys--username"><a href="./values.yaml#L322">database.useCnpgCluster.secretKeys.username</a></td>
 			<td>
 string
 </td>
@@ -584,7 +584,7 @@ string
 			<td>Key for username in app secret.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--sslMode"><a href="./values.yaml#L311">database.useCnpgCluster.sslMode</a></td>
+			<td id="database--useCnpgCluster--sslMode"><a href="./values.yaml#L319">database.useCnpgCluster.sslMode</a></td>
 			<td>
 string
 </td>
@@ -598,7 +598,7 @@ string
 			<td>SSL mode for generated CNPG JDBC URL.</td>
 		</tr>
 		<tr>
-			<td id="env"><a href="./values.yaml#L370">env</a></td>
+			<td id="env"><a href="./values.yaml#L378">env</a></td>
 			<td>
 object
 </td>
@@ -612,7 +612,7 @@ object
 			<td>Additional non-sensitive environment variables.</td>
 		</tr>
 		<tr>
-			<td id="envFromConfigMaps"><a href="./values.yaml#L393">envFromConfigMaps</a></td>
+			<td id="envFromConfigMaps"><a href="./values.yaml#L401">envFromConfigMaps</a></td>
 			<td>
 list
 </td>
@@ -626,7 +626,7 @@ list
 			<td>Import all keys from listed existing configmaps.</td>
 		</tr>
 		<tr>
-			<td id="envFromSecrets"><a href="./values.yaml#L390">envFromSecrets</a></td>
+			<td id="envFromSecrets"><a href="./values.yaml#L398">envFromSecrets</a></td>
 			<td>
 list
 </td>
@@ -794,7 +794,7 @@ string
 			<td>Extensions PVC volumeName binding.</td>
 		</tr>
 		<tr>
-			<td id="extraInitContainers"><a href="./values.yaml#L276">extraInitContainers</a></td>
+			<td id="extraInitContainers"><a href="./values.yaml#L284">extraInitContainers</a></td>
 			<td>
 list
 </td>
@@ -808,7 +808,7 @@ list
 			<td>Additional custom init containers appended after built-in init containers.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumeMounts"><a href="./values.yaml#L399">extraVolumeMounts</a></td>
+			<td id="extraVolumeMounts"><a href="./values.yaml#L407">extraVolumeMounts</a></td>
 			<td>
 list
 </td>
@@ -822,7 +822,7 @@ list
 			<td>Additional volume mounts.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumes"><a href="./values.yaml#L396">extraVolumes</a></td>
+			<td id="extraVolumes"><a href="./values.yaml#L404">extraVolumes</a></td>
 			<td>
 list
 </td>
@@ -1114,10 +1114,10 @@ object
   "secureDefaults": {
     "enabled": true,
     "proxyBodySize": "64m",
-    "proxyBuffering": "off",
+    "proxyBuffering": false,
     "proxyHttpVersion": "1.1",
     "proxyReadTimeoutSeconds": 3600,
-    "proxyRequestBuffering": "off",
+    "proxyRequestBuffering": false,
     "proxySendTimeoutSeconds": 3600
   },
   "tls": []
@@ -1204,10 +1204,10 @@ object
 {
   "enabled": true,
   "proxyBodySize": "64m",
-  "proxyBuffering": "off",
+  "proxyBuffering": false,
   "proxyHttpVersion": "1.1",
   "proxyReadTimeoutSeconds": 3600,
-  "proxyRequestBuffering": "off",
+  "proxyRequestBuffering": false,
   "proxySendTimeoutSeconds": 3600
 }
 </pre>
@@ -1246,16 +1246,16 @@ string
 		<tr>
 			<td id="ingress--secureDefaults--proxyBuffering"><a href="./values.yaml#L77">ingress.secureDefaults.proxyBuffering</a></td>
 			<td>
-string
+bool
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"off"
+false
 </pre>
 </div>
 			</td>
-			<td>Disable proxy buffering.</td>
+			<td>Enable proxy buffering (`on` when true, `off` when false).</td>
 		</tr>
 		<tr>
 			<td id="ingress--secureDefaults--proxyHttpVersion"><a href="./values.yaml#L81">ingress.secureDefaults.proxyHttpVersion</a></td>
@@ -1288,16 +1288,16 @@ int
 		<tr>
 			<td id="ingress--secureDefaults--proxyRequestBuffering"><a href="./values.yaml#L79">ingress.secureDefaults.proxyRequestBuffering</a></td>
 			<td>
-string
+bool
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"off"
+false
 </pre>
 </div>
 			</td>
-			<td>Disable request buffering.</td>
+			<td>Enable request buffering (`on` when true, `off` when false).</td>
 		</tr>
 		<tr>
 			<td id="ingress--secureDefaults--proxySendTimeoutSeconds"><a href="./values.yaml#L75">ingress.secureDefaults.proxySendTimeoutSeconds</a></td>
@@ -1409,7 +1409,7 @@ false
 			<td>Enable plugin download init container.</td>
 		</tr>
 		<tr>
-			<td id="initContainers--plugins--install"><a href="./values.yaml#L260">initContainers.plugins.install</a></td>
+			<td id="initContainers--plugins--install"><a href="./values.yaml#L268">initContainers.plugins.install</a></td>
 			<td>
 list
 </td>
@@ -1420,7 +1420,13 @@ list
 </pre>
 </div>
 			</td>
-			<td>Plugin URLs downloaded into `/opt/sonarqube/extensions/plugins` before startup.</td>
+			<td>Plugin artifacts downloaded into `/opt/sonarqube/extensions/plugins` before startup. @description Entries can be URL strings or objects with `url` + optional `checksum` (sha256 hex).
+```yaml
+install:
+  - "https://example.com/plugins/foo.jar"
+  - url: "https://example.com/plugins/bar.jar"
+    checksum: "0123456789abcdef..."
+```</td>
 		</tr>
 		<tr>
 			<td id="initContainers--plugins--noCheckCertificate"><a href="./values.yaml#L258">initContainers.plugins.noCheckCertificate</a></td>
@@ -1437,7 +1443,7 @@ false
 			<td>Skip TLS certificate verification during plugin download.</td>
 		</tr>
 		<tr>
-			<td id="initContainers--plugins--resources"><a href="./values.yaml#L262">initContainers.plugins.resources</a></td>
+			<td id="initContainers--plugins--resources"><a href="./values.yaml#L270">initContainers.plugins.resources</a></td>
 			<td>
 object
 </td>
@@ -1465,7 +1471,7 @@ false
 			<td>Enable privileged sysctl init container for Elasticsearch kernel prerequisites. @description Keep disabled unless your nodes are not pre-configured with required kernel values.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L402">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L410">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -1482,7 +1488,7 @@ object
 			<td>CiliumNetworkPolicies dependency toggle.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L332">livenessProbe</a></td>
+			<td id="livenessProbe"><a href="./values.yaml#L340">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -1492,7 +1498,6 @@ object
 {
   "failureThreshold": 3,
   "httpGet": {
-    "path": "/api/system/status",
     "port": "http"
   },
   "initialDelaySeconds": 60,
@@ -1503,6 +1508,20 @@ object
 </div>
 			</td>
 			<td>Liveness probe for SonarQube runtime.</td>
+		</tr>
+		<tr>
+			<td id="livenessProbe--httpGet--port"><a href="./values.yaml#L343">livenessProbe.httpGet.port</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"http"
+</pre>
+</div>
+			</td>
+			<td>Probe path is derived from `sonarqube.webContext` by the chart helper.</td>
 		</tr>
 		<tr>
 			<td id="logsVolume"><a href="./values.yaml#L196">logsVolume</a></td>
@@ -1549,7 +1568,7 @@ string
 			<td>Override release-based naming.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L438">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L446">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -1717,7 +1736,7 @@ string
 			<td>PVC volumeName binding.</td>
 		</tr>
 		<tr>
-			<td id="podAnnotations"><a href="./values.yaml#L432">podAnnotations</a></td>
+			<td id="podAnnotations"><a href="./values.yaml#L440">podAnnotations</a></td>
 			<td>
 object
 </td>
@@ -1731,7 +1750,7 @@ object
 			<td>Pod annotations.</td>
 		</tr>
 		<tr>
-			<td id="podLabels"><a href="./values.yaml#L435">podLabels</a></td>
+			<td id="podLabels"><a href="./values.yaml#L443">podLabels</a></td>
 			<td>
 object
 </td>
@@ -1821,7 +1840,7 @@ list
 			<td>Explicit RBAC rules required when rbac.create=true.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe"><a href="./values.yaml#L342">readinessProbe</a></td>
+			<td id="readinessProbe"><a href="./values.yaml#L350">readinessProbe</a></td>
 			<td>
 object
 </td>
@@ -1831,7 +1850,6 @@ object
 {
   "failureThreshold": 6,
   "httpGet": {
-    "path": "/api/system/status",
     "port": "http"
   },
   "initialDelaySeconds": 30,
@@ -1842,6 +1860,20 @@ object
 </div>
 			</td>
 			<td>Readiness probe for SonarQube runtime.</td>
+		</tr>
+		<tr>
+			<td id="readinessProbe--httpGet--port"><a href="./values.yaml#L353">readinessProbe.httpGet.port</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"http"
+</pre>
+</div>
+			</td>
+			<td>Probe path is derived from `sonarqube.webContext` by the chart helper.</td>
 		</tr>
 		<tr>
 			<td id="replicaCount"><a href="./values.yaml#L3">replicaCount</a></td>
@@ -1858,7 +1890,7 @@ int
 			<td>Number of SonarQube pod replicas. @description SonarQube Server is designed for a single application pod in this chart.</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L352">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L360">resources</a></td>
 			<td>
 object
 </td>
@@ -2277,7 +2309,7 @@ string
 			<td>Web context path exposed by SonarQube. @description Keep `/` unless you intentionally serve SonarQube below a path prefix.</td>
 		</tr>
 		<tr>
-			<td id="startupProbe"><a href="./values.yaml#L322">startupProbe</a></td>
+			<td id="startupProbe"><a href="./values.yaml#L330">startupProbe</a></td>
 			<td>
 object
 </td>
@@ -2287,7 +2319,6 @@ object
 {
   "failureThreshold": 60,
   "httpGet": {
-    "path": "/api/system/status",
     "port": "http"
   },
   "initialDelaySeconds": 20,
@@ -2298,6 +2329,20 @@ object
 </div>
 			</td>
 			<td>Startup probe for SonarQube bootstrap.</td>
+		</tr>
+		<tr>
+			<td id="startupProbe--httpGet--port"><a href="./values.yaml#L333">startupProbe.httpGet.port</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"http"
+</pre>
+</div>
+			</td>
+			<td>Probe path is derived from `sonarqube.webContext` by the chart helper.</td>
 		</tr>
 		<tr>
 			<td id="tmpVolume"><a href="./values.yaml#L191">tmpVolume</a></td>
@@ -2330,7 +2375,7 @@ string
 			<td>Optional size limit.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L441">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L449">tolerations</a></td>
 			<td>
 list
 </td>

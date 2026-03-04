@@ -73,10 +73,10 @@ ingress:
     proxyReadTimeoutSeconds: 3600
     # -- Proxy send timeout in seconds.
     proxySendTimeoutSeconds: 3600
-    # -- Disable proxy buffering.
-    proxyBuffering: "off"
-    # -- Disable request buffering.
-    proxyRequestBuffering: "off"
+    # -- Enable proxy buffering (`on` when true, `off` when false).
+    proxyBuffering: false
+    # -- Enable request buffering (`on` when true, `off` when false).
+    proxyRequestBuffering: false
     # -- HTTP version for proxy upstream.
     proxyHttpVersion: "1.1"
     # -- Maximum accepted request body size.
@@ -256,7 +256,15 @@ initContainers:
       pullPolicy: IfNotPresent
     # -- Skip TLS certificate verification during plugin download.
     noCheckCertificate: false
-    # -- Plugin URLs downloaded into `/opt/sonarqube/extensions/plugins` before startup.
+    # -- Plugin artifacts downloaded into `/opt/sonarqube/extensions/plugins` before startup.
+    # @description Entries can be URL strings or objects with `url` + optional `checksum` (sha256 hex).
+    # @raw
+    # ```yaml
+    # install:
+    #   - "https://example.com/plugins/foo.jar"
+    #   - url: "https://example.com/plugins/bar.jar"
+    #     checksum: "0123456789abcdef..."
+    # ```
     install: []
     # -- Plugin installer resource requests/limits.
     resources: {}
@@ -321,7 +329,7 @@ applyHealthChecks: true
 # -- Startup probe for SonarQube bootstrap.
 startupProbe:
   httpGet:
-    path: /api/system/status
+    # -- Probe path is derived from `sonarqube.webContext` by the chart helper.
     port: http
   initialDelaySeconds: 20
   periodSeconds: 10
@@ -331,7 +339,7 @@ startupProbe:
 # -- Liveness probe for SonarQube runtime.
 livenessProbe:
   httpGet:
-    path: /api/system/status
+    # -- Probe path is derived from `sonarqube.webContext` by the chart helper.
     port: http
   initialDelaySeconds: 60
   periodSeconds: 20
@@ -341,7 +349,7 @@ livenessProbe:
 # -- Readiness probe for SonarQube runtime.
 readinessProbe:
   httpGet:
-    path: /api/system/status
+    # -- Probe path is derived from `sonarqube.webContext` by the chart helper.
     port: http
   initialDelaySeconds: 30
   periodSeconds: 10
