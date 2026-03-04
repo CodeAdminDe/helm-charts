@@ -252,7 +252,7 @@ initContainers:
     enabled: false
     image:
       repository: curlimages/curl
-      tag: "8.13.0"
+      tag: "8.18.0"
       pullPolicy: IfNotPresent
     # -- Skip TLS certificate verification during plugin download.
     noCheckCertificate: false
