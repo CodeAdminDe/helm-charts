@@ -1,10 +1,12 @@
 {{- if .Values.ingress.enabled -}}
 {{- $annotations := dict -}}
 {{- if .Values.ingress.secureDefaults.enabled -}}
+{{- $proxyBuffering := lower (toString .Values.ingress.secureDefaults.proxyBuffering) -}}
+{{- $proxyRequestBuffering := lower (toString .Values.ingress.secureDefaults.proxyRequestBuffering) -}}
 {{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-read-timeout" (printf "%v" .Values.ingress.secureDefaults.proxyReadTimeoutSeconds) -}}
 {{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-send-timeout" (printf "%v" .Values.ingress.secureDefaults.proxySendTimeoutSeconds) -}}
-{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-buffering" (.Values.ingress.secureDefaults.proxyBuffering | toString) -}}
-{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-request-buffering" (.Values.ingress.secureDefaults.proxyRequestBuffering | toString) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-buffering" (ternary "on" "off" (or (eq $proxyBuffering "true") (eq $proxyBuffering "on") (eq $proxyBuffering "1"))) -}}
+{{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-request-buffering" (ternary "on" "off" (or (eq $proxyRequestBuffering "true") (eq $proxyRequestBuffering "on") (eq $proxyRequestBuffering "1"))) -}}
 {{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-http-version" (.Values.ingress.secureDefaults.proxyHttpVersion | toString) -}}
 {{- $_ := set $annotations "nginx.ingress.kubernetes.io/proxy-body-size" (.Values.ingress.secureDefaults.proxyBodySize | toString) -}}
 {{- end -}}

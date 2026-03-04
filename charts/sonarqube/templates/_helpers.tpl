@@ -142,10 +142,13 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{/* Status probe path helper honoring webContext. */}}
 {{- define "sonarqube.statusPath" -}}
 {{- $context := default "/" .Values.sonarqube.webContext -}}
-{{- $trimmed := trimSuffix "/" $context -}}
-{{- if or (eq $trimmed "") (eq $trimmed "/") -}}
+{{- if not (hasPrefix "/" $context) -}}
+{{- $context = printf "/%s" $context -}}
+{{- end -}}
+{{- $normalized := trimSuffix "/" $context -}}
+{{- if or (eq $normalized "") (eq $normalized "/") -}}
 {{- printf "/api/system/status" -}}
 {{- else -}}
-{{- printf "%s/api/system/status" $trimmed -}}
+{{- printf "%s/api/system/status" $normalized -}}
 {{- end -}}
 {{- end }}

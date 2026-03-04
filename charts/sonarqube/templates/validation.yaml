@@ -47,6 +47,16 @@
 {{- fail "initContainers.plugins.enabled=true requires at least one initContainers.plugins.install URL." -}}
 {{- end -}}
 
+{{- range $idx, $plugin := .Values.initContainers.plugins.install -}}
+  {{- if kindIs "map" $plugin -}}
+    {{- if empty (index $plugin "url") -}}
+      {{- fail (printf "initContainers.plugins.install[%d].url must be set when using object entries." $idx) -}}
+    {{- end -}}
+  {{- else if not (kindIs "string" $plugin) -}}
+    {{- fail (printf "initContainers.plugins.install[%d] must be either a URL string or an object with url/checksum." $idx) -}}
+  {{- end -}}
+{{- end -}}
+
 {{- if and .Values.sonarqube.monitoringPasscodeSecret.name (empty .Values.sonarqube.monitoringPasscodeSecret.key) -}}
 {{- fail "sonarqube.monitoringPasscodeSecret.key must be set when sonarqube.monitoringPasscodeSecret.name is provided." -}}
 {{- end -}}
