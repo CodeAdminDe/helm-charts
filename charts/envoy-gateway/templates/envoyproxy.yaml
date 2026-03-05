@@ -1,0 +1,18 @@
+{{- if .Values.bootstrap.envoyProxy.enabled }}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: {{ include "envoy-gateway.bootstrap.envoyProxyName" . }}
+  namespace: {{ include "envoy-gateway.bootstrap.envoyProxyNamespace" . }}
+  labels:
+    {{- include "envoy-gateway.labels" . | nindent 4 }}
+    {{- with .Values.bootstrap.envoyProxy.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.bootstrap.envoyProxy.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- toYaml .Values.bootstrap.envoyProxy.spec | nindent 2 }}
+{{- end }}

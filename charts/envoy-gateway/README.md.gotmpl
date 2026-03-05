@@ -1,0 +1,40 @@
+{{- define "extra.specifics.fromchart.atom.opinionated" -}}
+<hr /><hr />
+
+## Appendix - Chart-specifics
+
+### Upstream behavior and chart scope
+
+* This chart wraps the official Envoy Gateway Helm chart (`gateway-helm`) and keeps upstream compatibility as first priority.
+* The chart does not deploy ingress controllers or external Gateway implementations beyond Envoy Gateway itself.
+* Gateway API CRDs and Envoy Gateway CRDs come from the upstream dependency chart by default.
+* Service defaults remain `ClusterIP` to keep exposure explicit and environment-controlled.
+
+### Bootstrap resources
+
+* The chart can optionally bootstrap:
+  * `GatewayClass` (`bootstrap.gatewayClass.*`)
+  * `EnvoyProxy` (`bootstrap.envoyProxy.*`)
+  * `Gateway` (`bootstrap.gateway.*`)
+* Defaults are wired for a minimal internal baseline:
+  * `GatewayClass` controller: `gateway.envoyproxy.io/gatewayclass-controller`
+  * `EnvoyProxy` provider: Kubernetes
+  * Envoy data-plane service type: `ClusterIP`
+  * `Gateway` listener: HTTP on port `80`
+
+### Migration notes (Ingress NGINX -> Gateway API)
+
+* Keep ingress-nginx and Envoy Gateway in parallel during migration.
+* Create `HTTPRoute` resources per workload and attach them to the new `Gateway`.
+* After route parity is verified, decommission ingress resources and ingress-nginx incrementally.
+
+### Security and operations baseline
+
+* Avoid `LoadBalancer` defaults; expose north-south traffic through platform-specific edge components.
+* Keep CRD upgrades explicit and coordinated with Envoy Gateway upgrades.
+* Prefer environment-specific overrides through values files instead of editing chart templates.
+
+{{- end -}}
+
+{{ template "extra.templates.readme.complexvalues" . }}
+{{ template "extra.specifics.fromchart.atom.opinionated" . }}

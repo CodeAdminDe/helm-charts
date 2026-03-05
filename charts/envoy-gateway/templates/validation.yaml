@@ -1,0 +1,55 @@
+{{- if and (or .Values.bootstrap.gatewayClass.enabled .Values.bootstrap.envoyProxy.enabled .Values.bootstrap.gateway.enabled) (not .Values.envoyGateway.enabled) -}}
+{{- fail "envoyGateway.enabled must be true when bootstrap resources are enabled." -}}
+{{- end -}}
+
+{{- if and .Values.bootstrap.gatewayClass.enabled (empty .Values.bootstrap.gatewayClass.name) -}}
+{{- fail "bootstrap.gatewayClass.name must be set when bootstrap.gatewayClass.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.bootstrap.gatewayClass.enabled .Values.bootstrap.gatewayClass.parametersRef.enabled (empty .Values.bootstrap.gatewayClass.parametersRef.name) -}}
+{{- fail "bootstrap.gatewayClass.parametersRef.name must be set when bootstrap.gatewayClass.parametersRef.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.bootstrap.gatewayClass.enabled .Values.bootstrap.gatewayClass.parametersRef.enabled (empty .Values.bootstrap.gatewayClass.parametersRef.group) -}}
+{{- fail "bootstrap.gatewayClass.parametersRef.group must be set when bootstrap.gatewayClass.parametersRef.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.bootstrap.gatewayClass.enabled .Values.bootstrap.gatewayClass.parametersRef.enabled (empty .Values.bootstrap.gatewayClass.parametersRef.kind) -}}
+{{- fail "bootstrap.gatewayClass.parametersRef.kind must be set when bootstrap.gatewayClass.parametersRef.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.bootstrap.envoyProxy.enabled (empty .Values.bootstrap.envoyProxy.name) -}}
+{{- fail "bootstrap.envoyProxy.name must be set when bootstrap.envoyProxy.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.bootstrap.envoyProxy.enabled (empty .Values.bootstrap.envoyProxy.spec) -}}
+{{- fail "bootstrap.envoyProxy.spec must be set when bootstrap.envoyProxy.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.bootstrap.gateway.enabled (empty .Values.bootstrap.gateway.name) -}}
+{{- fail "bootstrap.gateway.name must be set when bootstrap.gateway.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.bootstrap.gateway.enabled (empty .Values.bootstrap.gateway.gatewayClassName) -}}
+{{- fail "bootstrap.gateway.gatewayClassName must be set when bootstrap.gateway.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.bootstrap.gateway.enabled (empty .Values.bootstrap.gateway.listeners) -}}
+{{- fail "bootstrap.gateway.listeners must contain at least one listener when bootstrap.gateway.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.bootstrap.gateway.enabled .Values.bootstrap.gateway.infrastructure.parametersRef.enabled (empty .Values.bootstrap.gateway.infrastructure.parametersRef.name) -}}
+{{- fail "bootstrap.gateway.infrastructure.parametersRef.name must be set when bootstrap.gateway.infrastructure.parametersRef.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.bootstrap.gateway.enabled .Values.bootstrap.gateway.infrastructure.parametersRef.enabled (empty .Values.bootstrap.gateway.infrastructure.parametersRef.group) -}}
+{{- fail "bootstrap.gateway.infrastructure.parametersRef.group must be set when bootstrap.gateway.infrastructure.parametersRef.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.bootstrap.gateway.enabled .Values.bootstrap.gateway.infrastructure.parametersRef.enabled (empty .Values.bootstrap.gateway.infrastructure.parametersRef.kind) -}}
+{{- fail "bootstrap.gateway.infrastructure.parametersRef.kind must be set when bootstrap.gateway.infrastructure.parametersRef.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.bootstrap.gateway.enabled .Values.bootstrap.gatewayClass.enabled (ne .Values.bootstrap.gateway.gatewayClassName .Values.bootstrap.gatewayClass.name) -}}
+{{- fail "bootstrap.gateway.gatewayClassName must match bootstrap.gatewayClass.name when both resources are enabled." -}}
+{{- end -}}

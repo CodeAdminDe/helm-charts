@@ -1,0 +1,15 @@
+1. Wait for Envoy Gateway control-plane deployment:
+   kubectl wait --timeout=5m -n {{ .Release.Namespace }} deployment/envoy-gateway --for=condition=Available
+
+2. Verify bootstrap resources:
+{{- if .Values.bootstrap.gatewayClass.enabled }}
+   kubectl get gatewayclass {{ include "envoy-gateway.bootstrap.gatewayClassName" . }}
+{{- end }}
+{{- if .Values.bootstrap.gateway.enabled }}
+   kubectl get gateway -n {{ include "envoy-gateway.bootstrap.gatewayNamespace" . }} {{ include "envoy-gateway.bootstrap.gatewayName" . }}
+{{- end }}
+{{- if .Values.bootstrap.envoyProxy.enabled }}
+   kubectl get envoyproxy -n {{ include "envoy-gateway.bootstrap.envoyProxyNamespace" . }} {{ include "envoy-gateway.bootstrap.envoyProxyName" . }}
+{{- end }}
+
+3. Next step: create HTTPRoute/TLSRoute resources in your app namespaces and reference the bootstrap Gateway.
