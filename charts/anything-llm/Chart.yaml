@@ -1,0 +1,37 @@
+apiVersion: v2
+name: anything-llm
+description: A Helm chart for deploying AnythingLLM on Kubernetes.
+type: application
+# renovate: bumpVersion
+version: 0.1.0
+# renovate: image=mintplexlabs/anythingllm
+appVersion: "1.11.1"
+kubeVersion: ">=1.24.0"
+home: https://github.com/CodeAdminDe/helm-charts
+icon: https://raw.githubusercontent.com/Mintplex-Labs/anything-llm/master/frontend/public/favicon.png
+keywords:
+  - anythingllm
+  - anything-llm
+  - ai
+  - llm
+  - rag
+  - cloud-native
+  - helm
+maintainers:
+  - name: Frederic Roggon
+    email: frederic.roggon@codeadmin.de
+    url: https://github.com/CodeAdminDe
+dependencies:
+  - name: libchart-cnps
+    version: 0.2.1
+    repository: https://codeadminde.github.io/helm-charts
+    alias: libchart-cnps
+    condition: libchartCnps.enabled
+annotations:
+  category: AI
+  securityContext: "compatible"
+  images: |
+    - name: anything-llm
+      image: mintplexlabs/anythingllm:1.11.1
+    - name: anything-llm-postgresql-variant
+      image: mintplexlabs/anythingllm:pg
