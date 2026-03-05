@@ -13528,6 +13528,40 @@ entries:
       category: DevSecOps
       images: |
         - name: sonarqube
+          image: sonarqube:26.3.0.120487-community
+      securityContext: compatible
+    apiVersion: v2
+    appVersion: 26.3.0.120487-community
+    created: "2026-03-05T08:20:23.954583451Z"
+    dependencies:
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for deploying SonarQube Server on Kubernetes.
+    digest: 379d102d18c793741f30ae7cad4517dccb24cf2c591abc7c23884243ae1a9b61
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - sonarqube
+    - code-quality
+    - devsecops
+    - static-analysis
+    - helm
+    kubeVersion: '>=1.24.0'
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: sonarqube
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/sonarqube-0.3.0/sonarqube-0.3.0.tgz
+    version: 0.3.0
+  - annotations:
+      category: DevSecOps
+      images: |
+        - name: sonarqube
           image: sonarqube:26.2.0.119303-community
       securityContext: compatible
     apiVersion: v2
@@ -13931,4 +13965,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-04T21:39:46.04987877Z"
+generated: "2026-03-05T08:20:23.955115293Z"
