@@ -30,7 +30,7 @@ The following charts are currently available:
 | agent-zero | 0.1.3 | v0.9.8.2 | A Helm chart for deploying Agent Zero (AI Operating System) on Kubernetes. |
 | bind9-hidden-primary | 0.4.3 | 9.20 | A Helm chart for bind9 to use as hidden primary, based on the offical Docker Image by InternetSystemsConsortium (ISC) |
 | coturn-server | 0.4.0 | 4.9.0 | A Helm chart for an easier coturn deployment at kubernetes. |
-| garage | 0.1.0 | v2.2.0 | A Helm chart for an easier Garage (https://garagehq.deuxfleurs.fr) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with Garage or its authors. |
+| garage | 0.1.1 | v2.2.0 | A Helm chart for an easier Garage (https://garagehq.deuxfleurs.fr) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with Garage or its authors. |
 | headscale | 0.1.1 | 0.28.0 | A Helm chart for an easier headscale (https://headscale.net) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with headscale or its authors. |
 | kasm-agent | 0.1.0 | 1.18.1 | A Helm chart for deploying a Kasm agent workload in Kubernetes (advanced/unsupported static-agent model). |
 | kasm-ws | 0.1.0 | 1.18.1 | A Helm chart for an easier Kasm Workspaces (https://kasm.com) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with Kasm Technologies, Inc. or its authors. |
