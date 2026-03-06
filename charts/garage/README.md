@@ -293,7 +293,7 @@ object
 {
   "additionalTopLevelConfig": "",
   "admin": {
-    "apiBindAddr": "0.0.0.0:3903",
+    "apiBindAddr": "[::]:3903",
     "enabled": true,
     "metricsRequireToken": true,
     "traceSink": ""
@@ -359,7 +359,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"0.0.0.0:3903"
+"[::]:3903"
 </pre>
 </div>
 			</td>
