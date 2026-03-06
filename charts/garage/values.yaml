@@ -351,7 +351,7 @@ garage:
     # -- Enable Garage admin endpoint section.
     enabled: true
     # -- Admin API bind address.
-    apiBindAddr: "0.0.0.0:3903"
+    apiBindAddr: "[::]:3903"
     # -- Require token auth for `/metrics` endpoint.
     metricsRequireToken: true
     # -- Optional OpenTelemetry trace sink endpoint.
