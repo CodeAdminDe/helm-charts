@@ -265,7 +265,7 @@ persistence:
     # -- StatefulSet PVC retention when the StatefulSet is deleted (Delete / Retain).
     whenDeleted: Delete
     # -- StatefulSet PVC retention when replicas are scaled down (Delete / Retain).
-    whenScaled: Delete
+    whenScaled: Retain
   meta:
     # -- PVC size for metadata volume.
     size: 10Gi
