@@ -1183,7 +1183,7 @@ object
   },
   "pvcRetentionPolicy": {
     "whenDeleted": "Delete",
-    "whenScaled": "Delete"
+    "whenScaled": "Retain"
   },
   "tmp": {
     "emptyDirSizeLimit": "512Mi"
@@ -1346,7 +1346,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"Delete"
+"Retain"
 </pre>
 </div>
 			</td>
