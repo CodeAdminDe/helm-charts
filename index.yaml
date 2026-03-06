@@ -1272,6 +1272,44 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/coturn-server-0.1.0/coturn-server-0.1.0.tgz
     version: 0.1.0
+  garage:
+  - annotations:
+      category: Storage
+      images: |
+        - name: garage
+          image: dxflrs/garage:v2.2.0
+      kubeVersion: '>=1.24.0'
+      securityContext: required
+    apiVersion: v2
+    appVersion: v2.2.0
+    created: "2026-03-06T02:08:11.029589661Z"
+    dependencies:
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for an easier Garage (https://garagehq.deuxfleurs.fr)
+      deployment on Kubernetes. Please note that this is a private helm chart and
+      not directly or indirectly affiliated with Garage or its authors.
+    digest: 39548df4cfcc7c6ff8cb9ee88c705b45cf0ecfdf05892cc3ee02ad8e5fdc1946
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - garage
+    - s3
+    - object-storage
+    - storage
+    - cloud-native
+    - helm
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: garage
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/garage-0.1.0/garage-0.1.0.tgz
+    version: 0.1.0
   headscale:
   - annotations:
       category: Networking
@@ -14001,4 +14039,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-05T09:02:22.82248842Z"
+generated: "2026-03-06T02:08:11.03022712Z"
