@@ -227,6 +227,11 @@ database:
       name: ""
       # -- Secret key containing PostgreSQL password.
       key: password
+    connectionStringSecret:
+      # -- Existing secret name containing full PostgreSQL connection string.
+      name: ""
+      # -- Secret key containing full PostgreSQL connection string.
+      key: connectionString
     # -- Optional PGVector table override.
     pgVectorTable: ""
   useCnpgCluster:
@@ -245,6 +250,8 @@ database:
       username: user
       # -- Key for password in app secret.
       password: password
+      # -- Key for full connection string in app secret.
+      connectionString: uri
 
 # -- Optional command override.
 command: []
