@@ -1,0 +1,9 @@
+Mastodon chart rendered successfully.
+
+Important follow-ups:
+1. Ensure `upstream.mastodon.secrets.existingSecret` exists with required keys.
+2. Ensure `upstream.postgresql.existingSecret` and `upstream.postgresql.hostname` point to your DB (CNPG defaults are preconfigured).
+3. If you changed redis naming, also update `upstream.redis.hostname` and `upstream.redis.existingSecret`.
+
+Web service:
+  {{ include "mastodon.upstreamWebServiceName" . }}.{{ .Release.Namespace }}.svc.cluster.local:{{ default 3000 .Values.upstream.mastodon.web.port }}

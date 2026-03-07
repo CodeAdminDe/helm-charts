@@ -1,0 +1,151 @@
+{{- if not .Values.upstream.enabled -}}
+{{- fail "upstream.enabled=false is not supported in this wrapper chart. Enable upstream Mastodon rendering." -}}
+{{- end -}}
+
+{{- if ne .Values.upstream.service.type "ClusterIP" -}}
+{{- fail "upstream.service.type must be ClusterIP in this repo style. Expose externally via ingress/httpRoute resources." -}}
+{{- end -}}
+
+{{- if and .Values.upstream.ingress.enabled (not .Values.upstream.ingress.hosts) -}}
+{{- fail "upstream.ingress.enabled=true requires at least one upstream.ingress.hosts entry." -}}
+{{- end -}}
+
+{{- if and .Values.upstream.ingress.enabled .Values.upstream.ingress.streaming.enabled (not .Values.upstream.ingress.streaming.hosts) -}}
+{{- fail "upstream.ingress.streaming.enabled=true requires at least one upstream.ingress.streaming.hosts entry." -}}
+{{- end -}}
+
+{{- if .Values.upstream.httproute.enabled -}}
+  {{- if not .Values.upstream.httproute.parentRefs -}}
+    {{- fail "upstream.httproute.enabled=true requires at least one upstream.httproute.parentRefs entry." -}}
+  {{- end -}}
+  {{- if not .Values.upstream.httproute.hostnames -}}
+    {{- fail "upstream.httproute.enabled=true requires at least one upstream.httproute.hostnames entry." -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if empty .Values.upstream.mastodon.localDomain -}}
+{{- fail "upstream.mastodon.localDomain must be set." -}}
+{{- end -}}
+
+{{- if empty .Values.upstream.mastodon.secrets.existingSecret -}}
+{{- fail "upstream.mastodon.secrets.existingSecret must be set. Do not provide Mastodon app secrets as plaintext values." -}}
+{{- end -}}
+
+{{- if empty .Values.upstream.mastodon.secrets.existingSecretKeys.secretKeyBase -}}
+{{- fail "upstream.mastodon.secrets.existingSecretKeys.secretKeyBase must be set." -}}
+{{- end -}}
+{{- if empty .Values.upstream.mastodon.secrets.existingSecretKeys.vapidPrivateKey -}}
+{{- fail "upstream.mastodon.secrets.existingSecretKeys.vapidPrivateKey must be set." -}}
+{{- end -}}
+{{- if empty .Values.upstream.mastodon.secrets.existingSecretKeys.vapidPublicKey -}}
+{{- fail "upstream.mastodon.secrets.existingSecretKeys.vapidPublicKey must be set." -}}
+{{- end -}}
+{{- if empty .Values.upstream.mastodon.secrets.existingSecretKeys.arePrimaryKey -}}
+{{- fail "upstream.mastodon.secrets.existingSecretKeys.arePrimaryKey must be set." -}}
+{{- end -}}
+{{- if empty .Values.upstream.mastodon.secrets.existingSecretKeys.areDeterministicKey -}}
+{{- fail "upstream.mastodon.secrets.existingSecretKeys.areDeterministicKey must be set." -}}
+{{- end -}}
+{{- if empty .Values.upstream.mastodon.secrets.existingSecretKeys.areKeyDerivationSalt -}}
+{{- fail "upstream.mastodon.secrets.existingSecretKeys.areKeyDerivationSalt must be set." -}}
+{{- end -}}
+
+{{- if not (empty .Values.upstream.mastodon.secrets.secretKeyBase) -}}
+{{- fail "Do not set upstream.mastodon.secrets.secretKeyBase in values. Use upstream.mastodon.secrets.existingSecret instead." -}}
+{{- end -}}
+{{- if not (empty .Values.upstream.mastodon.secrets.vapidPrivateKey) -}}
+{{- fail "Do not set upstream.mastodon.secrets.vapidPrivateKey in values. Use upstream.mastodon.secrets.existingSecret instead." -}}
+{{- end -}}
+{{- if not (empty .Values.upstream.mastodon.secrets.vapidPublicKey) -}}
+{{- fail "Do not set upstream.mastodon.secrets.vapidPublicKey in values. Use upstream.mastodon.secrets.existingSecret instead." -}}
+{{- end -}}
+{{- if not (empty .Values.upstream.mastodon.secrets.arePrimaryKey) -}}
+{{- fail "Do not set upstream.mastodon.secrets.arePrimaryKey in values. Use upstream.mastodon.secrets.existingSecret instead." -}}
+{{- end -}}
+{{- if not (empty .Values.upstream.mastodon.secrets.areDeterministicKey) -}}
+{{- fail "Do not set upstream.mastodon.secrets.areDeterministicKey in values. Use upstream.mastodon.secrets.existingSecret instead." -}}
+{{- end -}}
+{{- if not (empty .Values.upstream.mastodon.secrets.areKeyDerivationSalt) -}}
+{{- fail "Do not set upstream.mastodon.secrets.areKeyDerivationSalt in values. Use upstream.mastodon.secrets.existingSecret instead." -}}
+{{- end -}}
+
+{{- if empty .Values.upstream.mastodon.s3.hostname -}}
+{{- fail "upstream.mastodon.s3.hostname must be set." -}}
+{{- end -}}
+{{- if empty .Values.upstream.mastodon.s3.endpoint -}}
+{{- fail "upstream.mastodon.s3.endpoint must be set." -}}
+{{- end -}}
+{{- if empty .Values.upstream.mastodon.s3.bucket -}}
+{{- fail "upstream.mastodon.s3.bucket must be set." -}}
+{{- end -}}
+{{- if empty .Values.upstream.mastodon.s3.existingSecret -}}
+{{- fail "upstream.mastodon.s3.existingSecret must be set. Use existing secrets instead of plaintext S3 credentials." -}}
+{{- end -}}
+{{- if empty .Values.upstream.mastodon.s3.existingSecretKeys.accessKeyId -}}
+{{- fail "upstream.mastodon.s3.existingSecretKeys.accessKeyId must be set." -}}
+{{- end -}}
+{{- if empty .Values.upstream.mastodon.s3.existingSecretKeys.secretAccessKey -}}
+{{- fail "upstream.mastodon.s3.existingSecretKeys.secretAccessKey must be set." -}}
+{{- end -}}
+{{- if not (empty .Values.upstream.mastodon.s3.accessKeyId) -}}
+{{- fail "Do not set upstream.mastodon.s3.accessKeyId in values. Use upstream.mastodon.s3.existingSecret instead." -}}
+{{- end -}}
+{{- if not (empty .Values.upstream.mastodon.s3.secretAccessKey) -}}
+{{- fail "Do not set upstream.mastodon.s3.secretAccessKey in values. Use upstream.mastodon.s3.existingSecret instead." -}}
+{{- end -}}
+
+{{- if empty .Values.upstream.mastodon.smtp.existingSecret -}}
+{{- fail "upstream.mastodon.smtp.existingSecret must be set. Use existing secrets instead of plaintext SMTP credentials." -}}
+{{- end -}}
+{{- if empty .Values.upstream.mastodon.smtp.existingSecretKeys.username -}}
+{{- fail "upstream.mastodon.smtp.existingSecretKeys.username must be set." -}}
+{{- end -}}
+{{- if empty .Values.upstream.mastodon.smtp.existingSecretKeys.password -}}
+{{- fail "upstream.mastodon.smtp.existingSecretKeys.password must be set." -}}
+{{- end -}}
+{{- if not (empty .Values.upstream.mastodon.smtp.username) -}}
+{{- fail "Do not set upstream.mastodon.smtp.username in values. Use upstream.mastodon.smtp.existingSecret instead." -}}
+{{- end -}}
+{{- if not (empty .Values.upstream.mastodon.smtp.password) -}}
+{{- fail "Do not set upstream.mastodon.smtp.password in values. Use upstream.mastodon.smtp.existingSecret instead." -}}
+{{- end -}}
+
+{{- if empty .Values.upstream.postgresql.hostname -}}
+{{- fail "upstream.postgresql.hostname must be set." -}}
+{{- end -}}
+{{- if empty .Values.upstream.postgresql.database -}}
+{{- fail "upstream.postgresql.database must be set." -}}
+{{- end -}}
+{{- if empty .Values.upstream.postgresql.existingSecret -}}
+{{- fail "upstream.postgresql.existingSecret must be set. Use existing secrets instead of plaintext DB credentials." -}}
+{{- end -}}
+{{- if empty .Values.upstream.postgresql.existingSecretKeys.username -}}
+{{- fail "upstream.postgresql.existingSecretKeys.username must be set." -}}
+{{- end -}}
+{{- if empty .Values.upstream.postgresql.existingSecretKeys.password -}}
+{{- fail "upstream.postgresql.existingSecretKeys.password must be set." -}}
+{{- end -}}
+{{- if not (empty .Values.upstream.postgresql.password) -}}
+{{- fail "Do not set upstream.postgresql.password in values. Use upstream.postgresql.existingSecret instead." -}}
+{{- end -}}
+
+{{- if empty .Values.upstream.redis.hostname -}}
+{{- fail "upstream.redis.hostname must be set." -}}
+{{- end -}}
+{{- if empty .Values.upstream.redis.existingSecret -}}
+{{- fail "upstream.redis.existingSecret must be set. Use existing secrets instead of plaintext Redis credentials." -}}
+{{- end -}}
+{{- if empty .Values.upstream.redis.existingSecretKeys.password -}}
+{{- fail "upstream.redis.existingSecretKeys.password must be set." -}}
+{{- end -}}
+{{- if not (empty .Values.upstream.redis.password) -}}
+{{- fail "Do not set upstream.redis.password in values. Use upstream.redis.existingSecret instead." -}}
+{{- end -}}
+
+{{- if and .Values.libchartCnps.includeCnpgPolicies (not .Values.libchartCnps.enabled) -}}
+{{- fail "libchartCnps.includeCnpgPolicies=true requires libchartCnps.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.redis.enabled (empty .Values.redis.fullnameOverride) -}}
+{{- fail "redis.enabled=true requires redis.fullnameOverride to be set for deterministic upstream redis hostname/secret wiring in this wrapper chart." -}}
+{{- end -}}
