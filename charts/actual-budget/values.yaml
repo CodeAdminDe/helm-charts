@@ -1,0 +1,220 @@
+# -- Number of application pod replicas.
+# @description Actual Budget is strictly a single-instance database app.
+replicaCount: 1
+
+# -- Override release-based naming.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- Container image configuration.
+image:
+  # -- Image repository.
+  repository: actualbudget/actual-server
+  # -- Image pull policy.
+  pullPolicy: IfNotPresent
+  # -- Image tag override (defaults to .Chart.AppVersion when empty).
+  tag: ""
+
+# -- Image pull secrets (for private registries).
+imagePullSecrets: []
+
+# -- Kubernetes Service configuration.
+service:
+  # -- Service type. This scaffold enforces ClusterIP via validation.yaml.
+  type: ClusterIP
+  # -- Service port.
+  port: 80
+  # -- Target container port.
+  targetPort: 5006
+  # -- Service protocol.
+  targetProtocol: TCP
+  # -- Service annotations.
+  annotations: {}
+
+# -- Ingress configuration.
+ingress:
+  # -- Enable ingress resource creation.
+  enabled: false
+  # -- Ingress class name.
+  className: ""
+  # -- Additional ingress annotations.
+  annotations: {}
+  # -- Secure-by-default ingress annotation baseline.
+  # @description Merged first; ingress.annotations overrides duplicate keys.
+  secureDefaults:
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+      nginx.ingress.kubernetes.io/proxy-buffering: "off"
+      nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+      nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+  # -- Host/path rules.
+  hosts:
+    - host: actual.example.local
+      paths:
+        - path: /
+          pathType: Prefix
+  # -- TLS host/secret blocks.
+  tls: []
+
+# -- Create service account.
+serviceAccount:
+  create: true
+  # -- ServiceAccount annotations.
+  annotations: {}
+  # -- ServiceAccount name override.
+  name: ""
+  # -- Automount SA token.
+  automountServiceAccountToken: false
+
+# -- RBAC settings.
+rbac:
+  # -- Create namespace-scoped role + rolebinding.
+  create: false
+  # -- Namespace override for RBAC objects. Empty means release namespace.
+  namespace: ""
+  # -- Custom RBAC rules. If empty, template default rules are used.
+  rules: []
+
+# -- Apply default pod/container security settings.
+applySecurity: true
+
+# -- Apply health checks from values.
+applyHealthChecks: true
+
+# -- Pod-level security context for workload pods.
+podSecurityContext:
+  fsGroup: 1000
+
+# -- Container-level security context for workload containers.
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- Persistence configuration (Blueprint B)
+persistence:
+  # -- Enable persistent volume claim.
+  enabled: true
+  # -- Retain the PVC upon `helm uninstall`.
+  retain: true
+  # -- Existing claim name override.
+  existingClaim: ""
+  # -- Storage class name.
+  storageClass: ""
+  # -- Access mode.
+  accessModes:
+    - ReadWriteOnce
+  # -- Volume size.
+  size: 2Gi
+  # -- Annotations for the PVC.
+  annotations: {}
+  # -- Explicit volume name override (optional).
+  volumeName: ""
+
+# -- Liveness probe.
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+# -- Readiness probe.
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+# -- Resource requests/limits.
+resources: {}
+
+# -- HorizontalPodAutoscaler configuration.
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+
+# -- RuntimeClass names.
+runtimeClass:
+  pods: ""
+  tests: ""
+
+# -- Extra environment variables.
+env:
+  ACTUAL_PORT: "5006"
+  ACTUAL_DATA_DIR: "/data"
+  # For file uploads requiring larger limits.
+  ACTUAL_UPLOAD_FILE_SIZE_LIMIT: "20mb"
+
+# -- Additional env vars from existing secrets.
+# @description Map ENV_KEY to secret name containing the same key.
+additionalEnvSecrets: {}
+
+# -- Optional database integration settings.
+database:
+  # -- Enable database-related env wiring for the app.
+  enabled: false
+  # -- Standalone database host config.
+  standalone:
+    host: ""
+    port: 5432
+    name: ""
+    user: ""
+    passwordSecret:
+      name: ""
+      key: "password"
+  # -- Optional CNPG integration.
+  useCnpgCluster:
+    enabled: false
+    clusterName: "cnpg-cluster"
+    appConnectionSecretName: ""
+    secretKeys:
+      database: "dbname"
+      username: "user"
+      password: "password"
+
+# -- CiliumNetworkPolicies dependency toggle.
+libchartCnps:
+  enabled: false
+  includeCnpgPolicies: false
+
+# -- App-specific CiliumNetworkPolicies settings.
+cnps:
+  appTraffic:
+    ingress:
+      allow: true
+      matchLabels: {}
+    egress:
+      allow: true
+      toEntities: []
+
+# -- Pod annotations.
+podAnnotations: {}
+
+# -- Pod labels.
+podLabels: {}
+
+# -- Workload node selector.
+nodeSelector: {}
+
+# -- Workload tolerations.
+tolerations: []
+
+# -- Workload affinity.
+affinity: {}

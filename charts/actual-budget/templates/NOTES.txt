@@ -1,0 +1,11 @@
+1. Access the application inside the cluster:
+   kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "actual-budget.fullname" . }} {{ .Values.service.port }}:{{ .Values.service.port }}
+
+2. If ingress is enabled, use one of the configured hosts:
+   {{- if .Values.ingress.enabled }}
+   {{- range .Values.ingress.hosts }}
+   - {{ .host }}
+   {{- end }}
+   {{- else }}
+   ingress disabled
+   {{- end }}
