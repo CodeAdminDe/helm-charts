@@ -161,6 +161,46 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/agent-zero-0.1.0/agent-zero-0.1.0.tgz
     version: 0.1.0
+  anything-llm:
+  - annotations:
+      category: AI
+      images: |
+        - name: anything-llm
+          image: mintplexlabs/anythingllm:1.11.1
+        - name: anything-llm-postgresql-variant
+          image: mintplexlabs/anythingllm:pg-1.11.1
+      securityContext: compatible
+    apiVersion: v2
+    appVersion: 1.11.1
+    created: "2026-03-07T23:28:08.143740814Z"
+    dependencies:
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for deploying AnythingLLM on Kubernetes.
+    digest: ba51353c3a4f65f940173e8e540a18e4b99883736ae74a8cc89bc14b83741762
+    home: https://github.com/CodeAdminDe/helm-charts
+    icon: https://raw.githubusercontent.com/Mintplex-Labs/anything-llm/master/frontend/public/favicon.png
+    keywords:
+    - anythingllm
+    - anything-llm
+    - ai
+    - llm
+    - rag
+    - cloud-native
+    - helm
+    kubeVersion: '>=1.24.0'
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: anything-llm
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/anything-llm-0.1.0/anything-llm-0.1.0.tgz
+    version: 0.1.0
   bind9-hidden-primary:
   - apiVersion: v2
     appVersion: "9.20"
@@ -1714,6 +1754,58 @@ entries:
     type: application
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/local-recall-0.1.0/local-recall-0.1.0.tgz
+    version: 0.1.0
+  mastodon:
+  - annotations:
+      category: Social
+      images: |
+        - name: mastodon
+          image: ghcr.io/mastodon/mastodon:v4.5.3
+        - name: mastodon-streaming
+          image: ghcr.io/mastodon/mastodon-streaming:v4.5.3
+        - name: redis
+          image: library/redis:8.6.1
+      securityContext: compatible
+    apiVersion: v2
+    appVersion: v4.5.3
+    created: "2026-03-07T23:28:08.28074887Z"
+    dependencies:
+    - alias: upstream
+      condition: upstream.enabled
+      name: mastodon
+      repository: https://mastodon.github.io/helm-charts
+      version: 0.3.0
+    - alias: redis
+      condition: redis.enabled
+      name: redis
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.4.1
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for deploying Mastodon on Kubernetes with repo-aligned
+      secure defaults and integrations.
+    digest: 6015872864ce5b448056207e29f01abc6d2bbe36ce1ce40bda0a5d4d91342d63
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - mastodon
+    - activitypub
+    - social
+    - redis
+    - postgresql
+    - cnpg
+    - helm
+    kubeVersion: '>=1.24.0'
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: mastodon
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/mastodon-0.1.0/mastodon-0.1.0.tgz
     version: 0.1.0
   netbird-agent:
   - annotations:
@@ -14150,4 +14242,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-07T19:44:56.373131146Z"
+generated: "2026-03-07T23:28:08.281311169Z"
