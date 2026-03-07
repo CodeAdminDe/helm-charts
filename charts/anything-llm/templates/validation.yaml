@@ -107,6 +107,9 @@
 
 {{- if kindIs "slice" .Values.additionalEnvSecrets -}}
   {{- range $entry := .Values.additionalEnvSecrets -}}
+    {{- if not (kindIs "map" $entry) -}}
+      {{- fail "additionalEnvSecrets list entries must be objects (maps)." -}}
+    {{- end -}}
     {{- $name := default "" (index $entry "name") -}}
     {{- $secretName := default "" (index $entry "secretName") -}}
     {{- if or (empty $name) (empty $secretName) -}}
@@ -125,9 +128,10 @@
         {{- fail (printf "additionalEnvSecrets[%s] must reference a non-empty secret name." $envName) -}}
       {{- end -}}
     {{- else if kindIs "map" $secretConfig -}}
+      {{- $name := default $envName (index $secretConfig "name") -}}
       {{- $secretName := default "" (index $secretConfig "secretName") -}}
-      {{- if empty $secretName -}}
-        {{- fail (printf "additionalEnvSecrets[%s].secretName must be set for map-form entries." $envName) -}}
+      {{- if or (empty $name) (empty $secretName) -}}
+        {{- fail (printf "additionalEnvSecrets[%s] map-form entries must resolve to a valid name and secretName." $envName) -}}
       {{- end -}}
     {{- else -}}
       {{- fail (printf "additionalEnvSecrets[%s] must be either a secret name string or an object." $envName) -}}

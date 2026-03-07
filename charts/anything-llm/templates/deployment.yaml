@@ -4,7 +4,11 @@
 {{- $securityContext := deepCopy .Values.securityContext -}}
 {{- if .Values.anythingllm.security.enableSysAdminCapability -}}
 {{- $caps := default (dict) $securityContext.capabilities -}}
-{{- $_ := set $caps "add" (list "SYS_ADMIN") -}}
+{{- $add := default (list) $caps.add -}}
+{{- if not (has "SYS_ADMIN" $add) -}}
+{{- $add = append $add "SYS_ADMIN" -}}
+{{- end -}}
+{{- $_ := set $caps "add" $add -}}
 {{- $_ := set $securityContext "capabilities" $caps -}}
 {{- end -}}
 apiVersion: apps/v1
