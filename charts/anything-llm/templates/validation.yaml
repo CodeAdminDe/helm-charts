@@ -86,6 +86,9 @@
     {{- if empty .Values.database.useCnpgCluster.secretKeys.password -}}
       {{- fail "database.useCnpgCluster.secretKeys.password is required when CNPG integration is enabled." -}}
     {{- end -}}
+    {{- if empty .Values.database.useCnpgCluster.secretKeys.connectionString -}}
+      {{- fail "database.useCnpgCluster.secretKeys.connectionString is required when CNPG integration is enabled." -}}
+    {{- end -}}
   {{- else -}}
     {{- if empty .Values.database.postgres.host -}}
       {{- fail "database.postgres.host must be set when database.mode=postgres and CNPG mode is disabled." -}}
@@ -101,6 +104,12 @@
     {{- end -}}
     {{- if empty .Values.database.postgres.passwordSecret.key -}}
       {{- fail "database.postgres.passwordSecret.key must be set when database.mode=postgres and CNPG mode is disabled." -}}
+    {{- end -}}
+    {{- if empty .Values.database.postgres.connectionStringSecret.name -}}
+      {{- fail "database.postgres.connectionStringSecret.name must be set when database.mode=postgres and CNPG mode is disabled." -}}
+    {{- end -}}
+    {{- if empty .Values.database.postgres.connectionStringSecret.key -}}
+      {{- fail "database.postgres.connectionStringSecret.key must be set when database.mode=postgres and CNPG mode is disabled." -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}

@@ -9,6 +9,7 @@ metadata:
     "helm.sh/hook": test
 spec:
   activeDeadlineSeconds: 60
+  automountServiceAccountToken: false
   {{- if .Values.runtimeClass.tests }}
   runtimeClassName: {{ .Values.runtimeClass.tests }}
   {{- end }}

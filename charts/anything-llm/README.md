@@ -96,7 +96,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="additionalEnvSecrets"><a href="./values.yaml#L273">additionalEnvSecrets</a></td>
+			<td id="additionalEnvSecrets"><a href="./values.yaml#L280">additionalEnvSecrets</a></td>
 			<td>
 object
 </td>
@@ -122,7 +122,7 @@ additionalEnvSecrets:
 ```</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L374">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L381">affinity</a></td>
 			<td>
 object
 </td>
@@ -319,7 +319,7 @@ string
 			<td>Whisper provider (`WHISPER_PROVIDER`).</td>
 		</tr>
 		<tr>
-			<td id="applyHealthChecks"><a href="./values.yaml#L288">applyHealthChecks</a></td>
+			<td id="applyHealthChecks"><a href="./values.yaml#L295">applyHealthChecks</a></td>
 			<td>
 bool
 </td>
@@ -333,7 +333,7 @@ true
 			<td>Enable liveness/readiness/startup probes.</td>
 		</tr>
 		<tr>
-			<td id="args"><a href="./values.yaml#L253">args</a></td>
+			<td id="args"><a href="./values.yaml#L260">args</a></td>
 			<td>
 list
 </td>
@@ -377,7 +377,7 @@ false
 			<td>Enable auth token protection (`AUTH_TOKEN`) for remote/cloud exposure.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L347">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L354">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -398,7 +398,7 @@ object
 			<td>HorizontalPodAutoscaler configuration.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--enableMemoryUtilization"><a href="./values.yaml#L357">autoscaling.enableMemoryUtilization</a></td>
+			<td id="autoscaling--enableMemoryUtilization"><a href="./values.yaml#L364">autoscaling.enableMemoryUtilization</a></td>
 			<td>
 bool
 </td>
@@ -412,7 +412,7 @@ false
 			<td>Enable memory utilization metric.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--enabled"><a href="./values.yaml#L349">autoscaling.enabled</a></td>
+			<td id="autoscaling--enabled"><a href="./values.yaml#L356">autoscaling.enabled</a></td>
 			<td>
 bool
 </td>
@@ -426,7 +426,7 @@ false
 			<td>Enable autoscaling.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--maxReplicas"><a href="./values.yaml#L353">autoscaling.maxReplicas</a></td>
+			<td id="autoscaling--maxReplicas"><a href="./values.yaml#L360">autoscaling.maxReplicas</a></td>
 			<td>
 int
 </td>
@@ -440,7 +440,7 @@ int
 			<td>Maximum replicas.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--minReplicas"><a href="./values.yaml#L351">autoscaling.minReplicas</a></td>
+			<td id="autoscaling--minReplicas"><a href="./values.yaml#L358">autoscaling.minReplicas</a></td>
 			<td>
 int
 </td>
@@ -454,7 +454,7 @@ int
 			<td>Minimum replicas.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--targetCPUUtilizationPercentage"><a href="./values.yaml#L355">autoscaling.targetCPUUtilizationPercentage</a></td>
+			<td id="autoscaling--targetCPUUtilizationPercentage"><a href="./values.yaml#L362">autoscaling.targetCPUUtilizationPercentage</a></td>
 			<td>
 int
 </td>
@@ -468,7 +468,7 @@ int
 			<td>Target CPU utilization percentage.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--targetMemoryUtilizationPercentage"><a href="./values.yaml#L359">autoscaling.targetMemoryUtilizationPercentage</a></td>
+			<td id="autoscaling--targetMemoryUtilizationPercentage"><a href="./values.yaml#L366">autoscaling.targetMemoryUtilizationPercentage</a></td>
 			<td>
 int
 </td>
@@ -482,7 +482,7 @@ int
 			<td>Target memory utilization percentage.</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L384">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L391">cnps</a></td>
 			<td>
 object
 </td>
@@ -524,7 +524,7 @@ object
 			<td>App-specific Cilium policy settings.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L400">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L407">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -538,7 +538,7 @@ true
 			<td>Allow egress traffic from app pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L402">cnps.appTraffic.egress.toEntities</a></td>
+			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L409">cnps.appTraffic.egress.toEntities</a></td>
 			<td>
 list
 </td>
@@ -555,7 +555,7 @@ list
 			<td>Optional destination entities.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L407">cnps.appTraffic.egress.toPorts</a></td>
+			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L414">cnps.appTraffic.egress.toPorts</a></td>
 			<td>
 list
 </td>
@@ -578,7 +578,7 @@ list
 			<td>DNS (53/UDP) is already covered by the namespace-wide libchart policy.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L392">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L399">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -592,7 +592,7 @@ true
 			<td>Allow ingress traffic to app pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L395">cnps.appTraffic.ingress.fromEndpoints</a></td>
+			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L402">cnps.appTraffic.ingress.fromEndpoints</a></td>
 			<td>
 list
 </td>
@@ -606,7 +606,7 @@ list
 			<td>Allowed ingress endpoint label sets. @description Leave empty to use conditional defaults from template logic: ingress-nginx labels when ingress.enabled=true, gatewayApi.controllerSelector labels when gatewayApi.enabled=true, or both when both are enabled.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L397">cnps.appTraffic.ingress.fromEntities</a></td>
+			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L404">cnps.appTraffic.ingress.fromEntities</a></td>
 			<td>
 list
 </td>
@@ -620,7 +620,7 @@ list
 			<td>Optional allowed ingress entities.</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L386">cnps.cnpgTraffic</a></td>
+			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L393">cnps.cnpgTraffic</a></td>
 			<td>
 object
 </td>
@@ -636,7 +636,7 @@ object
 			<td>Additional CNPG Cilium policy tuning used by libchart-cnps when includeCnpgPolicies=true.</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L388">cnps.cnpgTraffic.instanceExtraEgress</a></td>
+			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L395">cnps.cnpgTraffic.instanceExtraEgress</a></td>
 			<td>
 list
 </td>
@@ -650,7 +650,7 @@ list
 			<td>Extra egress rules appended to CNPG instance policy set.</td>
 		</tr>
 		<tr>
-			<td id="command"><a href="./values.yaml#L250">command</a></td>
+			<td id="command"><a href="./values.yaml#L257">command</a></td>
 			<td>
 list
 </td>
@@ -674,6 +674,10 @@ object
 {
   "mode": "sqlite",
   "postgres": {
+    "connectionStringSecret": {
+      "key": "connectionString",
+      "name": ""
+    },
     "database": "anythingllm",
     "host": "",
     "passwordSecret": {
@@ -691,6 +695,7 @@ object
     "enabled": false,
     "port": 5432,
     "secretKeys": {
+      "connectionString": "uri",
       "database": "dbname",
       "password": "password",
       "username": "user"
@@ -715,6 +720,34 @@ string
 </div>
 			</td>
 			<td>Database mode. @description Supported values: `sqlite`, `postgres`.</td>
+		</tr>
+		<tr>
+			<td id="database--postgres--connectionStringSecret--key"><a href="./values.yaml#L234">database.postgres.connectionStringSecret.key</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"connectionString"
+</pre>
+</div>
+			</td>
+			<td>Secret key containing full PostgreSQL connection string.</td>
+		</tr>
+		<tr>
+			<td id="database--postgres--connectionStringSecret--name"><a href="./values.yaml#L232">database.postgres.connectionStringSecret.name</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Existing secret name containing full PostgreSQL connection string.</td>
 		</tr>
 		<tr>
 			<td id="database--postgres--database"><a href="./values.yaml#L219">database.postgres.database</a></td>
@@ -773,7 +806,7 @@ string
 			<td>Existing secret name containing PostgreSQL password.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--pgVectorTable"><a href="./values.yaml#L231">database.postgres.pgVectorTable</a></td>
+			<td id="database--postgres--pgVectorTable"><a href="./values.yaml#L236">database.postgres.pgVectorTable</a></td>
 			<td>
 string
 </td>
@@ -829,7 +862,7 @@ string
 			<td>PostgreSQL username.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--appConnectionSecretName"><a href="./values.yaml#L240">database.useCnpgCluster.appConnectionSecretName</a></td>
+			<td id="database--useCnpgCluster--appConnectionSecretName"><a href="./values.yaml#L245">database.useCnpgCluster.appConnectionSecretName</a></td>
 			<td>
 string
 </td>
@@ -843,7 +876,7 @@ string
 			<td>Explicit CNPG app secret name (defaults to `<clusterName>-app`).</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--clusterName"><a href="./values.yaml#L236">database.useCnpgCluster.clusterName</a></td>
+			<td id="database--useCnpgCluster--clusterName"><a href="./values.yaml#L241">database.useCnpgCluster.clusterName</a></td>
 			<td>
 string
 </td>
@@ -857,7 +890,7 @@ string
 			<td>CNPG cluster name (RW service `<clusterName>-rw`).</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--enabled"><a href="./values.yaml#L234">database.useCnpgCluster.enabled</a></td>
+			<td id="database--useCnpgCluster--enabled"><a href="./values.yaml#L239">database.useCnpgCluster.enabled</a></td>
 			<td>
 bool
 </td>
@@ -871,7 +904,7 @@ false
 			<td>Resolve PostgreSQL credentials from an existing CNPG cluster app secret.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--port"><a href="./values.yaml#L238">database.useCnpgCluster.port</a></td>
+			<td id="database--useCnpgCluster--port"><a href="./values.yaml#L243">database.useCnpgCluster.port</a></td>
 			<td>
 int
 </td>
@@ -885,7 +918,21 @@ int
 			<td>CNPG RW service port.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--secretKeys--database"><a href="./values.yaml#L243">database.useCnpgCluster.secretKeys.database</a></td>
+			<td id="database--useCnpgCluster--secretKeys--connectionString"><a href="./values.yaml#L254">database.useCnpgCluster.secretKeys.connectionString</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"uri"
+</pre>
+</div>
+			</td>
+			<td>Key for full connection string in app secret.</td>
+		</tr>
+		<tr>
+			<td id="database--useCnpgCluster--secretKeys--database"><a href="./values.yaml#L248">database.useCnpgCluster.secretKeys.database</a></td>
 			<td>
 string
 </td>
@@ -899,7 +946,7 @@ string
 			<td>Key for database name in app secret.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--secretKeys--password"><a href="./values.yaml#L247">database.useCnpgCluster.secretKeys.password</a></td>
+			<td id="database--useCnpgCluster--secretKeys--password"><a href="./values.yaml#L252">database.useCnpgCluster.secretKeys.password</a></td>
 			<td>
 string
 </td>
@@ -913,7 +960,7 @@ string
 			<td>Key for password in app secret.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--secretKeys--username"><a href="./values.yaml#L245">database.useCnpgCluster.secretKeys.username</a></td>
+			<td id="database--useCnpgCluster--secretKeys--username"><a href="./values.yaml#L250">database.useCnpgCluster.secretKeys.username</a></td>
 			<td>
 string
 </td>
@@ -927,7 +974,7 @@ string
 			<td>Key for username in app secret.</td>
 		</tr>
 		<tr>
-			<td id="envFromConfigMaps"><a href="./values.yaml#L279">envFromConfigMaps</a></td>
+			<td id="envFromConfigMaps"><a href="./values.yaml#L286">envFromConfigMaps</a></td>
 			<td>
 list
 </td>
@@ -941,7 +988,7 @@ list
 			<td>Import all keys from listed existing configmaps.</td>
 		</tr>
 		<tr>
-			<td id="envFromSecrets"><a href="./values.yaml#L276">envFromSecrets</a></td>
+			<td id="envFromSecrets"><a href="./values.yaml#L283">envFromSecrets</a></td>
 			<td>
 list
 </td>
@@ -955,7 +1002,7 @@ list
 			<td>Import all keys from listed existing secrets.</td>
 		</tr>
 		<tr>
-			<td id="extraEnv"><a href="./values.yaml#L256">extraEnv</a></td>
+			<td id="extraEnv"><a href="./values.yaml#L263">extraEnv</a></td>
 			<td>
 object
 </td>
@@ -969,7 +1016,7 @@ object
 			<td>Additional non-sensitive environment variables.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumeMounts"><a href="./values.yaml#L285">extraVolumeMounts</a></td>
+			<td id="extraVolumeMounts"><a href="./values.yaml#L292">extraVolumeMounts</a></td>
 			<td>
 list
 </td>
@@ -983,7 +1030,7 @@ list
 			<td>Additional volume mounts.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumes"><a href="./values.yaml#L282">extraVolumes</a></td>
+			<td id="extraVolumes"><a href="./values.yaml#L289">extraVolumes</a></td>
 			<td>
 list
 </td>
@@ -1509,7 +1556,7 @@ list
 			<td>TLS host/secret blocks.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L377">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L384">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -1526,7 +1573,7 @@ object
 			<td>Cilium policy library toggle.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--enabled"><a href="./values.yaml#L379">libchartCnps.enabled</a></td>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L386">libchartCnps.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1540,7 +1587,7 @@ true
 			<td>Enable libchart-cnps templates.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L381">libchartCnps.includeCnpgPolicies</a></td>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L388">libchartCnps.includeCnpgPolicies</a></td>
 			<td>
 bool
 </td>
@@ -1554,7 +1601,7 @@ false
 			<td>Include CNPG policy set from library.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L291">livenessProbe</a></td>
+			<td id="livenessProbe"><a href="./values.yaml#L298">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -1591,7 +1638,7 @@ string
 			<td>Override release-based naming.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L368">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L375">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -1759,7 +1806,7 @@ string
 			<td>PVC volumeName binding.</td>
 		</tr>
 		<tr>
-			<td id="podAnnotations"><a href="./values.yaml#L362">podAnnotations</a></td>
+			<td id="podAnnotations"><a href="./values.yaml#L369">podAnnotations</a></td>
 			<td>
 object
 </td>
@@ -1773,7 +1820,7 @@ object
 			<td>Pod annotations.</td>
 		</tr>
 		<tr>
-			<td id="podLabels"><a href="./values.yaml#L365">podLabels</a></td>
+			<td id="podLabels"><a href="./values.yaml#L372">podLabels</a></td>
 			<td>
 object
 </td>
@@ -1787,7 +1834,7 @@ object
 			<td>Pod labels.</td>
 		</tr>
 		<tr>
-			<td id="podSecurityContext"><a href="./values.yaml#L321">podSecurityContext</a></td>
+			<td id="podSecurityContext"><a href="./values.yaml#L328">podSecurityContext</a></td>
 			<td>
 object
 </td>
@@ -1863,7 +1910,7 @@ list
 			<td>Explicit RBAC rules required when rbac.create=true.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe"><a href="./values.yaml#L301">readinessProbe</a></td>
+			<td id="readinessProbe"><a href="./values.yaml#L308">readinessProbe</a></td>
 			<td>
 object
 </td>
@@ -1900,7 +1947,7 @@ int
 			<td>Number of application pod replicas.</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L338">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L345">resources</a></td>
 			<td>
 object
 </td>
@@ -2090,7 +2137,7 @@ string
 			<td>Secret name override when `create=true`.</td>
 		</tr>
 		<tr>
-			<td id="securityContext"><a href="./values.yaml#L325">securityContext</a></td>
+			<td id="securityContext"><a href="./values.yaml#L332">securityContext</a></td>
 			<td>
 object
 </td>
@@ -2298,7 +2345,7 @@ string
 			<td>ServiceAccount name override.</td>
 		</tr>
 		<tr>
-			<td id="startupProbe"><a href="./values.yaml#L311">startupProbe</a></td>
+			<td id="startupProbe"><a href="./values.yaml#L318">startupProbe</a></td>
 			<td>
 object
 </td>
@@ -2381,7 +2428,7 @@ string
 			<td>Optional size limit.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L371">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L378">tolerations</a></td>
 			<td>
 list
 </td>

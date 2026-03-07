@@ -138,6 +138,16 @@ spec:
                 secretKeyRef:
                   name: {{ include "anything-llm.cnpg.appConnectionSecretName" . }}
                   key: {{ .Values.database.useCnpgCluster.secretKeys.password | quote }}
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "anything-llm.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.connectionString | quote }}
+            - name: PGVECTOR_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "anything-llm.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.connectionString | quote }}
             {{- else }}
             - name: DB_HOST
               value: {{ .Values.database.postgres.host | quote }}
@@ -152,13 +162,19 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.database.postgres.passwordSecret.name }}
                   key: {{ .Values.database.postgres.passwordSecret.key | quote }}
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.postgres.connectionStringSecret.name }}
+                  key: {{ .Values.database.postgres.connectionStringSecret.key | quote }}
+            - name: PGVECTOR_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.postgres.connectionStringSecret.name }}
+                  key: {{ .Values.database.postgres.connectionStringSecret.key | quote }}
             {{- end }}
             - name: DB_SSL_MODE
               value: {{ .Values.database.postgres.ssl | quote }}
-            - name: DATABASE_URL
-              value: "postgresql://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=$(DB_SSL_MODE)"
-            - name: PGVECTOR_CONNECTION_STRING
-              value: "postgresql://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=$(DB_SSL_MODE)"
             {{- if .Values.database.postgres.pgVectorTable }}
             - name: PGVECTOR_TABLE_NAME
               value: {{ .Values.database.postgres.pgVectorTable | quote }}
