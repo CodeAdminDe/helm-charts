@@ -2,7 +2,7 @@
 
 # mastodon
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v4.5.3](https://img.shields.io/badge/AppVersion-v4.5.3-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v4.5.7](https://img.shields.io/badge/AppVersion-v4.5.7-informational?style=flat-square)
 
 A Helm chart for deploying Mastodon on Kubernetes with repo-aligned secure defaults and integrations.
 
