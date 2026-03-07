@@ -62,8 +62,9 @@ helm uninstall actual-budget
 ```
 _**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
 
-The command removes all the Kubernetes components associated with the chart **including persistent volumes** and deletes the release.
-
+The command removes the Kubernetes resources associated with the release and deletes the release record.
+By default, application data is retained because `persistence.retain=true` keeps the PVC after `helm uninstall`.
+Whether the backing volume is deleted then depends on the StorageClass reclaim policy.
 ## Configuration
 
 Take a look at the [values.yaml](./values.yaml) file of the chart. It contains the default configuration and additional notes.
