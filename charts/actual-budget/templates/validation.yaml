@@ -32,6 +32,6 @@
 {{- fail "persistence.existingClaim is set, but persistence.enabled is false. You must enable persistence to use an existing claim." -}}
 {{- end -}}
 
-{{- if or (gt (int .Values.replicaCount) 1) (and .Values.autoscaling.enabled (gt (int .Values.autoscaling.maxReplicas) 1)) -}}
-{{- fail "Actual Budget requires an exclusive lock on its SQLite database and does not support replicaCount > 1." -}}
+{{- if or (gt (int .Values.replicaCount) 1) (and .Values.autoscaling.enabled (gt (int .Values.autoscaling.maxReplicas) 1)) (and .Values.autoscaling.enabled (gt (int .Values.autoscaling.minReplicas) 1)) -}}
+{{- fail "Actual Budget requires an exclusive lock on its SQLite database and does not support replicaCount > 1 or autoscaling min/maxReplicas > 1." -}}
 {{- end -}}

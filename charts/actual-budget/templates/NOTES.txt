@@ -1,5 +1,5 @@
 1. Access the application inside the cluster:
-   kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "actual-budget.fullname" . }} {{ .Values.service.port }}:{{ .Values.service.port }}
+   kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "actual-budget.fullname" . }} 8080:{{ .Values.service.port }}
 
 2. External access:
    {{- if .Values.ingress.enabled }}

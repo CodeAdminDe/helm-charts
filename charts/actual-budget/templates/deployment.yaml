@@ -10,6 +10,10 @@ metadata:
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
+  {{- if eq (int .Values.replicaCount) 1 }}
+  strategy:
+    type: Recreate
+  {{- end }}
   {{- end }}
   selector:
     matchLabels:
