@@ -39,7 +39,7 @@ metadata:
 {{- $defaultDenyMatchLabel := dict "anything-llm.cnp/default-deny" "true" -}}
 {{- $effectiveIngressEndpoints := .Values.cnps.appTraffic.ingress.fromEndpoints | default (list) -}}
 {{- $effectiveIngressEntities := .Values.cnps.appTraffic.ingress.fromEntities | default (list) -}}
-{{- if and (empty $effectiveIngressEndpoints) (gt (len $defaultIngressEndpoints) 0) -}}
+{{- if and (empty $effectiveIngressEndpoints) (empty $effectiveIngressEntities) (gt (len $defaultIngressEndpoints) 0) -}}
 {{- $effectiveIngressEndpoints = $defaultIngressEndpoints -}}
 {{- end -}}
 {{- if not .Values.cnps.appTraffic.ingress.allow -}}
