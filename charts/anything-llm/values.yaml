@@ -90,6 +90,11 @@ ingress:
 gatewayApi:
   # -- Enable HTTPRoute resource creation.
   enabled: false
+  # -- Labels for the Gateway API controller pods, used to generate CiliumNetworkPolicies ingress rules.
+  # If empty, you must provide explicit `cnps.appTraffic.ingress.fromEndpoints` when gatewayApi is enabled.
+  controllerSelector:
+    app.kubernetes.io/name: envoy-gateway
+    io.kubernetes.pod.namespace: envoy-gateway-system
   # -- HTTPRoute annotations.
   annotations: {}
   # -- HTTPRoute labels.
@@ -386,7 +391,7 @@ cnps:
       # -- Allow ingress traffic to app pods.
       allow: true
       # -- Allowed ingress endpoint label sets.
-      # @description Leave empty to use conditional defaults from template logic: ingress-nginx labels when ingress.enabled=true, envoy-gateway labels when gatewayApi.enabled=true, or both when both are enabled.
+      # @description Leave empty to use conditional defaults from template logic: ingress-nginx labels when ingress.enabled=true, gatewayApi.controllerSelector labels when gatewayApi.enabled=true, or both when both are enabled.
       fromEndpoints: []
       # -- Optional allowed ingress entities.
       fromEntities: []

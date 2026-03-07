@@ -13,6 +13,9 @@
   {{- if not .Values.gatewayApi.hostnames -}}
     {{- fail "gatewayApi.enabled=true requires at least one gatewayApi.hostnames entry." -}}
   {{- end -}}
+  {{- if and .Values.libchartCnps.enabled (not .Values.gatewayApi.controllerSelector) (not .Values.cnps.appTraffic.ingress.fromEndpoints) -}}
+    {{- fail "gatewayApi.enabled=true and libchartCnps.enabled=true requires either gatewayApi.controllerSelector or explicit cnps.appTraffic.ingress.fromEndpoints to generate valid ingress policies." -}}
+  {{- end -}}
 {{- end -}}
 
 {{- if and .Values.rbac.create (not .Values.serviceAccount.create) (empty .Values.serviceAccount.name) -}}
