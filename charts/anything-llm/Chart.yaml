@@ -34,4 +34,4 @@ annotations:
     - name: anything-llm
       image: mintplexlabs/anythingllm:1.11.1
     - name: anything-llm-postgresql-variant
-      image: mintplexlabs/anythingllm:pg
+      image: mintplexlabs/anythingllm:pg-1.11.1

@@ -14,8 +14,8 @@ image:
   # -- SQLite/default runtime image tag (defaults to .Chart.AppVersion when empty).
   tag: ""
   # -- PostgreSQL runtime image tag.
-  # @description Official docs currently use `mintplexlabs/anythingllm:pg` for PostgreSQL mode.
-  postgresTag: pg
+  # @description Set the tag portion only (for example `pg-1.11.1`). Official docs often show `mintplexlabs/anythingllm:pg`, but this chart pins by default for reproducibility.
+  postgresTag: pg-1.11.1
 
 # -- Image pull secrets (for private registries).
 imagePullSecrets: []
@@ -214,7 +214,8 @@ database:
     database: anythingllm
     # -- PostgreSQL username.
     user: anythingllm
-    # -- PostgreSQL SSL mode.
+    # -- PostgreSQL SSL mode used for both standalone and CNPG-backed postgres connections.
+    # @description For CNPG, keep at least `require` unless your platform policy explicitly differs.
     ssl: require
     passwordSecret:
       # -- Existing secret name containing PostgreSQL password.
