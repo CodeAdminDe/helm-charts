@@ -111,3 +111,23 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
+
+{{- if kindIs "map" .Values.additionalEnvSecrets -}}
+  {{- range $envName, $secretConfig := .Values.additionalEnvSecrets -}}
+    {{- if empty $envName -}}
+      {{- fail "additionalEnvSecrets map keys (env var names) must be non-empty." -}}
+    {{- end -}}
+    {{- if kindIs "string" $secretConfig -}}
+      {{- if empty $secretConfig -}}
+        {{- fail (printf "additionalEnvSecrets[%s] must reference a non-empty secret name." $envName) -}}
+      {{- end -}}
+    {{- else if kindIs "map" $secretConfig -}}
+      {{- $secretName := default "" (index $secretConfig "secretName") -}}
+      {{- if empty $secretName -}}
+        {{- fail (printf "additionalEnvSecrets[%s].secretName must be set for map-form entries." $envName) -}}
+      {{- end -}}
+    {{- else -}}
+      {{- fail (printf "additionalEnvSecrets[%s] must be either a secret name string or an object." $envName) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

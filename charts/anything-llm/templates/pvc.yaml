@@ -6,6 +6,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "anything-llm.labels" . | nindent 4 }}
+  {{- if or .Values.persistence.retain .Values.persistence.annotations }}
   annotations:
     {{- if .Values.persistence.retain }}
     helm.sh/resource-policy: keep
@@ -13,6 +14,7 @@ metadata:
     {{- with .Values.persistence.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
+  {{- end }}
 spec:
   accessModes:
     {{- toYaml .Values.persistence.accessModes | nindent 4 }}
