@@ -28,6 +28,7 @@ The following charts are currently available:
 | Name | Version | AppVersion | Description |
 |------|---------|------------|-------------|
 | agent-zero | 0.1.3 | v0.9.8.2 | A Helm chart for deploying Agent Zero (AI Operating System) on Kubernetes. |
+| anything-llm | 0.1.0 | 1.11.1 | A Helm chart for deploying AnythingLLM on Kubernetes. |
 | bind9-hidden-primary | 0.4.3 | 9.20 | A Helm chart for bind9 to use as hidden primary, based on the offical Docker Image by InternetSystemsConsortium (ISC) |
 | coturn-server | 0.4.0 | 4.9.0 | A Helm chart for an easier coturn deployment at kubernetes. |
 | garage | 0.1.1 | v2.2.0 | A Helm chart for an easier Garage (https://garagehq.deuxfleurs.fr) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with Garage or its authors. |
@@ -37,6 +38,7 @@ The following charts are currently available:
 | libchart-cnps | 0.2.1 | 0.2.0 | A (experimental) Helm chart of cilium network policies for usage as a library chart. |
 | local-agi | 0.1.2 | v2.8.1 | A Helm chart for deploying LocalAGI on Kubernetes. |
 | local-recall | 0.1.0 | v0.5.5 | A Helm chart for deploying LocalRecall on Kubernetes. |
+| mastodon | 0.1.0 | v4.5.3 | A Helm chart for deploying Mastodon on Kubernetes with repo-aligned secure defaults and integrations. |
 | netbird-agent | 0.11.2 | 0.66.2 | A Helm chart for an easier NetBird agent (https://netbird.io) deployment at kubernetes. |
 | netbird-management | 1.15.2 | 0.66.2 | A Helm chart for an easier NetBird management stack (https://netbird.io) deployment at kubernetes. |
 | ollama | 0.19.6 | 0.17.7 | A Helm chart for an easier ollama (https://ollama.com) deployment on k8s. Please note that this is a private helm chart and not directly or indirectly affiliated with ollama or its authors. |
