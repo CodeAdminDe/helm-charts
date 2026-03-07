@@ -3,7 +3,7 @@ name: mastodon
 description: A Helm chart for deploying Mastodon on Kubernetes with repo-aligned secure defaults and integrations.
 type: application
 # renovate: bumpVersion
-version: 0.1.1
+version: 0.1.2
 # renovate: image=ghcr.io/mastodon/mastodon
 appVersion: "v4.5.7"
 kubeVersion: ">=1.24.0"
@@ -43,6 +43,6 @@ annotations:
     - name: mastodon
       image: ghcr.io/mastodon/mastodon:v4.5.7
     - name: mastodon-streaming
-      image: ghcr.io/mastodon/mastodon-streaming:v4.5.3
+      image: ghcr.io/mastodon/mastodon-streaming:v4.5.7
     - name: redis
       image: library/redis:8.6.1
