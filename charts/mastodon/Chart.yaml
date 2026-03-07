@@ -1,0 +1,48 @@
+apiVersion: v2
+name: mastodon
+description: A Helm chart for deploying Mastodon on Kubernetes with repo-aligned secure defaults and integrations.
+type: application
+# renovate: bumpVersion
+version: 0.1.0
+# renovate: image=ghcr.io/mastodon/mastodon
+appVersion: "v4.5.3"
+kubeVersion: ">=1.24.0"
+home: https://github.com/CodeAdminDe/helm-charts
+keywords:
+  - mastodon
+  - activitypub
+  - social
+  - redis
+  - postgresql
+  - cnpg
+  - helm
+maintainers:
+  - name: Frederic Roggon
+    email: frederic.roggon@codeadmin.de
+    url: https://github.com/CodeAdminDe
+dependencies:
+  - name: mastodon
+    version: 0.3.0
+    repository: https://mastodon.github.io/helm-charts
+    alias: upstream
+    condition: upstream.enabled
+  - name: redis
+    version: 0.4.1
+    repository: https://codeadminde.github.io/helm-charts
+    alias: redis
+    condition: redis.enabled
+  - name: libchart-cnps
+    version: 0.2.1
+    repository: https://codeadminde.github.io/helm-charts
+    alias: libchart-cnps
+    condition: libchartCnps.enabled
+annotations:
+  category: Social
+  securityContext: "compatible"
+  images: |
+    - name: mastodon
+      image: ghcr.io/mastodon/mastodon:v4.5.3
+    - name: mastodon-streaming
+      image: ghcr.io/mastodon/mastodon-streaming:v4.5.3
+    - name: redis
+      image: library/redis:8.6.1

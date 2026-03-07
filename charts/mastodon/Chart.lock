@@ -1,0 +1,12 @@
+dependencies:
+- name: mastodon
+  repository: https://mastodon.github.io/helm-charts
+  version: 0.3.0
+- name: redis
+  repository: https://codeadminde.github.io/helm-charts
+  version: 0.4.1
+- name: libchart-cnps
+  repository: https://codeadminde.github.io/helm-charts
+  version: 0.2.1
+digest: sha256:eedf95643a82dfcb44865d1976659af49f2c6152b07b5961af1ad4bfc50ccb29
+generated: "2026-03-07T20:16:04.583225+01:00"
