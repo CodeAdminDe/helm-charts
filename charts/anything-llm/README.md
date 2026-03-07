@@ -62,7 +62,7 @@ helm uninstall anything-llm
 ```
 _**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
 
-The command removes all the Kubernetes components associated with the chart **including persistent volumes** and deletes the release.
+The command removes the Kubernetes resources associated with the chart and deletes the release. If this chart created a PVC, that PVC is deleted unless `persistence.retain=true`; deletion of the backing PersistentVolume depends on the storage class reclaim policy.
 
 ## Configuration
 
