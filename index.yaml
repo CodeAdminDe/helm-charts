@@ -1760,6 +1760,57 @@ entries:
       category: Social
       images: |
         - name: mastodon
+          image: ghcr.io/mastodon/mastodon:v4.5.7
+        - name: mastodon-streaming
+          image: ghcr.io/mastodon/mastodon-streaming:v4.5.3
+        - name: redis
+          image: library/redis:8.6.1
+      securityContext: compatible
+    apiVersion: v2
+    appVersion: v4.5.7
+    created: "2026-03-07T23:32:02.313463248Z"
+    dependencies:
+    - alias: upstream
+      condition: upstream.enabled
+      name: mastodon
+      repository: https://mastodon.github.io/helm-charts
+      version: 0.3.0
+    - alias: redis
+      condition: redis.enabled
+      name: redis
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.4.1
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for deploying Mastodon on Kubernetes with repo-aligned
+      secure defaults and integrations.
+    digest: 80aa84de952600d9f8deafca2f5cd3698883ac528c5b29c79f3917640035f52d
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - mastodon
+    - activitypub
+    - social
+    - redis
+    - postgresql
+    - cnpg
+    - helm
+    kubeVersion: '>=1.24.0'
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: mastodon
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/mastodon-0.1.1/mastodon-0.1.1.tgz
+    version: 0.1.1
+  - annotations:
+      category: Social
+      images: |
+        - name: mastodon
           image: ghcr.io/mastodon/mastodon:v4.5.3
         - name: mastodon-streaming
           image: ghcr.io/mastodon/mastodon-streaming:v4.5.3
@@ -14242,4 +14293,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-07T23:28:08.281311169Z"
+generated: "2026-03-07T23:32:02.314064413Z"
