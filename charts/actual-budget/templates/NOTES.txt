@@ -1,11 +1,19 @@
 1. Access the application inside the cluster:
    kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "actual-budget.fullname" . }} {{ .Values.service.port }}:{{ .Values.service.port }}
 
-2. If ingress is enabled, use one of the configured hosts:
+2. External access:
    {{- if .Values.ingress.enabled }}
+   Ingress hosts:
    {{- range .Values.ingress.hosts }}
    - {{ .host }}
    {{- end }}
-   {{- else }}
-   ingress disabled
+   {{- else if and .Values.gatewayApi .Values.gatewayApi.enabled }}
+   Gateway API hostnames:
+   {{- range .Values.gatewayApi.hostnames }}
+   - {{ . }}
    {{- end }}
+   {{- else }}
+   External access disabled (neither Ingress nor Gateway API enabled)
+   {{- end }}
+
+NOTE: Actual Budget requires HTTPS/TLS for many features (like web-app installation and secure syncing). Please ensure your Ingress or Gateway terminates TLS.
