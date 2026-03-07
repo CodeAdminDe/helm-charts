@@ -96,7 +96,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="additionalEnvSecrets"><a href="./values.yaml#L268">additionalEnvSecrets</a></td>
+			<td id="additionalEnvSecrets"><a href="./values.yaml#L273">additionalEnvSecrets</a></td>
 			<td>
 object
 </td>
@@ -122,7 +122,7 @@ additionalEnvSecrets:
 ```</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L369">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L374">affinity</a></td>
 			<td>
 object
 </td>
@@ -136,7 +136,7 @@ object
 			<td>Workload affinity.</td>
 		</tr>
 		<tr>
-			<td id="anythingllm"><a href="./values.yaml#L154">anythingllm</a></td>
+			<td id="anythingllm"><a href="./values.yaml#L159">anythingllm</a></td>
 			<td>
 object
 </td>
@@ -163,7 +163,7 @@ object
 			<td>AnythingLLM runtime options.</td>
 		</tr>
 		<tr>
-			<td id="anythingllm--chromiumArgs"><a href="./values.yaml#L169">anythingllm.chromiumArgs</a></td>
+			<td id="anythingllm--chromiumArgs"><a href="./values.yaml#L174">anythingllm.chromiumArgs</a></td>
 			<td>
 string
 </td>
@@ -177,7 +177,7 @@ string
 			<td>Optional Chromium runtime flags (`ANYTHINGLLM_CHROMIUM_ARGS`). @description Use this when running without SYS_ADMIN and you still need web-scraping functionality.</td>
 		</tr>
 		<tr>
-			<td id="anythingllm--collectorAllowAnyIp"><a href="./values.yaml#L173">anythingllm.collectorAllowAnyIp</a></td>
+			<td id="anythingllm--collectorAllowAnyIp"><a href="./values.yaml#L178">anythingllm.collectorAllowAnyIp</a></td>
 			<td>
 bool
 </td>
@@ -191,7 +191,7 @@ false
 			<td>Optional local-IP scraping override (`COLLECTOR_ALLOW_ANY_IP`).</td>
 		</tr>
 		<tr>
-			<td id="anythingllm--disableSwaggerDocs"><a href="./values.yaml#L171">anythingllm.disableSwaggerDocs</a></td>
+			<td id="anythingllm--disableSwaggerDocs"><a href="./values.yaml#L176">anythingllm.disableSwaggerDocs</a></td>
 			<td>
 bool
 </td>
@@ -205,7 +205,7 @@ true
 			<td>Disable Swagger docs endpoint (`DISABLE_SWAGGER_DOCS`).</td>
 		</tr>
 		<tr>
-			<td id="anythingllm--disableTelemetry"><a href="./values.yaml#L160">anythingllm.disableTelemetry</a></td>
+			<td id="anythingllm--disableTelemetry"><a href="./values.yaml#L165">anythingllm.disableTelemetry</a></td>
 			<td>
 bool
 </td>
@@ -219,7 +219,7 @@ true
 			<td>Disable telemetry (`DISABLE_TELEMETRY`).</td>
 		</tr>
 		<tr>
-			<td id="anythingllm--nodeEnv"><a href="./values.yaml#L158">anythingllm.nodeEnv</a></td>
+			<td id="anythingllm--nodeEnv"><a href="./values.yaml#L163">anythingllm.nodeEnv</a></td>
 			<td>
 string
 </td>
@@ -233,7 +233,7 @@ string
 			<td>Node environment (`NODE_ENV`).</td>
 		</tr>
 		<tr>
-			<td id="anythingllm--security"><a href="./values.yaml#L175">anythingllm.security</a></td>
+			<td id="anythingllm--security"><a href="./values.yaml#L180">anythingllm.security</a></td>
 			<td>
 object
 </td>
@@ -249,7 +249,7 @@ object
 			<td>Security-related runtime toggles.</td>
 		</tr>
 		<tr>
-			<td id="anythingllm--security--enableSysAdminCapability"><a href="./values.yaml#L178">anythingllm.security.enableSysAdminCapability</a></td>
+			<td id="anythingllm--security--enableSysAdminCapability"><a href="./values.yaml#L183">anythingllm.security.enableSysAdminCapability</a></td>
 			<td>
 bool
 </td>
@@ -263,7 +263,7 @@ false
 			<td>Add `SYS_ADMIN` capability for Chromium sandbox-based scraping. @description Keep disabled by default. Enable only if you explicitly need scraper behavior that requires this capability.</td>
 		</tr>
 		<tr>
-			<td id="anythingllm--storageDir"><a href="./values.yaml#L156">anythingllm.storageDir</a></td>
+			<td id="anythingllm--storageDir"><a href="./values.yaml#L161">anythingllm.storageDir</a></td>
 			<td>
 string
 </td>
@@ -277,7 +277,7 @@ string
 			<td>Storage directory (`STORAGE_DIR`). Must match `persistence.mountPath`.</td>
 		</tr>
 		<tr>
-			<td id="anythingllm--ttsProvider"><a href="./values.yaml#L166">anythingllm.ttsProvider</a></td>
+			<td id="anythingllm--ttsProvider"><a href="./values.yaml#L171">anythingllm.ttsProvider</a></td>
 			<td>
 string
 </td>
@@ -291,7 +291,7 @@ string
 			<td>Text-to-speech provider (`TTS_PROVIDER`).</td>
 		</tr>
 		<tr>
-			<td id="anythingllm--vectorDb"><a href="./values.yaml#L162">anythingllm.vectorDb</a></td>
+			<td id="anythingllm--vectorDb"><a href="./values.yaml#L167">anythingllm.vectorDb</a></td>
 			<td>
 string
 </td>
@@ -305,7 +305,7 @@ string
 			<td>Vector backend (`VECTOR_DB`).</td>
 		</tr>
 		<tr>
-			<td id="anythingllm--whisperProvider"><a href="./values.yaml#L164">anythingllm.whisperProvider</a></td>
+			<td id="anythingllm--whisperProvider"><a href="./values.yaml#L169">anythingllm.whisperProvider</a></td>
 			<td>
 string
 </td>
@@ -319,7 +319,7 @@ string
 			<td>Whisper provider (`WHISPER_PROVIDER`).</td>
 		</tr>
 		<tr>
-			<td id="applyHealthChecks"><a href="./values.yaml#L283">applyHealthChecks</a></td>
+			<td id="applyHealthChecks"><a href="./values.yaml#L288">applyHealthChecks</a></td>
 			<td>
 bool
 </td>
@@ -333,7 +333,7 @@ true
 			<td>Enable liveness/readiness/startup probes.</td>
 		</tr>
 		<tr>
-			<td id="args"><a href="./values.yaml#L248">args</a></td>
+			<td id="args"><a href="./values.yaml#L253">args</a></td>
 			<td>
 list
 </td>
@@ -347,7 +347,7 @@ list
 			<td>Optional args override.</td>
 		</tr>
 		<tr>
-			<td id="auth"><a href="./values.yaml#L199">auth</a></td>
+			<td id="auth"><a href="./values.yaml#L204">auth</a></td>
 			<td>
 object
 </td>
@@ -363,7 +363,7 @@ object
 			<td>Authentication options.</td>
 		</tr>
 		<tr>
-			<td id="auth--enabled"><a href="./values.yaml#L201">auth.enabled</a></td>
+			<td id="auth--enabled"><a href="./values.yaml#L206">auth.enabled</a></td>
 			<td>
 bool
 </td>
@@ -377,7 +377,7 @@ false
 			<td>Enable auth token protection (`AUTH_TOKEN`) for remote/cloud exposure.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L342">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L347">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -398,7 +398,7 @@ object
 			<td>HorizontalPodAutoscaler configuration.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--enableMemoryUtilization"><a href="./values.yaml#L352">autoscaling.enableMemoryUtilization</a></td>
+			<td id="autoscaling--enableMemoryUtilization"><a href="./values.yaml#L357">autoscaling.enableMemoryUtilization</a></td>
 			<td>
 bool
 </td>
@@ -412,7 +412,7 @@ false
 			<td>Enable memory utilization metric.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--enabled"><a href="./values.yaml#L344">autoscaling.enabled</a></td>
+			<td id="autoscaling--enabled"><a href="./values.yaml#L349">autoscaling.enabled</a></td>
 			<td>
 bool
 </td>
@@ -426,7 +426,7 @@ false
 			<td>Enable autoscaling.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--maxReplicas"><a href="./values.yaml#L348">autoscaling.maxReplicas</a></td>
+			<td id="autoscaling--maxReplicas"><a href="./values.yaml#L353">autoscaling.maxReplicas</a></td>
 			<td>
 int
 </td>
@@ -440,7 +440,7 @@ int
 			<td>Maximum replicas.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--minReplicas"><a href="./values.yaml#L346">autoscaling.minReplicas</a></td>
+			<td id="autoscaling--minReplicas"><a href="./values.yaml#L351">autoscaling.minReplicas</a></td>
 			<td>
 int
 </td>
@@ -454,7 +454,7 @@ int
 			<td>Minimum replicas.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--targetCPUUtilizationPercentage"><a href="./values.yaml#L350">autoscaling.targetCPUUtilizationPercentage</a></td>
+			<td id="autoscaling--targetCPUUtilizationPercentage"><a href="./values.yaml#L355">autoscaling.targetCPUUtilizationPercentage</a></td>
 			<td>
 int
 </td>
@@ -468,7 +468,7 @@ int
 			<td>Target CPU utilization percentage.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--targetMemoryUtilizationPercentage"><a href="./values.yaml#L354">autoscaling.targetMemoryUtilizationPercentage</a></td>
+			<td id="autoscaling--targetMemoryUtilizationPercentage"><a href="./values.yaml#L359">autoscaling.targetMemoryUtilizationPercentage</a></td>
 			<td>
 int
 </td>
@@ -482,7 +482,7 @@ int
 			<td>Target memory utilization percentage.</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L379">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L384">cnps</a></td>
 			<td>
 object
 </td>
@@ -524,7 +524,7 @@ object
 			<td>App-specific Cilium policy settings.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L395">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L400">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -538,7 +538,7 @@ true
 			<td>Allow egress traffic from app pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L397">cnps.appTraffic.egress.toEntities</a></td>
+			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L402">cnps.appTraffic.egress.toEntities</a></td>
 			<td>
 list
 </td>
@@ -555,7 +555,7 @@ list
 			<td>Optional destination entities.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L402">cnps.appTraffic.egress.toPorts</a></td>
+			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L407">cnps.appTraffic.egress.toPorts</a></td>
 			<td>
 list
 </td>
@@ -578,7 +578,7 @@ list
 			<td>DNS (53/UDP) is already covered by the namespace-wide libchart policy.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L387">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L392">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -592,7 +592,7 @@ true
 			<td>Allow ingress traffic to app pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L390">cnps.appTraffic.ingress.fromEndpoints</a></td>
+			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L395">cnps.appTraffic.ingress.fromEndpoints</a></td>
 			<td>
 list
 </td>
@@ -603,10 +603,10 @@ list
 </pre>
 </div>
 			</td>
-			<td>Allowed ingress endpoint label sets. @description Leave empty to use conditional defaults from template logic: ingress-nginx labels when ingress.enabled=true, envoy-gateway labels when gatewayApi.enabled=true, or both when both are enabled.</td>
+			<td>Allowed ingress endpoint label sets. @description Leave empty to use conditional defaults from template logic: ingress-nginx labels when ingress.enabled=true, gatewayApi.controllerSelector labels when gatewayApi.enabled=true, or both when both are enabled.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L392">cnps.appTraffic.ingress.fromEntities</a></td>
+			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L397">cnps.appTraffic.ingress.fromEntities</a></td>
 			<td>
 list
 </td>
@@ -620,7 +620,7 @@ list
 			<td>Optional allowed ingress entities.</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L381">cnps.cnpgTraffic</a></td>
+			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L386">cnps.cnpgTraffic</a></td>
 			<td>
 object
 </td>
@@ -636,7 +636,7 @@ object
 			<td>Additional CNPG Cilium policy tuning used by libchart-cnps when includeCnpgPolicies=true.</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L383">cnps.cnpgTraffic.instanceExtraEgress</a></td>
+			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L388">cnps.cnpgTraffic.instanceExtraEgress</a></td>
 			<td>
 list
 </td>
@@ -650,7 +650,7 @@ list
 			<td>Extra egress rules appended to CNPG instance policy set.</td>
 		</tr>
 		<tr>
-			<td id="command"><a href="./values.yaml#L245">command</a></td>
+			<td id="command"><a href="./values.yaml#L250">command</a></td>
 			<td>
 list
 </td>
@@ -664,7 +664,7 @@ list
 			<td>Optional command override.</td>
 		</tr>
 		<tr>
-			<td id="database"><a href="./values.yaml#L204">database</a></td>
+			<td id="database"><a href="./values.yaml#L209">database</a></td>
 			<td>
 object
 </td>
@@ -703,7 +703,7 @@ object
 			<td>Database options for application metadata storage.</td>
 		</tr>
 		<tr>
-			<td id="database--mode"><a href="./values.yaml#L207">database.mode</a></td>
+			<td id="database--mode"><a href="./values.yaml#L212">database.mode</a></td>
 			<td>
 string
 </td>
@@ -717,7 +717,7 @@ string
 			<td>Database mode. @description Supported values: `sqlite`, `postgres`.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--database"><a href="./values.yaml#L214">database.postgres.database</a></td>
+			<td id="database--postgres--database"><a href="./values.yaml#L219">database.postgres.database</a></td>
 			<td>
 string
 </td>
@@ -731,7 +731,7 @@ string
 			<td>PostgreSQL database name.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--host"><a href="./values.yaml#L210">database.postgres.host</a></td>
+			<td id="database--postgres--host"><a href="./values.yaml#L215">database.postgres.host</a></td>
 			<td>
 string
 </td>
@@ -745,7 +745,7 @@ string
 			<td>PostgreSQL host when database.mode=postgres and CNPG mode is disabled.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--passwordSecret--key"><a href="./values.yaml#L224">database.postgres.passwordSecret.key</a></td>
+			<td id="database--postgres--passwordSecret--key"><a href="./values.yaml#L229">database.postgres.passwordSecret.key</a></td>
 			<td>
 string
 </td>
@@ -759,7 +759,7 @@ string
 			<td>Secret key containing PostgreSQL password.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--passwordSecret--name"><a href="./values.yaml#L222">database.postgres.passwordSecret.name</a></td>
+			<td id="database--postgres--passwordSecret--name"><a href="./values.yaml#L227">database.postgres.passwordSecret.name</a></td>
 			<td>
 string
 </td>
@@ -773,7 +773,7 @@ string
 			<td>Existing secret name containing PostgreSQL password.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--pgVectorTable"><a href="./values.yaml#L226">database.postgres.pgVectorTable</a></td>
+			<td id="database--postgres--pgVectorTable"><a href="./values.yaml#L231">database.postgres.pgVectorTable</a></td>
 			<td>
 string
 </td>
@@ -787,7 +787,7 @@ string
 			<td>Optional PGVector table override.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--port"><a href="./values.yaml#L212">database.postgres.port</a></td>
+			<td id="database--postgres--port"><a href="./values.yaml#L217">database.postgres.port</a></td>
 			<td>
 int
 </td>
@@ -801,7 +801,7 @@ int
 			<td>PostgreSQL port.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--ssl"><a href="./values.yaml#L219">database.postgres.ssl</a></td>
+			<td id="database--postgres--ssl"><a href="./values.yaml#L224">database.postgres.ssl</a></td>
 			<td>
 string
 </td>
@@ -815,7 +815,7 @@ string
 			<td>PostgreSQL SSL mode used for both standalone and CNPG-backed postgres connections. @description For CNPG, keep at least `require` unless your platform policy explicitly differs.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--user"><a href="./values.yaml#L216">database.postgres.user</a></td>
+			<td id="database--postgres--user"><a href="./values.yaml#L221">database.postgres.user</a></td>
 			<td>
 string
 </td>
@@ -829,7 +829,7 @@ string
 			<td>PostgreSQL username.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--appConnectionSecretName"><a href="./values.yaml#L235">database.useCnpgCluster.appConnectionSecretName</a></td>
+			<td id="database--useCnpgCluster--appConnectionSecretName"><a href="./values.yaml#L240">database.useCnpgCluster.appConnectionSecretName</a></td>
 			<td>
 string
 </td>
@@ -843,7 +843,7 @@ string
 			<td>Explicit CNPG app secret name (defaults to `<clusterName>-app`).</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--clusterName"><a href="./values.yaml#L231">database.useCnpgCluster.clusterName</a></td>
+			<td id="database--useCnpgCluster--clusterName"><a href="./values.yaml#L236">database.useCnpgCluster.clusterName</a></td>
 			<td>
 string
 </td>
@@ -857,7 +857,7 @@ string
 			<td>CNPG cluster name (RW service `<clusterName>-rw`).</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--enabled"><a href="./values.yaml#L229">database.useCnpgCluster.enabled</a></td>
+			<td id="database--useCnpgCluster--enabled"><a href="./values.yaml#L234">database.useCnpgCluster.enabled</a></td>
 			<td>
 bool
 </td>
@@ -871,7 +871,7 @@ false
 			<td>Resolve PostgreSQL credentials from an existing CNPG cluster app secret.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--port"><a href="./values.yaml#L233">database.useCnpgCluster.port</a></td>
+			<td id="database--useCnpgCluster--port"><a href="./values.yaml#L238">database.useCnpgCluster.port</a></td>
 			<td>
 int
 </td>
@@ -885,7 +885,7 @@ int
 			<td>CNPG RW service port.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--secretKeys--database"><a href="./values.yaml#L238">database.useCnpgCluster.secretKeys.database</a></td>
+			<td id="database--useCnpgCluster--secretKeys--database"><a href="./values.yaml#L243">database.useCnpgCluster.secretKeys.database</a></td>
 			<td>
 string
 </td>
@@ -899,7 +899,7 @@ string
 			<td>Key for database name in app secret.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--secretKeys--password"><a href="./values.yaml#L242">database.useCnpgCluster.secretKeys.password</a></td>
+			<td id="database--useCnpgCluster--secretKeys--password"><a href="./values.yaml#L247">database.useCnpgCluster.secretKeys.password</a></td>
 			<td>
 string
 </td>
@@ -913,7 +913,7 @@ string
 			<td>Key for password in app secret.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--secretKeys--username"><a href="./values.yaml#L240">database.useCnpgCluster.secretKeys.username</a></td>
+			<td id="database--useCnpgCluster--secretKeys--username"><a href="./values.yaml#L245">database.useCnpgCluster.secretKeys.username</a></td>
 			<td>
 string
 </td>
@@ -927,7 +927,7 @@ string
 			<td>Key for username in app secret.</td>
 		</tr>
 		<tr>
-			<td id="envFromConfigMaps"><a href="./values.yaml#L274">envFromConfigMaps</a></td>
+			<td id="envFromConfigMaps"><a href="./values.yaml#L279">envFromConfigMaps</a></td>
 			<td>
 list
 </td>
@@ -941,7 +941,7 @@ list
 			<td>Import all keys from listed existing configmaps.</td>
 		</tr>
 		<tr>
-			<td id="envFromSecrets"><a href="./values.yaml#L271">envFromSecrets</a></td>
+			<td id="envFromSecrets"><a href="./values.yaml#L276">envFromSecrets</a></td>
 			<td>
 list
 </td>
@@ -955,7 +955,7 @@ list
 			<td>Import all keys from listed existing secrets.</td>
 		</tr>
 		<tr>
-			<td id="extraEnv"><a href="./values.yaml#L251">extraEnv</a></td>
+			<td id="extraEnv"><a href="./values.yaml#L256">extraEnv</a></td>
 			<td>
 object
 </td>
@@ -969,7 +969,7 @@ object
 			<td>Additional non-sensitive environment variables.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumeMounts"><a href="./values.yaml#L280">extraVolumeMounts</a></td>
+			<td id="extraVolumeMounts"><a href="./values.yaml#L285">extraVolumeMounts</a></td>
 			<td>
 list
 </td>
@@ -983,7 +983,7 @@ list
 			<td>Additional volume mounts.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumes"><a href="./values.yaml#L277">extraVolumes</a></td>
+			<td id="extraVolumes"><a href="./values.yaml#L282">extraVolumes</a></td>
 			<td>
 list
 </td>
@@ -1021,6 +1021,10 @@ object
 {
   "annotations": {},
   "backendRefs": [],
+  "controllerSelector": {
+    "app.kubernetes.io/name": "envoy-gateway",
+    "io.kubernetes.pod.namespace": "envoy-gateway-system"
+  },
   "enabled": false,
   "filters": [],
   "hostnames": [
@@ -1049,7 +1053,7 @@ object
 			<td>Gateway API HTTPRoute configuration (for example Envoy Gateway).</td>
 		</tr>
 		<tr>
-			<td id="gatewayApi--annotations"><a href="./values.yaml#L94">gatewayApi.annotations</a></td>
+			<td id="gatewayApi--annotations"><a href="./values.yaml#L99">gatewayApi.annotations</a></td>
 			<td>
 object
 </td>
@@ -1063,7 +1067,7 @@ object
 			<td>HTTPRoute annotations.</td>
 		</tr>
 		<tr>
-			<td id="gatewayApi--backendRefs"><a href="./values.yaml#L113">gatewayApi.backendRefs</a></td>
+			<td id="gatewayApi--backendRefs"><a href="./values.yaml#L118">gatewayApi.backendRefs</a></td>
 			<td>
 list
 </td>
@@ -1075,6 +1079,23 @@ list
 </div>
 			</td>
 			<td>Optional backend references. Defaults to this chart service when empty.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--controllerSelector"><a href="./values.yaml#L95">gatewayApi.controllerSelector</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "app.kubernetes.io/name": "envoy-gateway",
+  "io.kubernetes.pod.namespace": "envoy-gateway-system"
+}
+</pre>
+</div>
+			</td>
+			<td>Labels for the Gateway API controller pods, used to generate CiliumNetworkPolicies ingress rules. If empty, you must provide explicit `cnps.appTraffic.ingress.fromEndpoints` when gatewayApi is enabled.</td>
 		</tr>
 		<tr>
 			<td id="gatewayApi--enabled"><a href="./values.yaml#L92">gatewayApi.enabled</a></td>
@@ -1091,7 +1112,7 @@ false
 			<td>Enable HTTPRoute resource creation.</td>
 		</tr>
 		<tr>
-			<td id="gatewayApi--filters"><a href="./values.yaml#L111">gatewayApi.filters</a></td>
+			<td id="gatewayApi--filters"><a href="./values.yaml#L116">gatewayApi.filters</a></td>
 			<td>
 list
 </td>
@@ -1105,7 +1126,7 @@ list
 			<td>Optional filters for the HTTPRoute rule.</td>
 		</tr>
 		<tr>
-			<td id="gatewayApi--hostnames"><a href="./values.yaml#L103">gatewayApi.hostnames</a></td>
+			<td id="gatewayApi--hostnames"><a href="./values.yaml#L108">gatewayApi.hostnames</a></td>
 			<td>
 list
 </td>
@@ -1121,7 +1142,7 @@ list
 			<td>Hostnames served by this route.</td>
 		</tr>
 		<tr>
-			<td id="gatewayApi--labels"><a href="./values.yaml#L96">gatewayApi.labels</a></td>
+			<td id="gatewayApi--labels"><a href="./values.yaml#L101">gatewayApi.labels</a></td>
 			<td>
 object
 </td>
@@ -1135,7 +1156,7 @@ object
 			<td>HTTPRoute labels.</td>
 		</tr>
 		<tr>
-			<td id="gatewayApi--matches"><a href="./values.yaml#L106">gatewayApi.matches</a></td>
+			<td id="gatewayApi--matches"><a href="./values.yaml#L111">gatewayApi.matches</a></td>
 			<td>
 list
 </td>
@@ -1156,7 +1177,7 @@ list
 			<td>Match rules for the HTTPRoute rule.</td>
 		</tr>
 		<tr>
-			<td id="gatewayApi--parentRefs"><a href="./values.yaml#L98">gatewayApi.parentRefs</a></td>
+			<td id="gatewayApi--parentRefs"><a href="./values.yaml#L103">gatewayApi.parentRefs</a></td>
 			<td>
 list
 </td>
@@ -1488,7 +1509,7 @@ list
 			<td>TLS host/secret blocks.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L372">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L377">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -1505,7 +1526,7 @@ object
 			<td>Cilium policy library toggle.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--enabled"><a href="./values.yaml#L374">libchartCnps.enabled</a></td>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L379">libchartCnps.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1519,7 +1540,7 @@ true
 			<td>Enable libchart-cnps templates.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L376">libchartCnps.includeCnpgPolicies</a></td>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L381">libchartCnps.includeCnpgPolicies</a></td>
 			<td>
 bool
 </td>
@@ -1533,7 +1554,7 @@ false
 			<td>Include CNPG policy set from library.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L286">livenessProbe</a></td>
+			<td id="livenessProbe"><a href="./values.yaml#L291">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -1570,7 +1591,7 @@ string
 			<td>Override release-based naming.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L363">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L368">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -1584,7 +1605,7 @@ object
 			<td>Workload node selector.</td>
 		</tr>
 		<tr>
-			<td id="persistence"><a href="./values.yaml#L123">persistence</a></td>
+			<td id="persistence"><a href="./values.yaml#L128">persistence</a></td>
 			<td>
 object
 </td>
@@ -1610,7 +1631,7 @@ object
 			<td>Persistence settings for AnythingLLM storage (`STORAGE_DIR`).</td>
 		</tr>
 		<tr>
-			<td id="persistence--accessModes"><a href="./values.yaml#L135">persistence.accessModes</a></td>
+			<td id="persistence--accessModes"><a href="./values.yaml#L140">persistence.accessModes</a></td>
 			<td>
 list
 </td>
@@ -1626,7 +1647,7 @@ list
 			<td>PVC access modes.</td>
 		</tr>
 		<tr>
-			<td id="persistence--annotations"><a href="./values.yaml#L138">persistence.annotations</a></td>
+			<td id="persistence--annotations"><a href="./values.yaml#L143">persistence.annotations</a></td>
 			<td>
 object
 </td>
@@ -1640,7 +1661,7 @@ object
 			<td>PVC annotations.</td>
 		</tr>
 		<tr>
-			<td id="persistence--enabled"><a href="./values.yaml#L125">persistence.enabled</a></td>
+			<td id="persistence--enabled"><a href="./values.yaml#L130">persistence.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1654,7 +1675,7 @@ true
 			<td>Enable persistent storage.</td>
 		</tr>
 		<tr>
-			<td id="persistence--existingClaim"><a href="./values.yaml#L129">persistence.existingClaim</a></td>
+			<td id="persistence--existingClaim"><a href="./values.yaml#L134">persistence.existingClaim</a></td>
 			<td>
 string
 </td>
@@ -1668,7 +1689,7 @@ string
 			<td>Existing PVC to use instead of creating one.</td>
 		</tr>
 		<tr>
-			<td id="persistence--mountPath"><a href="./values.yaml#L142">persistence.mountPath</a></td>
+			<td id="persistence--mountPath"><a href="./values.yaml#L147">persistence.mountPath</a></td>
 			<td>
 string
 </td>
@@ -1682,7 +1703,7 @@ string
 			<td>Mount path inside container.</td>
 		</tr>
 		<tr>
-			<td id="persistence--retain"><a href="./values.yaml#L127">persistence.retain</a></td>
+			<td id="persistence--retain"><a href="./values.yaml#L132">persistence.retain</a></td>
 			<td>
 bool
 </td>
@@ -1696,7 +1717,7 @@ false
 			<td>Keep PVC when Helm release is deleted (`true` keeps data on uninstall; scale up/down does not delete PVCs either way).</td>
 		</tr>
 		<tr>
-			<td id="persistence--size"><a href="./values.yaml#L131">persistence.size</a></td>
+			<td id="persistence--size"><a href="./values.yaml#L136">persistence.size</a></td>
 			<td>
 string
 </td>
@@ -1710,7 +1731,7 @@ string
 			<td>PVC storage size.</td>
 		</tr>
 		<tr>
-			<td id="persistence--storageClass"><a href="./values.yaml#L133">persistence.storageClass</a></td>
+			<td id="persistence--storageClass"><a href="./values.yaml#L138">persistence.storageClass</a></td>
 			<td>
 string
 </td>
@@ -1724,7 +1745,7 @@ string
 			<td>PVC storageClass.</td>
 		</tr>
 		<tr>
-			<td id="persistence--volumeName"><a href="./values.yaml#L140">persistence.volumeName</a></td>
+			<td id="persistence--volumeName"><a href="./values.yaml#L145">persistence.volumeName</a></td>
 			<td>
 string
 </td>
@@ -1738,7 +1759,7 @@ string
 			<td>PVC volumeName binding.</td>
 		</tr>
 		<tr>
-			<td id="podAnnotations"><a href="./values.yaml#L357">podAnnotations</a></td>
+			<td id="podAnnotations"><a href="./values.yaml#L362">podAnnotations</a></td>
 			<td>
 object
 </td>
@@ -1752,7 +1773,7 @@ object
 			<td>Pod annotations.</td>
 		</tr>
 		<tr>
-			<td id="podLabels"><a href="./values.yaml#L360">podLabels</a></td>
+			<td id="podLabels"><a href="./values.yaml#L365">podLabels</a></td>
 			<td>
 object
 </td>
@@ -1766,7 +1787,7 @@ object
 			<td>Pod labels.</td>
 		</tr>
 		<tr>
-			<td id="podSecurityContext"><a href="./values.yaml#L316">podSecurityContext</a></td>
+			<td id="podSecurityContext"><a href="./values.yaml#L321">podSecurityContext</a></td>
 			<td>
 object
 </td>
@@ -1842,7 +1863,7 @@ list
 			<td>Explicit RBAC rules required when rbac.create=true.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe"><a href="./values.yaml#L296">readinessProbe</a></td>
+			<td id="readinessProbe"><a href="./values.yaml#L301">readinessProbe</a></td>
 			<td>
 object
 </td>
@@ -1879,7 +1900,7 @@ int
 			<td>Number of application pod replicas.</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L333">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L338">resources</a></td>
 			<td>
 object
 </td>
@@ -1902,7 +1923,7 @@ object
 			<td>Resource requests and limits.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L116">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L121">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -1919,7 +1940,7 @@ object
 			<td>RuntimeClass names.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--pods"><a href="./values.yaml#L118">runtimeClass.pods</a></td>
+			<td id="runtimeClass--pods"><a href="./values.yaml#L123">runtimeClass.pods</a></td>
 			<td>
 string
 </td>
@@ -1933,7 +1954,7 @@ string
 			<td>RuntimeClass for deployment pods.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--tests"><a href="./values.yaml#L120">runtimeClass.tests</a></td>
+			<td id="runtimeClass--tests"><a href="./values.yaml#L125">runtimeClass.tests</a></td>
 			<td>
 string
 </td>
@@ -1947,7 +1968,7 @@ string
 			<td>RuntimeClass for test pods.</td>
 		</tr>
 		<tr>
-			<td id="secrets"><a href="./values.yaml#L181">secrets</a></td>
+			<td id="secrets"><a href="./values.yaml#L186">secrets</a></td>
 			<td>
 object
 </td>
@@ -1971,7 +1992,7 @@ object
 			<td>Secret handling for required runtime secrets.</td>
 		</tr>
 		<tr>
-			<td id="secrets--create"><a href="./values.yaml#L183">secrets.create</a></td>
+			<td id="secrets--create"><a href="./values.yaml#L188">secrets.create</a></td>
 			<td>
 bool
 </td>
@@ -1985,7 +2006,7 @@ true
 			<td>Create chart-managed secret with generated secure values.</td>
 		</tr>
 		<tr>
-			<td id="secrets--existingSecret"><a href="./values.yaml#L185">secrets.existingSecret</a></td>
+			<td id="secrets--existingSecret"><a href="./values.yaml#L190">secrets.existingSecret</a></td>
 			<td>
 string
 </td>
@@ -1999,7 +2020,7 @@ string
 			<td>Existing secret name to use when `create=false`.</td>
 		</tr>
 		<tr>
-			<td id="secrets--keys--authToken"><a href="./values.yaml#L196">secrets.keys.authToken</a></td>
+			<td id="secrets--keys--authToken"><a href="./values.yaml#L201">secrets.keys.authToken</a></td>
 			<td>
 string
 </td>
@@ -2013,7 +2034,7 @@ string
 			<td>Key name for optional auth token.</td>
 		</tr>
 		<tr>
-			<td id="secrets--keys--jwtSecret"><a href="./values.yaml#L190">secrets.keys.jwtSecret</a></td>
+			<td id="secrets--keys--jwtSecret"><a href="./values.yaml#L195">secrets.keys.jwtSecret</a></td>
 			<td>
 string
 </td>
@@ -2027,7 +2048,7 @@ string
 			<td>Key name for JWT secret.</td>
 		</tr>
 		<tr>
-			<td id="secrets--keys--sigKey"><a href="./values.yaml#L192">secrets.keys.sigKey</a></td>
+			<td id="secrets--keys--sigKey"><a href="./values.yaml#L197">secrets.keys.sigKey</a></td>
 			<td>
 string
 </td>
@@ -2041,7 +2062,7 @@ string
 			<td>Key name for signature key.</td>
 		</tr>
 		<tr>
-			<td id="secrets--keys--sigSalt"><a href="./values.yaml#L194">secrets.keys.sigSalt</a></td>
+			<td id="secrets--keys--sigSalt"><a href="./values.yaml#L199">secrets.keys.sigSalt</a></td>
 			<td>
 string
 </td>
@@ -2055,7 +2076,7 @@ string
 			<td>Key name for signature salt.</td>
 		</tr>
 		<tr>
-			<td id="secrets--name"><a href="./values.yaml#L187">secrets.name</a></td>
+			<td id="secrets--name"><a href="./values.yaml#L192">secrets.name</a></td>
 			<td>
 string
 </td>
@@ -2069,7 +2090,7 @@ string
 			<td>Secret name override when `create=true`.</td>
 		</tr>
 		<tr>
-			<td id="securityContext"><a href="./values.yaml#L320">securityContext</a></td>
+			<td id="securityContext"><a href="./values.yaml#L325">securityContext</a></td>
 			<td>
 object
 </td>
@@ -2277,7 +2298,7 @@ string
 			<td>ServiceAccount name override.</td>
 		</tr>
 		<tr>
-			<td id="startupProbe"><a href="./values.yaml#L306">startupProbe</a></td>
+			<td id="startupProbe"><a href="./values.yaml#L311">startupProbe</a></td>
 			<td>
 object
 </td>
@@ -2300,7 +2321,7 @@ object
 			<td>Startup probe.</td>
 		</tr>
 		<tr>
-			<td id="tmpVolume"><a href="./values.yaml#L145">tmpVolume</a></td>
+			<td id="tmpVolume"><a href="./values.yaml#L150">tmpVolume</a></td>
 			<td>
 object
 </td>
@@ -2318,7 +2339,7 @@ object
 			<td>Optional tmp volume.</td>
 		</tr>
 		<tr>
-			<td id="tmpVolume--enabled"><a href="./values.yaml#L147">tmpVolume.enabled</a></td>
+			<td id="tmpVolume--enabled"><a href="./values.yaml#L152">tmpVolume.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2332,7 +2353,7 @@ true
 			<td>Mount writable emptyDir at /tmp.</td>
 		</tr>
 		<tr>
-			<td id="tmpVolume--mountPath"><a href="./values.yaml#L149">tmpVolume.mountPath</a></td>
+			<td id="tmpVolume--mountPath"><a href="./values.yaml#L154">tmpVolume.mountPath</a></td>
 			<td>
 string
 </td>
@@ -2346,7 +2367,7 @@ string
 			<td>Mount path inside container.</td>
 		</tr>
 		<tr>
-			<td id="tmpVolume--sizeLimit"><a href="./values.yaml#L151">tmpVolume.sizeLimit</a></td>
+			<td id="tmpVolume--sizeLimit"><a href="./values.yaml#L156">tmpVolume.sizeLimit</a></td>
 			<td>
 string
 </td>
@@ -2360,7 +2381,7 @@ string
 			<td>Optional size limit.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L366">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L371">tolerations</a></td>
 			<td>
 list
 </td>

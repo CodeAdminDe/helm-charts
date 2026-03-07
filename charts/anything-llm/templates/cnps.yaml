@@ -32,7 +32,9 @@ metadata:
 {{- $defaultIngressEndpoints = append $defaultIngressEndpoints (dict "app.kubernetes.io/name" "ingress-nginx" "io.kubernetes.pod.namespace" "ingress-nginx") -}}
 {{- end -}}
 {{- if .Values.gatewayApi.enabled -}}
-{{- $defaultIngressEndpoints = append $defaultIngressEndpoints (dict "app.kubernetes.io/name" "envoy-gateway" "io.kubernetes.pod.namespace" "envoy-gateway-system") -}}
+{{- if .Values.gatewayApi.controllerSelector -}}
+{{- $defaultIngressEndpoints = append $defaultIngressEndpoints .Values.gatewayApi.controllerSelector -}}
+{{- end -}}
 {{- end -}}
 {{- $defaultDenyMatchLabel := dict "anything-llm.cnp/default-deny" "true" -}}
 {{- $effectiveIngressEndpoints := .Values.cnps.appTraffic.ingress.fromEndpoints | default (list) -}}
