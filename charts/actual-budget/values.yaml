@@ -58,6 +58,36 @@ ingress:
   # -- TLS host/secret blocks.
   tls: []
 
+# -- Gateway API HTTPRoute configuration (for example Envoy Gateway).
+gatewayApi:
+  # -- Enable HTTPRoute resource creation.
+  enabled: false
+  # -- Labels for the Gateway API controller pods, used to generate default CiliumNetworkPolicies ingress rules.
+  controllerSelector:
+    app.kubernetes.io/name: envoy-gateway
+    io.kubernetes.pod.namespace: envoy-gateway-system
+  # -- HTTPRoute annotations.
+  annotations: {}
+  # -- HTTPRoute labels.
+  labels: {}
+  # -- ParentRefs for HTTPRoute.
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
+      sectionName: http
+  # -- Hostnames served by this route.
+  hostnames:
+    - actual.example.local
+  # -- Match rules for the HTTPRoute rule.
+  matches:
+    - path:
+        type: PathPrefix
+        value: "/"
+  # -- Optional filters for the HTTPRoute rule.
+  filters: []
+  # -- Optional backend references. Defaults to this chart service when empty.
+  backendRefs: []
+
 # -- Create service account.
 serviceAccount:
   create: true
@@ -105,7 +135,7 @@ persistence:
   # -- Enable persistent volume claim.
   enabled: true
   # -- Retain the PVC upon `helm uninstall`.
-  retain: true
+  retain: false
   # -- Existing claim name override.
   existingClaim: ""
   # -- Storage class name.
@@ -199,6 +229,8 @@ cnps:
   appTraffic:
     ingress:
       allow: true
+      # -- Labels to match ingress controller pods.
+      # @description Leave empty to use conditional defaults from template logic: ingress-nginx labels when ingress.enabled=true, gatewayApi.controllerSelector labels when gatewayApi.enabled=true, or both when both are enabled.
       matchLabels: {}
     egress:
       allow: true

@@ -6,18 +6,18 @@
 ### Upstream behavior and chart scope
 
 * Upstream Actual Budget is a local-first personal finance application that stores its data in a local SQLite database.
-* To prevent database corruption, this chart actively rejects (`replicaCount > 1`) via validation.
+* To prevent database corruption, this chart actively rejects multi-replica execution via validation (`replicaCount > 1` and autoscaling min/max replicas above `1`).
 
 ### Persistence and lifecycle
 
-* The application state (`/data`) must be persistent. Scaling operations will not delete the associated PVC.
-* If `persistence.retain=true` (the default), `helm uninstall` will **not** delete the PVC. The true lifecycle then depends on your StorageClass reclaim policy.
+* The application state (`/data`) should be backed by persistent storage for normal operation.
 * Because the container runs with `readOnlyRootFilesystem=true` per security baseline, an `emptyDir` is automatically mounted at `/tmp` to support runtime ephemeral files.
 
 ### Networking and Exposure
 
+* This chart supports both classic `Ingress` resources and `HTTPRoute` resources via Gateway API.
 * The chart enforces `ClusterIP` as the sole service type. External access should be configured via `ingress` or `gatewayApi`.
-* Actual Budget requires HTTPS/TLS for features like Web-App installation and end-to-end encryption setup. It is recommended to enable `ingress.tls`.
+* Actual Budget requires HTTPS/TLS for features like Web-App installation and end-to-end encryption setup. It is recommended to enable `ingress.tls` or ensure the selected Gateway listener terminates TLS.
 
 {{- end -}}
 
