@@ -1,5 +1,5 @@
 1. Wait for Envoy Gateway control-plane deployment:
-   kubectl wait --timeout=5m -n {{ .Release.Namespace }} deployment/envoy-gateway --for=condition=Available
+   kubectl wait --timeout=5m -n {{ .Release.Namespace }} deployment/{{ include "envoy-gateway.fullname" . }} --for=condition=Available
 
 2. Verify bootstrap resources:
 {{- if .Values.bootstrap.gatewayClass.enabled }}
