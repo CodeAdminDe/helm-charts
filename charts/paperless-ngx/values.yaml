@@ -323,7 +323,7 @@ gotenberg:
     # -- Image pull policy.
     pullPolicy: IfNotPresent
     # -- Image tag.
-    tag: "8.25"
+    tag: "8.27"
   service:
     # -- Service annotations.
     annotations: {}
