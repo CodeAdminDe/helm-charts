@@ -6,6 +6,15 @@
 {{- fail "ingress.enabled=true requires at least one ingress.hosts entry." -}}
 {{- end -}}
 
+{{- if .Values.gatewayApi.enabled -}}
+  {{- if not .Values.gatewayApi.parentRefs -}}
+    {{- fail "gatewayApi.enabled=true requires at least one gatewayApi.parentRefs entry." -}}
+  {{- end -}}
+  {{- if not .Values.gatewayApi.hostnames -}}
+    {{- fail "gatewayApi.enabled=true requires at least one gatewayApi.hostnames entry." -}}
+  {{- end -}}
+{{- end -}}
+
 {{- if .Values.database.useCnpgCluster.enabled -}}
   {{- if not .Values.database.enabled -}}
     {{- fail "database.useCnpgCluster.enabled=true requires database.enabled=true." -}}

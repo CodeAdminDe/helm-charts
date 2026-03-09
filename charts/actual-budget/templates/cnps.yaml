@@ -27,6 +27,13 @@ metadata:
 {{- end -}}
 
 {{- define "actual-budget.CiliumNetworkPolicies-AppSet" -}}
+{{- $defaultIngressEndpoints := list -}}
+{{- if .Values.ingress.enabled -}}
+{{- $defaultIngressEndpoints = append $defaultIngressEndpoints (dict "app.kubernetes.io/name" "ingress-nginx" "io.kubernetes.pod.namespace" "ingress-nginx") -}}
+{{- end -}}
+{{- if and .Values.gatewayApi.enabled .Values.gatewayApi.controllerSelector -}}
+{{- $defaultIngressEndpoints = append $defaultIngressEndpoints .Values.gatewayApi.controllerSelector -}}
+{{- end -}}
 metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
@@ -40,15 +47,22 @@ spec:
   {{- if .Values.cnps.appTraffic.ingress.allow }}
   ingress:
     - fromEndpoints:
+        {{- if .Values.cnps.appTraffic.ingress.matchLabels }}
         - matchLabels:
-          {{- if .Values.cnps.appTraffic.ingress.matchLabels }}
           {{- range $k, $v := .Values.cnps.appTraffic.ingress.matchLabels }}
             {{ $k }}: {{ $v }}
           {{- end }}
-          {{- else }}
-            app.kubernetes.io/name: ingress-nginx
-            io.kubernetes.pod.namespace: ingress-nginx
+        {{- else if $defaultIngressEndpoints }}
+        {{- range $endpoint := $defaultIngressEndpoints }}
+        - matchLabels:
+          {{- range $k, $v := $endpoint }}
+            {{ $k }}: {{ $v }}
           {{- end }}
+        {{- end }}
+        {{- else }}
+        - matchLabels:
+            actual-budget.cnp/default-deny: "true"
+        {{- end }}
       toPorts:
         - ports:
             - port: {{ .Values.service.targetPort | quote }}

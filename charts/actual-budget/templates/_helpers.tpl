@@ -57,6 +57,11 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- printf "%s-role" (include "actual-budget.fullname" .) | trunc 63 | trimSuffix "-" -}}
 {{- end }}
 
+{{/* HTTPRoute name helper. */}}
+{{- define "actual-budget.httpRouteName" -}}
+{{- printf "%s-route" (include "actual-budget.fullname" .) | trunc 63 | trimSuffix "-" -}}
+{{- end }}
+
 {{/* Resolve CNPG app secret name. */}}
 {{- define "actual-budget.cnpg.appConnectionSecretName" -}}
 {{- if .Values.database.useCnpgCluster.appConnectionSecretName -}}

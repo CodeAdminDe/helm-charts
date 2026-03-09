@@ -96,7 +96,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="additionalEnvSecrets"><a href="./values.yaml#L167">additionalEnvSecrets</a></td>
+			<td id="additionalEnvSecrets"><a href="./values.yaml#L197">additionalEnvSecrets</a></td>
 			<td>
 object
 </td>
@@ -110,7 +110,7 @@ object
 			<td>Additional env vars from existing secrets. @description Map ENV_KEY to secret name containing the same key.</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L220">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L252">affinity</a></td>
 			<td>
 object
 </td>
@@ -124,7 +124,7 @@ object
 			<td>Workload affinity.</td>
 		</tr>
 		<tr>
-			<td id="applyHealthChecks"><a href="./values.yaml#L84">applyHealthChecks</a></td>
+			<td id="applyHealthChecks"><a href="./values.yaml#L114">applyHealthChecks</a></td>
 			<td>
 bool
 </td>
@@ -138,7 +138,7 @@ true
 			<td>Apply health checks from values.</td>
 		</tr>
 		<tr>
-			<td id="applySecurity"><a href="./values.yaml#L81">applySecurity</a></td>
+			<td id="applySecurity"><a href="./values.yaml#L111">applySecurity</a></td>
 			<td>
 bool
 </td>
@@ -152,7 +152,7 @@ true
 			<td>Apply default pod/container security settings.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L147">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L177">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -171,7 +171,7 @@ object
 			<td>HorizontalPodAutoscaler configuration.</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L198">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L228">cnps</a></td>
 			<td>
 object
 </td>
@@ -196,7 +196,21 @@ object
 			<td>App-specific CiliumNetworkPolicies settings.</td>
 		</tr>
 		<tr>
-			<td id="database"><a href="./values.yaml#L170">database</a></td>
+			<td id="cnps--appTraffic--ingress--matchLabels"><a href="./values.yaml#L234">cnps.appTraffic.ingress.matchLabels</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>Labels to match ingress controller pods. @description Leave empty to use conditional defaults from template logic: ingress-nginx labels when ingress.enabled=true, gatewayApi.controllerSelector labels when gatewayApi.enabled=true, or both when both are enabled.</td>
+		</tr>
+		<tr>
+			<td id="database"><a href="./values.yaml#L200">database</a></td>
 			<td>
 object
 </td>
@@ -232,7 +246,7 @@ object
 			<td>Optional database integration settings.</td>
 		</tr>
 		<tr>
-			<td id="database--enabled"><a href="./values.yaml#L172">database.enabled</a></td>
+			<td id="database--enabled"><a href="./values.yaml#L202">database.enabled</a></td>
 			<td>
 bool
 </td>
@@ -246,7 +260,7 @@ false
 			<td>Enable database-related env wiring for the app.</td>
 		</tr>
 		<tr>
-			<td id="database--standalone"><a href="./values.yaml#L174">database.standalone</a></td>
+			<td id="database--standalone"><a href="./values.yaml#L204">database.standalone</a></td>
 			<td>
 object
 </td>
@@ -269,7 +283,7 @@ object
 			<td>Standalone database host config.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster"><a href="./values.yaml#L183">database.useCnpgCluster</a></td>
+			<td id="database--useCnpgCluster"><a href="./values.yaml#L213">database.useCnpgCluster</a></td>
 			<td>
 object
 </td>
@@ -292,7 +306,7 @@ object
 			<td>Optional CNPG integration.</td>
 		</tr>
 		<tr>
-			<td id="env"><a href="./values.yaml#L159">env</a></td>
+			<td id="env"><a href="./values.yaml#L189">env</a></td>
 			<td>
 object
 </td>
@@ -322,6 +336,192 @@ string
 </div>
 			</td>
 			<td></td>
+		</tr>
+		<tr>
+			<td id="gatewayApi"><a href="./values.yaml#L62">gatewayApi</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "annotations": {},
+  "backendRefs": [],
+  "controllerSelector": {
+    "app.kubernetes.io/name": "envoy-gateway",
+    "io.kubernetes.pod.namespace": "envoy-gateway-system"
+  },
+  "enabled": false,
+  "filters": [],
+  "hostnames": [
+    "actual.example.local"
+  ],
+  "labels": {},
+  "matches": [
+    {
+      "path": {
+        "type": "PathPrefix",
+        "value": "/"
+      }
+    }
+  ],
+  "parentRefs": [
+    {
+      "name": "envoy-gateway",
+      "namespace": "envoy-gateway-system",
+      "sectionName": "http"
+    }
+  ]
+}
+</pre>
+</div>
+			</td>
+			<td>Gateway API HTTPRoute configuration (for example Envoy Gateway).</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--annotations"><a href="./values.yaml#L70">gatewayApi.annotations</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>HTTPRoute annotations.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--backendRefs"><a href="./values.yaml#L89">gatewayApi.backendRefs</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Optional backend references. Defaults to this chart service when empty.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--controllerSelector"><a href="./values.yaml#L66">gatewayApi.controllerSelector</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "app.kubernetes.io/name": "envoy-gateway",
+  "io.kubernetes.pod.namespace": "envoy-gateway-system"
+}
+</pre>
+</div>
+			</td>
+			<td>Labels for the Gateway API controller pods, used to generate default CiliumNetworkPolicies ingress rules.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--enabled"><a href="./values.yaml#L64">gatewayApi.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Enable HTTPRoute resource creation.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--filters"><a href="./values.yaml#L87">gatewayApi.filters</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Optional filters for the HTTPRoute rule.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--hostnames"><a href="./values.yaml#L79">gatewayApi.hostnames</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[
+  "actual.example.local"
+]
+</pre>
+</div>
+			</td>
+			<td>Hostnames served by this route.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--labels"><a href="./values.yaml#L72">gatewayApi.labels</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>HTTPRoute labels.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--matches"><a href="./values.yaml#L82">gatewayApi.matches</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[
+  {
+    "path": {
+      "type": "PathPrefix",
+      "value": "/"
+    }
+  }
+]
+</pre>
+</div>
+			</td>
+			<td>Match rules for the HTTPRoute rule.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--parentRefs"><a href="./values.yaml#L74">gatewayApi.parentRefs</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[
+  {
+    "name": "envoy-gateway",
+    "namespace": "envoy-gateway-system",
+    "sectionName": "http"
+  }
+]
+</pre>
+</div>
+			</td>
+			<td>ParentRefs for HTTPRoute.</td>
 		</tr>
 		<tr>
 			<td id="image"><a href="./values.yaml#L10">image</a></td>
@@ -541,7 +741,7 @@ list
 			<td>TLS host/secret blocks.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L193">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L223">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -558,7 +758,7 @@ object
 			<td>CiliumNetworkPolicies dependency toggle.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L124">livenessProbe</a></td>
+			<td id="livenessProbe"><a href="./values.yaml#L154">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -595,7 +795,7 @@ string
 			<td>Override release-based naming.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L214">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L246">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -609,7 +809,7 @@ object
 			<td>Workload node selector.</td>
 		</tr>
 		<tr>
-			<td id="persistence"><a href="./values.yaml#L104">persistence</a></td>
+			<td id="persistence"><a href="./values.yaml#L134">persistence</a></td>
 			<td>
 object
 </td>
@@ -623,7 +823,7 @@ object
   "annotations": {},
   "enabled": true,
   "existingClaim": "",
-  "retain": true,
+  "retain": false,
   "size": "2Gi",
   "storageClass": "",
   "volumeName": ""
@@ -634,7 +834,7 @@ object
 			<td>Persistence configuration (Blueprint B)</td>
 		</tr>
 		<tr>
-			<td id="persistence--accessModes"><a href="./values.yaml#L114">persistence.accessModes</a></td>
+			<td id="persistence--accessModes"><a href="./values.yaml#L144">persistence.accessModes</a></td>
 			<td>
 list
 </td>
@@ -650,7 +850,7 @@ list
 			<td>Access mode.</td>
 		</tr>
 		<tr>
-			<td id="persistence--annotations"><a href="./values.yaml#L119">persistence.annotations</a></td>
+			<td id="persistence--annotations"><a href="./values.yaml#L149">persistence.annotations</a></td>
 			<td>
 object
 </td>
@@ -664,7 +864,7 @@ object
 			<td>Annotations for the PVC.</td>
 		</tr>
 		<tr>
-			<td id="persistence--enabled"><a href="./values.yaml#L106">persistence.enabled</a></td>
+			<td id="persistence--enabled"><a href="./values.yaml#L136">persistence.enabled</a></td>
 			<td>
 bool
 </td>
@@ -678,7 +878,7 @@ true
 			<td>Enable persistent volume claim.</td>
 		</tr>
 		<tr>
-			<td id="persistence--existingClaim"><a href="./values.yaml#L110">persistence.existingClaim</a></td>
+			<td id="persistence--existingClaim"><a href="./values.yaml#L140">persistence.existingClaim</a></td>
 			<td>
 string
 </td>
@@ -692,21 +892,21 @@ string
 			<td>Existing claim name override.</td>
 		</tr>
 		<tr>
-			<td id="persistence--retain"><a href="./values.yaml#L108">persistence.retain</a></td>
+			<td id="persistence--retain"><a href="./values.yaml#L138">persistence.retain</a></td>
 			<td>
 bool
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-true
+false
 </pre>
 </div>
 			</td>
 			<td>Retain the PVC upon `helm uninstall`.</td>
 		</tr>
 		<tr>
-			<td id="persistence--size"><a href="./values.yaml#L117">persistence.size</a></td>
+			<td id="persistence--size"><a href="./values.yaml#L147">persistence.size</a></td>
 			<td>
 string
 </td>
@@ -720,7 +920,7 @@ string
 			<td>Volume size.</td>
 		</tr>
 		<tr>
-			<td id="persistence--storageClass"><a href="./values.yaml#L112">persistence.storageClass</a></td>
+			<td id="persistence--storageClass"><a href="./values.yaml#L142">persistence.storageClass</a></td>
 			<td>
 string
 </td>
@@ -734,7 +934,7 @@ string
 			<td>Storage class name.</td>
 		</tr>
 		<tr>
-			<td id="persistence--volumeName"><a href="./values.yaml#L121">persistence.volumeName</a></td>
+			<td id="persistence--volumeName"><a href="./values.yaml#L151">persistence.volumeName</a></td>
 			<td>
 string
 </td>
@@ -748,7 +948,7 @@ string
 			<td>Explicit volume name override (optional).</td>
 		</tr>
 		<tr>
-			<td id="podAnnotations"><a href="./values.yaml#L208">podAnnotations</a></td>
+			<td id="podAnnotations"><a href="./values.yaml#L240">podAnnotations</a></td>
 			<td>
 object
 </td>
@@ -762,7 +962,7 @@ object
 			<td>Pod annotations.</td>
 		</tr>
 		<tr>
-			<td id="podLabels"><a href="./values.yaml#L211">podLabels</a></td>
+			<td id="podLabels"><a href="./values.yaml#L243">podLabels</a></td>
 			<td>
 object
 </td>
@@ -776,7 +976,7 @@ object
 			<td>Pod labels.</td>
 		</tr>
 		<tr>
-			<td id="podSecurityContext"><a href="./values.yaml#L87">podSecurityContext</a></td>
+			<td id="podSecurityContext"><a href="./values.yaml#L117">podSecurityContext</a></td>
 			<td>
 object
 </td>
@@ -792,7 +992,7 @@ object
 			<td>Pod-level security context for workload pods.</td>
 		</tr>
 		<tr>
-			<td id="rbac"><a href="./values.yaml#L72">rbac</a></td>
+			<td id="rbac"><a href="./values.yaml#L102">rbac</a></td>
 			<td>
 object
 </td>
@@ -810,7 +1010,7 @@ object
 			<td>RBAC settings.</td>
 		</tr>
 		<tr>
-			<td id="rbac--create"><a href="./values.yaml#L74">rbac.create</a></td>
+			<td id="rbac--create"><a href="./values.yaml#L104">rbac.create</a></td>
 			<td>
 bool
 </td>
@@ -824,7 +1024,7 @@ false
 			<td>Create namespace-scoped role + rolebinding.</td>
 		</tr>
 		<tr>
-			<td id="rbac--namespace"><a href="./values.yaml#L76">rbac.namespace</a></td>
+			<td id="rbac--namespace"><a href="./values.yaml#L106">rbac.namespace</a></td>
 			<td>
 string
 </td>
@@ -838,7 +1038,7 @@ string
 			<td>Namespace override for RBAC objects. Empty means release namespace.</td>
 		</tr>
 		<tr>
-			<td id="rbac--rules"><a href="./values.yaml#L78">rbac.rules</a></td>
+			<td id="rbac--rules"><a href="./values.yaml#L108">rbac.rules</a></td>
 			<td>
 list
 </td>
@@ -852,7 +1052,7 @@ list
 			<td>Custom RBAC rules. If empty, template default rules are used.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe"><a href="./values.yaml#L134">readinessProbe</a></td>
+			<td id="readinessProbe"><a href="./values.yaml#L164">readinessProbe</a></td>
 			<td>
 object
 </td>
@@ -889,7 +1089,7 @@ int
 			<td>Number of application pod replicas. @description Actual Budget is strictly a single-instance database app.</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L144">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L174">resources</a></td>
 			<td>
 object
 </td>
@@ -903,7 +1103,7 @@ object
 			<td>Resource requests/limits.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L154">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L184">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -920,7 +1120,7 @@ object
 			<td>RuntimeClass names.</td>
 		</tr>
 		<tr>
-			<td id="securityContext"><a href="./values.yaml#L91">securityContext</a></td>
+			<td id="securityContext"><a href="./values.yaml#L121">securityContext</a></td>
 			<td>
 object
 </td>
@@ -1038,7 +1238,7 @@ string
 			<td>Service type. This scaffold enforces ClusterIP via validation.yaml.</td>
 		</tr>
 		<tr>
-			<td id="serviceAccount"><a href="./values.yaml#L62">serviceAccount</a></td>
+			<td id="serviceAccount"><a href="./values.yaml#L92">serviceAccount</a></td>
 			<td>
 object
 </td>
@@ -1057,7 +1257,7 @@ object
 			<td>Create service account.</td>
 		</tr>
 		<tr>
-			<td id="serviceAccount--annotations"><a href="./values.yaml#L65">serviceAccount.annotations</a></td>
+			<td id="serviceAccount--annotations"><a href="./values.yaml#L95">serviceAccount.annotations</a></td>
 			<td>
 object
 </td>
@@ -1071,7 +1271,7 @@ object
 			<td>ServiceAccount annotations.</td>
 		</tr>
 		<tr>
-			<td id="serviceAccount--automountServiceAccountToken"><a href="./values.yaml#L69">serviceAccount.automountServiceAccountToken</a></td>
+			<td id="serviceAccount--automountServiceAccountToken"><a href="./values.yaml#L99">serviceAccount.automountServiceAccountToken</a></td>
 			<td>
 bool
 </td>
@@ -1085,7 +1285,7 @@ false
 			<td>Automount SA token.</td>
 		</tr>
 		<tr>
-			<td id="serviceAccount--name"><a href="./values.yaml#L67">serviceAccount.name</a></td>
+			<td id="serviceAccount--name"><a href="./values.yaml#L97">serviceAccount.name</a></td>
 			<td>
 string
 </td>
@@ -1099,7 +1299,7 @@ string
 			<td>ServiceAccount name override.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L217">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L249">tolerations</a></td>
 			<td>
 list
 </td>
@@ -1152,15 +1352,15 @@ Autogenerated from chart metadata using [helm-docs](https://github.com/norwoodj/
 ### Upstream behavior and chart scope
 
 * Upstream Actual Budget is a local-first personal finance application that stores its data in a local SQLite database.
-* To prevent database corruption, this chart actively rejects (`replicaCount > 1`) via validation.
+* To prevent database corruption, this chart actively rejects multi-replica execution via validation (`replicaCount > 1` and autoscaling min/max replicas above `1`).
 
 ### Persistence and lifecycle
 
-* The application state (`/data`) must be persistent. Scaling operations will not delete the associated PVC.
-* If `persistence.retain=true` (the default), `helm uninstall` will **not** delete the PVC. The true lifecycle then depends on your StorageClass reclaim policy.
+* The application state (`/data`) should be backed by persistent storage for normal operation.
 * Because the container runs with `readOnlyRootFilesystem=true` per security baseline, an `emptyDir` is automatically mounted at `/tmp` to support runtime ephemeral files.
 
 ### Networking and Exposure
 
+* This chart supports both classic `Ingress` resources and `HTTPRoute` resources via Gateway API.
 * The chart enforces `ClusterIP` as the sole service type. External access should be configured via `ingress` or `gatewayApi`.
-* Actual Budget requires HTTPS/TLS for features like Web-App installation and end-to-end encryption setup. It is recommended to enable `ingress.tls`.
+* Actual Budget requires HTTPS/TLS for features like Web-App installation and end-to-end encryption setup. It is recommended to enable `ingress.tls` or ensure the selected Gateway listener terminates TLS.
