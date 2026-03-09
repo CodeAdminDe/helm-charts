@@ -1,0 +1,39 @@
+{{- define "extra.specifics.fromchart.atom.opinionated" -}}
+<hr /><hr />
+
+## Appendix - Chart-specifics
+
+### Upstream behavior and chart scope
+
+* This chart follows official AnythingLLM Docker deployment guidance and maps the same env/runtime model into Kubernetes.
+* `STORAGE_DIR` persistence is a first-class requirement in this chart and is bound to `persistence.mountPath`.
+* External controller installation (Ingress controller / Gateway controller / CNPG operator) is out of scope.
+* Service exposure is intentionally ClusterIP-only; use ingress or Gateway API resources for north-south traffic.
+
+### Database model (SQLite and PostgreSQL/CNPG)
+
+* Default mode is `database.mode=sqlite` with AnythingLLM local storage (`VECTOR_DB=lancedb`).
+* PostgreSQL mode is enabled with `database.mode=postgres` and switches runtime to the official `:pg` image variant by default.
+* For PostgreSQL mode this chart sets both:
+  * `DATABASE_URL`
+  * `PGVECTOR_CONNECTION_STRING`
+  and forces `VECTOR_DB=pgvector`.
+* CNPG integration is supported via `database.useCnpgCluster.*` using an existing CNPG app secret.
+
+### Security defaults
+
+* Chart-managed secret generation is enabled by default (`secrets.create=true`) and persisted across upgrades.
+* Required runtime secrets are injected from Secret refs (`JWT_SECRET`, `SIG_KEY`, `SIG_SALT`) and optional `AUTH_TOKEN`.
+* Pod/container hardening defaults are enabled (`runAsNonRoot`, dropped capabilities, no privilege escalation, `RuntimeDefault` seccomp).
+* `SYS_ADMIN` capability is disabled by default and must be explicitly enabled (`anythingllm.security.enableSysAdminCapability=true`) only when needed.
+
+### Operational notes
+
+* Health checks use `/api/ping`, matching upstream container healthcheck behavior.
+* If web scraping features require Chromium sandbox behavior, evaluate `SYS_ADMIN` tradeoffs vs `ANYTHINGLLM_CHROMIUM_ARGS` for restricted environments.
+* PVC lifecycle follows Kubernetes behavior: scaling keeps PVC; uninstall deletes PVC unless `persistence.retain=true`.
+
+{{- end -}}
+
+{{ template "extra.templates.readme.complexvalues" . }}
+{{ template "extra.specifics.fromchart.atom.opinionated" . }}

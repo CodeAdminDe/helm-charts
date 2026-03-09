@@ -1,0 +1,164 @@
+{{- define "mastodon.CiliumNetworkPolicies-NamespaceSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "mastodon.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-NamespaceSet" (list . "mastodon.CiliumNetworkPolicies-NamespaceSet") }}
+---
+{{- end -}}
+
+{{- define "mastodon.CiliumNetworkPolicies-CnpgSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "mastodon.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if and .Values.libchartCnps.enabled .Values.libchartCnps.includeCnpgPolicies -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-CnpgSet" (list . "mastodon.CiliumNetworkPolicies-CnpgSet") }}
+---
+{{- end -}}
+
+{{- define "mastodon.CiliumNetworkPolicies-AppSet" -}}
+{{- $defaultIngressEndpoints := list -}}
+{{- if .Values.upstream.ingress.enabled -}}
+{{- $defaultIngressEndpoints = append $defaultIngressEndpoints (dict "app.kubernetes.io/name" "ingress-nginx" "io.kubernetes.pod.namespace" "ingress-nginx") -}}
+{{- end -}}
+{{- if .Values.upstream.httproute.enabled -}}
+{{- $defaultIngressEndpoints = append $defaultIngressEndpoints (dict "app.kubernetes.io/name" "envoy-gateway" "io.kubernetes.pod.namespace" "envoy-gateway-system") -}}
+{{- end -}}
+{{- $defaultDenyMatchLabel := dict "mastodon.cnp/default-deny" "true" -}}
+
+{{- $effectiveIngressEndpoints := .Values.cnps.appTraffic.ingress.fromEndpoints | default (list) -}}
+{{- $effectiveIngressEntities := .Values.cnps.appTraffic.ingress.fromEntities | default (list) -}}
+{{- if and (empty $effectiveIngressEndpoints) (gt (len $defaultIngressEndpoints) 0) -}}
+{{- $effectiveIngressEndpoints = $defaultIngressEndpoints -}}
+{{- end -}}
+{{- if not .Values.cnps.appTraffic.ingress.allow -}}
+{{- $effectiveIngressEndpoints = list $defaultDenyMatchLabel -}}
+{{- $effectiveIngressEntities = list -}}
+{{- end -}}
+{{- $hasIngressEndpoints := gt (len $effectiveIngressEndpoints) 0 -}}
+{{- $hasIngressEntities := not (empty $effectiveIngressEntities) -}}
+{{- if and .Values.cnps.appTraffic.ingress.allow (not $hasIngressEndpoints) (not $hasIngressEntities) -}}
+{{- $effectiveIngressEndpoints = list $defaultDenyMatchLabel -}}
+{{- $hasIngressEndpoints = true -}}
+{{- end -}}
+{{- $includeIngressRule := or $hasIngressEndpoints $hasIngressEntities -}}
+
+{{- $defaultEgressEndpoints := list -}}
+{{- if .Values.redis.enabled -}}
+{{- $defaultEgressEndpoints = append $defaultEgressEndpoints (dict "app.kubernetes.io/name" (default "redis" .Values.redis.nameOverride) "app.kubernetes.io/instance" .Release.Name) -}}
+{{- end -}}
+{{- $dbHost := default "" .Values.upstream.postgresql.hostname -}}
+{{- if and $dbHost (hasSuffix "-rw" $dbHost) -}}
+{{- $defaultEgressEndpoints = append $defaultEgressEndpoints (dict "cnpg.io/cluster" (trimSuffix "-rw" $dbHost)) -}}
+{{- end -}}
+{{- $effectiveEgressEndpoints := .Values.cnps.appTraffic.egress.toEndpoints | default (list) -}}
+{{- if and (empty $effectiveEgressEndpoints) (gt (len $defaultEgressEndpoints) 0) -}}
+{{- $effectiveEgressEndpoints = $defaultEgressEndpoints -}}
+{{- end -}}
+
+{{- $effectiveEgressPorts := .Values.cnps.appTraffic.egress.toPorts | default (list) -}}
+{{- if empty $effectiveEgressPorts -}}
+{{- $effectiveEgressPorts = list (dict "port" "443" "protocol" "TCP") -}}
+{{- end -}}
+{{- if .Values.upstream.postgresql.port -}}
+{{- $effectiveEgressPorts = append $effectiveEgressPorts (dict "port" (printf "%v" .Values.upstream.postgresql.port) "protocol" "TCP") -}}
+{{- end -}}
+{{- if .Values.redis.enabled -}}
+{{- $effectiveEgressPorts = append $effectiveEgressPorts (dict "port" (printf "%v" (default 6379 .Values.redis.service.port)) "protocol" "TCP") -}}
+{{- end -}}
+
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "mastodon.labels" . | nindent 4 }}
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "mastodon.upstreamName" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  {{- if $includeIngressRule }}
+  ingress:
+    - {{- if $hasIngressEndpoints }}
+      fromEndpoints:
+        {{- range $effectiveIngressEndpoints }}
+        - matchLabels:
+          {{- range $k, $v := . }}
+            {{ $k }}: {{ $v | quote }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+      {{- if $hasIngressEntities }}
+      fromEntities:
+        {{- toYaml $effectiveIngressEntities | nindent 8 }}
+      {{- end }}
+      toPorts:
+        - ports:
+            - port: {{ printf "%v" (default 3000 .Values.upstream.mastodon.web.port) | quote }}
+              protocol: TCP
+            - port: {{ printf "%v" (default 4000 .Values.upstream.mastodon.streaming.port) | quote }}
+              protocol: TCP
+  {{- else }}
+  ingress: []
+  {{- end }}
+  {{- if .Values.cnps.appTraffic.egress.allow }}
+  egress:
+    {{- if $effectiveEgressEndpoints }}
+    - toEndpoints:
+        {{- range $effectiveEgressEndpoints }}
+        - matchLabels:
+          {{- range $k, $v := . }}
+            {{ $k }}: {{ $v | quote }}
+          {{- end }}
+        {{- end }}
+      toPorts:
+        - ports:
+          {{- range $effectiveEgressPorts }}
+            - port: {{ .port | quote }}
+              {{- if hasKey . "endPort" }}
+              endPort: {{ .endPort }}
+              {{- end }}
+              protocol: {{ .protocol | default "TCP" }}
+          {{- end }}
+    {{- end }}
+    - toEntities:
+      {{- if .Values.cnps.appTraffic.egress.toEntities }}
+        {{- toYaml .Values.cnps.appTraffic.egress.toEntities | nindent 8 }}
+      {{- else }}
+        - world
+      {{- end }}
+      toPorts:
+        - ports:
+          {{- range $effectiveEgressPorts }}
+            - port: {{ .port | quote }}
+              {{- if hasKey . "endPort" }}
+              endPort: {{ .endPort }}
+              {{- end }}
+              protocol: {{ .protocol | default "TCP" }}
+          {{- end }}
+  {{- else }}
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            mastodon.cnp/default-deny: "true"
+      toPorts:
+        - ports:
+            - port: "65535"
+              protocol: TCP
+  {{- end }}
+{{- end -}}
+
+{{- if .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "mastodon.CiliumNetworkPolicies-AppSet") }}
+{{- end -}}

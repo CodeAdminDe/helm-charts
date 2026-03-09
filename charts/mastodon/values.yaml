@@ -1,0 +1,325 @@
+# -- Override release-based naming for wrapper-owned resources (validation/CNP/test objects).
+nameOverride: ""
+fullnameOverride: ""
+
+# -- RuntimeClass names for wrapper-owned resources.
+runtimeClass:
+  # -- RuntimeClass for Helm test pods.
+  tests: ""
+
+# -- Official upstream Mastodon chart values.
+# @description This chart wraps the official `mastodon/helm-charts` chart under the alias `upstream`.
+# @raw
+# ```yaml
+# upstream:
+#   mastodon:
+#     extraEnvVars:
+#       DISABLE_SYSTEM_CHECK: "true"
+# ```
+upstream:
+  # -- Enable upstream Mastodon subchart rendering.
+  enabled: true
+
+  # -- Upstream naming overrides.
+  nameOverride: ""
+  fullnameOverride: ""
+
+  image:
+    # -- Upstream image pull policy.
+    pullPolicy: IfNotPresent
+    # -- Optional upstream image tag override (defaults to upstream chart appVersion).
+    tag: ""
+
+  service:
+    # -- Service type for Mastodon web service. This wrapper enforces `ClusterIP`.
+    type: ClusterIP
+    # -- Service port exposed by upstream web service.
+    port: 80
+
+  ingress:
+    # -- Enable ingress resource creation in upstream chart.
+    enabled: false
+    # -- Ingress class name.
+    className: ""
+    # -- Ingress annotations.
+    # @description Includes secure defaults for ingress-nginx; override keys as needed for your controller.
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+      nginx.ingress.kubernetes.io/proxy-buffering: "off"
+      nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+      nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+      nginx.ingress.kubernetes.io/proxy-body-size: "40m"
+    # -- Ingress hosts/paths.
+    hosts:
+      - host: mastodon.example.com
+        paths:
+          - path: "/"
+            pathType: Prefix
+    # -- Ingress TLS entries.
+    tls: []
+    streaming:
+      # -- Enable dedicated streaming ingress in upstream chart.
+      enabled: false
+      annotations: {}
+      className: ""
+      hosts:
+        - host: streaming.mastodon.example.com
+          paths:
+            - path: "/"
+              pathType: Prefix
+      tls: []
+
+  httproute:
+    # -- Enable HTTPRoute resources in upstream chart (Gateway API).
+    enabled: false
+    annotations: {}
+    labels: {}
+    # -- ParentRefs for Gateway API routing.
+    parentRefs:
+      - name: envoy-gateway
+        namespace: envoy-gateway-system
+        sectionName: websecure
+    # -- Hostnames for web route.
+    hostnames:
+      - mastodon.example.com
+    # -- Optional dedicated streaming hostnames.
+    streamingHostnames: []
+    # -- HTTPRoute matching rules.
+    rules:
+      - matches:
+          - path:
+              type: PathPrefix
+              value: /
+
+  mastodon:
+    # -- Public federation domain.
+    localDomain: mastodon.example.com
+    # -- Optional web domain override.
+    webDomain: ""
+
+    hooks:
+      dbPrepare:
+        # -- Run DB prepare job on install.
+        enabled: true
+      dbMigrate:
+        # -- Run DB migrations on upgrades.
+        enabled: true
+
+    secrets:
+      # -- Existing secret with Mastodon app secrets.
+      # @description Strongly recommended. Avoid storing Mastodon secrets in plain values.
+      existingSecret: mastodon-secrets
+      existingSecretKeys:
+        secretKeyBase: secret-key-base
+        vapidPrivateKey: vapid-private-key
+        vapidPublicKey: vapid-public-key
+        arePrimaryKey: are-primary-key
+        areDeterministicKey: are-deterministic-key
+        areKeyDerivationSalt: are-derivation-salt
+
+    # -- S3/object-storage configuration (optional but recommended for production).
+    s3:
+      # -- S3 hostname (without scheme).
+      hostname: s3.example.com
+      # -- S3 endpoint URL.
+      endpoint: https://s3.example.com
+      # -- S3 region.
+      region: us-east-1
+      # -- S3 bucket name for Mastodon media.
+      bucket: mastodon-media
+      # -- Existing secret containing S3 credentials.
+      existingSecret: mastodon-s3
+      existingSecretKeys:
+        accessKeyId: access-key-id
+        secretAccessKey: secret-access-key
+
+    # -- SMTP configuration (optional but recommended for production).
+    smtp:
+      # -- Existing secret containing SMTP credentials.
+      existingSecret: mastodon-smtp
+      existingSecretKeys:
+        username: username
+        password: password
+
+    web:
+      # -- Web deployment replicas.
+      replicas: 1
+      # -- Web resources.
+      resources:
+        requests:
+          cpu: 250m
+          memory: 512Mi
+        limits:
+          memory: 2Gi
+
+    sidekiq:
+      workers:
+        - name: all-queues
+          replicas: 1
+          queues:
+            - default,8
+            - push,6
+            - ingress,4
+            - mailers,2
+            - pull
+            - scheduler
+            - fasp
+          concurrency: 25
+      # -- Sidekiq default resources.
+      resources:
+        requests:
+          cpu: 250m
+          memory: 512Mi
+        limits:
+          memory: 2Gi
+
+    streaming:
+      # -- Streaming deployment replicas.
+      replicas: 1
+      # -- Streaming resources.
+      resources:
+        requests:
+          cpu: 150m
+          memory: 256Mi
+        limits:
+          memory: 1Gi
+
+  # -- Global pod-level security context for upstream workloads.
+  podSecurityContext:
+    runAsUser: 991
+    runAsGroup: 991
+    fsGroup: 991
+
+  # -- Global container-level security context for upstream workloads.
+  securityContext:
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    readOnlyRootFilesystem: false
+    capabilities:
+      drop:
+        - ALL
+    seccompProfile:
+      type: RuntimeDefault
+
+  # -- Upstream service account configuration.
+  serviceAccount:
+    create: true
+    name: ""
+    annotations: {}
+
+  # -- PostgreSQL connectivity.
+  # @description Defaults assume an in-namespace CNPG cluster (`cnpg-cluster`) with app secret (`cnpg-cluster-app`).
+  postgresql:
+    hostname: cnpg-cluster-rw
+    port: 5432
+    database: mastodon
+    preparedStatements: true
+    existingSecret: cnpg-cluster-app
+    existingSecretKeys:
+      username: user
+      password: password
+    direct:
+      hostname: ""
+      port: ""
+      database: ""
+
+  # -- Redis connectivity.
+  # @description Defaults are wired to this chart's local `redis` dependency (`mastodon-redis-master` + secret `mastodon-redis`).
+  redis:
+    hostname: mastodon-redis-master
+    port: 6379
+    existingSecret: mastodon-redis
+    existingSecretKeys:
+      password: REDIS_PASSWORD
+    sidekiq:
+      enabled: false
+    cache:
+      enabled: false
+
+  # -- Optional global resources fallback for upstream components.
+  resources: {}
+
+  # -- Optional timezone for all upstream workloads.
+  timezone: UTC
+
+# -- Local redis dependency (CodeAdminDe/helm-charts redis).
+redis:
+  # -- Enable bundled redis dependency.
+  enabled: true
+  # -- Fixed fullname for redis dependency to provide stable upstream wiring.
+  # @description If you need multiple mastodon releases in one namespace, override this and adjust `upstream.redis.*` accordingly.
+  fullnameOverride: mastodon-redis
+  # -- Fixed secret name used by redis chart.
+  existingEnvSecret: mastodon-redis
+
+  service:
+    # -- Service type for bundled redis.
+    type: ClusterIP
+    # -- Keep `<name>-master` compatibility service enabled (used by upstream defaults).
+    addBackwardsCompatibleMaster: true
+
+  persistence:
+    # -- Enable redis persistence.
+    enabled: true
+    # -- PVC size for redis.
+    size: 8Gi
+    # -- Optional storageClass for redis PVC.
+    storageClass: ""
+
+  # -- Redis pod security context override.
+  podSecurityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
+    seccompProfile:
+      type: RuntimeDefault
+
+  # -- Redis container security context override.
+  securityContext:
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    readOnlyRootFilesystem: true
+    capabilities:
+      drop:
+        - ALL
+
+  # -- Redis resource requests/limits.
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      memory: 512Mi
+
+# -- Enable libchart-cnps integration for CiliumNetworkPolicies.
+libchartCnps:
+  enabled: false
+  includeCnpgPolicies: false
+
+# -- App-specific CiliumNetworkPolicies settings.
+cnps:
+  appTraffic:
+    ingress:
+      # -- Allow ingress traffic to Mastodon app pods.
+      allow: true
+      # -- Optional explicit ingress source endpoints.
+      fromEndpoints: []
+      # -- Optional explicit ingress entities.
+      fromEntities: []
+    egress:
+      # -- Allow egress traffic from Mastodon app pods.
+      allow: true
+      # -- Optional explicit egress endpoint selectors.
+      toEndpoints: []
+      # -- Optional explicit egress entities.
+      toEntities:
+        - world
+      # -- Optional explicit egress ports.
+      # @description Defaults to `443/TCP`; chart appends PostgreSQL and Redis ports when available.
+      toPorts:
+        - port: "443"
+          protocol: TCP
+  cnpgTraffic:
+    # -- Extra CNPG egress rules passed to libchart-cnps CNPG policy set.
+    instanceExtraEgress: []

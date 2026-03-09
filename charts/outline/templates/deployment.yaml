@@ -65,12 +65,12 @@ spec:
             - name: PORT
               value: "{{ .Values.service.targetPort }}"
             - name: COLLABORATION_URL
-              value: "{{ternary "https" "http" (not (empty .Values.ingress.tls)) }}://{{ ( index .Values.ingress.hosts 0 ).host }}"
+              value: "{{ include "outline.publicBaseUrl" . }}"
             - name: URL
-              value: "{{ternary "https" "http" (not (empty .Values.ingress.tls)) }}://{{ ( index .Values.ingress.hosts 0 ).host }}"
+              value: "{{ include "outline.publicBaseUrl" . }}"
             - name: FILE_STORAGE_UPLOAD_MAX_SIZE
               value: "{{ default "26214400" .Values.uploadMaxSize  }}"
-          {{ if not .Values.ingress.tls }}
+          {{ if ne (include "outline.publicScheme" .) "https" }}
             - name: FORCE_HTTPS
               value: "false"
           {{ end }}
@@ -105,7 +105,7 @@ spec:
               value: "us-east-1"
             - name: AWS_S3_UPLOAD_BUCKET_URL
             {{- if eq .Values.provideS3storeApiAsIngressSubpath.enabled true}}
-              value: "{{ternary "https" "http" (not (empty .Values.ingress.tls)) }}://{{ ( index .Values.ingress.hosts 0 ).host }}{{ .Values.provideS3storeApiAsIngressSubpath.path }}"
+              value: "{{ include "outline.publicBaseUrl" . }}{{ .Values.provideS3storeApiAsIngressSubpath.path }}"
             {{- else }}
               value: "{{ternary "https" "http" .Values.s3store.apiIngress.tls }}://{{ .Values.s3store.apiIngress.hostname }}"
             {{ end }}

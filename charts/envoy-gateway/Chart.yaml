@@ -1,0 +1,37 @@
+apiVersion: v2
+name: envoy-gateway
+description: A Helm chart for deploying Envoy Gateway (Gateway API implementation) on Kubernetes.
+type: application
+# renovate: bumpVersion
+version: 0.3.0
+# renovate: chart=gateway-helm repository=https://hub.docker.com/r/envoyproxy/gateway-helm
+appVersion: "v1.7.0"
+kubeVersion: ">=1.24.0"
+home: https://github.com/CodeAdminDe/helm-charts
+icon: https://raw.githubusercontent.com/envoyproxy/gateway/main/site/assets/icons/logo.svg
+keywords:
+  - envoy-gateway
+  - gateway-api
+  - envoy
+  - kubernetes
+  - ingress
+  - networking
+  - helm
+maintainers:
+  - name: Frederic Roggon
+    email: frederic.roggon@codeadmin.de
+    url: https://github.com/CodeAdminDe
+dependencies:
+  - name: gateway-helm
+    repository: oci://docker.io/envoyproxy
+    version: v1.7.0
+    alias: envoy-gateway
+    condition: envoy-gateway.enabled
+annotations:
+  category: Networking
+  securityContext: "compatible"
+  images: |
+    - name: envoy-gateway
+      image: envoyproxy/gateway:v1.7.0
+    - name: ratelimit
+      image: envoyproxy/ratelimit:3fb70258

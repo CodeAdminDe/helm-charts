@@ -1,0 +1,24 @@
+{{- if .Values.bootstrap.gatewayClass.enabled }}
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: {{ include "envoy-gateway.bootstrap.gatewayClassName" . }}
+  labels:
+    {{- include "envoy-gateway.labels" . | nindent 4 }}
+    {{- with .Values.bootstrap.gatewayClass.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.bootstrap.gatewayClass.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  controllerName: {{ .Values.bootstrap.gatewayClass.controllerName | quote }}
+  {{- if .Values.bootstrap.gatewayClass.parametersRef.enabled }}
+  parametersRef:
+    group: {{ .Values.bootstrap.gatewayClass.parametersRef.group | quote }}
+    kind: {{ .Values.bootstrap.gatewayClass.parametersRef.kind | quote }}
+    name: {{ .Values.bootstrap.gatewayClass.parametersRef.name | quote }}
+    namespace: {{ default .Release.Namespace .Values.bootstrap.gatewayClass.parametersRef.namespace | quote }}
+  {{- end }}
+{{- end }}

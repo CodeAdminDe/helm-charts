@@ -1,0 +1,22 @@
+1. Wait for Envoy Gateway control-plane deployment:
+   kubectl wait --timeout=5m -n {{ .Release.Namespace }} deployment/{{ include "envoy-gateway.fullname" . }} --for=condition=Available
+
+2. Verify bootstrap resources:
+{{- if .Values.bootstrap.gatewayClass.enabled }}
+   kubectl get gatewayclass {{ include "envoy-gateway.bootstrap.gatewayClassName" . }}
+{{- end }}
+{{- if .Values.bootstrap.gateway.enabled }}
+   kubectl get gateway -n {{ include "envoy-gateway.bootstrap.gatewayNamespace" . }} {{ include "envoy-gateway.bootstrap.gatewayName" . }}
+{{- end }}
+{{- if .Values.bootstrap.envoyProxy.enabled }}
+   kubectl get envoyproxy -n {{ include "envoy-gateway.bootstrap.envoyProxyNamespace" . }} {{ include "envoy-gateway.bootstrap.envoyProxyName" . }}
+{{- end }}
+{{- if and .Values.bootstrap.gateway.enabled (eq (include "envoy-gateway.bootstrap.gatewayMode" .) "managed") .Values.bootstrap.gateway.tls.enabled }}
+   kubectl get certificate -n {{ include "envoy-gateway.bootstrap.gatewayNamespace" . }}
+{{- end }}
+
+3. Next step: create HTTPRoute/TLSRoute resources in your app namespaces and reference the bootstrap Gateway.
+{{- if and .Values.bootstrap.gateway.enabled (eq (include "envoy-gateway.bootstrap.gatewayMode" .) "managed") .Values.bootstrap.gateway.tls.enabled }}
+   App-owner HTTPRoutes should bind to the HTTPS listener `sectionName` values from `bootstrap.gateway.tls.listeners[*].name`.
+   The managed HTTP listener is reserved for the central HTTP->HTTPS redirect route.
+{{- end }}

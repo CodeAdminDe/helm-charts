@@ -1,0 +1,45 @@
+{{- define "extra.specifics.fromchart.mastodon.opinionated" -}}
+<hr /><hr />
+
+## Appendix - Chart-specifics
+
+### Upstream model and scope
+
+* This chart wraps the official Mastodon Helm chart as dependency alias `upstream`.
+* It does not install cluster infrastructure (Ingress Controller, Gateway Controller, CNPG operator).
+* Deployment logic (web/sidekiq/streaming/jobs) remains upstream-compatible.
+
+### CNPG baseline
+
+* Default PostgreSQL values target an in-cluster CNPG cluster:
+  * host: `cnpg-cluster-rw`
+  * auth secret: `cnpg-cluster-app`
+* Adapt `upstream.postgresql.*` if your cluster/secret names differ.
+
+### Redis baseline
+
+* Redis is wired through this monorepo's `redis` chart dependency by default.
+* For minimal setup, redis naming is fixed to:
+  * service: `mastodon-redis-master`
+  * secret: `mastodon-redis` (`REDIS_PASSWORD` key)
+* If you need multiple Mastodon releases in the same namespace, override redis naming and adjust `upstream.redis.hostname` / `upstream.redis.existingSecret` accordingly.
+
+### Security posture
+
+* Service exposure is restricted to `ClusterIP`; use ingress or Gateway API (`HTTPRoute`) for north-south traffic.
+* Wrapper validation enforces secret-based credential handling for Mastodon core secrets, PostgreSQL, and Redis.
+* Optional `libchart-cnps` integration is included for Cilium policy deployments.
+
+### Secret requirements
+
+Required secret references for successful deployment:
+
+1. `upstream.mastodon.secrets.existingSecret`
+2. `upstream.postgresql.existingSecret`
+3. `upstream.redis.existingSecret`
+
+Optional integrations like S3/SMTP should also use existing secrets for production.
+{{- end -}}
+
+{{ template "extra.templates.readme.complexvalues" . }}
+{{ template "extra.specifics.fromchart.mastodon.opinionated" . }}
