@@ -121,6 +121,9 @@
     {{- if empty $certificate.secretName -}}
       {{- fail (printf "bootstrap.gateway.tls.certificates[%d].secretName must be set." $idx) -}}
     {{- end -}}
+    {{- if $certificate.name -}}
+      {{- fail (printf "bootstrap.gateway.tls.certificates[%d].name is not supported. Certificate metadata.name is derived from secretName." $idx) -}}
+    {{- end -}}
     {{- if hasKey $certificateSecretNames $certificate.secretName -}}
       {{- fail (printf "bootstrap.gateway.tls.certificates[%d].secretName '%s' is duplicated." $idx $certificate.secretName) -}}
     {{- end -}}
