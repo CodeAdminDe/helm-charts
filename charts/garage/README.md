@@ -29,9 +29,9 @@ helm repo add codeadminde https://codeadminde.github.io/helm-charts/
 helm repo update
 helm install garage codeadminde/garage
 ```
-_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
+_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
 
-> I'd recommend to read trough the docs. Skip them at your own risk. ;-)
+> I'd recommend reading through the docs. Skip them at your own risk. ;-)
 
 ## Repository
 
@@ -49,7 +49,7 @@ To install the chart with the release name `garage`
 ```bash
 helm install garage codeadminde/garage
 ```
-_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
+_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
 
 ## Uninstallation
 
@@ -58,7 +58,7 @@ To uninstall the chart release named `garage`
 ```bash
 helm uninstall garage
 ```
-_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
+_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
 
 The command removes all the Kubernetes components associated with the chart **including persistent volumes** and deletes the release.
 
@@ -75,7 +75,7 @@ To configure the release (chart values), provide your own values via a *.yaml fi
 > helm install garage codeadminde/garage -f values.yaml
 > ```
 
-Alternatively, you could provide the values which you want to override at the CLI directly. Than you've to provide the values as key=value pair(s), referenced by the `--set` flag.
+Alternatively, you could provide the values which you want to override at the CLI directly. Then you have to provide the values as key=value pair(s), referenced by the `--set` flag.
 
 > #### Sample
 >

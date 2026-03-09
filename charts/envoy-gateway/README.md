@@ -31,9 +31,9 @@ helm repo add codeadminde https://codeadminde.github.io/helm-charts/
 helm repo update
 helm install envoy-gateway codeadminde/envoy-gateway
 ```
-_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
+_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
 
-> I'd recommend to read trough the docs. Skip them at your own risk. ;-)
+> I'd recommend reading through the docs. Skip them at your own risk. ;-)
 
 ## Repository
 
@@ -51,7 +51,7 @@ To install the chart with the release name `envoy-gateway`
 ```bash
 helm install envoy-gateway codeadminde/envoy-gateway
 ```
-_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
+_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
 
 ## Uninstallation
 
@@ -60,7 +60,7 @@ To uninstall the chart release named `envoy-gateway`
 ```bash
 helm uninstall envoy-gateway
 ```
-_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
+_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
 
 The command removes all the Kubernetes components associated with the chart **including persistent volumes** and deletes the release.
 
@@ -77,7 +77,7 @@ To configure the release (chart values), provide your own values via a *.yaml fi
 > helm install envoy-gateway codeadminde/envoy-gateway -f values.yaml
 > ```
 
-Alternatively, you could provide the values which you want to override at the CLI directly. Than you've to provide the values as key=value pair(s), referenced by the `--set` flag.
+Alternatively, you could provide the values which you want to override at the CLI directly. Then you have to provide the values as key=value pair(s), referenced by the `--set` flag.
 
 > #### Sample
 >
@@ -130,8 +130,7 @@ object
         "enabled": true,
         "group": "gateway.envoyproxy.io",
         "kind": "EnvoyProxy",
-        "name": "envoy-gateway-default",
-        "namespace": ""
+        "name": "envoy-gateway-default"
       }
     },
     "labels": {},
@@ -362,20 +361,6 @@ string
 			<td>ParametersRef object name.</td>
 		</tr>
 		<tr>
-			<td id="bootstrap--gateway--infrastructure--parametersRef--namespace"><a href="./values.yaml#L119">bootstrap.gateway.infrastructure.parametersRef.namespace</a></td>
-			<td>
-string
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-""
-</pre>
-</div>
-			</td>
-			<td>ParametersRef namespace override. @description Empty value defaults to `bootstrap.gateway.namespace` (or `.Release.Namespace` when empty).</td>
-		</tr>
-		<tr>
 			<td id="bootstrap--gateway--labels"><a href="./values.yaml#L103">bootstrap.gateway.labels</a></td>
 			<td>
 object
@@ -390,7 +375,7 @@ object
 			<td>Gateway labels.</td>
 		</tr>
 		<tr>
-			<td id="bootstrap--gateway--listeners"><a href="./values.yaml#L140">bootstrap.gateway.listeners</a></td>
+			<td id="bootstrap--gateway--listeners"><a href="./values.yaml#L138">bootstrap.gateway.listeners</a></td>
 			<td>
 list
 </td>
@@ -412,7 +397,7 @@ list
 </pre>
 </div>
 			</td>
-			<td>Gateway listeners.
+			<td>Gateway listeners. @description Default allows routes from all namespaces. For multi-tenant clusters, override with `from: Same` or `from: Selector` and apply RBAC isolation on the Gateway namespace.
 ```yaml
 listeners:
   - name: http
