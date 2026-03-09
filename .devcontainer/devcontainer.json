@@ -35,7 +35,7 @@
   },
 
   // "updateContentCommand": "go mod download",
-  "postCreateCommand": "if [ \"$INSTALL_DOTFILES\" = \"true\" ]; then git clone https://github.com/codeadminde/.dotfiles.git ~/.dotfiles && cd ~/.dotfiles && chmod +x install.sh && ./install.sh; fi && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest",
+//  "postCreateCommand": "if [ \"$INSTALL_DOTFILES\" = \"true\" ]; then git clone https://github.com/codeadminde/.dotfiles.git ~/.dotfiles && cd ~/.dotfiles && chmod +x install.sh && ./install.sh; fi && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest",
   "postStartCommand": "git config --global core.editor 'code --wait'",
 
   "customizations": {
