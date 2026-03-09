@@ -51,7 +51,7 @@
       "extensions": [
         "golang.Go",
         "GoogleCloudTools.cloudcode",
-        "ms-vscode.makefile-tools", 
+        "ms-vscode.makefile-tools",
         "eamodio.gitlens",
         "oderwat.indent-rainbow"
       ]
