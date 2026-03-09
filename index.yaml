@@ -13889,6 +13889,52 @@ entries:
       category: Documents
       images: |
         - name: paperless-ngx
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.10
+        - name: gotenberg
+          image: docker.io/gotenberg/gotenberg:8.25
+        - name: tika
+          image: docker.io/apache/tika:3.2.3.0-full
+      securityContext: required
+    apiVersion: v2
+    appVersion: 2.20.10
+    created: "2026-03-09T19:21:42.648155486Z"
+    dependencies:
+    - alias: redis
+      condition: redis.enabled
+      name: redis
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.4.1
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for deploying Paperless-ngx on Kubernetes.
+    digest: a6e25790c977bb17c03d06761a26f5fd198a2cb974bfd7e5da87fa0d2dd1ae9d
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - paperless-ngx
+    - documents
+    - ocr
+    - dms
+    - redis
+    - cnpg
+    - cloud-native
+    - helm
+    kubeVersion: '>=1.24.0'
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: paperless-ngx
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/paperless-ngx-0.1.1/paperless-ngx-0.1.1.tgz
+    version: 0.1.1
+  - annotations:
+      category: Documents
+      images: |
+        - name: paperless-ngx
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.4
         - name: gotenberg
           image: docker.io/gotenberg/gotenberg:8.25
@@ -14590,4 +14636,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-09T19:04:20.6702927Z"
+generated: "2026-03-09T19:21:42.649306702Z"
