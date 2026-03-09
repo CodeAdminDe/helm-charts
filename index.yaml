@@ -1,5 +1,40 @@
 apiVersion: v1
 entries:
+  actual-budget:
+  - annotations:
+      category: Finance
+      images: |
+        - name: actual-budget
+          image: actualbudget/actual-server:26.3.0
+      securityContext: compatible
+    apiVersion: v2
+    appVersion: 26.3.0
+    created: "2026-03-09T18:31:45.801162856Z"
+    dependencies:
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for actual-budget deployment on Kubernetes.
+    digest: af7170176bebb45a12e9879455009745dc8fbe5eba9a6c629698dd65e923b6e5
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - actual-budget
+    - finance
+    - local-first
+    - cloud-native
+    - helm
+    kubeVersion: '>=1.24.0'
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: actual-budget
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/actual-budget-0.1.0/actual-budget-0.1.0.tgz
+    version: 0.1.0
   agent-zero:
   - annotations:
       category: AI
@@ -14508,4 +14543,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-09T15:33:32.993789373Z"
+generated: "2026-03-09T18:31:45.801872143Z"
