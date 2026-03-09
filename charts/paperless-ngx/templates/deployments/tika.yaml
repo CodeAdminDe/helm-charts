@@ -1,0 +1,59 @@
+{{- if and .Values.documentConversion.enabled .Values.tika.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paperless-ngx.tikaServiceName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "paperless-ngx.labels" . | nindent 4 }}
+    {{- include "paperless-ngx.componentLabels" (dict "root" . "component" "tika") | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "paperless-ngx.componentSelectorLabels" (dict "root" . "component" "tika") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "paperless-ngx.componentSelectorLabels" (dict "root" . "component" "tika") | nindent 8 }}
+      annotations:
+        checksum/values: {{ toJson .Values | sha256sum }}
+    spec:
+      automountServiceAccountToken: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      containers:
+        - name: tika
+          image: {{ printf "%s:%s" .Values.tika.image.repository .Values.tika.image.tag }}
+          imagePullPolicy: {{ .Values.tika.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.tika.service.targetPort }}
+              protocol: {{ .Values.tika.service.targetProtocol }}
+          {{- if and .Values.applySecurity .Values.tika.securityContext }}
+          securityContext:
+            {{- toYaml .Values.tika.securityContext | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tika.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            {{- if .Values.tika.tmpVolume.enabled }}
+            - name: tmp
+              mountPath: {{ .Values.tika.tmpVolume.mountPath }}
+            {{- end }}
+      volumes:
+        {{- if .Values.tika.tmpVolume.enabled }}
+        - name: tmp
+          emptyDir:
+            {{- with .Values.tika.tmpVolume.sizeLimit }}
+            sizeLimit: {{ . }}
+            {{- end }}
+        {{- end }}
+{{- end }}

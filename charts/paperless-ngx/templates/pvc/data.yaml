@@ -1,0 +1,31 @@
+{{- if and .Values.persistence.data.enabled (not .Values.persistence.data.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "paperless-ngx.persistenceClaimName" (dict "root" . "name" "data") }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "paperless-ngx.labels" . | nindent 4 }}
+    {{- include "paperless-ngx.componentLabels" (dict "root" . "component" "webserver") | nindent 4 }}
+  {{- if or .Values.persistence.data.retain .Values.persistence.data.annotations }}
+  annotations:
+    {{- if .Values.persistence.data.retain }}
+    helm.sh/resource-policy: keep
+    {{- end }}
+    {{- with .Values.persistence.data.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  accessModes:
+    {{- toYaml .Values.persistence.data.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.data.size }}
+  {{- with .Values.persistence.data.storageClass }}
+  storageClassName: {{ . }}
+  {{- end }}
+  {{- with .Values.persistence.data.volumeName }}
+  volumeName: {{ . }}
+  {{- end }}
+{{- end }}

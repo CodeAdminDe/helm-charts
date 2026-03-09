@@ -1,0 +1,47 @@
+{{- define "extra.specifics.fromchart.atom.opinionated" -}}
+<hr /><hr />
+
+## Appendix - Chart-specifics
+
+### Scope and supported runtime model
+
+* This chart deploys the official `ghcr.io/paperless-ngx/paperless-ngx` image.
+* Redis is required by Paperless and is bundled by default via the local `redis` subchart that uses the official `library/redis` image. You can disable it and provide an external Redis URL instead.
+* Database modes supported by this chart:
+  * bundled SQLite fallback for simple installs
+  * external PostgreSQL
+  * existing CNPG cluster
+* Optional document conversion support uses the official `gotenberg/gotenberg` and `apache/tika` images.
+
+### Persistence model
+
+* Paperless runtime paths are split into separate persistence sections for:
+  * `data`
+  * `media`
+  * `consume`
+  * `export`
+* Each path can use its own PVC or fall back to `emptyDir`.
+* PVC lifecycle follows Kubernetes defaults: scaling operations keep data, and uninstall removes PVCs unless `persistence.<name>.retain=true`.
+
+### Security and compatibility
+
+* The main Paperless workload defaults to `runAsNonRoot`, dropped Linux capabilities, `RuntimeDefault` seccomp, and `readOnlyRootFilesystem=true`.
+* Writable runtime paths required by the official image are mounted explicitly at `/tmp`, `/run`, and `/usr/src/paperless/.gnupg`.
+* This chart intentionally does not mutate the official image to install extra OCR packages. Use `paperless.ocrLanguages` only for language packs already shipped in the upstream image.
+
+### Exposure model
+
+* Application services stay `ClusterIP` only.
+* North-south traffic is exposed through either `Ingress` or `HTTPRoute`.
+* `paperless.url` can be set explicitly, otherwise the chart derives a public URL from Gateway API or Ingress when possible.
+
+### Network policies
+
+* `libchartCnps.enabled=true` is optional and disabled by default.
+* Default policy generation includes ingress-nginx and Envoy Gateway source selectors when those exposure modes are enabled.
+* If you use external Redis or PostgreSQL with Cilium policies enabled, add the required egress selectors and ports under `cnps.appTraffic.egress`.
+
+{{- end -}}
+
+{{ template "extra.templates.readme.complexvalues" . }}
+{{ template "extra.specifics.fromchart.atom.opinionated" . }}

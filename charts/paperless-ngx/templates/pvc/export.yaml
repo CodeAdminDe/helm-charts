@@ -1,0 +1,31 @@
+{{- if and .Values.persistence.export.enabled (not .Values.persistence.export.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "paperless-ngx.persistenceClaimName" (dict "root" . "name" "export") }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "paperless-ngx.labels" . | nindent 4 }}
+    {{- include "paperless-ngx.componentLabels" (dict "root" . "component" "webserver") | nindent 4 }}
+  {{- if or .Values.persistence.export.retain .Values.persistence.export.annotations }}
+  annotations:
+    {{- if .Values.persistence.export.retain }}
+    helm.sh/resource-policy: keep
+    {{- end }}
+    {{- with .Values.persistence.export.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  accessModes:
+    {{- toYaml .Values.persistence.export.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.export.size }}
+  {{- with .Values.persistence.export.storageClass }}
+  storageClassName: {{ . }}
+  {{- end }}
+  {{- with .Values.persistence.export.volumeName }}
+  volumeName: {{ . }}
+  {{- end }}
+{{- end }}

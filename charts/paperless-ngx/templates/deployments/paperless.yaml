@@ -1,0 +1,318 @@
+{{- $postgresMode := eq .Values.database.type "postgresql" -}}
+{{- $cnpgMode := and $postgresMode .Values.database.useCnpgCluster.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paperless-ngx.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "paperless-ngx.labels" . | nindent 4 }}
+    {{- include "paperless-ngx.componentLabels" (dict "root" . "component" "webserver") | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "paperless-ngx.componentSelectorLabels" (dict "root" . "component" "webserver") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "paperless-ngx.componentSelectorLabels" (dict "root" . "component" "webserver") | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/values: {{ toJson .Values | sha256sum }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "paperless-ngx.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      {{- if and .Values.applySecurity .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: paperless
+          image: {{ include "paperless-ngx.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: {{ .Values.service.targetProtocol }}
+          env:
+            - name: PAPERLESS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "paperless-ngx.secretName" . }}
+                  key: {{ include "paperless-ngx.secretKeyName" . | quote }}
+            - name: PAPERLESS_DATA_DIR
+              value: {{ .Values.persistence.data.mountPath | quote }}
+            - name: PAPERLESS_MEDIA_ROOT
+              value: {{ .Values.persistence.media.mountPath | quote }}
+            - name: PAPERLESS_CONSUMPTION_DIR
+              value: {{ .Values.persistence.consume.mountPath | quote }}
+            - name: PAPERLESS_EXPORT_DIR
+              value: {{ .Values.persistence.export.mountPath | quote }}
+            {{- if include "paperless-ngx.publicUrl" . }}
+            - name: PAPERLESS_URL
+              value: {{ include "paperless-ngx.publicUrl" . | quote }}
+            - name: PAPERLESS_CSRF_TRUSTED_ORIGINS
+              value: {{ include "paperless-ngx.publicUrl" . | quote }}
+            {{- end }}
+            {{- if .Values.paperless.timeZone }}
+            - name: PAPERLESS_TIME_ZONE
+              value: {{ .Values.paperless.timeZone | quote }}
+            {{- end }}
+            - name: PAPERLESS_OCR_LANGUAGE
+              value: {{ .Values.paperless.ocrLanguage | quote }}
+            {{- if .Values.paperless.ocrLanguages }}
+            - name: PAPERLESS_OCR_LANGUAGES
+              value: {{ .Values.paperless.ocrLanguages | quote }}
+            {{- end }}
+            {{- if .Values.redis.enabled }}
+            - name: PAPERLESS_REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "paperless-ngx.redisSecretName" . }}
+                  key: REDIS_PASSWORD
+            - name: PAPERLESS_REDIS
+              value: {{ printf "redis://:$(PAPERLESS_REDIS_PASSWORD)@%s:6379/0" (include "paperless-ngx.redisServiceName" .) | quote }}
+            {{- else if .Values.redis.external.existingSecret.name }}
+            - name: PAPERLESS_REDIS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.redis.external.existingSecret.name }}
+                  key: {{ .Values.redis.external.existingSecret.key | quote }}
+            {{- else if .Values.redis.external.url }}
+            - name: PAPERLESS_REDIS
+              value: {{ .Values.redis.external.url | quote }}
+            {{- end }}
+            {{- if $postgresMode }}
+            - name: PAPERLESS_DBENGINE
+              value: postgresql
+            {{- if $cnpgMode }}
+            - name: PAPERLESS_DBHOST
+              value: {{ printf "%s-rw" .Values.database.useCnpgCluster.clusterName | quote }}
+            - name: PAPERLESS_DBPORT
+              value: {{ printf "%v" .Values.database.useCnpgCluster.port | quote }}
+            - name: PAPERLESS_DBNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "paperless-ngx.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.database | quote }}
+            - name: PAPERLESS_DBUSER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "paperless-ngx.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.username | quote }}
+            - name: PAPERLESS_DBPASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "paperless-ngx.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.password | quote }}
+            - name: PAPERLESS_DBSSLMODE
+              value: {{ .Values.database.useCnpgCluster.sslMode | quote }}
+            {{- else }}
+            - name: PAPERLESS_DBHOST
+              value: {{ .Values.database.postgres.host | quote }}
+            - name: PAPERLESS_DBPORT
+              value: {{ printf "%v" .Values.database.postgres.port | quote }}
+            - name: PAPERLESS_DBNAME
+              value: {{ .Values.database.postgres.database | quote }}
+            - name: PAPERLESS_DBUSER
+              value: {{ .Values.database.postgres.user | quote }}
+            - name: PAPERLESS_DBPASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.postgres.passwordSecret.name }}
+                  key: {{ .Values.database.postgres.passwordSecret.key | quote }}
+            - name: PAPERLESS_DBSSLMODE
+              value: {{ .Values.database.postgres.sslMode | quote }}
+            {{- end }}
+            {{- else }}
+            - name: PAPERLESS_DBENGINE
+              value: sqlite
+            {{- end }}
+            {{- if .Values.documentConversion.enabled }}
+            - name: PAPERLESS_TIKA_ENABLED
+              value: "1"
+            - name: PAPERLESS_TIKA_GOTENBERG_ENDPOINT
+              value: {{ include "paperless-ngx.gotenbergEndpoint" . | quote }}
+            - name: PAPERLESS_TIKA_ENDPOINT
+              value: {{ include "paperless-ngx.tikaEndpoint" . | quote }}
+            {{- end }}
+            {{- range $key := (keys .Values.extraEnv | sortAlpha) }}
+            - name: {{ $key }}
+              value: {{ index $.Values.extraEnv $key | quote }}
+            {{- end }}
+            {{- if kindIs "map" .Values.additionalEnvSecrets }}
+            {{- range $envName := (keys .Values.additionalEnvSecrets | sortAlpha) }}
+            {{- $secretConfig := index $.Values.additionalEnvSecrets $envName }}
+            {{- if kindIs "string" $secretConfig }}
+            - name: {{ $envName }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretConfig }}
+                  key: {{ $envName | quote }}
+            {{- else if kindIs "map" $secretConfig }}
+            {{- $secretName := (default "" (index $secretConfig "secretName")) }}
+            {{- if $secretName }}
+            - name: {{ default $envName (index $secretConfig "name") }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretName }}
+                  key: {{ default $envName (index $secretConfig "secretKey") | quote }}
+            {{- end }}
+            {{- end }}
+            {{- end }}
+            {{- else if kindIs "slice" .Values.additionalEnvSecrets }}
+            {{- range $secretConfig := .Values.additionalEnvSecrets }}
+            {{- $secretName := (default "" (index $secretConfig "secretName")) }}
+            {{- $envName := (default "" (index $secretConfig "name")) }}
+            {{- if and $secretName $envName }}
+            - name: {{ $envName }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretName }}
+                  key: {{ default $envName (index $secretConfig "secretKey") | quote }}
+            {{- end }}
+            {{- end }}
+            {{- end }}
+          {{- if or .Values.envFromSecrets .Values.envFromConfigMaps }}
+          envFrom:
+            {{- range .Values.envFromSecrets }}
+            - secretRef:
+                name: {{ . }}
+            {{- end }}
+            {{- range .Values.envFromConfigMaps }}
+            - configMapRef:
+                name: {{ . }}
+            {{- end }}
+          {{- end }}
+          {{- if and .Values.applySecurity .Values.securityContext }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          {{- if .Values.applyHealthChecks }}
+          startupProbe:
+            {{- toYaml .Values.startupProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.persistence.data.mountPath }}
+            - name: media
+              mountPath: {{ .Values.persistence.media.mountPath }}
+            - name: consume
+              mountPath: {{ .Values.persistence.consume.mountPath }}
+            - name: export
+              mountPath: {{ .Values.persistence.export.mountPath }}
+            {{- if .Values.tmpVolume.enabled }}
+            - name: tmp
+              mountPath: {{ .Values.tmpVolume.mountPath }}
+            {{- end }}
+            {{- if .Values.runVolume.enabled }}
+            - name: run
+              mountPath: {{ .Values.runVolume.mountPath }}
+            {{- end }}
+            {{- if .Values.gnupgVolume.enabled }}
+            - name: gnupg
+              mountPath: {{ .Values.gnupgVolume.mountPath }}
+            {{- end }}
+            {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+      volumes:
+        - name: data
+          {{- if .Values.persistence.data.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "paperless-ngx.persistenceClaimName" (dict "root" . "name" "data") }}
+          {{- else }}
+          emptyDir:
+            {{- with .Values.persistence.data.emptyDirSizeLimit }}
+            sizeLimit: {{ . }}
+            {{- end }}
+          {{- end }}
+        - name: media
+          {{- if .Values.persistence.media.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "paperless-ngx.persistenceClaimName" (dict "root" . "name" "media") }}
+          {{- else }}
+          emptyDir:
+            {{- with .Values.persistence.media.emptyDirSizeLimit }}
+            sizeLimit: {{ . }}
+            {{- end }}
+          {{- end }}
+        - name: consume
+          {{- if .Values.persistence.consume.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "paperless-ngx.persistenceClaimName" (dict "root" . "name" "consume") }}
+          {{- else }}
+          emptyDir:
+            {{- with .Values.persistence.consume.emptyDirSizeLimit }}
+            sizeLimit: {{ . }}
+            {{- end }}
+          {{- end }}
+        - name: export
+          {{- if .Values.persistence.export.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "paperless-ngx.persistenceClaimName" (dict "root" . "name" "export") }}
+          {{- else }}
+          emptyDir:
+            {{- with .Values.persistence.export.emptyDirSizeLimit }}
+            sizeLimit: {{ . }}
+            {{- end }}
+          {{- end }}
+        {{- if .Values.tmpVolume.enabled }}
+        - name: tmp
+          emptyDir:
+            {{- with .Values.tmpVolume.sizeLimit }}
+            sizeLimit: {{ . }}
+            {{- end }}
+        {{- end }}
+        {{- if .Values.runVolume.enabled }}
+        - name: run
+          emptyDir:
+            {{- with .Values.runVolume.sizeLimit }}
+            sizeLimit: {{ . }}
+            {{- end }}
+        {{- end }}
+        {{- if .Values.gnupgVolume.enabled }}
+        - name: gnupg
+          emptyDir:
+            {{- with .Values.gnupgVolume.sizeLimit }}
+            sizeLimit: {{ . }}
+            {{- end }}
+        {{- end }}
+        {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
