@@ -114,11 +114,9 @@ bootstrap:
         kind: EnvoyProxy
         # -- ParametersRef object name.
         name: envoy-gateway-default
-        # -- ParametersRef namespace override.
-        # @description Empty value defaults to `bootstrap.gateway.namespace` (or `.Release.Namespace` when empty).
-        namespace: ""
 
     # -- Gateway listeners.
+    # @description Default allows routes from all namespaces. For multi-tenant clusters, override with `from: Same` or `from: Selector` and apply RBAC isolation on the Gateway namespace.
     # @raw
     # ```yaml
     # listeners:

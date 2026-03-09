@@ -21,7 +21,6 @@ spec:
       group: {{ .Values.bootstrap.gateway.infrastructure.parametersRef.group | quote }}
       kind: {{ .Values.bootstrap.gateway.infrastructure.parametersRef.kind | quote }}
       name: {{ .Values.bootstrap.gateway.infrastructure.parametersRef.name | quote }}
-      namespace: {{ default (include "envoy-gateway.bootstrap.gatewayNamespace" .) .Values.bootstrap.gateway.infrastructure.parametersRef.namespace | quote }}
   {{- end }}
   listeners:
     {{- toYaml .Values.bootstrap.gateway.listeners | nindent 4 }}
