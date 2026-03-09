@@ -9,6 +9,7 @@
 * The chart does not deploy ingress controllers or external Gateway implementations beyond Envoy Gateway itself.
 * Gateway API CRDs and Envoy Gateway CRDs come from the upstream dependency chart by default.
 * Service defaults remain `ClusterIP` to keep exposure explicit and environment-controlled.
+* The upstream dependency key is `envoy-gateway` in this wrapper chart. The previous camelCase key `envoyGateway` is intentionally not supported because it produced invalid mixed-case Kubernetes resource names in the upstream certgen hooks.
 
 ### Bootstrap resources
 
