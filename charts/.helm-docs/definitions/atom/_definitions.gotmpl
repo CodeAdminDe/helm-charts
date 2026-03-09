@@ -19,7 +19,7 @@ https://codeadminde.github.io/helm-charts/
 {{- end -}}
 
 {{- define "extra.atom.helm.namespace" -}}
-_**Note**: If you want to speicify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforhand._
+_**Note**: If you want to specify a namespace, provide the name via the `-n` (or `--namespace`) flag. You need to create the desired namespace beforehand._
 {{- end -}}
 
 
@@ -36,7 +36,7 @@ helm install {{ template "chart.name" . }} {{ template "extra.atom.helm.path" . 
 {{ template "extra.atom.helm.namespace" . }}
 
 
-> I'd recommend to read trough the docs. Skip them at your own risk. ;-)
+> I'd recommend reading through the docs. Skip them at your own risk. ;-)
 {{- end -}}
 
 {{- define "extra.atom.tldrLib" -}}
@@ -115,7 +115,7 @@ To configure the release (chart values), provide your own values via a *.yaml fi
 > helm install {{ template "chart.name" . }} {{ template "extra.atom.helm.path" . }} -f values.yaml
 > ```
 
-Alternatively, you could provide the values which you want to override at the CLI directly. Than you've to provide the values as key=value pair(s), referenced by the `--set` flag.
+Alternatively, you could provide the values which you want to override at the CLI directly. Then you have to provide the values as key=value pair(s), referenced by the `--set` flag.
 
 > #### Sample
 >
