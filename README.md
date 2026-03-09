@@ -41,7 +41,7 @@ The following charts are currently available:
 | local-agi | 0.1.2 | v2.8.1 | A Helm chart for deploying LocalAGI on Kubernetes. |
 | local-recall | 0.1.0 | v0.5.5 | A Helm chart for deploying LocalRecall on Kubernetes. |
 | mastodon | 0.1.2 | v4.5.7 | A Helm chart for deploying Mastodon on Kubernetes with repo-aligned secure defaults and integrations. |
-| netbird-agent | 0.11.2 | 0.66.2 | A Helm chart for an easier NetBird agent (https://netbird.io) deployment at kubernetes. |
+| netbird-agent | 0.11.3 | 0.66.3 | A Helm chart for an easier NetBird agent (https://netbird.io) deployment at kubernetes. |
 | netbird-management | 1.15.3 | 0.66.3 | A Helm chart for an easier NetBird management stack (https://netbird.io) deployment at kubernetes. |
 | ollama | 0.19.6 | 0.17.7 | A Helm chart for an easier ollama (https://ollama.com) deployment on k8s. Please note that this is a private helm chart and not directly or indirectly affiliated with ollama or its authors. |
 | outline | 1.12.0 | 1.5.0 | A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes. |
