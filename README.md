@@ -27,6 +27,7 @@ The following charts are currently available:
 
 | Name | Version | AppVersion | Description |
 |------|---------|------------|-------------|
+| actual-budget | 0.1.0 | 26.3.0 | A Helm chart for actual-budget deployment on Kubernetes. |
 | agent-zero | 0.1.3 | v0.9.8.2 | A Helm chart for deploying Agent Zero (AI Operating System) on Kubernetes. |
 | anything-llm | 0.1.0 | 1.11.1 | A Helm chart for deploying AnythingLLM on Kubernetes. |
 | bind9-hidden-primary | 0.4.3 | 9.20 | A Helm chart for bind9 to use as hidden primary, based on the offical Docker Image by InternetSystemsConsortium (ISC) |
