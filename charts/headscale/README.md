@@ -2,7 +2,7 @@
 
 # headscale
 
-![Version: 0.1.4](https://img.shields.io/badge/Version-0.1.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.28.0](https://img.shields.io/badge/AppVersion-0.28.0-informational?style=flat-square)
+![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.28.0](https://img.shields.io/badge/AppVersion-0.28.0-informational?style=flat-square)
 
 A Helm chart for an easier headscale (https://headscale.net) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with headscale or its authors.
 
@@ -1630,7 +1630,7 @@ object
     "image": {
       "pullPolicy": "IfNotPresent",
       "repository": "ghcr.io/tale/headplane",
-      "tag": "0.6.1"
+      "tag": "0.6.2"
     },
     "secret": {
       "cookieKey": "cookie-secret",
@@ -1857,7 +1857,7 @@ object
   "image": {
     "pullPolicy": "IfNotPresent",
     "repository": "ghcr.io/tale/headplane",
-    "tag": "0.6.1"
+    "tag": "0.6.2"
   },
   "secret": {
     "cookieKey": "cookie-secret",
@@ -2645,7 +2645,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"0.6.1"
+"0.6.2"
 </pre>
 </div>
 			</td>
