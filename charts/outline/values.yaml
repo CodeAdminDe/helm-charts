@@ -321,6 +321,40 @@ ingress:
       # When providing an empty string as secretNmae, the key will be skipped. That allowes to use the default ingress-nginx certificate for this ingress object.
       secretName: "" #When providing an empty string as secretNmae, the key will be skipped. That allowes to use the default ingress-nginx certificate for this ingress object.
 
+# -- Gateway API HTTPRoute configuration (for example Envoy Gateway).
+# When enabled, the chart derives Outline's public URL from `gatewayApi.hostnames[0]`
+# and `gatewayApi.scheme`.
+gatewayApi:
+  # -- Enable HTTPRoute resource creation.
+  enabled: false
+  # -- Public URL scheme used for Outline runtime URL generation when Gateway API is enabled.
+  scheme: "https"
+  # -- Labels for the Gateway API controller pods, used to generate default CiliumNetworkPolicies ingress rules.
+  controllerSelector:
+    app.kubernetes.io/name: envoy-gateway
+    io.kubernetes.pod.namespace: envoy-gateway-system
+  # -- HTTPRoute annotations.
+  annotations: {}
+  # -- HTTPRoute labels.
+  labels: {}
+  # -- ParentRefs for HTTPRoute.
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
+      sectionName: http
+  # -- Hostnames served by this route.
+  hostnames:
+    - chart-example.local
+  # -- Match rules for the HTTPRoute rule.
+  matches:
+    - path:
+        type: PathPrefix
+        value: "/"
+  # -- Optional filters for the HTTPRoute rule.
+  filters: []
+  # -- Optional backend references. Defaults to this chart service when empty.
+  backendRefs: []
+
 # -- Specify default resources (not recommended, see values.yaml)
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

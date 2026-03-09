@@ -62,6 +62,46 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
+Create the HTTPRoute name to use.
+*/}}
+{{- define "outline.httpRouteName" -}}
+{{- printf "%s-route" (include "outline.fullname" .) | trunc 63 | trimSuffix "-" -}}
+{{- end }}
+
+{{/*
+Resolve the primary public host used by Outline runtime URL settings.
+Gateway API takes precedence when enabled.
+*/}}
+{{- define "outline.publicHost" -}}
+{{- if and .Values.gatewayApi.enabled (gt (len .Values.gatewayApi.hostnames) 0) -}}
+{{- index .Values.gatewayApi.hostnames 0 -}}
+{{- else if gt (len .Values.ingress.hosts) 0 -}}
+{{- (index .Values.ingress.hosts 0).host -}}
+{{- end -}}
+{{- end }}
+
+{{/*
+Resolve the public URL scheme used by Outline runtime URL settings.
+*/}}
+{{- define "outline.publicScheme" -}}
+{{- if .Values.gatewayApi.enabled -}}
+{{- default "https" .Values.gatewayApi.scheme -}}
+{{- else -}}
+{{- ternary "https" "http" (not (empty .Values.ingress.tls)) -}}
+{{- end -}}
+{{- end }}
+
+{{/*
+Resolve the public base URL used by Outline runtime URL settings.
+*/}}
+{{- define "outline.publicBaseUrl" -}}
+{{- $host := include "outline.publicHost" . -}}
+{{- if $host -}}
+{{- printf "%s://%s" (include "outline.publicScheme" .) $host -}}
+{{- end -}}
+{{- end }}
+
+{{/*
 Define outline related database connection strings (postgresql)
 */}}
 {{- define "outline.env.database" -}}

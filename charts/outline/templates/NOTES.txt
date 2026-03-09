@@ -1,7 +1,14 @@
 
 Welcome to {{ include "outline.fullname" . }}!
 
-{{- if .Values.ingress.enabled }}
+{{- if .Values.gatewayApi.enabled }}
+1. To access your application via Gateway API, visit the following URL:
+{{- range $host := .Values.gatewayApi.hostnames }}
+  {{- range $.Values.gatewayApi.matches }}
+  {{ include "outline.publicScheme" $ }}://{{ $host }}{{ .path.value }}
+  {{- end }}
+{{- end }}
+{{- else if .Values.ingress.enabled }}
 1. To access your application, visit the following URL:
 {{- range $host := .Values.ingress.hosts }}
   {{- range .paths }}

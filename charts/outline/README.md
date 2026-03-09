@@ -2,7 +2,7 @@
 
 # outline
 
-![Version: 1.11.2](https://img.shields.io/badge/Version-1.11.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.5.0](https://img.shields.io/badge/AppVersion-1.5.0-informational?style=flat-square)
+![Version: 1.12.0](https://img.shields.io/badge/Version-1.12.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.5.0](https://img.shields.io/badge/AppVersion-1.5.0-informational?style=flat-square)
 
 A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes.
 
@@ -110,7 +110,7 @@ null
 			<td>Provide additonal env vars via one or more secretes... useful for OIDC setup etc... Specifiy the ENV key used by outline as KEY and the secret name as VALUE. The secret should contain the ENV key and the encrypted value: Sample secret ... apiVersion: v1 kind: Secret metadata: name: your-secret-name-to-slack-oidc-secrets type: Opaque stringData:   SLACK_KEY: "slack-key-value-goes-here"   SLACK_SECRET: "slack-secret-value-goes-here"</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L384">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L418">affinity</a></td>
 			<td>
 object
 </td>
@@ -124,7 +124,7 @@ object
 			<td></td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L360">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L394">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -230,6 +230,207 @@ string
 			<td></td>
 		</tr>
 		<tr>
+			<td id="gatewayApi"><a href="./values.yaml#L327">gatewayApi</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "annotations": {},
+  "backendRefs": [],
+  "controllerSelector": {
+    "app.kubernetes.io/name": "envoy-gateway",
+    "io.kubernetes.pod.namespace": "envoy-gateway-system"
+  },
+  "enabled": false,
+  "filters": [],
+  "hostnames": [
+    "chart-example.local"
+  ],
+  "labels": {},
+  "matches": [
+    {
+      "path": {
+        "type": "PathPrefix",
+        "value": "/"
+      }
+    }
+  ],
+  "parentRefs": [
+    {
+      "name": "envoy-gateway",
+      "namespace": "envoy-gateway-system",
+      "sectionName": "http"
+    }
+  ],
+  "scheme": "https"
+}
+</pre>
+</div>
+			</td>
+			<td>Gateway API HTTPRoute configuration (for example Envoy Gateway). When enabled, the chart derives Outline's public URL from `gatewayApi.hostnames[0]` and `gatewayApi.scheme`.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--annotations"><a href="./values.yaml#L337">gatewayApi.annotations</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>HTTPRoute annotations.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--backendRefs"><a href="./values.yaml#L356">gatewayApi.backendRefs</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Optional backend references. Defaults to this chart service when empty.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--controllerSelector"><a href="./values.yaml#L333">gatewayApi.controllerSelector</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "app.kubernetes.io/name": "envoy-gateway",
+  "io.kubernetes.pod.namespace": "envoy-gateway-system"
+}
+</pre>
+</div>
+			</td>
+			<td>Labels for the Gateway API controller pods, used to generate default CiliumNetworkPolicies ingress rules.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--enabled"><a href="./values.yaml#L329">gatewayApi.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Enable HTTPRoute resource creation.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--filters"><a href="./values.yaml#L354">gatewayApi.filters</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Optional filters for the HTTPRoute rule.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--hostnames"><a href="./values.yaml#L346">gatewayApi.hostnames</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[
+  "chart-example.local"
+]
+</pre>
+</div>
+			</td>
+			<td>Hostnames served by this route.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--labels"><a href="./values.yaml#L339">gatewayApi.labels</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>HTTPRoute labels.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--matches"><a href="./values.yaml#L349">gatewayApi.matches</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[
+  {
+    "path": {
+      "type": "PathPrefix",
+      "value": "/"
+    }
+  }
+]
+</pre>
+</div>
+			</td>
+			<td>Match rules for the HTTPRoute rule.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--parentRefs"><a href="./values.yaml#L341">gatewayApi.parentRefs</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[
+  {
+    "name": "envoy-gateway",
+    "namespace": "envoy-gateway-system",
+    "sectionName": "http"
+  }
+]
+</pre>
+</div>
+			</td>
+			<td>ParentRefs for HTTPRoute.</td>
+		</tr>
+		<tr>
+			<td id="gatewayApi--scheme"><a href="./values.yaml#L331">gatewayApi.scheme</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"https"
+</pre>
+</div>
+			</td>
+			<td>Public URL scheme used for Outline runtime URL generation when Gateway API is enabled.</td>
+		</tr>
+		<tr>
 			<td id="image"><a href="./values.yaml#L19">image</a></td>
 			<td>
 object
@@ -330,7 +531,7 @@ object
 			<td>Enable / Disable the installation of oppinionated CiliumNetworkPolicies. These are provided via dependency chart: libchart-cnps. Therefore you should *really* take a look into that chart and understand what will happen. And review if these are usable within your env.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--failureThreshold"><a href="./values.yaml#L348">livenessProbe.failureThreshold</a></td>
+			<td id="livenessProbe--failureThreshold"><a href="./values.yaml#L382">livenessProbe.failureThreshold</a></td>
 			<td>
 int
 </td>
@@ -344,7 +545,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--httpGet--path"><a href="./values.yaml#L346">livenessProbe.httpGet.path</a></td>
+			<td id="livenessProbe--httpGet--path"><a href="./values.yaml#L380">livenessProbe.httpGet.path</a></td>
 			<td>
 string
 </td>
@@ -358,7 +559,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--httpGet--port"><a href="./values.yaml#L347">livenessProbe.httpGet.port</a></td>
+			<td id="livenessProbe--httpGet--port"><a href="./values.yaml#L381">livenessProbe.httpGet.port</a></td>
 			<td>
 int
 </td>
@@ -372,7 +573,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--initialDelaySeconds"><a href="./values.yaml#L350">livenessProbe.initialDelaySeconds</a></td>
+			<td id="livenessProbe--initialDelaySeconds"><a href="./values.yaml#L384">livenessProbe.initialDelaySeconds</a></td>
 			<td>
 int
 </td>
@@ -386,7 +587,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="livenessProbe--periodSeconds"><a href="./values.yaml#L349">livenessProbe.periodSeconds</a></td>
+			<td id="livenessProbe--periodSeconds"><a href="./values.yaml#L383">livenessProbe.periodSeconds</a></td>
 			<td>
 int
 </td>
@@ -414,7 +615,7 @@ string
 			<td>This is to override the chart name.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L380">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L414">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -689,7 +890,7 @@ false
 			<td>Enable subpath for s3store api service.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L355">readinessProbe.failureThreshold</a></td>
+			<td id="readinessProbe--failureThreshold"><a href="./values.yaml#L389">readinessProbe.failureThreshold</a></td>
 			<td>
 int
 </td>
@@ -703,7 +904,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--httpGet--path"><a href="./values.yaml#L353">readinessProbe.httpGet.path</a></td>
+			<td id="readinessProbe--httpGet--path"><a href="./values.yaml#L387">readinessProbe.httpGet.path</a></td>
 			<td>
 string
 </td>
@@ -717,7 +918,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--httpGet--port"><a href="./values.yaml#L354">readinessProbe.httpGet.port</a></td>
+			<td id="readinessProbe--httpGet--port"><a href="./values.yaml#L388">readinessProbe.httpGet.port</a></td>
 			<td>
 int
 </td>
@@ -731,7 +932,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L357">readinessProbe.initialDelaySeconds</a></td>
+			<td id="readinessProbe--initialDelaySeconds"><a href="./values.yaml#L391">readinessProbe.initialDelaySeconds</a></td>
 			<td>
 int
 </td>
@@ -745,7 +946,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L356">readinessProbe.periodSeconds</a></td>
+			<td id="readinessProbe--periodSeconds"><a href="./values.yaml#L390">readinessProbe.periodSeconds</a></td>
 			<td>
 int
 </td>
@@ -807,7 +1008,7 @@ int
 			<td>This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L325">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L359">resources</a></td>
 			<td>
 object
 </td>
@@ -1014,7 +1215,7 @@ object
 			<td>This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/</td>
 		</tr>
 		<tr>
-			<td id="startupProbe"><a href="./values.yaml#L338">startupProbe</a></td>
+			<td id="startupProbe"><a href="./values.yaml#L372">startupProbe</a></td>
 			<td>
 object
 </td>
@@ -1035,7 +1236,7 @@ object
 			<td>This is to setup the startup, liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L382">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L416">tolerations</a></td>
 			<td>
 list
 </td>
@@ -1080,7 +1281,7 @@ object
 			<td>This block enables and configures the usage of a existing cnpg-cluster postgresql provided by CNPG Operator (postgresql.cnpg.io/v1/Cluster). It allows to directly say "hey, use the CNPG cluster deployed within my namespace", which gives you the opportunity to "just consume" the already deployed CNPG Cluster provided by your infra team. When using the cnpg-cluster flag, no postgresql database will be deployed and auth secrets are not necessary, because the chart will rely on the available ENV vars provided by CNPG. NOTES:  * Requires a already deployed cnpg cluster (postgresql.cnpg.io/v1/Cluster) within your app namespace! If you'd want to get a better understanding of the cnpg cluster, take a look at the projects values.yaml, etc... at https://github.com/cloudnative-pg/charts/blob/main/charts/cluster/values.yaml  *  When postgresql.enabled is set to "true", you cannot use useCnpgCluster and vice versa!</td>
 		</tr>
 		<tr>
-			<td id="volumeMounts"><a href="./values.yaml#L375">volumeMounts</a></td>
+			<td id="volumeMounts"><a href="./values.yaml#L409">volumeMounts</a></td>
 			<td>
 list
 </td>
@@ -1094,7 +1295,7 @@ list
 			<td>Additional volumeMounts on the output Deployment definition.</td>
 		</tr>
 		<tr>
-			<td id="volumes"><a href="./values.yaml#L368">volumes</a></td>
+			<td id="volumes"><a href="./values.yaml#L402">volumes</a></td>
 			<td>
 list
 </td>
@@ -1155,3 +1356,12 @@ If you find security-related issues, please do not use the issue tracker instead
 
 ----------------------------------------------
 Autogenerated from chart metadata using [helm-docs](https://github.com/norwoodj/helm-docs)
+<hr /><hr />
+
+## Appendix - Gateway API support
+
+* This chart supports both classic `Ingress` resources and `HTTPRoute` resources via Gateway API.
+* When `gatewayApi.enabled=true`, Outline runtime URL settings are derived from:
+  * `gatewayApi.hostnames[0]`
+  * `gatewayApi.scheme`
+* `provideS3storeApiAsIngressSubpath.enabled=true` remains ingress-only and must not be combined with `gatewayApi.enabled=true`.

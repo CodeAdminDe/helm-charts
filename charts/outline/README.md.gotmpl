@@ -1,2 +1,15 @@
 
+{{- define "extra.specifics.fromchart.outline.gateway" -}}
+<hr /><hr />
+
+## Appendix - Gateway API support
+
+* This chart supports both classic `Ingress` resources and `HTTPRoute` resources via Gateway API.
+* When `gatewayApi.enabled=true`, Outline runtime URL settings are derived from:
+  * `gatewayApi.hostnames[0]`
+  * `gatewayApi.scheme`
+* `provideS3storeApiAsIngressSubpath.enabled=true` remains ingress-only and must not be combined with `gatewayApi.enabled=true`.
+{{- end -}}
+
 {{ template "extra.templates.readme.complexvalues" . }}
+{{ template "extra.specifics.fromchart.outline.gateway" . }}
