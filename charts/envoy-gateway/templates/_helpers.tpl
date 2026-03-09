@@ -62,3 +62,13 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- define "envoy-gateway.bootstrap.gatewayNamespace" -}}
 {{- default .Release.Namespace .Values.bootstrap.gateway.namespace -}}
 {{- end -}}
+
+{{/* Bootstrap Gateway mode */}}
+{{- define "envoy-gateway.bootstrap.gatewayMode" -}}
+{{- default "raw" .Values.bootstrap.gateway.mode -}}
+{{- end -}}
+
+{{/* Bootstrap HTTP redirect route name */}}
+{{- define "envoy-gateway.bootstrap.httpRedirectRouteName" -}}
+{{- .Values.bootstrap.gateway.tls.redirectHttpToHttps.name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}

@@ -3,7 +3,7 @@ name: envoy-gateway
 description: A Helm chart for deploying Envoy Gateway (Gateway API implementation) on Kubernetes.
 type: application
 # renovate: bumpVersion
-version: 0.2.1
+version: 0.3.0
 # renovate: chart=gateway-helm repository=https://hub.docker.com/r/envoyproxy/gateway-helm
 appVersion: "v1.7.0"
 kubeVersion: ">=1.24.0"

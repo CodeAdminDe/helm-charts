@@ -11,5 +11,12 @@
 {{- if .Values.bootstrap.envoyProxy.enabled }}
    kubectl get envoyproxy -n {{ include "envoy-gateway.bootstrap.envoyProxyNamespace" . }} {{ include "envoy-gateway.bootstrap.envoyProxyName" . }}
 {{- end }}
+{{- if and .Values.bootstrap.gateway.enabled (eq (include "envoy-gateway.bootstrap.gatewayMode" .) "managed") .Values.bootstrap.gateway.tls.enabled }}
+   kubectl get certificate -n {{ include "envoy-gateway.bootstrap.gatewayNamespace" . }}
+{{- end }}
 
 3. Next step: create HTTPRoute/TLSRoute resources in your app namespaces and reference the bootstrap Gateway.
+{{- if and .Values.bootstrap.gateway.enabled (eq (include "envoy-gateway.bootstrap.gatewayMode" .) "managed") .Values.bootstrap.gateway.tls.enabled }}
+   App-owner HTTPRoutes should bind to the HTTPS listener `sectionName` values from `bootstrap.gateway.tls.listeners[*].name`.
+   The managed HTTP listener is reserved for the central HTTP->HTTPS redirect route.
+{{- end }}

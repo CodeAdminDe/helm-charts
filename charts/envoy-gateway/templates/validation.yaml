@@ -1,4 +1,7 @@
 {{- $envoyGateway := (index .Values "envoy-gateway") | default dict -}}
+{{- $gatewayMode := include "envoy-gateway.bootstrap.gatewayMode" . -}}
+{{- $validGatewayModes := list "raw" "managed" -}}
+{{- $validRedirectCodes := list 301 302 303 307 308 -}}
 
 {{- if hasKey .Values "envoyGateway" -}}
 {{- fail "The top-level values key 'envoyGateway' has been renamed to 'envoy-gateway'. Update your values files and overrides accordingly." -}}
@@ -6,6 +9,14 @@
 
 {{- if and (or .Values.bootstrap.gatewayClass.enabled .Values.bootstrap.envoyProxy.enabled .Values.bootstrap.gateway.enabled) (not (index $envoyGateway "enabled")) -}}
 {{- fail "envoy-gateway.enabled must be true when bootstrap resources are enabled." -}}
+{{- end -}}
+
+{{- if not (has $gatewayMode $validGatewayModes) -}}
+{{- fail "bootstrap.gateway.mode must be either 'raw' or 'managed'." -}}
+{{- end -}}
+
+{{- if and .Values.bootstrap.gateway.tls.enabled (ne $gatewayMode "managed") -}}
+{{- fail "bootstrap.gateway.tls.enabled=true requires bootstrap.gateway.mode=managed." -}}
 {{- end -}}
 
 {{- if and .Values.bootstrap.gatewayClass.enabled (empty .Values.bootstrap.gatewayClass.name) -}}
@@ -40,10 +51,6 @@
 {{- fail "bootstrap.gateway.gatewayClassName must be set when bootstrap.gateway.enabled=true." -}}
 {{- end -}}
 
-{{- if and .Values.bootstrap.gateway.enabled (empty .Values.bootstrap.gateway.listeners) -}}
-{{- fail "bootstrap.gateway.listeners must contain at least one listener when bootstrap.gateway.enabled=true." -}}
-{{- end -}}
-
 {{- if and .Values.bootstrap.gateway.enabled .Values.bootstrap.gateway.infrastructure.parametersRef.enabled (empty .Values.bootstrap.gateway.infrastructure.parametersRef.name) -}}
 {{- fail "bootstrap.gateway.infrastructure.parametersRef.name must be set when bootstrap.gateway.infrastructure.parametersRef.enabled=true." -}}
 {{- end -}}
@@ -58,4 +65,71 @@
 
 {{- if and .Values.bootstrap.gateway.enabled .Values.bootstrap.gatewayClass.enabled (ne .Values.bootstrap.gateway.gatewayClassName .Values.bootstrap.gatewayClass.name) -}}
 {{- fail "bootstrap.gateway.gatewayClassName must match bootstrap.gatewayClass.name when both resources are enabled." -}}
+{{- end -}}
+
+{{- if and .Values.bootstrap.gateway.enabled (eq $gatewayMode "raw") (empty .Values.bootstrap.gateway.listeners) -}}
+{{- fail "bootstrap.gateway.listeners must contain at least one listener when bootstrap.gateway.mode=raw and bootstrap.gateway.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.bootstrap.gateway.enabled (eq $gatewayMode "managed") -}}
+  {{- if not .Values.bootstrap.gateway.tls.enabled -}}
+    {{- fail "bootstrap.gateway.mode=managed requires bootstrap.gateway.tls.enabled=true." -}}
+  {{- end -}}
+  {{- if not .Values.bootstrap.gateway.tls.listeners -}}
+    {{- fail "bootstrap.gateway.tls.listeners must contain at least one HTTPS listener when bootstrap.gateway.mode=managed." -}}
+  {{- end -}}
+  {{- if and .Values.bootstrap.gateway.tls.redirectHttpToHttps.enabled (not .Values.bootstrap.gateway.httpListener.enabled) -}}
+    {{- fail "bootstrap.gateway.tls.redirectHttpToHttps.enabled=true requires bootstrap.gateway.httpListener.enabled=true." -}}
+  {{- end -}}
+  {{- if and .Values.bootstrap.gateway.tls.redirectHttpToHttps.enabled (ne .Values.bootstrap.gateway.httpListener.allowedRoutes.namespaces.from "Same") -}}
+    {{- fail "bootstrap.gateway.httpListener.allowedRoutes.namespaces.from must be 'Same' when bootstrap.gateway.tls.redirectHttpToHttps.enabled=true to reserve HTTP for the central redirect route." -}}
+  {{- end -}}
+  {{- if and .Values.bootstrap.gateway.httpListener.enabled (empty .Values.bootstrap.gateway.httpListener.name) -}}
+    {{- fail "bootstrap.gateway.httpListener.name must be set when bootstrap.gateway.httpListener.enabled=true." -}}
+  {{- end -}}
+  {{- if and .Values.bootstrap.gateway.httpListener.enabled (empty .Values.bootstrap.gateway.httpListener.port) -}}
+    {{- fail "bootstrap.gateway.httpListener.port must be set when bootstrap.gateway.httpListener.enabled=true." -}}
+  {{- end -}}
+  {{- if and .Values.bootstrap.gateway.tls.redirectHttpToHttps.enabled (not (has (int .Values.bootstrap.gateway.tls.redirectHttpToHttps.statusCode) $validRedirectCodes)) -}}
+    {{- fail "bootstrap.gateway.tls.redirectHttpToHttps.statusCode must be one of 301, 302, 303, 307, or 308." -}}
+  {{- end -}}
+
+  {{- $listenerNames := dict -}}
+  {{- $listenerHostnames := dict -}}
+  {{- range $idx, $listener := .Values.bootstrap.gateway.tls.listeners -}}
+    {{- if empty $listener.name -}}
+      {{- fail (printf "bootstrap.gateway.tls.listeners[%d].name must be set." $idx) -}}
+    {{- end -}}
+    {{- if hasKey $listenerNames $listener.name -}}
+      {{- fail (printf "bootstrap.gateway.tls.listeners[%d].name '%s' is duplicated." $idx $listener.name) -}}
+    {{- end -}}
+    {{- $_ := set $listenerNames $listener.name true -}}
+    {{- if empty $listener.hostname -}}
+      {{- fail (printf "bootstrap.gateway.tls.listeners[%d].hostname must be set." $idx) -}}
+    {{- end -}}
+    {{- if hasKey $listenerHostnames $listener.hostname -}}
+      {{- fail (printf "bootstrap.gateway.tls.listeners[%d].hostname '%s' is duplicated." $idx $listener.hostname) -}}
+    {{- end -}}
+    {{- $_ := set $listenerHostnames $listener.hostname true -}}
+    {{- if empty $listener.certificateRefName -}}
+      {{- fail (printf "bootstrap.gateway.tls.listeners[%d].certificateRefName must be set." $idx) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $certificateSecretNames := dict -}}
+  {{- range $idx, $certificate := .Values.bootstrap.gateway.tls.certificates -}}
+    {{- if empty $certificate.secretName -}}
+      {{- fail (printf "bootstrap.gateway.tls.certificates[%d].secretName must be set." $idx) -}}
+    {{- end -}}
+    {{- if hasKey $certificateSecretNames $certificate.secretName -}}
+      {{- fail (printf "bootstrap.gateway.tls.certificates[%d].secretName '%s' is duplicated." $idx $certificate.secretName) -}}
+    {{- end -}}
+    {{- $_ := set $certificateSecretNames $certificate.secretName true -}}
+    {{- if not $certificate.dnsNames -}}
+      {{- fail (printf "bootstrap.gateway.tls.certificates[%d].dnsNames must contain at least one DNS name." $idx) -}}
+    {{- end -}}
+    {{- if empty $certificate.issuerRef.name -}}
+      {{- fail (printf "bootstrap.gateway.tls.certificates[%d].issuerRef.name must be set." $idx) -}}
+    {{- end -}}
+  {{- end -}}
 {{- end -}}

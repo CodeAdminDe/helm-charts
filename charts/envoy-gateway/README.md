@@ -2,7 +2,7 @@
 
 # envoy-gateway
 
-![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.7.0](https://img.shields.io/badge/AppVersion-v1.7.0-informational?style=flat-square)
+![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.7.0](https://img.shields.io/badge/AppVersion-v1.7.0-informational?style=flat-square)
 
 A Helm chart for deploying Envoy Gateway (Gateway API implementation) on Kubernetes.
 
@@ -125,6 +125,16 @@ object
     "annotations": {},
     "enabled": true,
     "gatewayClassName": "envoy-gateway",
+    "httpListener": {
+      "allowedRoutes": {
+        "namespaces": {
+          "from": "Same"
+        }
+      },
+      "enabled": true,
+      "name": "http",
+      "port": 80
+    },
     "infrastructure": {
       "parametersRef": {
         "enabled": true,
@@ -146,8 +156,21 @@ object
         "protocol": "HTTP"
       }
     ],
+    "mode": "raw",
     "name": "envoy-gateway",
-    "namespace": ""
+    "namespace": "",
+    "tls": {
+      "certificates": [],
+      "enabled": false,
+      "listeners": [],
+      "redirectHttpToHttps": {
+        "annotations": {},
+        "enabled": true,
+        "labels": {},
+        "name": "http-to-https",
+        "statusCode": 301
+      }
+    }
   },
   "gatewayClass": {
     "annotations": {},
@@ -305,7 +328,67 @@ string
 			<td>Referenced GatewayClass name.</td>
 		</tr>
 		<tr>
-			<td id="bootstrap--gateway--infrastructure--parametersRef--enabled"><a href="./values.yaml#L110">bootstrap.gateway.infrastructure.parametersRef.enabled</a></td>
+			<td id="bootstrap--gateway--httpListener--allowedRoutes"><a href="./values.yaml#L150">bootstrap.gateway.httpListener.allowedRoutes</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "namespaces": {
+    "from": "Same"
+  }
+}
+</pre>
+</div>
+			</td>
+			<td>Managed HTTP listener allowedRoutes block.</td>
+		</tr>
+		<tr>
+			<td id="bootstrap--gateway--httpListener--enabled"><a href="./values.yaml#L144">bootstrap.gateway.httpListener.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Create an HTTP listener in managed mode. @description In managed TLS mode this listener is intended only for the central HTTP->HTTPS redirect route and therefore defaults to same-namespace route attachment.</td>
+		</tr>
+		<tr>
+			<td id="bootstrap--gateway--httpListener--name"><a href="./values.yaml#L146">bootstrap.gateway.httpListener.name</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"http"
+</pre>
+</div>
+			</td>
+			<td>Managed HTTP listener name.</td>
+		</tr>
+		<tr>
+			<td id="bootstrap--gateway--httpListener--port"><a href="./values.yaml#L148">bootstrap.gateway.httpListener.port</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+80
+</pre>
+</div>
+			</td>
+			<td>Managed HTTP listener port.</td>
+		</tr>
+		<tr>
+			<td id="bootstrap--gateway--infrastructure--parametersRef--enabled"><a href="./values.yaml#L113">bootstrap.gateway.infrastructure.parametersRef.enabled</a></td>
 			<td>
 bool
 </td>
@@ -319,7 +402,7 @@ true
 			<td>Attach infrastructure.parametersRef to Gateway.</td>
 		</tr>
 		<tr>
-			<td id="bootstrap--gateway--infrastructure--parametersRef--group"><a href="./values.yaml#L112">bootstrap.gateway.infrastructure.parametersRef.group</a></td>
+			<td id="bootstrap--gateway--infrastructure--parametersRef--group"><a href="./values.yaml#L115">bootstrap.gateway.infrastructure.parametersRef.group</a></td>
 			<td>
 string
 </td>
@@ -333,7 +416,7 @@ string
 			<td>ParametersRef API group.</td>
 		</tr>
 		<tr>
-			<td id="bootstrap--gateway--infrastructure--parametersRef--kind"><a href="./values.yaml#L114">bootstrap.gateway.infrastructure.parametersRef.kind</a></td>
+			<td id="bootstrap--gateway--infrastructure--parametersRef--kind"><a href="./values.yaml#L117">bootstrap.gateway.infrastructure.parametersRef.kind</a></td>
 			<td>
 string
 </td>
@@ -347,7 +430,7 @@ string
 			<td>ParametersRef kind.</td>
 		</tr>
 		<tr>
-			<td id="bootstrap--gateway--infrastructure--parametersRef--name"><a href="./values.yaml#L116">bootstrap.gateway.infrastructure.parametersRef.name</a></td>
+			<td id="bootstrap--gateway--infrastructure--parametersRef--name"><a href="./values.yaml#L119">bootstrap.gateway.infrastructure.parametersRef.name</a></td>
 			<td>
 string
 </td>
@@ -375,7 +458,7 @@ object
 			<td>Gateway labels.</td>
 		</tr>
 		<tr>
-			<td id="bootstrap--gateway--listeners"><a href="./values.yaml#L138">bootstrap.gateway.listeners</a></td>
+			<td id="bootstrap--gateway--listeners"><a href="./values.yaml#L133">bootstrap.gateway.listeners</a></td>
 			<td>
 list
 </td>
@@ -397,7 +480,7 @@ list
 </pre>
 </div>
 			</td>
-			<td>Gateway listeners. @description Default allows routes from all namespaces. For multi-tenant clusters, override with `from: Same` or `from: Selector` and apply RBAC isolation on the Gateway namespace.
+			<td>Raw Gateway listeners. @description Used only when `bootstrap.gateway.mode=raw`. Keep this path for advanced/manual listener definitions.
 ```yaml
 listeners:
   - name: http
@@ -406,15 +489,21 @@ listeners:
     allowedRoutes:
       namespaces:
         from: All
-  - name: https
-    protocol: HTTPS
-    port: 443
-    tls:
-      mode: Terminate
-      certificateRefs:
-        - kind: Secret
-          name: envoy-gateway-tls
 ```</td>
+		</tr>
+		<tr>
+			<td id="bootstrap--gateway--mode"><a href="./values.yaml#L108">bootstrap.gateway.mode</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"raw"
+</pre>
+</div>
+			</td>
+			<td>Gateway rendering mode. @description Use `raw` to manage `bootstrap.gateway.listeners` directly. Use `managed` to let this chart build opinionated HTTP/HTTPS listeners, redirect handling, and optional cert-manager Certificates.</td>
 		</tr>
 		<tr>
 			<td id="bootstrap--gateway--name"><a href="./values.yaml#L96">bootstrap.gateway.name</a></td>
@@ -443,6 +532,146 @@ string
 </div>
 			</td>
 			<td>Gateway namespace override. @description Empty value defaults to `.Release.Namespace`.</td>
+		</tr>
+		<tr>
+			<td id="bootstrap--gateway--tls--certificates"><a href="./values.yaml#L208">bootstrap.gateway.tls.certificates</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Optional cert-manager Certificates to create in the Gateway namespace. @description If a listener references a `certificateRefName` that is not declared here, the chart assumes the Secret already exists in the Gateway namespace. This keeps existing Secret handling and cert-manager handling compatible.
+```yaml
+certificates:
+  - secretName: prod-example-com-tls
+    dnsNames:
+      - "prod.example.com"
+      - "*.prod.example.com"
+    issuerRef:
+      name: letsencrypt-prod
+      kind: ClusterIssuer
+      group: cert-manager.io
+```</td>
+		</tr>
+		<tr>
+			<td id="bootstrap--gateway--tls--enabled"><a href="./values.yaml#L157">bootstrap.gateway.tls.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Enable opinionated managed TLS handling. @description Requires `bootstrap.gateway.mode=managed`. When enabled, the chart renders HTTPS listeners, optional cert-manager Certificates, and by default a central HTTP->HTTPS redirect route.</td>
+		</tr>
+		<tr>
+			<td id="bootstrap--gateway--tls--listeners"><a href="./values.yaml#L192">bootstrap.gateway.tls.listeners</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Managed HTTPS listeners. @description Each listener terminates TLS with the referenced secret and should normally cover either an exact hostname or a wildcard domain. App-owner HTTPRoutes should bind to these HTTPS listeners, not the managed HTTP redirect listener.
+```yaml
+listeners:
+  - name: https-prod-wildcard
+    hostname: "*.prod.example.com"
+    port: 443
+    certificateRefName: prod-example-com-tls
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-prod-apex
+    hostname: "prod.example.com"
+    port: 443
+    certificateRefName: prod-example-com-tls
+    allowedRoutes:
+      namespaces:
+        from: All
+```</td>
+		</tr>
+		<tr>
+			<td id="bootstrap--gateway--tls--redirectHttpToHttps--annotations"><a href="./values.yaml#L168">bootstrap.gateway.tls.redirectHttpToHttps.annotations</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>Redirect route annotations.</td>
+		</tr>
+		<tr>
+			<td id="bootstrap--gateway--tls--redirectHttpToHttps--enabled"><a href="./values.yaml#L161">bootstrap.gateway.tls.redirectHttpToHttps.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Create a central HTTPRoute that redirects HTTP traffic to HTTPS.</td>
+		</tr>
+		<tr>
+			<td id="bootstrap--gateway--tls--redirectHttpToHttps--labels"><a href="./values.yaml#L170">bootstrap.gateway.tls.redirectHttpToHttps.labels</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>Redirect route labels.</td>
+		</tr>
+		<tr>
+			<td id="bootstrap--gateway--tls--redirectHttpToHttps--name"><a href="./values.yaml#L163">bootstrap.gateway.tls.redirectHttpToHttps.name</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"http-to-https"
+</pre>
+</div>
+			</td>
+			<td>Redirect route name.</td>
+		</tr>
+		<tr>
+			<td id="bootstrap--gateway--tls--redirectHttpToHttps--statusCode"><a href="./values.yaml#L166">bootstrap.gateway.tls.redirectHttpToHttps.statusCode</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+301
+</pre>
+</div>
+			</td>
+			<td>HTTP redirect status code. @description Valid values are `301`, `302`, `303`, `307`, or `308`.</td>
 		</tr>
 		<tr>
 			<td id="bootstrap--gatewayClass--annotations"><a href="./values.yaml#L51">bootstrap.gatewayClass.annotations</a></td>
@@ -816,6 +1045,20 @@ Autogenerated from chart metadata using [helm-docs](https://github.com/norwoodj/
   * `EnvoyProxy` provider: Kubernetes
   * Envoy data-plane service type: `ClusterIP`
   * `Gateway` listener: HTTP on port `80`
+* `bootstrap.gateway.mode=managed` enables the opinionated TLS path:
+  * chart-managed HTTPS listeners
+  * optional cert-manager `Certificate` resources in the Gateway namespace
+  * central HTTP to HTTPS redirect handling via `HTTPRoute`
+* `bootstrap.gateway.mode=raw` remains the escape hatch for advanced/manual listener definitions.
+
+### Managed TLS model
+
+* TLS terminates on Gateway listeners, not on app-owner `HTTPRoute`s.
+* App-owner routes should bind to the HTTPS listener `sectionName` values from `bootstrap.gateway.tls.listeners[*].name`.
+* The managed HTTP listener is reserved for the central redirect route and defaults to `allowedRoutes.namespaces.from=Same` so app namespaces cannot bypass HTTPS accidentally.
+* Wildcard listeners such as `*.prod.example.com` reduce hostname sprawl, but apex hostnames like `prod.example.com` still need their own listener coverage.
+* cert-manager integration is implemented via explicit `Certificate` resources instead of Gateway annotations so multiple wildcard/exact certificates and different issuers can be handled deterministically.
+* Managed certificates are created in the Gateway namespace. Reusing a wildcard Secret from another namespace is intentionally out of scope for now; replicate it into the Gateway namespace or let cert-manager issue it there with the same `ClusterIssuer`.
 
 ### Migration notes (Ingress NGINX -> Gateway API)
 

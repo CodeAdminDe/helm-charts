@@ -1,4 +1,5 @@
 {{- if .Values.bootstrap.gateway.enabled }}
+{{- $gatewayMode := include "envoy-gateway.bootstrap.gatewayMode" . -}}
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
@@ -23,5 +24,28 @@ spec:
       name: {{ .Values.bootstrap.gateway.infrastructure.parametersRef.name | quote }}
   {{- end }}
   listeners:
+    {{- if eq $gatewayMode "managed" }}
+    {{- if .Values.bootstrap.gateway.httpListener.enabled }}
+    - name: {{ .Values.bootstrap.gateway.httpListener.name | quote }}
+      protocol: HTTP
+      port: {{ .Values.bootstrap.gateway.httpListener.port }}
+      allowedRoutes:
+        {{- toYaml .Values.bootstrap.gateway.httpListener.allowedRoutes | nindent 8 }}
+    {{- end }}
+    {{- range .Values.bootstrap.gateway.tls.listeners }}
+    - name: {{ .name | quote }}
+      protocol: HTTPS
+      port: {{ default 443 .port }}
+      hostname: {{ .hostname | quote }}
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: {{ .certificateRefName | quote }}
+      allowedRoutes:
+        {{- toYaml (default (dict "namespaces" (dict "from" "All")) .allowedRoutes) | nindent 8 }}
+    {{- end }}
+    {{- else }}
     {{- toYaml .Values.bootstrap.gateway.listeners | nindent 4 }}
+    {{- end }}
 {{- end }}

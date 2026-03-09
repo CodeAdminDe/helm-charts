@@ -1,0 +1,45 @@
+{{- if and .Values.bootstrap.gateway.enabled (eq (include "envoy-gateway.bootstrap.gatewayMode" .) "managed") .Values.bootstrap.gateway.tls.enabled }}
+{{- range .Values.bootstrap.gateway.tls.certificates }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ default .secretName .name | quote }}
+  namespace: {{ include "envoy-gateway.bootstrap.gatewayNamespace" $ }}
+  labels:
+    {{- include "envoy-gateway.labels" $ | nindent 4 }}
+    {{- with .labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  secretName: {{ .secretName | quote }}
+  dnsNames:
+    {{- toYaml .dnsNames | nindent 4 }}
+  issuerRef:
+    name: {{ .issuerRef.name | quote }}
+    kind: {{ default "ClusterIssuer" .issuerRef.kind | quote }}
+    group: {{ default "cert-manager.io" .issuerRef.group | quote }}
+  {{- with .duration }}
+  duration: {{ . | quote }}
+  {{- end }}
+  {{- with .renewBefore }}
+  renewBefore: {{ . | quote }}
+  {{- end }}
+  {{- with .privateKey }}
+  privateKey:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .usages }}
+  usages:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .secretTemplate }}
+  secretTemplate:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+---
+{{- end }}
+{{- end }}
