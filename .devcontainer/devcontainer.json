@@ -1,0 +1,62 @@
+{
+  "name": "Go Dev Environment",
+  "image": "mcr.microsoft.com/devcontainers/go:1",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true
+    },
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {}
+  },
+
+  // "runArgs": [
+  //   "--cap-add=SYS_PTRACE",
+  //   "--security-opt", "seccomp=unconfined"
+  // ],
+
+  // "mounts": [
+  //   "source=go-mod-cache,target=/go/pkg,type=volume",
+  //   "source=go-build-cache,target=/home/vscode/.cache/go-build,type=volume"
+  // ],
+
+  // "forwardPorts": [8080],
+  // "portsAttributes": {
+  //   "8080": {
+  //     "label": "Lokale Go API",
+  //     "onAutoForward": "notify"
+  //   }
+  // },
+
+  "remoteEnv": {
+    "CGO_ENABLED": "0",
+    "INSTALL_DOTFILES": "${localEnv:INSTALL_DOTFILES}",
+    "MY_CUSTOM_API_KEY": "dev-key-123"
+  },
+
+  // "updateContentCommand": "go mod download",
+  "postCreateCommand": "if [ \"$INSTALL_DOTFILES\" = \"true\" ]; then git clone https://github.com/codeadminde/.dotfiles.git ~/.dotfiles && cd ~/.dotfiles && chmod +x install.sh && ./install.sh; fi && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest",
+  "postStartCommand": "git config --global core.editor 'code --wait'",
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "go.lintTool": "golangci-lint",
+        "go.lintOnSave": "package",
+        "go.useLanguageServer": true,
+        "go.toolsManagement.checkForUpdates": "local",
+        "editor.formatOnSave": true
+      },
+      "extensions": [
+        "golang.Go",
+        "GoogleCloudTools.cloudcode",
+        "ms-vscode.makefile-tools", 
+        "eamodio.gitlens",
+        "oderwat.indent-rainbow"
+      ]
+    }
+  },
+
+  "remoteUser": "vscode"
+}
