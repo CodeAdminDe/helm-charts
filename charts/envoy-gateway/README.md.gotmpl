@@ -22,6 +22,20 @@
   * `EnvoyProxy` provider: Kubernetes
   * Envoy data-plane service type: `ClusterIP`
   * `Gateway` listener: HTTP on port `80`
+* `bootstrap.gateway.mode=managed` enables the opinionated TLS path:
+  * chart-managed HTTPS listeners
+  * optional cert-manager `Certificate` resources in the Gateway namespace
+  * central HTTP to HTTPS redirect handling via `HTTPRoute`
+* `bootstrap.gateway.mode=raw` remains the escape hatch for advanced/manual listener definitions.
+
+### Managed TLS model
+
+* TLS terminates on Gateway listeners, not on app-owner `HTTPRoute`s.
+* App-owner routes should bind to the HTTPS listener `sectionName` values from `bootstrap.gateway.tls.listeners[*].name`.
+* The managed HTTP listener is reserved for the central redirect route and defaults to `allowedRoutes.namespaces.from=Same` so app namespaces cannot bypass HTTPS accidentally.
+* Wildcard listeners such as `*.prod.example.com` reduce hostname sprawl, but apex hostnames like `prod.example.com` still need their own listener coverage.
+* cert-manager integration is implemented via explicit `Certificate` resources instead of Gateway annotations so multiple wildcard/exact certificates and different issuers can be handled deterministically.
+* Managed certificates are created in the Gateway namespace. Reusing a wildcard Secret from another namespace is intentionally out of scope for now; replicate it into the Gateway namespace or let cert-manager issue it there with the same `ClusterIssuer`.
 
 ### Migration notes (Ingress NGINX -> Gateway API)
 

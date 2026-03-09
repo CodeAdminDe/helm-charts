@@ -103,6 +103,9 @@ bootstrap:
     labels: {}
     # -- Referenced GatewayClass name.
     gatewayClassName: envoy-gateway
+    # -- Gateway rendering mode.
+    # @description Use `raw` to manage `bootstrap.gateway.listeners` directly. Use `managed` to let this chart build opinionated HTTP/HTTPS listeners, redirect handling, and optional cert-manager Certificates.
+    mode: raw
 
     infrastructure:
       parametersRef:
@@ -115,8 +118,8 @@ bootstrap:
         # -- ParametersRef object name.
         name: envoy-gateway-default
 
-    # -- Gateway listeners.
-    # @description Default allows routes from all namespaces. For multi-tenant clusters, override with `from: Same` or `from: Selector` and apply RBAC isolation on the Gateway namespace.
+    # -- Raw Gateway listeners.
+    # @description Used only when `bootstrap.gateway.mode=raw`. Keep this path for advanced/manual listener definitions.
     # @raw
     # ```yaml
     # listeners:
@@ -126,14 +129,6 @@ bootstrap:
     #     allowedRoutes:
     #       namespaces:
     #         from: All
-    #   - name: https
-    #     protocol: HTTPS
-    #     port: 443
-    #     tls:
-    #       mode: Terminate
-    #       certificateRefs:
-    #         - kind: Secret
-    #           name: envoy-gateway-tls
     # ```
     listeners:
       - name: http
@@ -142,3 +137,72 @@ bootstrap:
         allowedRoutes:
           namespaces:
             from: All
+
+    httpListener:
+      # -- Create an HTTP listener in managed mode.
+      # @description In managed TLS mode this listener is intended only for the central HTTP->HTTPS redirect route and therefore defaults to same-namespace route attachment.
+      enabled: true
+      # -- Managed HTTP listener name.
+      name: http
+      # -- Managed HTTP listener port.
+      port: 80
+      # -- Managed HTTP listener allowedRoutes block.
+      allowedRoutes:
+        namespaces:
+          from: Same
+
+    tls:
+      # -- Enable opinionated managed TLS handling.
+      # @description Requires `bootstrap.gateway.mode=managed`. When enabled, the chart renders HTTPS listeners, optional cert-manager Certificates, and by default a central HTTP->HTTPS redirect route.
+      enabled: false
+
+      redirectHttpToHttps:
+        # -- Create a central HTTPRoute that redirects HTTP traffic to HTTPS.
+        enabled: true
+        # -- Redirect route name.
+        name: http-to-https
+        # -- HTTP redirect status code.
+        # @description Valid values are `301`, `302`, `303`, `307`, or `308`.
+        statusCode: 301
+        # -- Redirect route annotations.
+        annotations: {}
+        # -- Redirect route labels.
+        labels: {}
+
+      # -- Managed HTTPS listeners.
+      # @description Each listener terminates TLS with the referenced secret and should normally cover either an exact hostname or a wildcard domain. App-owner HTTPRoutes should bind to these HTTPS listeners, not the managed HTTP redirect listener.
+      # @raw
+      # ```yaml
+      # listeners:
+      #   - name: https-prod-wildcard
+      #     hostname: "*.prod.example.com"
+      #     port: 443
+      #     certificateRefName: prod-example-com-tls
+      #     allowedRoutes:
+      #       namespaces:
+      #         from: All
+      #   - name: https-prod-apex
+      #     hostname: "prod.example.com"
+      #     port: 443
+      #     certificateRefName: prod-example-com-tls
+      #     allowedRoutes:
+      #       namespaces:
+      #         from: All
+      # ```
+      listeners: []
+
+      # -- Optional cert-manager Certificates to create in the Gateway namespace.
+      # @description If a listener references a `certificateRefName` that is not declared here, the chart assumes the Secret already exists in the Gateway namespace. This keeps existing Secret handling and cert-manager handling compatible.
+      # @raw
+      # ```yaml
+      # certificates:
+      #   - secretName: prod-example-com-tls
+      #     dnsNames:
+      #       - "prod.example.com"
+      #       - "*.prod.example.com"
+      #     issuerRef:
+      #       name: letsencrypt-prod
+      #       kind: ClusterIssuer
+      #       group: cert-manager.io
+      # ```
+      certificates: []
