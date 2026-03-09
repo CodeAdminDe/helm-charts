@@ -87,6 +87,11 @@ gatewayApi:
   enabled: false
   # -- Public URL scheme used when deriving `paperless.url` from Gateway API.
   scheme: https
+  # -- Labels for the Gateway API controller pods, used to generate default CiliumNetworkPolicies ingress rules.
+  # If empty, you must provide explicit `cnps.appTraffic.ingress.fromEndpoints` when gatewayApi is enabled.
+  controllerSelector:
+    app.kubernetes.io/name: envoy-gateway
+    io.kubernetes.pod.namespace: envoy-gateway-system
   # -- HTTPRoute annotations.
   annotations: {}
   # -- HTTPRoute labels.
