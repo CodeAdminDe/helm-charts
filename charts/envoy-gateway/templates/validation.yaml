@@ -1,5 +1,11 @@
-{{- if and (or .Values.bootstrap.gatewayClass.enabled .Values.bootstrap.envoyProxy.enabled .Values.bootstrap.gateway.enabled) (not .Values.envoyGateway.enabled) -}}
-{{- fail "envoyGateway.enabled must be true when bootstrap resources are enabled." -}}
+{{- $envoyGateway := (index .Values "envoy-gateway") | default dict -}}
+
+{{- if hasKey .Values "envoyGateway" -}}
+{{- fail "The top-level values key 'envoyGateway' has been renamed to 'envoy-gateway'. Update your values files and overrides accordingly." -}}
+{{- end -}}
+
+{{- if and (or .Values.bootstrap.gatewayClass.enabled .Values.bootstrap.envoyProxy.enabled .Values.bootstrap.gateway.enabled) (not (index $envoyGateway "enabled")) -}}
+{{- fail "envoy-gateway.enabled must be true when bootstrap resources are enabled." -}}
 {{- end -}}
 
 {{- if and .Values.bootstrap.gatewayClass.enabled (empty .Values.bootstrap.gatewayClass.name) -}}

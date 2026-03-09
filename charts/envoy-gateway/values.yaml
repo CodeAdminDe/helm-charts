@@ -3,8 +3,8 @@ nameOverride: ""
 fullnameOverride: ""
 
 # -- Official Envoy Gateway chart values.
-# @description This chart wraps upstream `gateway-helm` (`envoyGateway` dependency). Any additional upstream values can be set under this key.
-envoyGateway:
+# @description This chart wraps upstream `gateway-helm` (`envoy-gateway` dependency). Any additional upstream values can be set under this key.
+envoy-gateway:
   # -- Enable upstream Envoy Gateway dependency chart.
   enabled: true
 
