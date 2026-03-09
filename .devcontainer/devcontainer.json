@@ -31,7 +31,7 @@
   "remoteEnv": {
     "CGO_ENABLED": "0",
     "INSTALL_DOTFILES": "${localEnv:INSTALL_DOTFILES}",
-    "MY_CUSTOM_API_KEY": "dev-key-123"
+    "MY_CUSTOM_API_KEY": "${localEnv:MY_CUSTOM_API_KEY}"
   },
 
   // "updateContentCommand": "go mod download",
