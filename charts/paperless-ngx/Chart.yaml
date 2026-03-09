@@ -1,0 +1,44 @@
+apiVersion: v2
+name: paperless-ngx
+description: A Helm chart for deploying Paperless-ngx on Kubernetes.
+type: application
+# renovate: bumpVersion
+version: 0.1.0
+# renovate: image=ghcr.io/paperless-ngx/paperless-ngx
+appVersion: "2.20.4"
+kubeVersion: ">=1.24.0"
+home: https://github.com/CodeAdminDe/helm-charts
+keywords:
+  - paperless-ngx
+  - documents
+  - ocr
+  - dms
+  - redis
+  - cnpg
+  - cloud-native
+  - helm
+maintainers:
+  - name: Frederic Roggon
+    email: frederic.roggon@codeadmin.de
+    url: https://github.com/CodeAdminDe
+dependencies:
+  - name: redis
+    repository: https://codeadminde.github.io/helm-charts
+    version: 0.4.1
+    alias: redis
+    condition: redis.enabled
+  - name: libchart-cnps
+    version: 0.2.1
+    repository: https://codeadminde.github.io/helm-charts
+    alias: libchart-cnps
+    condition: libchartCnps.enabled
+annotations:
+  category: Documents
+  securityContext: "required"
+  images: |
+    - name: paperless-ngx
+      image: ghcr.io/paperless-ngx/paperless-ngx:2.20.4
+    - name: gotenberg
+      image: docker.io/gotenberg/gotenberg:8.25
+    - name: tika
+      image: docker.io/apache/tika:3.2.3.0-full

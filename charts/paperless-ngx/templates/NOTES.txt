@@ -1,0 +1,18 @@
+1. Access Paperless inside the cluster:
+   kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "paperless-ngx.fullname" . }} 8000:{{ .Values.service.port }}
+
+2. Public URL:
+   {{- if include "paperless-ngx.publicUrl" . }}
+   {{ include "paperless-ngx.publicUrl" . }}
+   {{- else }}
+   not derived automatically; set paperless.url or enable ingress/gatewayApi
+   {{- end }}
+
+3. Document conversion services:
+   {{- if .Values.documentConversion.enabled }}
+   documentConversion.enabled=true
+   gotenberg endpoint: {{ include "paperless-ngx.gotenbergEndpoint" . }}
+   tika endpoint: {{ include "paperless-ngx.tikaEndpoint" . }}
+   {{- else }}
+   documentConversion.enabled=false
+   {{- end }}

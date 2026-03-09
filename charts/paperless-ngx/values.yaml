@@ -1,0 +1,523 @@
+# -- Number of Paperless application pod replicas.
+replicaCount: 1
+
+# -- Allow more than one Paperless pod. Disabled by default because the upstream container bundles web, consumer, and scheduler processes together.
+allowMultipleReplicas: false
+
+# -- Override release-based naming.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- Paperless container image configuration.
+image:
+  # -- Image repository.
+  repository: ghcr.io/paperless-ngx/paperless-ngx
+  # -- Image pull policy.
+  pullPolicy: IfNotPresent
+  # -- Image tag override (defaults to `.Chart.AppVersion` when empty).
+  tag: ""
+
+# -- Image pull secrets for private registries.
+imagePullSecrets: []
+
+# -- Paperless application settings.
+paperless:
+  # -- Explicit public URL (`PAPERLESS_URL`). When empty, the chart derives it from Gateway API or Ingress when possible.
+  url: ""
+  # -- Time zone (`PAPERLESS_TIME_ZONE`).
+  timeZone: ""
+  # -- Default OCR language (`PAPERLESS_OCR_LANGUAGE`).
+  ocrLanguage: eng
+  # -- Additional OCR languages already shipped in the official image (`PAPERLESS_OCR_LANGUAGES`).
+  # @description This chart intentionally does not install extra language packages into the upstream image.
+  ocrLanguages: ""
+  secretKey:
+    existingSecret:
+      # -- Existing secret name containing `PAPERLESS_SECRET_KEY`. Leave empty to let the chart generate and preserve one.
+      name: ""
+      # -- Secret key containing `PAPERLESS_SECRET_KEY`.
+      key: PAPERLESS_SECRET_KEY
+
+# -- Kubernetes Service for the main Paperless web UI/API.
+service:
+  # -- Service type. This chart enforces `ClusterIP`.
+  type: ClusterIP
+  # -- Service annotations.
+  annotations: {}
+  # -- Service labels.
+  labels: {}
+  # -- Service port exposed to the cluster.
+  port: 80
+  # -- Container target port used by the Paperless webserver.
+  targetPort: 8000
+  # -- Service protocol.
+  targetProtocol: TCP
+
+# -- Ingress configuration (ingress-nginx style).
+ingress:
+  # -- Enable ingress resource creation.
+  enabled: false
+  # -- Ingress class name.
+  className: ""
+  # -- Additional ingress annotations.
+  annotations: {}
+  # -- Secure default ingress annotations for uploads and long-running requests.
+  secureDefaults:
+    # -- Enable secure default ingress annotations.
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+      nginx.ingress.kubernetes.io/proxy-buffering: "off"
+      nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+      nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+  # -- Host/path rules.
+  hosts:
+    - host: paperless.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  # -- TLS host/secret blocks.
+  tls: []
+
+# -- Gateway API HTTPRoute configuration.
+gatewayApi:
+  # -- Enable HTTPRoute resource creation.
+  enabled: false
+  # -- Public URL scheme used when deriving `paperless.url` from Gateway API.
+  scheme: https
+  # -- HTTPRoute annotations.
+  annotations: {}
+  # -- HTTPRoute labels.
+  labels: {}
+  # -- ParentRefs for the HTTPRoute.
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
+      sectionName: http
+  # -- Hostnames served by this route.
+  hostnames:
+    - paperless.example.com
+  # -- Match rules for the default HTTPRoute rule.
+  matches:
+    - path:
+        type: PathPrefix
+        value: /
+  # -- Optional filters for the HTTPRoute rule.
+  filters: []
+  # -- Optional backend references. Defaults to the main Paperless service when empty.
+  backendRefs: []
+
+# -- ServiceAccount settings.
+serviceAccount:
+  # -- Create a dedicated ServiceAccount.
+  create: true
+  # -- ServiceAccount annotations.
+  annotations: {}
+  # -- ServiceAccount name override.
+  name: ""
+  # -- Automount the ServiceAccount token.
+  automountServiceAccountToken: false
+
+# -- Optional namespace-scoped RBAC configuration.
+rbac:
+  # -- Create Role and RoleBinding.
+  create: false
+  # -- Namespace override for RBAC resources.
+  namespace: ""
+  # -- Explicit RBAC rules required when `rbac.create=true`.
+  rules: []
+
+# -- Apply default pod and container security settings.
+applySecurity: true
+
+# -- Pod-level security context for the main Paperless workload.
+podSecurityContext:
+  fsGroup: 1000
+
+# -- Container-level security context for the main Paperless container.
+securityContext:
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  readOnlyRootFilesystem: true
+  seccompProfile:
+    type: RuntimeDefault
+  capabilities:
+    drop:
+      - ALL
+
+# -- Writable `/tmp` mount required when `securityContext.readOnlyRootFilesystem=true`.
+tmpVolume:
+  # -- Enable a writable `emptyDir` for `/tmp`.
+  enabled: true
+  # -- Mount path.
+  mountPath: /tmp
+  # -- Optional size limit.
+  sizeLimit: 2Gi
+
+# -- Writable `/run` mount required by the upstream entrypoint stack when `securityContext.readOnlyRootFilesystem=true`.
+runVolume:
+  # -- Enable a writable `emptyDir` for `/run`.
+  enabled: true
+  # -- Mount path.
+  mountPath: /run
+  # -- Optional size limit.
+  sizeLimit: 64Mi
+
+# -- Writable GnuPG directory used by Paperless for optional mail/decryption features.
+gnupgVolume:
+  # -- Enable a writable `emptyDir` for `/usr/src/paperless/.gnupg`.
+  enabled: true
+  # -- Mount path.
+  mountPath: /usr/src/paperless/.gnupg
+  # -- Optional size limit.
+  sizeLimit: 16Mi
+
+# -- Runtime persistence for Paperless state directories.
+persistence:
+  data:
+    # -- Persist `/usr/src/paperless/data`.
+    enabled: true
+    # -- Keep the PVC on uninstall.
+    retain: false
+    # -- Existing PVC to use instead of creating one.
+    existingClaim: ""
+    # -- PVC size.
+    size: 1Gi
+    # -- PVC storageClass.
+    storageClass: ""
+    # -- PVC access modes.
+    accessModes:
+      - ReadWriteOnce
+    # -- PVC annotations.
+    annotations: {}
+    # -- PVC volumeName binding.
+    volumeName: ""
+    # -- Optional `emptyDir` size limit when persistence is disabled.
+    emptyDirSizeLimit: 1Gi
+    # -- Mount path inside the container.
+    mountPath: /usr/src/paperless/data
+  media:
+    # -- Persist `/usr/src/paperless/media`.
+    enabled: true
+    retain: false
+    existingClaim: ""
+    size: 20Gi
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    annotations: {}
+    volumeName: ""
+    emptyDirSizeLimit: 20Gi
+    mountPath: /usr/src/paperless/media
+  consume:
+    # -- Persist `/usr/src/paperless/consume`.
+    enabled: true
+    retain: false
+    existingClaim: ""
+    size: 5Gi
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    annotations: {}
+    volumeName: ""
+    emptyDirSizeLimit: 5Gi
+    mountPath: /usr/src/paperless/consume
+  export:
+    # -- Persist `/usr/src/paperless/export`.
+    enabled: true
+    retain: false
+    existingClaim: ""
+    size: 5Gi
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    annotations: {}
+    volumeName: ""
+    emptyDirSizeLimit: 5Gi
+    mountPath: /usr/src/paperless/export
+
+# -- Redis connectivity. Paperless requires Redis for task processing and caching.
+redis:
+  # -- Deploy the bundled local Redis subchart.
+  enabled: true
+  external:
+    existingSecret:
+      # -- Existing secret containing a full Redis URL used for `PAPERLESS_REDIS`.
+      name: ""
+      # -- Secret key containing the full Redis URL.
+      key: redis-url
+    # -- Plain Redis URL used for `PAPERLESS_REDIS` when no secret reference is provided.
+    # @description Prefer `redis.external.existingSecret` when credentials are embedded in the URL.
+    url: ""
+  persistence:
+    enabled: true
+    size: 2Gi
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+
+# -- Database configuration. SQLite is the default simple fallback; production deployments should prefer PostgreSQL or CNPG.
+database:
+  # -- Database type. Supported values: `sqlite`, `postgresql`.
+  type: sqlite
+  postgres:
+    # -- PostgreSQL host when `database.type=postgresql` and CNPG is disabled.
+    host: ""
+    # -- PostgreSQL port.
+    port: 5432
+    # -- PostgreSQL database name.
+    database: paperless
+    # -- PostgreSQL username.
+    user: paperless
+    # -- PostgreSQL SSL mode (`PAPERLESS_DBSSLMODE`).
+    sslMode: require
+    passwordSecret:
+      # -- Existing secret containing the PostgreSQL password.
+      name: ""
+      # -- Secret key containing the PostgreSQL password.
+      key: password
+  useCnpgCluster:
+    # -- Resolve PostgreSQL credentials from an existing CNPG app secret.
+    enabled: false
+    # -- CNPG cluster name. The RW service is derived as `<clusterName>-rw`.
+    clusterName: cnpg-cluster
+    # -- CNPG RW service port.
+    port: 5432
+    # -- Explicit CNPG app secret name. Defaults to `<clusterName>-app`.
+    appConnectionSecretName: ""
+    # -- PostgreSQL SSL mode (`PAPERLESS_DBSSLMODE`) used with CNPG.
+    sslMode: require
+    secretKeys:
+      # -- Key containing the PostgreSQL database name in the CNPG app secret.
+      database: dbname
+      # -- Key containing the PostgreSQL username in the CNPG app secret.
+      username: user
+      # -- Key containing the PostgreSQL password in the CNPG app secret.
+      password: password
+
+# -- Optional document conversion support for Office documents and `.eml` conversion.
+documentConversion:
+  # -- Enable Paperless Tika/Gotenberg integration.
+  enabled: false
+  # -- External Gotenberg endpoint. Leave empty to use the in-chart Gotenberg deployment when `gotenberg.enabled=true`.
+  gotenbergEndpoint: ""
+  # -- External Tika endpoint. Leave empty to use the in-chart Tika deployment when `tika.enabled=true`.
+  tikaEndpoint: ""
+
+# -- Gotenberg helper deployment using the official upstream image.
+gotenberg:
+  # -- Deploy the internal Gotenberg helper service when `documentConversion.enabled=true`.
+  enabled: true
+  image:
+    # -- Image repository.
+    repository: docker.io/gotenberg/gotenberg
+    # -- Image pull policy.
+    pullPolicy: IfNotPresent
+    # -- Image tag.
+    tag: "8.25"
+  service:
+    # -- Service annotations.
+    annotations: {}
+    # -- Service labels.
+    labels: {}
+    # -- Service port.
+    port: 3000
+    # -- Container target port.
+    targetPort: 3000
+    # -- Service protocol.
+    targetProtocol: TCP
+  # -- Command override.
+  command:
+    - gotenberg
+  # -- Default upstream-compatible flags.
+  args:
+    - --chromium-disable-javascript=true
+    - --chromium-allow-list=file:///tmp/.*
+  # -- Container security context.
+  securityContext:
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    readOnlyRootFilesystem: true
+    seccompProfile:
+      type: RuntimeDefault
+    capabilities:
+      drop:
+        - ALL
+  tmpVolume:
+    # -- Mount writable `emptyDir` at `/tmp`.
+    enabled: true
+    # -- Mount path.
+    mountPath: /tmp
+    # -- Optional size limit.
+    sizeLimit: 1Gi
+  # -- Resource requests and limits.
+  resources: {}
+
+# -- Apache Tika helper deployment using the official upstream image.
+tika:
+  # -- Deploy the internal Tika helper service when `documentConversion.enabled=true`.
+  enabled: true
+  image:
+    # -- Image repository.
+    repository: docker.io/apache/tika
+    # -- Image pull policy.
+    pullPolicy: IfNotPresent
+    # -- Image tag.
+    tag: "3.2.3.0-full"
+  service:
+    # -- Service annotations.
+    annotations: {}
+    # -- Service labels.
+    labels: {}
+    # -- Service port.
+    port: 9998
+    # -- Container target port.
+    targetPort: 9998
+    # -- Service protocol.
+    targetProtocol: TCP
+  # -- Container security context.
+  securityContext:
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    readOnlyRootFilesystem: true
+    seccompProfile:
+      type: RuntimeDefault
+    capabilities:
+      drop:
+        - ALL
+  tmpVolume:
+    # -- Mount writable `emptyDir` at `/tmp`.
+    enabled: true
+    # -- Mount path.
+    mountPath: /tmp
+    # -- Optional size limit.
+    sizeLimit: 1Gi
+  # -- Resource requests and limits.
+  resources: {}
+
+# -- Additional non-sensitive environment variables passed to Paperless.
+extraEnv: {}
+
+# -- Additional environment variables from existing secrets.
+# @description Supports both map and list forms.
+# @raw
+# ```yaml
+# additionalEnvSecrets:
+#   EMAIL_PASSWORD: mail-secret
+#   SMTP_PASSWORD:
+#     secretName: smtp-secret
+#     secretKey: password
+#
+# additionalEnvSecrets:
+#   - name: EMAIL_PASSWORD
+#     secretName: mail-secret
+#     secretKey: password
+# ```
+additionalEnvSecrets: {}
+
+# -- Import all keys from listed existing secrets.
+envFromSecrets: []
+
+# -- Import all keys from listed existing configmaps.
+envFromConfigMaps: []
+
+# -- Additional pod volumes.
+extraVolumes: []
+
+# -- Additional volume mounts for the main Paperless container.
+extraVolumeMounts: []
+
+# -- Enable startup, liveness, and readiness probes.
+applyHealthChecks: true
+
+# -- Liveness probe for the main Paperless service.
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 60
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 6
+
+# -- Readiness probe for the main Paperless service.
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+
+# -- Startup probe for the main Paperless service.
+startupProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 30
+
+# -- Main Paperless resource requests and limits.
+resources: {}
+
+# -- RuntimeClass names.
+runtimeClass:
+  # -- RuntimeClass for all regular pods.
+  pods: ""
+  # -- RuntimeClass for Helm test pods.
+  tests: ""
+
+# -- Optional `libchart-cnps` integration.
+libchartCnps:
+  # -- Enable CiliumNetworkPolicy rendering via the `libchart-cnps` dependency.
+  enabled: false
+  # -- Include the CNPG traffic policy set.
+  includeCnpgPolicies: false
+
+# -- App-specific CiliumNetworkPolicies settings.
+cnps:
+  cnpgTraffic:
+    # -- Extra egress rules for CNPG policy rendering.
+    instanceExtraEgress: []
+  appTraffic:
+    ingress:
+      # -- Allow ingress traffic to the Paperless pod.
+      allow: true
+      # -- Additional ingress endpoint selectors.
+      fromEndpoints: []
+      # -- Additional ingress entities.
+      fromEntities: []
+    egress:
+      # -- Allow egress traffic from the Paperless pod.
+      allow: true
+      # -- Additional egress endpoint selectors.
+      toEndpoints: []
+      # -- Additional egress entities.
+      toEntities:
+        - world
+      # -- Additional egress ports.
+      toPorts:
+        - port: "443"
+          protocol: TCP
+
+# -- Pod annotations.
+podAnnotations: {}
+
+# -- Pod labels.
+podLabels: {}
+
+# -- Workload node selector.
+nodeSelector: {}
+
+# -- Workload tolerations.
+tolerations: []
+
+# -- Workload affinity.
+affinity: {}

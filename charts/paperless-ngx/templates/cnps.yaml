@@ -1,0 +1,161 @@
+{{- define "paperless-ngx.CiliumNetworkPolicies-NamespaceSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "paperless-ngx.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-NamespaceSet" (list . "paperless-ngx.CiliumNetworkPolicies-NamespaceSet") }}
+---
+{{- end -}}
+
+{{- define "paperless-ngx.CiliumNetworkPolicies-CnpgSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "paperless-ngx.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if and .Values.libchartCnps.enabled .Values.libchartCnps.includeCnpgPolicies -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-CnpgSet" (list . "paperless-ngx.CiliumNetworkPolicies-CnpgSet") }}
+---
+{{- end -}}
+
+{{- define "paperless-ngx.CiliumNetworkPolicies-AppSet" -}}
+{{- $defaultIngressEndpoints := list -}}
+{{- if .Values.ingress.enabled -}}
+{{- $defaultIngressEndpoints = append $defaultIngressEndpoints (dict "app.kubernetes.io/name" "ingress-nginx" "io.kubernetes.pod.namespace" "ingress-nginx") -}}
+{{- end -}}
+{{- if .Values.gatewayApi.enabled -}}
+{{- $defaultIngressEndpoints = append $defaultIngressEndpoints (dict "app.kubernetes.io/name" "envoy-gateway" "io.kubernetes.pod.namespace" "envoy-gateway-system") -}}
+{{- end -}}
+{{- $defaultDenyMatchLabel := dict "paperless-ngx.cnp/default-deny" "true" -}}
+{{- $effectiveIngressEndpoints := .Values.cnps.appTraffic.ingress.fromEndpoints | default (list) -}}
+{{- $effectiveIngressEntities := .Values.cnps.appTraffic.ingress.fromEntities | default (list) -}}
+{{- if and (empty $effectiveIngressEndpoints) (gt (len $defaultIngressEndpoints) 0) -}}
+{{- $effectiveIngressEndpoints = $defaultIngressEndpoints -}}
+{{- end -}}
+{{- if not .Values.cnps.appTraffic.ingress.allow -}}
+{{- $effectiveIngressEndpoints = list $defaultDenyMatchLabel -}}
+{{- $effectiveIngressEntities = list -}}
+{{- end -}}
+{{- $hasIngressEndpoints := gt (len $effectiveIngressEndpoints) 0 -}}
+{{- $hasIngressEntities := not (empty $effectiveIngressEntities) -}}
+{{- if and .Values.cnps.appTraffic.ingress.allow (not $hasIngressEndpoints) (not $hasIngressEntities) -}}
+{{- $effectiveIngressEndpoints = list $defaultDenyMatchLabel -}}
+{{- $hasIngressEndpoints = true -}}
+{{- end -}}
+{{- $includeIngressRule := or $hasIngressEndpoints $hasIngressEntities -}}
+{{- $internalEgressEndpoints := list -}}
+{{- if .Values.redis.enabled -}}
+{{- $internalEgressEndpoints = append $internalEgressEndpoints (dict "app.kubernetes.io/name" "redis" "app.kubernetes.io/instance" .Release.Name) -}}
+{{- end -}}
+{{- if and .Values.documentConversion.enabled .Values.gotenberg.enabled -}}
+{{- $internalEgressEndpoints = append $internalEgressEndpoints (dict "app.kubernetes.io/name" (include "paperless-ngx.name" .) "app.kubernetes.io/instance" .Release.Name "app.kubernetes.io/component" "gotenberg") -}}
+{{- end -}}
+{{- if and .Values.documentConversion.enabled .Values.tika.enabled -}}
+{{- $internalEgressEndpoints = append $internalEgressEndpoints (dict "app.kubernetes.io/name" (include "paperless-ngx.name" .) "app.kubernetes.io/instance" .Release.Name "app.kubernetes.io/component" "tika") -}}
+{{- end -}}
+{{- $effectiveEgressEndpoints := concat $internalEgressEndpoints (.Values.cnps.appTraffic.egress.toEndpoints | default (list)) -}}
+{{- $effectiveEgressPorts := .Values.cnps.appTraffic.egress.toPorts | default (list) -}}
+{{- if .Values.redis.enabled -}}
+{{- $effectiveEgressPorts = concat $effectiveEgressPorts (list (dict "port" "6379" "protocol" "TCP")) -}}
+{{- end -}}
+{{- if and .Values.documentConversion.enabled .Values.gotenberg.enabled -}}
+{{- $effectiveEgressPorts = concat $effectiveEgressPorts (list (dict "port" (printf "%v" .Values.gotenberg.service.targetPort) "protocol" "TCP")) -}}
+{{- end -}}
+{{- if and .Values.documentConversion.enabled .Values.tika.enabled -}}
+{{- $effectiveEgressPorts = concat $effectiveEgressPorts (list (dict "port" (printf "%v" .Values.tika.service.targetPort) "protocol" "TCP")) -}}
+{{- end -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "paperless-ngx.labels" . | nindent 4 }}
+spec:
+  endpointSelector:
+    matchLabels:
+      {{- include "paperless-ngx.componentSelectorLabels" (dict "root" . "component" "webserver") | nindent 6 }}
+  {{- if $includeIngressRule }}
+  ingress:
+    - {{- if $hasIngressEndpoints }}
+      fromEndpoints:
+        {{- range $effectiveIngressEndpoints }}
+        - matchLabels:
+          {{- range $k, $v := . }}
+            {{ $k }}: {{ $v | quote }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+      {{- if $hasIngressEntities }}
+      fromEntities:
+        {{- toYaml $effectiveIngressEntities | nindent 8 }}
+      {{- end }}
+      toPorts:
+        - ports:
+            - port: {{ printf "%v" .Values.service.targetPort | quote }}
+              protocol: {{ .Values.service.targetProtocol | default "TCP" }}
+  {{- else }}
+  ingress: []
+  {{- end }}
+  {{- if .Values.cnps.appTraffic.egress.allow }}
+  egress:
+    {{- if $effectiveEgressEndpoints }}
+    - toEndpoints:
+        {{- range $effectiveEgressEndpoints }}
+        - matchLabels:
+          {{- range $k, $v := . }}
+            {{ $k }}: {{ $v | quote }}
+          {{- end }}
+        {{- end }}
+      toPorts:
+        - ports:
+          {{- range $effectiveEgressPorts }}
+            - port: {{ .port | quote }}
+              {{- if hasKey . "endPort" }}
+              endPort: {{ .endPort }}
+              {{- end }}
+              protocol: {{ .protocol | default "TCP" }}
+          {{- end }}
+    {{- end }}
+    - toEntities:
+      {{- if .Values.cnps.appTraffic.egress.toEntities }}
+        {{- toYaml .Values.cnps.appTraffic.egress.toEntities | nindent 8 }}
+      {{- else }}
+        - world
+      {{- end }}
+      toPorts:
+        - ports:
+          {{- if .Values.cnps.appTraffic.egress.toPorts }}
+          {{- range .Values.cnps.appTraffic.egress.toPorts }}
+            - port: {{ .port | quote }}
+              {{- if hasKey . "endPort" }}
+              endPort: {{ .endPort }}
+              {{- end }}
+              protocol: {{ .protocol | default "TCP" }}
+          {{- end }}
+          {{- else }}
+            - port: "443"
+              protocol: TCP
+          {{- end }}
+  {{- else }}
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            paperless-ngx.cnp/default-deny: "true"
+      toPorts:
+        - ports:
+            - port: "65535"
+              protocol: TCP
+  {{- end }}
+{{- end -}}
+
+{{- if .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "paperless-ngx.CiliumNetworkPolicies-AppSet") }}
+{{- end -}}

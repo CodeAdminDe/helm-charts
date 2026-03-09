@@ -1,0 +1,67 @@
+{{- if and .Values.documentConversion.enabled .Values.gotenberg.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paperless-ngx.gotenbergServiceName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "paperless-ngx.labels" . | nindent 4 }}
+    {{- include "paperless-ngx.componentLabels" (dict "root" . "component" "gotenberg") | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "paperless-ngx.componentSelectorLabels" (dict "root" . "component" "gotenberg") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "paperless-ngx.componentSelectorLabels" (dict "root" . "component" "gotenberg") | nindent 8 }}
+      annotations:
+        checksum/values: {{ toJson .Values | sha256sum }}
+    spec:
+      automountServiceAccountToken: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      containers:
+        - name: gotenberg
+          image: {{ printf "%s:%s" .Values.gotenberg.image.repository .Values.gotenberg.image.tag }}
+          imagePullPolicy: {{ .Values.gotenberg.image.pullPolicy }}
+          {{- with .Values.gotenberg.command }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.gotenberg.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.gotenberg.service.targetPort }}
+              protocol: {{ .Values.gotenberg.service.targetProtocol }}
+          {{- if and .Values.applySecurity .Values.gotenberg.securityContext }}
+          securityContext:
+            {{- toYaml .Values.gotenberg.securityContext | nindent 12 }}
+          {{- end }}
+          {{- with .Values.gotenberg.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            {{- if .Values.gotenberg.tmpVolume.enabled }}
+            - name: tmp
+              mountPath: {{ .Values.gotenberg.tmpVolume.mountPath }}
+            {{- end }}
+      volumes:
+        {{- if .Values.gotenberg.tmpVolume.enabled }}
+        - name: tmp
+          emptyDir:
+            {{- with .Values.gotenberg.tmpVolume.sizeLimit }}
+            sizeLimit: {{ . }}
+            {{- end }}
+        {{- end }}
+{{- end }}
