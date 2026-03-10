@@ -134,11 +134,6 @@ rbac:
   # -- Explicit RBAC rules required when `rbac.create=true`.
   rules: []
 
-# -- Enable env vars to allow read-only root-fs with /run as emptyDir.
-# Necessary fix for paperless to run within k8s hardenend environments. 
-# For reference: https://github.com/just-containers/s6-overlay/issues/600.
-paperlessReadOnlyRootFix: true
-
 # -- Apply default pod and container security settings.
 applySecurity: true
 
