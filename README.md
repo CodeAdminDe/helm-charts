@@ -33,6 +33,7 @@ The following charts are currently available:
 | bind9-hidden-primary | 0.4.3 | 9.20 | A Helm chart for bind9 to use as hidden primary, based on the offical Docker Image by InternetSystemsConsortium (ISC) |
 | coturn-server | 0.4.0 | 4.9.0 | A Helm chart for an easier coturn deployment at kubernetes. |
 | envoy-gateway | 0.4.0 | v1.7.0 | A Helm chart for deploying Envoy Gateway (Gateway API implementation) on Kubernetes. |
+| envoy-gateway-dataplane-policies | 0.1.0 | v1.7.0 | A Helm chart for Envoy Gateway dataplane CiliumNetworkPolicies on Kubernetes. |
 | garage | 0.1.1 | v2.2.0 | A Helm chart for an easier Garage (https://garagehq.deuxfleurs.fr) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with Garage or its authors. |
 | headscale | 0.1.5 | 0.28.0 | A Helm chart for an easier headscale (https://headscale.net) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with headscale or its authors. |
 | kasm-agent | 0.1.0 | 1.18.1 | A Helm chart for deploying a Kasm agent workload in Kubernetes (advanced/unsupported static-agent model). |
