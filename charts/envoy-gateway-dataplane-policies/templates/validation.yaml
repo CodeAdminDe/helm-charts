@@ -10,6 +10,12 @@
 {{- fail "selector.matchLabels must contain at least one label selector for the target EnvoyProxy dataplane pods." -}}
 {{- end -}}
 
+{{- range $k, $v := .Values.selector.matchLabels -}}
+  {{- if empty $v -}}
+    {{- fail (printf "selector.matchLabels.%s must not be empty." $k) -}}
+  {{- end -}}
+{{- end -}}
+
 {{- include "envoy-gateway-dataplane-policies.validation.requireSlice" (list .Values.ingress.public.fromEntities "ingress.public.fromEntities") -}}
 {{- include "envoy-gateway-dataplane-policies.validation.requireSlice" (list .Values.ingress.public.fromEndpoints "ingress.public.fromEndpoints") -}}
 {{- include "envoy-gateway-dataplane-policies.validation.requireSlice" (list .Values.ingress.public.ports "ingress.public.ports") -}}
@@ -33,6 +39,11 @@
 {{- if and .Values.ingress.public.enabled (empty .Values.ingress.public.fromEntities) (empty .Values.ingress.public.fromEndpoints) -}}
 {{- fail "ingress.public requires at least one explicit source via fromEntities and/or fromEndpoints when enabled." -}}
 {{- end -}}
+{{- range $idx, $endpoint := .Values.ingress.public.fromEndpoints -}}
+  {{- if empty $endpoint -}}
+    {{- fail (printf "ingress.public.fromEndpoints[%d] must not be an empty selector map." $idx) -}}
+  {{- end -}}
+{{- end -}}
 
 {{- if and .Values.ingress.private.enabled (empty .Values.ingress.private.ports) -}}
 {{- fail "ingress.private.ports must contain at least one port when ingress.private.enabled=true." -}}
@@ -40,12 +51,22 @@
 {{- if and .Values.ingress.private.enabled (empty .Values.ingress.private.fromEntities) (empty .Values.ingress.private.fromEndpoints) -}}
 {{- fail "ingress.private requires at least one explicit source via fromEntities and/or fromEndpoints when enabled." -}}
 {{- end -}}
+{{- range $idx, $endpoint := .Values.ingress.private.fromEndpoints -}}
+  {{- if empty $endpoint -}}
+    {{- fail (printf "ingress.private.fromEndpoints[%d] must not be an empty selector map." $idx) -}}
+  {{- end -}}
+{{- end -}}
 
 {{- if and .Values.egress.controlPlane.enabled (empty .Values.egress.controlPlane.toEndpoints) -}}
 {{- fail "egress.controlPlane.toEndpoints must contain at least one endpoint selector when egress.controlPlane.enabled=true." -}}
 {{- end -}}
 {{- if and .Values.egress.controlPlane.enabled (empty .Values.egress.controlPlane.ports) -}}
 {{- fail "egress.controlPlane.ports must contain at least one port when egress.controlPlane.enabled=true." -}}
+{{- end -}}
+{{- range $idx, $endpoint := .Values.egress.controlPlane.toEndpoints -}}
+  {{- if empty $endpoint.matchLabels -}}
+    {{- fail (printf "egress.controlPlane.toEndpoints[%d].matchLabels must contain at least one label." $idx) -}}
+  {{- end -}}
 {{- end -}}
 
 {{- range $idx, $backend := .Values.egress.backends -}}
@@ -57,6 +78,11 @@
   {{- end -}}
   {{- if empty $backend.toEndpoints -}}
     {{- fail (printf "egress.backends[%d].toEndpoints must contain at least one endpoint selector." $idx) -}}
+  {{- end -}}
+  {{- range $epIdx, $endpoint := $backend.toEndpoints -}}
+    {{- if empty $endpoint.matchLabels -}}
+      {{- fail (printf "egress.backends[%d].toEndpoints[%d].matchLabels must contain at least one label." $idx $epIdx) -}}
+    {{- end -}}
   {{- end -}}
   {{- if not (kindIs "slice" $backend.ports) -}}
     {{- fail (printf "egress.backends[%d].ports must be a list." $idx) -}}
@@ -78,5 +104,13 @@
   {{- end -}}
   {{- if and (empty $external.toFQDNs) (empty $external.toCIDRSet) (empty $external.toEntities) (empty $external.toEndpoints) -}}
     {{- fail (printf "egress.external[%d] must define at least one destination via toFQDNs, toCIDRSet, toEntities, or toEndpoints." $idx) -}}
+  {{- end -}}
+  {{- if and (not (empty $external.toEndpoints)) (not (kindIs "slice" $external.toEndpoints)) -}}
+    {{- fail (printf "egress.external[%d].toEndpoints must be a list." $idx) -}}
+  {{- end -}}
+  {{- range $epIdx, $endpoint := $external.toEndpoints -}}
+    {{- if empty $endpoint.matchLabels -}}
+      {{- fail (printf "egress.external[%d].toEndpoints[%d].matchLabels must contain at least one label." $idx $epIdx) -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}

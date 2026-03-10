@@ -7,6 +7,7 @@
 
 * This chart renders `CiliumNetworkPolicy` resources for Envoy Gateway dataplane workloads only.
 * It is intended to be deployed once per Gateway namespace or per dataplane security domain.
+* The default control-plane ports/selectors in this chart are aligned to Envoy Gateway `v1.7.0`.
 * It does not deploy:
   * `GatewayClass`
   * `Gateway`
@@ -25,6 +26,7 @@
 ### Selector model
 
 * `selector.matchLabels` must target the EnvoyProxy dataplane pods this release should govern.
+* The default selector values are illustrative placeholders and should be overridden before production use.
 * Keep the selector narrow and environment-specific.
 * Do not use broad selectors that unintentionally combine multiple security domains.
 
@@ -39,6 +41,7 @@
 * Backend access is intentionally explicit through `egress.backends`.
 * External dependencies such as OIDC or telemetry should be modeled explicitly through `egress.external`.
 * This chart does not infer backends from `HTTPRoute` resources.
+* The default control-plane selector assumes the Envoy Gateway controller runs in the `envoy-gateway-system` namespace. Override `egress.controlPlane.toEndpoints` when your controller namespace or labels differ.
 
 {{- end -}}
 
