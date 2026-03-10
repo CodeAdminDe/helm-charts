@@ -2,7 +2,7 @@
 
 # envoy-gateway
 
-![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.7.0](https://img.shields.io/badge/AppVersion-v1.7.0-informational?style=flat-square)
+![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.7.0](https://img.shields.io/badge/AppVersion-v1.7.0-informational?style=flat-square)
 
 A Helm chart for deploying Envoy Gateway (Gateway API implementation) on Kubernetes.
 
@@ -814,6 +814,390 @@ string
 			<td>ParametersRef namespace (ignored for cluster-scoped objects that do not require it).</td>
 		</tr>
 		<tr>
+			<td id="cnps"><a href="./values.yaml#L212">cnps</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{
+  "certgen": {
+    "egress": {
+      "dns": {
+        "enabled": true
+      },
+      "extraRules": [],
+      "kubeApiServer": {
+        "enabled": true
+      }
+    }
+  },
+  "controlPlane": {
+    "egress": {
+      "dns": {
+        "enabled": true
+      },
+      "extraRules": [],
+      "kubeApiServer": {
+        "enabled": true
+      }
+    },
+    "ingress": {
+      "extraRules": [],
+      "metrics": {
+        "enabled": false,
+        "fromEndpoints": [],
+        "fromEntities": [],
+        "port": 19001
+      },
+      "proxy": {
+        "enabled": true,
+        "fromEndpoints": [],
+        "fromEntities": [
+          "cluster"
+        ],
+        "ports": [
+          18000,
+          18001,
+          18002
+        ]
+      },
+      "webhook": {
+        "enabled": true,
+        "fromEndpoints": [],
+        "fromEntities": [
+          "cluster"
+        ],
+        "port": 9443
+      }
+    }
+  },
+  "enabled": false
+}
+</pre>
+</div>
+			</td>
+			<td>Optional chart-local CiliumNetworkPolicies for Envoy Gateway controller resources. @description These policies intentionally protect only the known static controller resources managed by this chart integration: the Envoy Gateway control plane and the upstream `certgen` hook job. They do not attempt to govern generic EnvoyProxy dataplane namespaces or backend application traffic.</td>
+		</tr>
+		<tr>
+			<td id="cnps--certgen--egress--dns--enabled"><a href="./values.yaml#L299">cnps.certgen.egress.dns.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Allow DNS egress from the upstream `certgen` hook job to kube-dns.</td>
+		</tr>
+		<tr>
+			<td id="cnps--certgen--egress--extraRules"><a href="./values.yaml#L312">cnps.certgen.egress.extraRules</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Additional raw egress rules appended to the `certgen` CNP.
+```yaml
+extraRules:
+  - toEntities:
+      - world
+    toPorts:
+      - ports:
+          - port: "443"
+            protocol: TCP
+```</td>
+		</tr>
+		<tr>
+			<td id="cnps--certgen--egress--kubeApiServer--enabled"><a href="./values.yaml#L295">cnps.certgen.egress.kubeApiServer.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Allow egress from the upstream `certgen` hook job to the Kubernetes API server.</td>
+		</tr>
+		<tr>
+			<td id="cnps--controlPlane--egress--dns--enabled"><a href="./values.yaml#L276">cnps.controlPlane.egress.dns.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Allow DNS egress from the control plane to kube-dns.</td>
+		</tr>
+		<tr>
+			<td id="cnps--controlPlane--egress--extraRules"><a href="./values.yaml#L289">cnps.controlPlane.egress.extraRules</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Additional raw egress rules appended to the control-plane CNP.
+```yaml
+extraRules:
+  - toCIDRSet:
+      - cidr: 10.0.0.0/24
+    toPorts:
+      - ports:
+          - port: "443"
+            protocol: TCP
+```</td>
+		</tr>
+		<tr>
+			<td id="cnps--controlPlane--egress--kubeApiServer--enabled"><a href="./values.yaml#L272">cnps.controlPlane.egress.kubeApiServer.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Allow egress from the control plane to the Kubernetes API server.</td>
+		</tr>
+		<tr>
+			<td id="cnps--controlPlane--ingress--extraRules"><a href="./values.yaml#L267">cnps.controlPlane.ingress.extraRules</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Additional raw ingress rules appended to the control-plane CNP.
+```yaml
+extraRules:
+  - fromEndpoints:
+      - matchLabels:
+          app.kubernetes.io/name: prometheus
+          io.kubernetes.pod.namespace: monitoring
+    toPorts:
+      - ports:
+          - port: "19001"
+            protocol: TCP
+```</td>
+		</tr>
+		<tr>
+			<td id="cnps--controlPlane--ingress--metrics--enabled"><a href="./values.yaml#L246">cnps.controlPlane.ingress.metrics.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Allow ingress to the control-plane metrics endpoint. @description Disabled by default. When enabled, at least one explicit source must be set via `fromEntities` and/or `fromEndpoints`.</td>
+		</tr>
+		<tr>
+			<td id="cnps--controlPlane--ingress--metrics--fromEndpoints"><a href="./values.yaml#L250">cnps.controlPlane.ingress.metrics.fromEndpoints</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Optional endpoint selectors for metrics scraping.</td>
+		</tr>
+		<tr>
+			<td id="cnps--controlPlane--ingress--metrics--fromEntities"><a href="./values.yaml#L248">cnps.controlPlane.ingress.metrics.fromEntities</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Allowed Cilium entities for metrics scraping.</td>
+		</tr>
+		<tr>
+			<td id="cnps--controlPlane--ingress--metrics--port"><a href="./values.yaml#L252">cnps.controlPlane.ingress.metrics.port</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+19001
+</pre>
+</div>
+			</td>
+			<td>Metrics port.</td>
+		</tr>
+		<tr>
+			<td id="cnps--controlPlane--ingress--proxy--enabled"><a href="./values.yaml#L220">cnps.controlPlane.ingress.proxy.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Allow cluster-internal dataplane/control-plane traffic to xDS, ratelimit, and wasm ports.</td>
+		</tr>
+		<tr>
+			<td id="cnps--controlPlane--ingress--proxy--fromEndpoints"><a href="./values.yaml#L225">cnps.controlPlane.ingress.proxy.fromEndpoints</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Optional endpoint selectors for control-plane traffic.</td>
+		</tr>
+		<tr>
+			<td id="cnps--controlPlane--ingress--proxy--fromEntities"><a href="./values.yaml#L222">cnps.controlPlane.ingress.proxy.fromEntities</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[
+  "cluster"
+]
+</pre>
+</div>
+			</td>
+			<td>Allowed Cilium entities for control-plane traffic.</td>
+		</tr>
+		<tr>
+			<td id="cnps--controlPlane--ingress--proxy--ports"><a href="./values.yaml#L227">cnps.controlPlane.ingress.proxy.ports</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[
+  18000,
+  18001,
+  18002
+]
+</pre>
+</div>
+			</td>
+			<td>Allowed control-plane ports for xDS, ratelimit, and wasm.</td>
+		</tr>
+		<tr>
+			<td id="cnps--controlPlane--ingress--webhook--enabled"><a href="./values.yaml#L234">cnps.controlPlane.ingress.webhook.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Allow cluster-internal traffic to the topology-injector webhook.</td>
+		</tr>
+		<tr>
+			<td id="cnps--controlPlane--ingress--webhook--fromEndpoints"><a href="./values.yaml#L239">cnps.controlPlane.ingress.webhook.fromEndpoints</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Optional endpoint selectors for webhook traffic.</td>
+		</tr>
+		<tr>
+			<td id="cnps--controlPlane--ingress--webhook--fromEntities"><a href="./values.yaml#L236">cnps.controlPlane.ingress.webhook.fromEntities</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[
+  "cluster"
+]
+</pre>
+</div>
+			</td>
+			<td>Allowed Cilium entities for webhook traffic.</td>
+		</tr>
+		<tr>
+			<td id="cnps--controlPlane--ingress--webhook--port"><a href="./values.yaml#L241">cnps.controlPlane.ingress.webhook.port</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+9443
+</pre>
+</div>
+			</td>
+			<td>Webhook port.</td>
+		</tr>
+		<tr>
+			<td id="cnps--enabled"><a href="./values.yaml#L214">cnps.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Enable chart-local CiliumNetworkPolicies.</td>
+		</tr>
+		<tr>
 			<td id="envoy-gateway"><a href="./values.yaml#L7">envoy-gateway</a></td>
 			<td>
 object
@@ -1071,3 +1455,6 @@ Autogenerated from chart metadata using [helm-docs](https://github.com/norwoodj/
 * Avoid `LoadBalancer` defaults; expose north-south traffic through platform-specific edge components.
 * Keep CRD upgrades explicit and coordinated with Envoy Gateway upgrades.
 * Prefer environment-specific overrides through values files instead of editing chart templates.
+* Optional chart-local `CiliumNetworkPolicy` resources protect only the Envoy Gateway control plane and the upstream `certgen` hook job.
+* The chart intentionally does not generate generic dataplane policies for arbitrary `Gateway` namespaces or backend applications. Keep dataplane isolation as a separate operator concern.
+* Metrics ingress via the chart-local CNPs stays disabled by default and must be opened explicitly with allowed scrape sources.

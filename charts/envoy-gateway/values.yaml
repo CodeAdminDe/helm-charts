@@ -206,3 +206,107 @@ bootstrap:
       #       group: cert-manager.io
       # ```
       certificates: []
+
+# -- Optional chart-local CiliumNetworkPolicies for Envoy Gateway controller resources.
+# @description These policies intentionally protect only the known static controller resources managed by this chart integration: the Envoy Gateway control plane and the upstream `certgen` hook job. They do not attempt to govern generic EnvoyProxy dataplane namespaces or backend application traffic.
+cnps:
+  # -- Enable chart-local CiliumNetworkPolicies.
+  enabled: false
+
+  controlPlane:
+    ingress:
+      proxy:
+        # -- Allow cluster-internal dataplane/control-plane traffic to xDS, ratelimit, and wasm ports.
+        enabled: true
+        # -- Allowed Cilium entities for control-plane traffic.
+        fromEntities:
+          - cluster
+        # -- Optional endpoint selectors for control-plane traffic.
+        fromEndpoints: []
+        # -- Allowed control-plane ports for xDS, ratelimit, and wasm.
+        ports:
+          - 18000
+          - 18001
+          - 18002
+
+      webhook:
+        # -- Allow cluster-internal traffic to the topology-injector webhook.
+        enabled: true
+        # -- Allowed Cilium entities for webhook traffic.
+        fromEntities:
+          - cluster
+        # -- Optional endpoint selectors for webhook traffic.
+        fromEndpoints: []
+        # -- Webhook port.
+        port: 9443
+
+      metrics:
+        # -- Allow ingress to the control-plane metrics endpoint.
+        # @description Disabled by default. When enabled, at least one explicit source must be set via `fromEntities` and/or `fromEndpoints`.
+        enabled: false
+        # -- Allowed Cilium entities for metrics scraping.
+        fromEntities: []
+        # -- Optional endpoint selectors for metrics scraping.
+        fromEndpoints: []
+        # -- Metrics port.
+        port: 19001
+
+      # -- Additional raw ingress rules appended to the control-plane CNP.
+      # @raw
+      # ```yaml
+      # extraRules:
+      #   - fromEndpoints:
+      #       - matchLabels:
+      #           app.kubernetes.io/name: prometheus
+      #           io.kubernetes.pod.namespace: monitoring
+      #     toPorts:
+      #       - ports:
+      #           - port: "19001"
+      #             protocol: TCP
+      # ```
+      extraRules: []
+
+    egress:
+      kubeApiServer:
+        # -- Allow egress from the control plane to the Kubernetes API server.
+        enabled: true
+
+      dns:
+        # -- Allow DNS egress from the control plane to kube-dns.
+        enabled: true
+
+      # -- Additional raw egress rules appended to the control-plane CNP.
+      # @raw
+      # ```yaml
+      # extraRules:
+      #   - toCIDRSet:
+      #       - cidr: 10.0.0.0/24
+      #     toPorts:
+      #       - ports:
+      #           - port: "443"
+      #             protocol: TCP
+      # ```
+      extraRules: []
+
+  certgen:
+    egress:
+      kubeApiServer:
+        # -- Allow egress from the upstream `certgen` hook job to the Kubernetes API server.
+        enabled: true
+
+      dns:
+        # -- Allow DNS egress from the upstream `certgen` hook job to kube-dns.
+        enabled: true
+
+      # -- Additional raw egress rules appended to the `certgen` CNP.
+      # @raw
+      # ```yaml
+      # extraRules:
+      #   - toEntities:
+      #       - world
+      #     toPorts:
+      #       - ports:
+      #           - port: "443"
+      #             protocol: TCP
+      # ```
+      extraRules: []
