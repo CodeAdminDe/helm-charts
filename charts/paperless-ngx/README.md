@@ -2,7 +2,7 @@
 
 # paperless-ngx
 
-![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.20.10](https://img.shields.io/badge/AppVersion-2.20.10-informational?style=flat-square)
+![Version: 0.2.2](https://img.shields.io/badge/Version-0.2.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.20.10](https://img.shields.io/badge/AppVersion-2.20.10-informational?style=flat-square)
 
 A Helm chart for deploying Paperless-ngx on Kubernetes.
 
@@ -1748,7 +1748,7 @@ true
 </pre>
 </div>
 			</td>
-			<td>Enable env vars to allow read-only root-fs with /run as emptyDir. Necessary fix for paperless to run within k8s hardenend environments.  For reference: https://github.com/just-containers/s6-overlay/issues/600.</td>
+			<td>Enable env vars to allow read-only root-fs with /run as emptyDir. Necessary fix for paperless to run within k8s hardenend environments. For reference: https://github.com/just-containers/s6-overlay/issues/600.</td>
 		</tr>
 		<tr>
 			<td id="persistence"><a href="./values.yaml#L190">persistence</a></td>
