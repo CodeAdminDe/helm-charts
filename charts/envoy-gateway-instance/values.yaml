@@ -1,0 +1,170 @@
+# -- Override release-based naming.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- EnvoyProxy resource configuration.
+envoyProxy:
+  # -- Create an EnvoyProxy resource for this Gateway instance.
+  enabled: true
+  # -- EnvoyProxy resource name override.
+  # @description Empty value defaults to a release-derived name.
+  name: ""
+  # -- EnvoyProxy namespace override.
+  # @description Empty value defaults to `.Release.Namespace`.
+  namespace: ""
+  # -- EnvoyProxy annotations.
+  annotations: {}
+  # -- EnvoyProxy labels.
+  labels: {}
+
+  # -- EnvoyProxy spec.
+  # @description Defaults to Kubernetes provider and ClusterIP Envoy data-plane service type.
+  spec:
+    provider:
+      type: Kubernetes
+      kubernetes:
+        envoyService:
+          type: ClusterIP
+
+# -- Gateway resource configuration.
+gateway:
+  # -- Create a Gateway resource for this instance.
+  enabled: true
+  # -- Gateway resource name override.
+  # @description Empty value defaults to a release-derived name.
+  name: ""
+  # -- Gateway namespace override.
+  # @description Empty value defaults to `.Release.Namespace`.
+  namespace: ""
+  # -- Gateway annotations.
+  annotations: {}
+  # -- Gateway labels.
+  labels: {}
+  # -- Referenced GatewayClass name.
+  # @description This chart does not create a GatewayClass. Point this value at an existing class, typically managed by the `envoy-gateway` controller chart.
+  gatewayClassName: envoy-gateway
+  # -- Gateway rendering mode.
+  # @description Use `raw` to manage `gateway.listeners` directly. Use `managed` to let this chart build opinionated HTTP/HTTPS listeners, redirect handling, and optional cert-manager Certificates.
+  mode: raw
+
+  infrastructure:
+    parametersRef:
+      # -- Attach infrastructure.parametersRef to the Gateway.
+      enabled: true
+      # -- ParametersRef API group.
+      group: gateway.envoyproxy.io
+      # -- ParametersRef kind.
+      kind: EnvoyProxy
+      # -- ParametersRef object name override.
+      # @description Empty value defaults to the effective `envoyProxy` resource name when `envoyProxy.enabled=true`.
+      name: ""
+
+  # -- Raw Gateway listeners.
+  # @description Used only when `gateway.mode=raw`. Keep this path for advanced/manual listener definitions.
+  # @raw
+  # ```yaml
+  # listeners:
+  #   - name: http
+  #     protocol: HTTP
+  #     port: 80
+  #     allowedRoutes:
+  #       namespaces:
+  #         from: All
+  # ```
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+
+  httpListener:
+    # -- Create an HTTP listener in managed mode.
+    # @description In managed TLS mode this listener is intended only for the central HTTP->HTTPS redirect route and therefore defaults to same-namespace route attachment.
+    enabled: true
+    # -- Managed HTTP listener name.
+    name: http
+    # -- Managed HTTP listener port.
+    port: 80
+    # -- Managed HTTP listener allowedRoutes block.
+    allowedRoutes:
+      namespaces:
+        from: Same
+
+  tls:
+    # -- Enable opinionated managed TLS handling.
+    # @description Requires `gateway.mode=managed`. When enabled, the chart renders HTTPS listeners, optional cert-manager Certificates, and by default a central HTTP->HTTPS redirect route.
+    enabled: false
+
+    redirectHttpToHttps:
+      # -- Create a central HTTPRoute that redirects HTTP traffic to HTTPS.
+      enabled: true
+      # -- Redirect route name override.
+      # @description Empty value defaults to a release-derived name.
+      name: ""
+      # -- HTTP redirect status code.
+      # @description Valid values are `301`, `302`, `303`, `307`, or `308`.
+      statusCode: 301
+      # -- Redirect route annotations.
+      annotations: {}
+      # -- Redirect route labels.
+      labels: {}
+
+    # -- Managed HTTPS listeners.
+    # @description Each listener terminates TLS with the referenced Secret and should normally cover either an exact hostname or a wildcard domain. App-owner HTTPRoutes should bind to these HTTPS listeners, not the managed HTTP redirect listener.
+    # @raw
+    # ```yaml
+    # listeners:
+    #   - name: https-prod-wildcard
+    #     hostname: "*.prod.example.com"
+    #     port: 443
+    #     certificateRefName: prod-example-com-tls
+    #     allowedRoutes:
+    #       namespaces:
+    #         from: All
+    #   - name: https-prod-apex
+    #     hostname: "prod.example.com"
+    #     port: 443
+    #     certificateRefName: prod-example-com-tls
+    #     allowedRoutes:
+    #       namespaces:
+    #         from: All
+    # ```
+    listeners: []
+
+    # -- Optional cert-manager Certificates to create in the Gateway namespace.
+    # @description If a listener references a `certificateRefName` that is not declared here, the chart assumes the Secret already exists in the Gateway namespace. This keeps existing Secret handling and cert-manager handling compatible.
+    # @raw
+    # ```yaml
+    # certificates:
+    #   - secretName: prod-example-com-tls
+    #     dnsNames:
+    #       - "prod.example.com"
+    #       - "*.prod.example.com"
+    #     issuerRef:
+    #       name: letsencrypt-prod
+    #       kind: ClusterIssuer
+    #       group: cert-manager.io
+    # ```
+    certificates: []
+
+# -- RuntimeClass names.
+runtimeClass:
+  tests: ""
+
+# -- Pod-level security context for Helm test pods.
+podSecurityContext: {}
+
+# -- Container-level security context for Helm test pods.
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault

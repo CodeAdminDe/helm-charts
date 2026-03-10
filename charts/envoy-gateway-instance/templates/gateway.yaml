@@ -1,0 +1,51 @@
+{{- if .Values.gateway.enabled }}
+{{- $gatewayMode := include "envoy-gateway-instance.gatewayMode" . -}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: {{ include "envoy-gateway-instance.gatewayName" . }}
+  namespace: {{ include "envoy-gateway-instance.gatewayNamespace" . }}
+  labels:
+    {{- include "envoy-gateway-instance.labels" . | nindent 4 }}
+    {{- with .Values.gateway.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.gateway.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  gatewayClassName: {{ .Values.gateway.gatewayClassName | quote }}
+  {{- if .Values.gateway.infrastructure.parametersRef.enabled }}
+  infrastructure:
+    parametersRef:
+      group: {{ .Values.gateway.infrastructure.parametersRef.group | quote }}
+      kind: {{ .Values.gateway.infrastructure.parametersRef.kind | quote }}
+      name: {{ include "envoy-gateway-instance.gatewayParametersRefName" . | quote }}
+  {{- end }}
+  listeners:
+    {{- if eq $gatewayMode "managed" }}
+    {{- if .Values.gateway.httpListener.enabled }}
+    - name: {{ .Values.gateway.httpListener.name | quote }}
+      protocol: HTTP
+      port: {{ .Values.gateway.httpListener.port }}
+      allowedRoutes:
+        {{- toYaml .Values.gateway.httpListener.allowedRoutes | nindent 8 }}
+    {{- end }}
+    {{- range .Values.gateway.tls.listeners }}
+    - name: {{ .name | quote }}
+      protocol: HTTPS
+      port: {{ default 443 .port }}
+      hostname: {{ .hostname | quote }}
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: {{ .certificateRefName | quote }}
+      allowedRoutes:
+        {{- toYaml (default (dict "namespaces" (dict "from" "All")) .allowedRoutes) | nindent 8 }}
+    {{- end }}
+    {{- else }}
+    {{- toYaml .Values.gateway.listeners | nindent 4 }}
+    {{- end }}
+{{- end }}

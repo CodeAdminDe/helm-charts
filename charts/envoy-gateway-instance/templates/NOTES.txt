@@ -1,0 +1,19 @@
+1. This chart does not deploy the Envoy Gateway controller.
+
+2. Ensure the referenced GatewayClass already exists:
+   {{ .Values.gateway.gatewayClassName }}
+
+3. Managed resources for this release:
+   {{- if .Values.gateway.enabled }}
+   - Gateway: {{ include "envoy-gateway-instance.gatewayName" . }} (namespace: {{ include "envoy-gateway-instance.gatewayNamespace" . }})
+   {{- else }}
+   - Gateway: disabled
+   {{- end }}
+   {{- if .Values.envoyProxy.enabled }}
+   - EnvoyProxy: {{ include "envoy-gateway-instance.envoyProxyName" . }} (namespace: {{ include "envoy-gateway-instance.envoyProxyNamespace" . }})
+   {{- else }}
+   - EnvoyProxy: disabled
+   {{- end }}
+
+4. Gateway rendering mode:
+   {{ include "envoy-gateway-instance.gatewayMode" . }}
