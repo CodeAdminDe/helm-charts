@@ -1,0 +1,38 @@
+{{- define "extra.specifics.fromchart.atom.opinionated" -}}
+<hr /><hr />
+
+## Appendix - Chart-specifics
+
+### Scope
+
+* This chart renders one Envoy Gateway instance stack: `Gateway`, optional `EnvoyProxy`, optional cert-manager `Certificate` resources, and optional HTTP to HTTPS redirect `HTTPRoute`.
+* It does **not** deploy the Envoy Gateway controller itself.
+* It also does **not** create a `GatewayClass`; `gateway.gatewayClassName` must point to an existing class, typically managed by the `envoy-gateway` chart.
+
+### Composition model
+
+* Recommended composition:
+  * `envoy-gateway`: controller lifecycle and controller hardening
+  * `envoy-gateway-instance`: one Gateway/security-domain instance
+  * `envoy-gateway-dataplane-policies`: dataplane ingress/egress isolation for the Gateway namespace
+  * app charts: `HTTPRoute` ownership close to the applications
+* This chart intentionally does not render dataplane Cilium policies or business `HTTPRoute` resources.
+
+### Listener model
+
+* `gateway.mode=raw` keeps the listener definition fully manual.
+* `gateway.mode=managed` reuses the opinionated HTTP/HTTPS/TLS behavior from the controller chart's bootstrap path:
+  * optional HTTP listener
+  * managed HTTPS listeners
+  * optional central HTTP to HTTPS redirect route
+  * optional cert-manager `Certificate` resources for listener Secrets
+
+### Namespace model
+
+* `gateway.namespace` and `envoyProxy.namespace` default to `.Release.Namespace`.
+* If `gateway.infrastructure.parametersRef.enabled=true` and this chart also creates the `EnvoyProxy`, both resources must live in the same namespace because the Gateway references the EnvoyProxy as a local object.
+
+{{- end -}}
+
+{{ template "extra.templates.readme.complexvalues" . }}
+{{ template "extra.specifics.fromchart.atom.opinionated" . }}

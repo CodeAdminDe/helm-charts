@@ -1,0 +1,25 @@
+apiVersion: v2
+name: envoy-gateway-instance
+description: A Helm chart for deploying Envoy Gateway Gateway and EnvoyProxy instances on Kubernetes.
+type: application
+# renovate: bumpVersion
+version: 0.1.0
+appVersion: "v1.7.0"
+kubeVersion: ">=1.24.0"
+home: https://github.com/CodeAdminDe/helm-charts
+icon: https://raw.githubusercontent.com/envoyproxy/gateway/main/site/assets/icons/logo.svg
+keywords:
+  - envoy-gateway
+  - gateway-api
+  - envoyproxy
+  - gateway
+  - ingress
+  - networking
+  - helm
+maintainers:
+  - name: Frederic Roggon
+    email: frederic.roggon@codeadmin.de
+    url: https://github.com/CodeAdminDe
+annotations:
+  category: Networking
+  securityContext: "not-applicable"

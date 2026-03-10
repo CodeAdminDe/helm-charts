@@ -1,0 +1,115 @@
+{{- $gatewayMode := include "envoy-gateway-instance.gatewayMode" . -}}
+{{- $validGatewayModes := list "raw" "managed" -}}
+{{- $validRedirectCodes := list 301 302 303 307 308 -}}
+{{- $gatewayNamespace := include "envoy-gateway-instance.gatewayNamespace" . -}}
+{{- $envoyProxyNamespace := include "envoy-gateway-instance.envoyProxyNamespace" . -}}
+
+{{- if and (not .Values.gateway.enabled) (not .Values.envoyProxy.enabled) -}}
+{{- fail "At least one of gateway.enabled or envoyProxy.enabled must be true." -}}
+{{- end -}}
+
+{{- if not (has $gatewayMode $validGatewayModes) -}}
+{{- fail "gateway.mode must be either 'raw' or 'managed'." -}}
+{{- end -}}
+
+{{- if and .Values.envoyProxy.enabled (empty .Values.envoyProxy.spec) -}}
+{{- fail "envoyProxy.spec must be set when envoyProxy.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.gateway.enabled (empty .Values.gateway.gatewayClassName) -}}
+{{- fail "gateway.gatewayClassName must be set when gateway.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.gateway.enabled .Values.gateway.infrastructure.parametersRef.enabled (empty .Values.gateway.infrastructure.parametersRef.group) -}}
+{{- fail "gateway.infrastructure.parametersRef.group must be set when gateway.infrastructure.parametersRef.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.gateway.enabled .Values.gateway.infrastructure.parametersRef.enabled (empty .Values.gateway.infrastructure.parametersRef.kind) -}}
+{{- fail "gateway.infrastructure.parametersRef.kind must be set when gateway.infrastructure.parametersRef.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.gateway.enabled .Values.gateway.infrastructure.parametersRef.enabled (not .Values.envoyProxy.enabled) (empty .Values.gateway.infrastructure.parametersRef.name) -}}
+{{- fail "gateway.infrastructure.parametersRef.name must be set when gateway.infrastructure.parametersRef.enabled=true and envoyProxy.enabled=false." -}}
+{{- end -}}
+
+{{- if and .Values.gateway.enabled .Values.gateway.infrastructure.parametersRef.enabled .Values.envoyProxy.enabled (ne $gatewayNamespace $envoyProxyNamespace) -}}
+{{- fail "gateway and envoyProxy must be rendered into the same namespace when gateway.infrastructure.parametersRef.enabled=true and this chart manages the EnvoyProxy resource." -}}
+{{- end -}}
+
+{{- if and (not .Values.gateway.enabled) .Values.gateway.tls.enabled -}}
+{{- fail "gateway.tls.enabled=true requires gateway.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.gateway.enabled .Values.gateway.tls.enabled (ne $gatewayMode "managed") -}}
+{{- fail "gateway.tls.enabled=true requires gateway.mode=managed." -}}
+{{- end -}}
+
+{{- if and .Values.gateway.enabled (eq $gatewayMode "raw") (empty .Values.gateway.listeners) -}}
+{{- fail "gateway.listeners must contain at least one listener when gateway.mode=raw and gateway.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.gateway.enabled (eq $gatewayMode "managed") -}}
+  {{- if not .Values.gateway.tls.enabled -}}
+    {{- fail "gateway.mode=managed requires gateway.tls.enabled=true." -}}
+  {{- end -}}
+  {{- if not .Values.gateway.tls.listeners -}}
+    {{- fail "gateway.tls.listeners must contain at least one HTTPS listener when gateway.mode=managed." -}}
+  {{- end -}}
+  {{- if and .Values.gateway.tls.redirectHttpToHttps.enabled (not .Values.gateway.httpListener.enabled) -}}
+    {{- fail "gateway.tls.redirectHttpToHttps.enabled=true requires gateway.httpListener.enabled=true." -}}
+  {{- end -}}
+  {{- if and .Values.gateway.tls.redirectHttpToHttps.enabled (ne .Values.gateway.httpListener.allowedRoutes.namespaces.from "Same") -}}
+    {{- fail "gateway.httpListener.allowedRoutes.namespaces.from must be 'Same' when gateway.tls.redirectHttpToHttps.enabled=true to reserve HTTP for the central redirect route." -}}
+  {{- end -}}
+  {{- if and .Values.gateway.httpListener.enabled (empty .Values.gateway.httpListener.name) -}}
+    {{- fail "gateway.httpListener.name must be set when gateway.httpListener.enabled=true." -}}
+  {{- end -}}
+  {{- if and .Values.gateway.httpListener.enabled (empty .Values.gateway.httpListener.port) -}}
+    {{- fail "gateway.httpListener.port must be set when gateway.httpListener.enabled=true." -}}
+  {{- end -}}
+  {{- if and .Values.gateway.tls.redirectHttpToHttps.enabled (not (has (int .Values.gateway.tls.redirectHttpToHttps.statusCode) $validRedirectCodes)) -}}
+    {{- fail "gateway.tls.redirectHttpToHttps.statusCode must be one of 301, 302, 303, 307, or 308." -}}
+  {{- end -}}
+
+  {{- $listenerNames := dict -}}
+  {{- $listenerHostnames := dict -}}
+  {{- range $idx, $listener := .Values.gateway.tls.listeners -}}
+    {{- if empty $listener.name -}}
+      {{- fail (printf "gateway.tls.listeners[%d].name must be set." $idx) -}}
+    {{- end -}}
+    {{- if hasKey $listenerNames $listener.name -}}
+      {{- fail (printf "gateway.tls.listeners[%d].name '%s' is duplicated." $idx $listener.name) -}}
+    {{- end -}}
+    {{- $_ := set $listenerNames $listener.name true -}}
+    {{- if empty $listener.hostname -}}
+      {{- fail (printf "gateway.tls.listeners[%d].hostname must be set." $idx) -}}
+    {{- end -}}
+    {{- if hasKey $listenerHostnames $listener.hostname -}}
+      {{- fail (printf "gateway.tls.listeners[%d].hostname '%s' is duplicated." $idx $listener.hostname) -}}
+    {{- end -}}
+    {{- $_ := set $listenerHostnames $listener.hostname true -}}
+    {{- if empty $listener.certificateRefName -}}
+      {{- fail (printf "gateway.tls.listeners[%d].certificateRefName must be set." $idx) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $certificateSecretNames := dict -}}
+  {{- range $idx, $certificate := .Values.gateway.tls.certificates -}}
+    {{- if empty $certificate.secretName -}}
+      {{- fail (printf "gateway.tls.certificates[%d].secretName must be set." $idx) -}}
+    {{- end -}}
+    {{- if $certificate.name -}}
+      {{- fail (printf "gateway.tls.certificates[%d].name is not supported. Certificate metadata.name is derived from secretName." $idx) -}}
+    {{- end -}}
+    {{- if hasKey $certificateSecretNames $certificate.secretName -}}
+      {{- fail (printf "gateway.tls.certificates[%d].secretName '%s' is duplicated." $idx $certificate.secretName) -}}
+    {{- end -}}
+    {{- $_ := set $certificateSecretNames $certificate.secretName true -}}
+    {{- if not $certificate.dnsNames -}}
+      {{- fail (printf "gateway.tls.certificates[%d].dnsNames must contain at least one DNS name." $idx) -}}
+    {{- end -}}
+    {{- if empty $certificate.issuerRef.name -}}
+      {{- fail (printf "gateway.tls.certificates[%d].issuerRef.name must be set." $idx) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
