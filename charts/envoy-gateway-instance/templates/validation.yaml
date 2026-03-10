@@ -72,7 +72,7 @@
   {{- end -}}
 
   {{- $listenerNames := dict -}}
-  {{- $listenerHostnames := dict -}}
+  {{- $listenerHostPortKeys := dict -}}
   {{- range $idx, $listener := .Values.gateway.tls.listeners -}}
     {{- if empty $listener.name -}}
       {{- fail (printf "gateway.tls.listeners[%d].name must be set." $idx) -}}
@@ -84,10 +84,11 @@
     {{- if empty $listener.hostname -}}
       {{- fail (printf "gateway.tls.listeners[%d].hostname must be set." $idx) -}}
     {{- end -}}
-    {{- if hasKey $listenerHostnames $listener.hostname -}}
-      {{- fail (printf "gateway.tls.listeners[%d].hostname '%s' is duplicated." $idx $listener.hostname) -}}
+    {{- $listenerHostPortKey := printf "%s:%v" $listener.hostname (default 443 $listener.port) -}}
+    {{- if hasKey $listenerHostPortKeys $listenerHostPortKey -}}
+      {{- fail (printf "gateway.tls.listeners[%d] duplicates the hostname/port combination '%s:%v'." $idx $listener.hostname (default 443 $listener.port)) -}}
     {{- end -}}
-    {{- $_ := set $listenerHostnames $listener.hostname true -}}
+    {{- $_ := set $listenerHostPortKeys $listenerHostPortKey true -}}
     {{- if empty $listener.certificateRefName -}}
       {{- fail (printf "gateway.tls.listeners[%d].certificateRefName must be set." $idx) -}}
     {{- end -}}
