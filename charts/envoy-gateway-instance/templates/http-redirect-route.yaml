@@ -1,4 +1,8 @@
 {{- if and .Values.gateway.enabled (eq (include "envoy-gateway-instance.gatewayMode" .) "managed") .Values.gateway.tls.enabled .Values.gateway.httpListener.enabled .Values.gateway.tls.redirectHttpToHttps.enabled }}
+{{- $redirectHostnames := dict -}}
+{{- range .Values.gateway.tls.listeners -}}
+  {{- $_ := set $redirectHostnames .hostname true -}}
+{{- end -}}
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -18,8 +22,8 @@ spec:
     - name: {{ include "envoy-gateway-instance.gatewayName" . | quote }}
       sectionName: {{ .Values.gateway.httpListener.name | quote }}
   hostnames:
-    {{- range .Values.gateway.tls.listeners }}
-    - {{ .hostname | quote }}
+    {{- range $hostname, $_ := $redirectHostnames }}
+    - {{ $hostname | quote }}
     {{- end }}
   rules:
     - matches:
