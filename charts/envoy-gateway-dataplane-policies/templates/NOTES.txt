@@ -1,0 +1,14 @@
+This chart renders CiliumNetworkPolicies for Envoy Gateway dataplane workloads.
+
+Release namespace:
+  {{ .Release.Namespace }}
+
+Target selector:
+  {{- toYaml .Values.selector.matchLabels | nindent 2 }}
+
+Namespace baseline:
+  {{- if .Values.namespaceBaseline.enabled }}
+  enabled
+  {{- else }}
+  disabled
+  {{- end }}

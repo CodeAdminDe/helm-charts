@@ -1,0 +1,133 @@
+# -- Override release-based naming.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- Selector for the EnvoyProxy dataplane pods this release should govern.
+# @description Must be narrow and explicit. The chart never uses a broad empty selector for dataplane policies.
+selector:
+  matchLabels:
+    gateway.envoyproxy.io/owning-gateway-name: example
+    app.kubernetes.io/name: envoy-proxy
+
+# -- Shared policy metadata extensions.
+policyMetadata:
+  annotations: {}
+  labels: {}
+
+# -- Optional namespace-wide baseline for dedicated dataplane namespaces.
+# @description Advanced feature. Only enable when the release namespace is dedicated to the targeted dataplane workloads. This intentionally applies to all endpoints in the namespace.
+namespaceBaseline:
+  enabled: false
+  # -- Explicit acknowledgement that the namespace is dedicated to dataplane workloads.
+  confirmDedicatedNamespace: false
+
+# -- Dataplane ingress policy controls.
+ingress:
+  public:
+    # -- Allow public north-south traffic to the dataplane listener ports.
+    enabled: true
+    # -- Allowed Cilium entities for public listener traffic.
+    fromEntities:
+      - world
+    # -- Optional endpoint selectors for public listener traffic.
+    fromEndpoints: []
+    # -- Listener ports exposed publicly.
+    ports:
+      - 80
+      - 443
+
+  private:
+    # -- Allow private cluster-internal traffic to dedicated listener ports.
+    enabled: false
+    # -- Allowed Cilium entities for private listener traffic.
+    fromEntities:
+      - cluster
+    # -- Optional endpoint selectors for private listener traffic.
+    fromEndpoints: []
+    # -- Private listener ports.
+    ports: []
+
+  # -- Additional raw ingress rules appended to the dataplane ingress CNP.
+  # @raw
+  # ```yaml
+  # extraRules:
+  #   - fromEndpoints:
+  #       - matchLabels:
+  #           io.kubernetes.pod.namespace: monitoring
+  #           app.kubernetes.io/name: synthetic-checker
+  #     toPorts:
+  #       - ports:
+  #           - port: "8443"
+  #             protocol: TCP
+  # ```
+  extraRules: []
+
+# -- Dataplane egress policy controls.
+egress:
+  controlPlane:
+    # -- Allow dataplane egress back to the Envoy Gateway control plane.
+    enabled: true
+    # -- Endpoint selectors for the Envoy Gateway control plane.
+    toEndpoints:
+      - matchLabels:
+          io.kubernetes.pod.namespace: envoy-gateway-system
+          control-plane: envoy-gateway
+          app.kubernetes.io/name: envoy-gateway
+    # -- Control-plane ports required by Envoy Gateway dataplane workloads.
+    ports:
+      - 18000
+      - 18001
+      - 18002
+
+  dns:
+    # -- Allow DNS egress to kube-dns.
+    enabled: true
+
+  # -- Explicit backend allowlist entries for routed services.
+  # @raw
+  # ```yaml
+  # backends:
+  #   - name: app-a
+  #     toEndpoints:
+  #       - matchLabels:
+  #           io.kubernetes.pod.namespace: app-a
+  #           app.kubernetes.io/name: app-a
+  #     ports:
+  #       - 8080
+  # ```
+  backends: []
+
+  # -- Explicit external allowlist entries.
+  # @raw
+  # ```yaml
+  # external:
+  #   - name: oidc
+  #     toFQDNs:
+  #       - matchName: login.example.com
+  #     ports:
+  #       - 443
+  # ```
+  external: []
+
+  # -- Additional raw egress rules appended to the dataplane egress CNP.
+  extraRules: []
+
+# -- RuntimeClass names.
+runtimeClass:
+  tests: ""
+
+# -- Pod-level security context for Helm test pods.
+podSecurityContext: {}
+
+# -- Container-level security context for Helm test pods.
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault
