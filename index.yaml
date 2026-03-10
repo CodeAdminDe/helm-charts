@@ -14228,6 +14228,52 @@ entries:
       securityContext: required
     apiVersion: v2
     appVersion: 2.20.10
+    created: "2026-03-10T21:09:23.694142888Z"
+    dependencies:
+    - alias: redis
+      condition: redis.enabled
+      name: redis
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.4.1
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for deploying Paperless-ngx on Kubernetes.
+    digest: 51b9bdc5497f1fd7790ceb1f0120b069c426aed1481b74980b25ac6380a0a0e3
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - paperless-ngx
+    - documents
+    - ocr
+    - dms
+    - redis
+    - cnpg
+    - cloud-native
+    - helm
+    kubeVersion: '>=1.24.0'
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: paperless-ngx
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/paperless-ngx-0.2.2/paperless-ngx-0.2.2.tgz
+    version: 0.2.2
+  - annotations:
+      category: Documents
+      images: |
+        - name: paperless-ngx
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.10
+        - name: gotenberg
+          image: docker.io/gotenberg/gotenberg:8.27
+        - name: tika
+          image: docker.io/apache/tika:3.2.3.0-full
+      securityContext: required
+    apiVersion: v2
+    appVersion: 2.20.10
     created: "2026-03-10T21:02:43.072421611Z"
     dependencies:
     - alias: redis
@@ -15079,4 +15125,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-10T21:02:43.073354359Z"
+generated: "2026-03-10T21:09:23.695099589Z"
