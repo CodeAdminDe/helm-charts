@@ -48,6 +48,9 @@
 * Avoid `LoadBalancer` defaults; expose north-south traffic through platform-specific edge components.
 * Keep CRD upgrades explicit and coordinated with Envoy Gateway upgrades.
 * Prefer environment-specific overrides through values files instead of editing chart templates.
+* Optional chart-local `CiliumNetworkPolicy` resources protect only the Envoy Gateway control plane and the upstream `certgen` hook job.
+* The chart intentionally does not generate generic dataplane policies for arbitrary `Gateway` namespaces or backend applications. Keep dataplane isolation as a separate operator concern.
+* Metrics ingress via the chart-local CNPs stays disabled by default and must be opened explicitly with allowed scrape sources.
 
 {{- end -}}
 

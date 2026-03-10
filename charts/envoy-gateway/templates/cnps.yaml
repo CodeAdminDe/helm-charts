@@ -1,0 +1,158 @@
+{{- if .Values.cnps.enabled }}
+{{- $controlPlanePolicyName := printf "%s-control-plane-cnp" ((include "envoy-gateway.fullname" .) | trunc 45 | trimSuffix "-") | trunc 63 | trimSuffix "-" -}}
+{{- $certgenPolicyName := printf "%s-certgen-cnp" ((include "envoy-gateway.fullname" .) | trunc 51 | trimSuffix "-") | trunc 63 | trimSuffix "-" -}}
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ $controlPlanePolicyName }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "envoy-gateway.labels" . | nindent 4 }}
+spec:
+  endpointSelector:
+    matchLabels:
+      control-plane: envoy-gateway
+      app.kubernetes.io/name: envoy-gateway
+      app.kubernetes.io/instance: {{ .Release.Name | quote }}
+  {{- $proxyIngressEnabled := .Values.cnps.controlPlane.ingress.proxy.enabled -}}
+  {{- $webhookIngressEnabled := .Values.cnps.controlPlane.ingress.webhook.enabled -}}
+  {{- $metricsIngressEnabled := .Values.cnps.controlPlane.ingress.metrics.enabled -}}
+  {{- $controlPlaneExtraIngress := .Values.cnps.controlPlane.ingress.extraRules | default (list) -}}
+  {{- $controlPlaneHasIngress := or $proxyIngressEnabled $webhookIngressEnabled $metricsIngressEnabled (gt (len $controlPlaneExtraIngress) 0) -}}
+  {{- if $controlPlaneHasIngress }}
+  ingress:
+    {{- if $proxyIngressEnabled }}
+    - {{- if .Values.cnps.controlPlane.ingress.proxy.fromEndpoints }}
+      fromEndpoints:
+        {{- range .Values.cnps.controlPlane.ingress.proxy.fromEndpoints }}
+        - matchLabels:
+            {{- toYaml . | nindent 12 }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.cnps.controlPlane.ingress.proxy.fromEntities }}
+      fromEntities:
+        {{- toYaml .Values.cnps.controlPlane.ingress.proxy.fromEntities | nindent 8 }}
+      {{- end }}
+      toPorts:
+        - ports:
+          {{- range .Values.cnps.controlPlane.ingress.proxy.ports }}
+            - port: {{ printf "%v" . | quote }}
+              protocol: TCP
+          {{- end }}
+    {{- end }}
+    {{- if $webhookIngressEnabled }}
+    - {{- if .Values.cnps.controlPlane.ingress.webhook.fromEndpoints }}
+      fromEndpoints:
+        {{- range .Values.cnps.controlPlane.ingress.webhook.fromEndpoints }}
+        - matchLabels:
+            {{- toYaml . | nindent 12 }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.cnps.controlPlane.ingress.webhook.fromEntities }}
+      fromEntities:
+        {{- toYaml .Values.cnps.controlPlane.ingress.webhook.fromEntities | nindent 8 }}
+      {{- end }}
+      toPorts:
+        - ports:
+            - port: {{ printf "%v" .Values.cnps.controlPlane.ingress.webhook.port | quote }}
+              protocol: TCP
+    {{- end }}
+    {{- if $metricsIngressEnabled }}
+    - {{- if .Values.cnps.controlPlane.ingress.metrics.fromEndpoints }}
+      fromEndpoints:
+        {{- range .Values.cnps.controlPlane.ingress.metrics.fromEndpoints }}
+        - matchLabels:
+            {{- toYaml . | nindent 12 }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.cnps.controlPlane.ingress.metrics.fromEntities }}
+      fromEntities:
+        {{- toYaml .Values.cnps.controlPlane.ingress.metrics.fromEntities | nindent 8 }}
+      {{- end }}
+      toPorts:
+        - ports:
+            - port: {{ printf "%v" .Values.cnps.controlPlane.ingress.metrics.port | quote }}
+              protocol: TCP
+    {{- end }}
+    {{- with $controlPlaneExtraIngress }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- else }}
+  ingress: []
+  {{- end }}
+  {{- $controlPlaneExtraEgress := .Values.cnps.controlPlane.egress.extraRules | default (list) -}}
+  {{- $controlPlaneHasEgress := or .Values.cnps.controlPlane.egress.kubeApiServer.enabled .Values.cnps.controlPlane.egress.dns.enabled (gt (len $controlPlaneExtraEgress) 0) -}}
+  {{- if $controlPlaneHasEgress }}
+  egress:
+    {{- if .Values.cnps.controlPlane.egress.kubeApiServer.enabled }}
+    - toEntities:
+        - kube-apiserver
+    {{- end }}
+    {{- if .Values.cnps.controlPlane.egress.dns.enabled }}
+    - toEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+          rules:
+            dns:
+              - matchPattern: "*"
+    {{- end }}
+    {{- with $controlPlaneExtraEgress }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- else }}
+  egress: []
+  {{- end }}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ $certgenPolicyName }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "envoy-gateway.labels" . | nindent 4 }}
+spec:
+  endpointSelector:
+    matchLabels:
+      app: certgen
+  ingress: []
+  {{- $certgenExtraEgress := .Values.cnps.certgen.egress.extraRules | default (list) -}}
+  {{- $certgenHasEgress := or .Values.cnps.certgen.egress.kubeApiServer.enabled .Values.cnps.certgen.egress.dns.enabled (gt (len $certgenExtraEgress) 0) -}}
+  {{- if $certgenHasEgress }}
+  egress:
+    {{- if .Values.cnps.certgen.egress.kubeApiServer.enabled }}
+    - toEntities:
+        - kube-apiserver
+    {{- end }}
+    {{- if .Values.cnps.certgen.egress.dns.enabled }}
+    - toEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+          rules:
+            dns:
+              - matchPattern: "*"
+    {{- end }}
+    {{- with $certgenExtraEgress }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- else }}
+  egress: []
+  {{- end }}
+{{- end }}

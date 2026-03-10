@@ -2,6 +2,15 @@
 {{- $gatewayMode := include "envoy-gateway.bootstrap.gatewayMode" . -}}
 {{- $validGatewayModes := list "raw" "managed" -}}
 {{- $validRedirectCodes := list 301 302 303 307 308 -}}
+{{- $cnps := .Values.cnps | default dict -}}
+
+{{- define "envoy-gateway.validation.requireSlice" -}}
+{{- $value := index . 0 -}}
+{{- $path := index . 1 -}}
+{{- if not (kindIs "slice" $value) -}}
+{{- fail (printf "%s must be a list." $path) -}}
+{{- end -}}
+{{- end -}}
 
 {{- if hasKey .Values "envoyGateway" -}}
 {{- fail "The top-level values key 'envoyGateway' has been renamed to 'envoy-gateway'. Update your values files and overrides accordingly." -}}
@@ -134,5 +143,37 @@
     {{- if empty $certificate.issuerRef.name -}}
       {{- fail (printf "bootstrap.gateway.tls.certificates[%d].issuerRef.name must be set." $idx) -}}
     {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if $cnps.enabled -}}
+  {{- include "envoy-gateway.validation.requireSlice" (list .Values.cnps.controlPlane.ingress.proxy.fromEntities "cnps.controlPlane.ingress.proxy.fromEntities") -}}
+  {{- include "envoy-gateway.validation.requireSlice" (list .Values.cnps.controlPlane.ingress.proxy.fromEndpoints "cnps.controlPlane.ingress.proxy.fromEndpoints") -}}
+  {{- include "envoy-gateway.validation.requireSlice" (list .Values.cnps.controlPlane.ingress.proxy.ports "cnps.controlPlane.ingress.proxy.ports") -}}
+  {{- include "envoy-gateway.validation.requireSlice" (list .Values.cnps.controlPlane.ingress.webhook.fromEntities "cnps.controlPlane.ingress.webhook.fromEntities") -}}
+  {{- include "envoy-gateway.validation.requireSlice" (list .Values.cnps.controlPlane.ingress.webhook.fromEndpoints "cnps.controlPlane.ingress.webhook.fromEndpoints") -}}
+  {{- include "envoy-gateway.validation.requireSlice" (list .Values.cnps.controlPlane.ingress.metrics.fromEntities "cnps.controlPlane.ingress.metrics.fromEntities") -}}
+  {{- include "envoy-gateway.validation.requireSlice" (list .Values.cnps.controlPlane.ingress.metrics.fromEndpoints "cnps.controlPlane.ingress.metrics.fromEndpoints") -}}
+  {{- include "envoy-gateway.validation.requireSlice" (list .Values.cnps.controlPlane.ingress.extraRules "cnps.controlPlane.ingress.extraRules") -}}
+  {{- include "envoy-gateway.validation.requireSlice" (list .Values.cnps.controlPlane.egress.extraRules "cnps.controlPlane.egress.extraRules") -}}
+  {{- include "envoy-gateway.validation.requireSlice" (list .Values.cnps.certgen.egress.extraRules "cnps.certgen.egress.extraRules") -}}
+
+  {{- if and .Values.cnps.controlPlane.ingress.proxy.enabled (empty .Values.cnps.controlPlane.ingress.proxy.ports) -}}
+    {{- fail "cnps.controlPlane.ingress.proxy.ports must contain at least one port when cnps.controlPlane.ingress.proxy.enabled=true." -}}
+  {{- end -}}
+  {{- if and .Values.cnps.controlPlane.ingress.proxy.enabled (empty .Values.cnps.controlPlane.ingress.proxy.fromEntities) (empty .Values.cnps.controlPlane.ingress.proxy.fromEndpoints) -}}
+    {{- fail "cnps.controlPlane.ingress.proxy requires at least one explicit source via fromEntities and/or fromEndpoints when enabled." -}}
+  {{- end -}}
+  {{- if and .Values.cnps.controlPlane.ingress.webhook.enabled (empty .Values.cnps.controlPlane.ingress.webhook.port) -}}
+    {{- fail "cnps.controlPlane.ingress.webhook.port must be set when cnps.controlPlane.ingress.webhook.enabled=true." -}}
+  {{- end -}}
+  {{- if and .Values.cnps.controlPlane.ingress.webhook.enabled (empty .Values.cnps.controlPlane.ingress.webhook.fromEntities) (empty .Values.cnps.controlPlane.ingress.webhook.fromEndpoints) -}}
+    {{- fail "cnps.controlPlane.ingress.webhook requires at least one explicit source via fromEntities and/or fromEndpoints when enabled." -}}
+  {{- end -}}
+  {{- if and .Values.cnps.controlPlane.ingress.metrics.enabled (empty .Values.cnps.controlPlane.ingress.metrics.port) -}}
+    {{- fail "cnps.controlPlane.ingress.metrics.port must be set when cnps.controlPlane.ingress.metrics.enabled=true." -}}
+  {{- end -}}
+  {{- if and .Values.cnps.controlPlane.ingress.metrics.enabled (empty .Values.cnps.controlPlane.ingress.metrics.fromEntities) (empty .Values.cnps.controlPlane.ingress.metrics.fromEndpoints) -}}
+    {{- fail "cnps.controlPlane.ingress.metrics requires at least one explicit source via fromEntities and/or fromEndpoints when enabled." -}}
   {{- end -}}
 {{- end -}}
