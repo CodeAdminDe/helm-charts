@@ -3,7 +3,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 # -- Selector for the EnvoyProxy dataplane pods this release should govern.
-# @description Must be narrow and explicit. The chart never uses a broad empty selector for dataplane policies.
+# @description Must be narrow and explicit. Override the default example labels before production use. The chart never uses a broad empty selector for dataplane policies.
 selector:
   matchLabels:
     gateway.envoyproxy.io/owning-gateway-name: example
@@ -68,6 +68,7 @@ egress:
     # -- Allow dataplane egress back to the Envoy Gateway control plane.
     enabled: true
     # -- Endpoint selectors for the Envoy Gateway control plane.
+    # @description Defaults assume the controller runs in the `envoy-gateway-system` namespace. Override these selectors when the controller namespace or labels differ.
     toEndpoints:
       - matchLabels:
           io.kubernetes.pod.namespace: envoy-gateway-system
