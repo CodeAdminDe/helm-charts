@@ -1,0 +1,176 @@
+{{- $selectorLabels := .Values.selector.matchLabels -}}
+{{- $ingressExtraRules := .Values.ingress.extraRules | default (list) -}}
+{{- $egressExtraRules := .Values.egress.extraRules | default (list) -}}
+{{- if .Values.namespaceBaseline.enabled }}
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ include "envoy-gateway-dataplane-policies.policyName" (list . "namespace-baseline") }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- include "envoy-gateway-dataplane-policies.commonAnnotations" . | nindent 4 }}
+  labels:
+    {{- include "envoy-gateway-dataplane-policies.policyLabels" . | nindent 4 }}
+spec:
+  endpointSelector: {}
+  ingress:
+    - {}
+  egress:
+    - {}
+---
+{{- end }}
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ include "envoy-gateway-dataplane-policies.policyName" (list . "ingress") }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- include "envoy-gateway-dataplane-policies.commonAnnotations" . | nindent 4 }}
+  labels:
+    {{- include "envoy-gateway-dataplane-policies.policyLabels" . | nindent 4 }}
+spec:
+  endpointSelector:
+    matchLabels:
+      {{- toYaml $selectorLabels | nindent 6 }}
+  {{- $publicEnabled := .Values.ingress.public.enabled -}}
+  {{- $privateEnabled := .Values.ingress.private.enabled -}}
+  {{- $hasIngress := or $publicEnabled $privateEnabled (gt (len $ingressExtraRules) 0) -}}
+  {{- if $hasIngress }}
+  ingress:
+    {{- if $publicEnabled }}
+    - {{- if .Values.ingress.public.fromEndpoints }}
+      fromEndpoints:
+        {{- range .Values.ingress.public.fromEndpoints }}
+        - matchLabels:
+            {{- toYaml . | nindent 12 }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.ingress.public.fromEntities }}
+      fromEntities:
+        {{- toYaml .Values.ingress.public.fromEntities | nindent 8 }}
+      {{- end }}
+      toPorts:
+        - ports:
+          {{- range .Values.ingress.public.ports }}
+            - port: {{ printf "%v" . | quote }}
+              protocol: TCP
+          {{- end }}
+    {{- end }}
+    {{- if $privateEnabled }}
+    - {{- if .Values.ingress.private.fromEndpoints }}
+      fromEndpoints:
+        {{- range .Values.ingress.private.fromEndpoints }}
+        - matchLabels:
+            {{- toYaml . | nindent 12 }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.ingress.private.fromEntities }}
+      fromEntities:
+        {{- toYaml .Values.ingress.private.fromEntities | nindent 8 }}
+      {{- end }}
+      toPorts:
+        - ports:
+          {{- range .Values.ingress.private.ports }}
+            - port: {{ printf "%v" . | quote }}
+              protocol: TCP
+          {{- end }}
+    {{- end }}
+    {{- range $ingressExtraRules }}
+    - {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- else }}
+  ingress: []
+  {{- end }}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ include "envoy-gateway-dataplane-policies.policyName" (list . "egress") }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- include "envoy-gateway-dataplane-policies.commonAnnotations" . | nindent 4 }}
+  labels:
+    {{- include "envoy-gateway-dataplane-policies.policyLabels" . | nindent 4 }}
+spec:
+  endpointSelector:
+    matchLabels:
+      {{- toYaml $selectorLabels | nindent 6 }}
+  {{- $backends := .Values.egress.backends | default (list) -}}
+  {{- $external := .Values.egress.external | default (list) -}}
+  {{- $hasEgress := or .Values.egress.controlPlane.enabled .Values.egress.dns.enabled (gt (len $backends) 0) (gt (len $external) 0) (gt (len $egressExtraRules) 0) -}}
+  {{- if $hasEgress }}
+  egress:
+    {{- if .Values.egress.controlPlane.enabled }}
+    - toEndpoints:
+        {{- range .Values.egress.controlPlane.toEndpoints }}
+        - matchLabels:
+            {{- toYaml .matchLabels | nindent 12 }}
+        {{- end }}
+      toPorts:
+        - ports:
+          {{- range .Values.egress.controlPlane.ports }}
+            - port: {{ printf "%v" . | quote }}
+              protocol: TCP
+          {{- end }}
+    {{- end }}
+    {{- if .Values.egress.dns.enabled }}
+    - toEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+          rules:
+            dns:
+              - matchPattern: "*"
+    {{- end }}
+    {{- range $backends }}
+    - toEndpoints:
+        {{- range .toEndpoints }}
+        - matchLabels:
+            {{- toYaml .matchLabels | nindent 12 }}
+        {{- end }}
+      toPorts:
+        - ports:
+          {{- range .ports }}
+            - port: {{ printf "%v" . | quote }}
+              protocol: TCP
+          {{- end }}
+    {{- end }}
+    {{- range $external }}
+    - {{- if .toFQDNs }}
+      toFQDNs:
+        {{- toYaml .toFQDNs | nindent 8 }}
+      {{- end }}
+      {{- if .toCIDRSet }}
+      toCIDRSet:
+        {{- toYaml .toCIDRSet | nindent 8 }}
+      {{- end }}
+      {{- if .toEntities }}
+      toEntities:
+        {{- toYaml .toEntities | nindent 8 }}
+      {{- end }}
+      {{- if .toEndpoints }}
+      toEndpoints:
+        {{- range .toEndpoints }}
+        - matchLabels:
+            {{- toYaml .matchLabels | nindent 12 }}
+        {{- end }}
+      {{- end }}
+      toPorts:
+        - ports:
+          {{- range .ports }}
+            - port: {{ printf "%v" . | quote }}
+              protocol: TCP
+          {{- end }}
+    {{- end }}
+    {{- range $egressExtraRules }}
+    - {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- else }}
+  egress: []
+  {{- end }}

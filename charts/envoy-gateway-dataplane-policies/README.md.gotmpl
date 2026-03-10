@@ -1,0 +1,46 @@
+{{- define "extra.specifics.fromchart.atom.opinionated" -}}
+<hr /><hr />
+
+## Appendix - Chart-specifics
+
+### Scope
+
+* This chart renders `CiliumNetworkPolicy` resources for Envoy Gateway dataplane workloads only.
+* It is intended to be deployed once per Gateway namespace or per dataplane security domain.
+* It does not deploy:
+  * `GatewayClass`
+  * `Gateway`
+  * `EnvoyProxy`
+  * controller resources
+  * backend namespace policies
+
+### Ownership model
+
+* Use this chart together with the main `envoy-gateway` chart, not instead of it.
+* Recommended layering:
+  * `envoy-gateway` chart: controller + optional bootstrap resources + controller CNPs
+  * `envoy-gateway-dataplane-policies` chart: dataplane ingress/egress isolation
+  * backend namespace policies: explicit trust from application namespaces back to the dataplane pods
+
+### Selector model
+
+* `selector.matchLabels` must target the EnvoyProxy dataplane pods this release should govern.
+* Keep the selector narrow and environment-specific.
+* Do not use broad selectors that unintentionally combine multiple security domains.
+
+### Namespace baseline
+
+* `namespaceBaseline.enabled` is intentionally disabled by default.
+* Enabling it applies a namespace-wide deny baseline to **all** endpoints in the release namespace.
+* Only use it when the namespace is dedicated to dataplane workloads and you explicitly confirm that via `namespaceBaseline.confirmDedicatedNamespace=true`.
+
+### Backend and external egress
+
+* Backend access is intentionally explicit through `egress.backends`.
+* External dependencies such as OIDC or telemetry should be modeled explicitly through `egress.external`.
+* This chart does not infer backends from `HTTPRoute` resources.
+
+{{- end -}}
+
+{{ template "extra.templates.readme.complexvalues" . }}
+{{ template "extra.specifics.fromchart.atom.opinionated" . }}

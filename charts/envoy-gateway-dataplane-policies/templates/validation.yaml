@@ -1,0 +1,82 @@
+{{- define "envoy-gateway-dataplane-policies.validation.requireSlice" -}}
+{{- $value := index . 0 -}}
+{{- $path := index . 1 -}}
+{{- if not (kindIs "slice" $value) -}}
+{{- fail (printf "%s must be a list." $path) -}}
+{{- end -}}
+{{- end -}}
+
+{{- if not .Values.selector.matchLabels -}}
+{{- fail "selector.matchLabels must contain at least one label selector for the target EnvoyProxy dataplane pods." -}}
+{{- end -}}
+
+{{- include "envoy-gateway-dataplane-policies.validation.requireSlice" (list .Values.ingress.public.fromEntities "ingress.public.fromEntities") -}}
+{{- include "envoy-gateway-dataplane-policies.validation.requireSlice" (list .Values.ingress.public.fromEndpoints "ingress.public.fromEndpoints") -}}
+{{- include "envoy-gateway-dataplane-policies.validation.requireSlice" (list .Values.ingress.public.ports "ingress.public.ports") -}}
+{{- include "envoy-gateway-dataplane-policies.validation.requireSlice" (list .Values.ingress.private.fromEntities "ingress.private.fromEntities") -}}
+{{- include "envoy-gateway-dataplane-policies.validation.requireSlice" (list .Values.ingress.private.fromEndpoints "ingress.private.fromEndpoints") -}}
+{{- include "envoy-gateway-dataplane-policies.validation.requireSlice" (list .Values.ingress.private.ports "ingress.private.ports") -}}
+{{- include "envoy-gateway-dataplane-policies.validation.requireSlice" (list .Values.ingress.extraRules "ingress.extraRules") -}}
+{{- include "envoy-gateway-dataplane-policies.validation.requireSlice" (list .Values.egress.controlPlane.toEndpoints "egress.controlPlane.toEndpoints") -}}
+{{- include "envoy-gateway-dataplane-policies.validation.requireSlice" (list .Values.egress.controlPlane.ports "egress.controlPlane.ports") -}}
+{{- include "envoy-gateway-dataplane-policies.validation.requireSlice" (list .Values.egress.backends "egress.backends") -}}
+{{- include "envoy-gateway-dataplane-policies.validation.requireSlice" (list .Values.egress.external "egress.external") -}}
+{{- include "envoy-gateway-dataplane-policies.validation.requireSlice" (list .Values.egress.extraRules "egress.extraRules") -}}
+
+{{- if and .Values.namespaceBaseline.enabled (not .Values.namespaceBaseline.confirmDedicatedNamespace) -}}
+{{- fail "namespaceBaseline.enabled=true requires namespaceBaseline.confirmDedicatedNamespace=true because this policy applies to all endpoints in the release namespace." -}}
+{{- end -}}
+
+{{- if and .Values.ingress.public.enabled (empty .Values.ingress.public.ports) -}}
+{{- fail "ingress.public.ports must contain at least one port when ingress.public.enabled=true." -}}
+{{- end -}}
+{{- if and .Values.ingress.public.enabled (empty .Values.ingress.public.fromEntities) (empty .Values.ingress.public.fromEndpoints) -}}
+{{- fail "ingress.public requires at least one explicit source via fromEntities and/or fromEndpoints when enabled." -}}
+{{- end -}}
+
+{{- if and .Values.ingress.private.enabled (empty .Values.ingress.private.ports) -}}
+{{- fail "ingress.private.ports must contain at least one port when ingress.private.enabled=true." -}}
+{{- end -}}
+{{- if and .Values.ingress.private.enabled (empty .Values.ingress.private.fromEntities) (empty .Values.ingress.private.fromEndpoints) -}}
+{{- fail "ingress.private requires at least one explicit source via fromEntities and/or fromEndpoints when enabled." -}}
+{{- end -}}
+
+{{- if and .Values.egress.controlPlane.enabled (empty .Values.egress.controlPlane.toEndpoints) -}}
+{{- fail "egress.controlPlane.toEndpoints must contain at least one endpoint selector when egress.controlPlane.enabled=true." -}}
+{{- end -}}
+{{- if and .Values.egress.controlPlane.enabled (empty .Values.egress.controlPlane.ports) -}}
+{{- fail "egress.controlPlane.ports must contain at least one port when egress.controlPlane.enabled=true." -}}
+{{- end -}}
+
+{{- range $idx, $backend := .Values.egress.backends -}}
+  {{- if empty $backend.name -}}
+    {{- fail (printf "egress.backends[%d].name must be set." $idx) -}}
+  {{- end -}}
+  {{- if not (kindIs "slice" $backend.toEndpoints) -}}
+    {{- fail (printf "egress.backends[%d].toEndpoints must be a list." $idx) -}}
+  {{- end -}}
+  {{- if empty $backend.toEndpoints -}}
+    {{- fail (printf "egress.backends[%d].toEndpoints must contain at least one endpoint selector." $idx) -}}
+  {{- end -}}
+  {{- if not (kindIs "slice" $backend.ports) -}}
+    {{- fail (printf "egress.backends[%d].ports must be a list." $idx) -}}
+  {{- end -}}
+  {{- if empty $backend.ports -}}
+    {{- fail (printf "egress.backends[%d].ports must contain at least one port." $idx) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- range $idx, $external := .Values.egress.external -}}
+  {{- if empty $external.name -}}
+    {{- fail (printf "egress.external[%d].name must be set." $idx) -}}
+  {{- end -}}
+  {{- if not (kindIs "slice" $external.ports) -}}
+    {{- fail (printf "egress.external[%d].ports must be a list." $idx) -}}
+  {{- end -}}
+  {{- if empty $external.ports -}}
+    {{- fail (printf "egress.external[%d].ports must contain at least one port." $idx) -}}
+  {{- end -}}
+  {{- if and (empty $external.toFQDNs) (empty $external.toCIDRSet) (empty $external.toEntities) (empty $external.toEndpoints) -}}
+    {{- fail (printf "egress.external[%d] must define at least one destination via toFQDNs, toCIDRSet, toEntities, or toEndpoints." $idx) -}}
+  {{- end -}}
+{{- end -}}
