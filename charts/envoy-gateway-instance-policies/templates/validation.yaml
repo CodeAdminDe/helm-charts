@@ -6,6 +6,14 @@
 {{- end -}}
 {{- end -}}
 
+{{- define "envoy-gateway-instance-policies.validation.requireMap" -}}
+{{- $value := index . 0 -}}
+{{- $path := index . 1 -}}
+{{- if not (kindIs "map" $value) -}}
+{{- fail (printf "%s must be a map/object." $path) -}}
+{{- end -}}
+{{- end -}}
+
 {{- define "envoy-gateway-instance-policies.validation.hasSecurityBody" -}}
 {{- $policy := index . 0 -}}
 {{- if or $policy.apiKeyAuth $policy.cors $policy.basicAuth $policy.jwt $policy.oidc $policy.extAuth $policy.authorization -}}
@@ -39,6 +47,7 @@ false
 
 {{- $securityNames := dict -}}
 {{- range $idx, $policy := .Values.securityPolicies -}}
+  {{- include "envoy-gateway-instance-policies.validation.requireMap" (list $policy (printf "securityPolicies[%d]" $idx)) -}}
   {{- if eq (include "envoy-gateway-instance-policies.itemEnabled" (list $policy)) "true" -}}
     {{- if empty $policy.name -}}
       {{- fail (printf "securityPolicies[%d].name must be set." $idx) -}}
@@ -60,6 +69,7 @@ false
       {{- fail (printf "securityPolicies[%d] must define at least one policy section such as basicAuth, jwt, oidc, extAuth, apiKeyAuth, cors, or authorization." $idx) -}}
     {{- end -}}
     {{- range $refIdx, $ref := $policy.targetRefs -}}
+      {{- include "envoy-gateway-instance-policies.validation.requireMap" (list $ref (printf "securityPolicies[%d].targetRefs[%d]" $idx $refIdx)) -}}
       {{- if or (empty $ref.group) (empty $ref.kind) (empty $ref.name) -}}
         {{- fail (printf "securityPolicies[%d].targetRefs[%d] must set group, kind, and name." $idx $refIdx) -}}
       {{- end -}}
@@ -132,6 +142,7 @@ false
 
 {{- $clientNames := dict -}}
 {{- range $idx, $policy := .Values.clientTrafficPolicies -}}
+  {{- include "envoy-gateway-instance-policies.validation.requireMap" (list $policy (printf "clientTrafficPolicies[%d]" $idx)) -}}
   {{- if eq (include "envoy-gateway-instance-policies.itemEnabled" (list $policy)) "true" -}}
     {{- if empty $policy.name -}}
       {{- fail (printf "clientTrafficPolicies[%d].name must be set." $idx) -}}
@@ -153,6 +164,7 @@ false
       {{- fail (printf "clientTrafficPolicies[%d] must define at least one client traffic policy section." $idx) -}}
     {{- end -}}
     {{- range $refIdx, $ref := $policy.targetRefs -}}
+      {{- include "envoy-gateway-instance-policies.validation.requireMap" (list $ref (printf "clientTrafficPolicies[%d].targetRefs[%d]" $idx $refIdx)) -}}
       {{- if or (empty $ref.group) (empty $ref.kind) (empty $ref.name) -}}
         {{- fail (printf "clientTrafficPolicies[%d].targetRefs[%d] must set group, kind, and name." $idx $refIdx) -}}
       {{- end -}}
@@ -174,6 +186,7 @@ false
 
 {{- $backendNames := dict -}}
 {{- range $idx, $policy := .Values.backendTrafficPolicies -}}
+  {{- include "envoy-gateway-instance-policies.validation.requireMap" (list $policy (printf "backendTrafficPolicies[%d]" $idx)) -}}
   {{- if eq (include "envoy-gateway-instance-policies.itemEnabled" (list $policy)) "true" -}}
     {{- if empty $policy.name -}}
       {{- fail (printf "backendTrafficPolicies[%d].name must be set." $idx) -}}
@@ -196,6 +209,7 @@ false
     {{- end -}}
     {{- $targetsGateway := false -}}
     {{- range $refIdx, $ref := $policy.targetRefs -}}
+      {{- include "envoy-gateway-instance-policies.validation.requireMap" (list $ref (printf "backendTrafficPolicies[%d].targetRefs[%d]" $idx $refIdx)) -}}
       {{- if or (empty $ref.group) (empty $ref.kind) (empty $ref.name) -}}
         {{- fail (printf "backendTrafficPolicies[%d].targetRefs[%d] must set group, kind, and name." $idx $refIdx) -}}
       {{- end -}}

@@ -35,10 +35,14 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 
 {{- define "envoy-gateway-instance-policies.itemEnabled" -}}
 {{- $item := index . 0 -}}
+{{- if not (kindIs "map" $item) -}}
+false
+{{- else -}}
 {{- if hasKey $item "enabled" -}}
 {{- $item.enabled -}}
 {{- else -}}
 true
+{{- end -}}
 {{- end -}}
 {{- end }}
 
