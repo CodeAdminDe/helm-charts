@@ -86,8 +86,9 @@ paperless:
     cookiePrefix: ""
     # -- Keep login sessions beyond browser close (`PAPERLESS_ACCOUNT_SESSION_REMEMBER`).
     sessionRemember: null
-    # -- Session cookie max age in seconds (`PAPERLESS_SESSION_COOKIE_AGE`).
-    sessionCookieAge: null
+    # -- Session cookie max age in seconds as a quoted string (`PAPERLESS_SESSION_COOKIE_AGE`).
+    # @description Quote numeric values, for example `"1209600"`.
+    sessionCookieAge: ""
     oidc:
       # -- Enable generic OpenID Connect SSO via django-allauth.
       enabled: false
