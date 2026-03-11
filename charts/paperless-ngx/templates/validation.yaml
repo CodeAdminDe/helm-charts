@@ -22,6 +22,69 @@
   {{- end -}}
 {{- end -}}
 
+{{- if and (or .Values.paperless.auth.oidc.enabled (gt (len (.Values.paperless.additionalApps | default (list))) 0)) (hasKey .Values.extraEnv "PAPERLESS_APPS") -}}
+{{- fail "Use paperless.additionalApps / paperless.auth.oidc instead of extraEnv.PAPERLESS_APPS to avoid duplicate env rendering." -}}
+{{- end -}}
+
+{{- if and .Values.paperless.auth.oidc.enabled (hasKey .Values.extraEnv "PAPERLESS_SOCIALACCOUNT_PROVIDERS") -}}
+{{- fail "paperless.auth.oidc.enabled=true cannot be combined with extraEnv.PAPERLESS_SOCIALACCOUNT_PROVIDERS. Use paperless.auth.oidc.existingSecret or the structured OIDC values instead." -}}
+{{- end -}}
+
+{{- if and .Values.paperless.auth.accountDefaultHttpProtocol (not (has .Values.paperless.auth.accountDefaultHttpProtocol (list "http" "https"))) -}}
+{{- fail "paperless.auth.accountDefaultHttpProtocol must be either \"http\" or \"https\" when set." -}}
+{{- end -}}
+
+{{- if .Values.paperless.bootstrapAdmin.enabled -}}
+  {{- if .Values.paperless.bootstrapAdmin.existingSecret.name -}}
+    {{- if or .Values.paperless.bootstrapAdmin.username .Values.paperless.bootstrapAdmin.password .Values.paperless.bootstrapAdmin.email -}}
+      {{- fail "paperless.bootstrapAdmin.existingSecret.name cannot be combined with inline bootstrapAdmin.username/password/email values." -}}
+    {{- end -}}
+    {{- if empty .Values.paperless.bootstrapAdmin.existingSecret.usernameKey -}}
+      {{- fail "paperless.bootstrapAdmin.existingSecret.usernameKey must be set when bootstrapAdmin uses an existing Secret." -}}
+    {{- end -}}
+    {{- if empty .Values.paperless.bootstrapAdmin.existingSecret.passwordKey -}}
+      {{- fail "paperless.bootstrapAdmin.existingSecret.passwordKey must be set when bootstrapAdmin uses an existing Secret." -}}
+    {{- end -}}
+  {{- else -}}
+    {{- if empty .Values.paperless.bootstrapAdmin.username -}}
+      {{- fail "paperless.bootstrapAdmin.username must be set when bootstrapAdmin.enabled=true and no existing Secret is used." -}}
+    {{- end -}}
+    {{- if empty .Values.paperless.bootstrapAdmin.password -}}
+      {{- fail "paperless.bootstrapAdmin.password must be set when bootstrapAdmin.enabled=true and no existing Secret is used. For production, prefer paperless.bootstrapAdmin.existingSecret." -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if .Values.paperless.auth.oidc.enabled -}}
+  {{- if empty .Values.paperless.auth.oidc.existingSecret.key -}}
+    {{- fail "paperless.auth.oidc.existingSecret.key must be set when OIDC is enabled." -}}
+  {{- end -}}
+  {{- if .Values.paperless.auth.oidc.existingSecret.name -}}
+    {{- if or .Values.paperless.auth.oidc.provider.serverUrl .Values.paperless.auth.oidc.provider.clientId .Values.paperless.auth.oidc.provider.clientSecret -}}
+      {{- fail "paperless.auth.oidc.existingSecret.name cannot be combined with generated provider fields. Use either paperless.auth.oidc.existingSecret or paperless.auth.oidc.provider.* generation inputs." -}}
+    {{- end -}}
+  {{- else -}}
+    {{- if empty .Values.paperless.auth.oidc.provider.providerId -}}
+      {{- fail "paperless.auth.oidc.provider.providerId must be set when generating the OIDC provider config." -}}
+    {{- end -}}
+    {{- if empty .Values.paperless.auth.oidc.provider.name -}}
+      {{- fail "paperless.auth.oidc.provider.name must be set when generating the OIDC provider config." -}}
+    {{- end -}}
+    {{- if empty .Values.paperless.auth.oidc.provider.serverUrl -}}
+      {{- fail "paperless.auth.oidc.provider.serverUrl must be set when generating the OIDC provider config." -}}
+    {{- end -}}
+    {{- if empty .Values.paperless.auth.oidc.provider.clientId -}}
+      {{- fail "paperless.auth.oidc.provider.clientId must be set when generating the OIDC provider config." -}}
+    {{- end -}}
+    {{- if empty .Values.paperless.auth.oidc.provider.clientSecret -}}
+      {{- fail "paperless.auth.oidc.provider.clientSecret must be set when generating the OIDC provider config. For production, prefer paperless.auth.oidc.existingSecret." -}}
+    {{- end -}}
+    {{- if not (has "openid" (.Values.paperless.auth.oidc.provider.scope | default (list))) -}}
+      {{- fail "paperless.auth.oidc.provider.scope must include \"openid\" when generating the OIDC provider config." -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
 {{- if and .Values.rbac.create (not .Values.serviceAccount.create) (empty .Values.serviceAccount.name) -}}
 {{- fail "rbac.create=true requires serviceAccount.create=true or a non-empty serviceAccount.name." -}}
 {{- end -}}

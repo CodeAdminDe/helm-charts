@@ -29,6 +29,20 @@
 * Writable runtime paths required by the official image are mounted explicitly at `/tmp`, `/run`, and `/usr/src/paperless/.gnupg`.
 * This chart intentionally does not mutate the official image to install extra OCR packages. Use `paperless.ocrLanguages` only for language packs already shipped in the upstream image.
 
+### Authentication and SSO
+
+* `paperless.auth.oidc.enabled=true` auto-enables `allauth.socialaccount.providers.openid_connect` and wires the Paperless OIDC login flags.
+* For production, prefer `paperless.auth.oidc.existingSecret` with a pre-created `PAPERLESS_SOCIALACCOUNT_PROVIDERS` payload from SealedSecrets / ExternalSecrets.
+* For quick onboarding, the chart can also generate that JSON from structured values under `paperless.auth.oidc.provider`, including Authentik-compatible discovery URLs.
+* When OIDC is enabled and `paperless.auth.accountDefaultHttpProtocol` is left empty, the chart derives it from the configured public URL, Gateway API, or Ingress scheme so callback URLs stay consistent behind reverse proxies.
+* `paperless.auth.oidc.syncGroups` and the default-group flags can GitOps user-to-group assignment, but Paperless does not document env-based group permission/RBAC seeding. If you want fully declarative group permissions, use a separate bootstrap job or management-command workflow.
+
+### GitOps bootstrap and branding
+
+* `paperless.bootstrapAdmin` can seed the initial admin user from either inline values or a pre-created Secret.
+* `paperless.branding` exposes optional UI title and custom logo settings.
+* Basic instance defaults such as `paperless.timeZone`, `paperless.ocrLanguage`, and `paperless.ocrLanguages` remain optional and are kept separate so a minimal install is not overloaded.
+
 ### Exposure model
 
 * Application services stay `ClusterIP` only.

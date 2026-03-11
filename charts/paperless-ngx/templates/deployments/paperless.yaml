@@ -1,5 +1,8 @@
 {{- $postgresMode := eq .Values.database.type "postgresql" -}}
 {{- $cnpgMode := and $postgresMode .Values.database.useCnpgCluster.enabled -}}
+{{- $paperlessApps := include "paperless-ngx.paperlessApps" . -}}
+{{- $accountDefaultHttpProtocol := include "paperless-ngx.accountDefaultHttpProtocol" . -}}
+{{- $bootstrapAdmin := .Values.paperless.bootstrapAdmin -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -74,6 +77,79 @@ spec:
               value: {{ include "paperless-ngx.publicUrl" . | quote }}
             - name: PAPERLESS_CSRF_TRUSTED_ORIGINS
               value: {{ include "paperless-ngx.publicUrl" . | quote }}
+            {{- end }}
+            {{- if .Values.paperless.branding.appTitle }}
+            - name: PAPERLESS_APP_TITLE
+              value: {{ .Values.paperless.branding.appTitle | quote }}
+            {{- end }}
+            {{- if .Values.paperless.branding.customLogoUrl }}
+            - name: PAPERLESS_CUSTOM_LOGO
+              value: {{ .Values.paperless.branding.customLogoUrl | quote }}
+            {{- end }}
+            {{- if $paperlessApps }}
+            - name: PAPERLESS_APPS
+              value: {{ $paperlessApps | quote }}
+            {{- end }}
+            {{- if $bootstrapAdmin.enabled }}
+            {{- if $bootstrapAdmin.existingSecret.name }}
+            - name: PAPERLESS_ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $bootstrapAdmin.existingSecret.name }}
+                  key: {{ $bootstrapAdmin.existingSecret.usernameKey | quote }}
+            - name: PAPERLESS_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $bootstrapAdmin.existingSecret.name }}
+                  key: {{ $bootstrapAdmin.existingSecret.passwordKey | quote }}
+            {{- if $bootstrapAdmin.existingSecret.emailKey }}
+            - name: PAPERLESS_ADMIN_MAIL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $bootstrapAdmin.existingSecret.name }}
+                  key: {{ $bootstrapAdmin.existingSecret.emailKey | quote }}
+            {{- end }}
+            {{- else }}
+            - name: PAPERLESS_ADMIN_USER
+              value: {{ $bootstrapAdmin.username | quote }}
+            - name: PAPERLESS_ADMIN_PASSWORD
+              value: {{ $bootstrapAdmin.password | quote }}
+            {{- if $bootstrapAdmin.email }}
+            - name: PAPERLESS_ADMIN_MAIL
+              value: {{ $bootstrapAdmin.email | quote }}
+            {{- end }}
+            {{- end }}
+            {{- end }}
+            - name: PAPERLESS_ACCOUNT_ALLOW_SIGNUPS
+              value: {{ ternary "true" "false" .Values.paperless.auth.allowSignups | quote }}
+            {{- with .Values.paperless.auth.defaultGroups }}
+            - name: PAPERLESS_ACCOUNT_DEFAULT_GROUPS
+              value: {{ join "," . | quote }}
+            {{- end }}
+            {{- if $accountDefaultHttpProtocol }}
+            - name: PAPERLESS_ACCOUNT_DEFAULT_HTTP_PROTOCOL
+              value: {{ $accountDefaultHttpProtocol | quote }}
+            {{- end }}
+            {{- if .Values.paperless.auth.oidc.enabled }}
+            - name: PAPERLESS_SOCIALACCOUNT_PROVIDERS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "paperless-ngx.oidcSecretName" . }}
+                  key: {{ include "paperless-ngx.oidcSecretKeyName" . | quote }}
+            - name: PAPERLESS_SOCIAL_AUTO_SIGNUP
+              value: {{ ternary "true" "false" .Values.paperless.auth.oidc.socialAutoSignup | quote }}
+            - name: PAPERLESS_SOCIALACCOUNT_ALLOW_SIGNUPS
+              value: {{ ternary "true" "false" .Values.paperless.auth.oidc.allowSignups | quote }}
+            - name: PAPERLESS_SOCIAL_ACCOUNT_SYNC_GROUPS
+              value: {{ ternary "true" "false" .Values.paperless.auth.oidc.syncGroups | quote }}
+            {{- with .Values.paperless.auth.oidc.defaultGroups }}
+            - name: PAPERLESS_SOCIAL_ACCOUNT_DEFAULT_GROUPS
+              value: {{ join "," . | quote }}
+            {{- end }}
+            - name: PAPERLESS_DISABLE_REGULAR_LOGIN
+              value: {{ ternary "true" "false" .Values.paperless.auth.oidc.disableRegularLogin | quote }}
+            - name: PAPERLESS_REDIRECT_LOGIN_TO_SSO
+              value: {{ ternary "true" "false" .Values.paperless.auth.oidc.redirectLoginToSso | quote }}
             {{- end }}
             {{- if .Values.paperless.timeZone }}
             - name: PAPERLESS_TIME_ZONE
