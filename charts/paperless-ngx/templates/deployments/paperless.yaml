@@ -3,6 +3,7 @@
 {{- $paperlessApps := include "paperless-ngx.paperlessApps" . -}}
 {{- $accountDefaultHttpProtocol := include "paperless-ngx.accountDefaultHttpProtocol" . -}}
 {{- $bootstrapAdmin := .Values.paperless.bootstrapAdmin -}}
+{{- $appLogoPath := include "paperless-ngx.appLogoPath" . -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -82,9 +83,9 @@ spec:
             - name: PAPERLESS_APP_TITLE
               value: {{ .Values.paperless.branding.appTitle | quote }}
             {{- end }}
-            {{- if .Values.paperless.branding.customLogoUrl }}
-            - name: PAPERLESS_CUSTOM_LOGO
-              value: {{ .Values.paperless.branding.customLogoUrl | quote }}
+            {{- if $appLogoPath }}
+            - name: PAPERLESS_APP_LOGO
+              value: {{ $appLogoPath | quote }}
             {{- end }}
             {{- if $paperlessApps }}
             - name: PAPERLESS_APPS
@@ -130,6 +131,26 @@ spec:
             - name: PAPERLESS_ACCOUNT_DEFAULT_HTTP_PROTOCOL
               value: {{ $accountDefaultHttpProtocol | quote }}
             {{- end }}
+            {{- if .Values.paperless.auth.emailVerification }}
+            - name: PAPERLESS_ACCOUNT_EMAIL_VERIFICATION
+              value: {{ .Values.paperless.auth.emailVerification | quote }}
+            {{- end }}
+            {{- if kindIs "bool" .Values.paperless.auth.emailUnknownAccounts }}
+            - name: PAPERLESS_ACCOUNT_EMAIL_UNKNOWN_ACCOUNTS
+              value: {{ ternary "true" "false" .Values.paperless.auth.emailUnknownAccounts | quote }}
+            {{- end }}
+            {{- if .Values.paperless.auth.cookiePrefix }}
+            - name: PAPERLESS_COOKIE_PREFIX
+              value: {{ .Values.paperless.auth.cookiePrefix | quote }}
+            {{- end }}
+            {{- if kindIs "bool" .Values.paperless.auth.sessionRemember }}
+            - name: PAPERLESS_ACCOUNT_SESSION_REMEMBER
+              value: {{ ternary "true" "false" .Values.paperless.auth.sessionRemember | quote }}
+            {{- end }}
+            {{- with .Values.paperless.auth.sessionCookieAge }}
+            - name: PAPERLESS_SESSION_COOKIE_AGE
+              value: {{ printf "%v" . | quote }}
+            {{- end }}
             {{- if .Values.paperless.auth.oidc.enabled }}
             - name: PAPERLESS_SOCIALACCOUNT_PROVIDERS
               valueFrom:
@@ -160,6 +181,18 @@ spec:
             {{- if .Values.paperless.ocrLanguages }}
             - name: PAPERLESS_OCR_LANGUAGES
               value: {{ .Values.paperless.ocrLanguages | quote }}
+            {{- end }}
+            {{- with .Values.paperless.hosting.trustedProxies }}
+            - name: PAPERLESS_TRUSTED_PROXIES
+              value: {{ join "," . | quote }}
+            {{- end }}
+            {{- if .Values.paperless.hosting.forceScriptName }}
+            - name: PAPERLESS_FORCE_SCRIPT_NAME
+              value: {{ .Values.paperless.hosting.forceScriptName | quote }}
+            {{- end }}
+            {{- if .Values.paperless.hosting.staticUrl }}
+            - name: PAPERLESS_STATIC_URL
+              value: {{ .Values.paperless.hosting.staticUrl | quote }}
             {{- end }}
             {{- if .Values.redis.enabled }}
             - name: PAPERLESS_REDIS_PASSWORD
@@ -318,6 +351,11 @@ spec:
             - name: gnupg
               mountPath: {{ .Values.gnupgVolume.mountPath }}
             {{- end }}
+            {{- if $appLogoPath }}
+            - name: app-logo
+              mountPath: {{ include "paperless-ngx.logoMountPath" . }}
+              readOnly: true
+            {{- end }}
             {{- with .Values.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -382,6 +420,22 @@ spec:
             {{- with .Values.gnupgVolume.sizeLimit }}
             sizeLimit: {{ . }}
             {{- end }}
+        {{- end }}
+        {{- if $appLogoPath }}
+        - name: app-logo
+          {{- if .Values.paperless.branding.logo.existingSecret.name }}
+          secret:
+            secretName: {{ .Values.paperless.branding.logo.existingSecret.name }}
+            items:
+              - key: {{ .Values.paperless.branding.logo.existingSecret.key | quote }}
+                path: {{ .Values.paperless.branding.logo.fileName | quote }}
+          {{- else }}
+          configMap:
+            name: {{ .Values.paperless.branding.logo.existingConfigMap.name }}
+            items:
+              - key: {{ .Values.paperless.branding.logo.existingConfigMap.key | quote }}
+                path: {{ .Values.paperless.branding.logo.fileName | quote }}
+          {{- end }}
         {{- end }}
         {{- with .Values.extraVolumes }}
         {{- toYaml . | nindent 8 }}
