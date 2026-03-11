@@ -31,6 +31,90 @@ paperless:
   # -- Additional OCR languages already shipped in the official image (`PAPERLESS_OCR_LANGUAGES`).
   # @description This chart intentionally does not install extra language packages into the upstream image.
   ocrLanguages: ""
+  branding:
+    # -- Optional application title shown in the Paperless UI (`PAPERLESS_APP_TITLE`).
+    appTitle: ""
+    # -- Optional custom logo URL shown in the Paperless UI (`PAPERLESS_CUSTOM_LOGO`).
+    customLogoUrl: ""
+  # -- Additional Django apps appended to `PAPERLESS_APPS`.
+  additionalApps: []
+  bootstrapAdmin:
+    # -- Ensure a Paperless admin user exists on startup.
+    enabled: false
+    # -- Initial admin username used with the convenience path.
+    username: ""
+    # -- Security note: prefer `paperless.bootstrapAdmin.existingSecret` in production.
+    # @description The convenience path stores the initial admin password in Helm values. For GitOps, prefer an existing Secret managed by ExternalSecrets or SealedSecrets.
+    password: ""
+    # -- Optional initial admin email used with the convenience path.
+    email: ""
+    existingSecret:
+      # -- Existing secret providing `PAPERLESS_ADMIN_*` bootstrap credentials.
+      name: ""
+      # -- Secret key for `PAPERLESS_ADMIN_USER`.
+      usernameKey: PAPERLESS_ADMIN_USER
+      # -- Secret key for `PAPERLESS_ADMIN_PASSWORD`.
+      passwordKey: PAPERLESS_ADMIN_PASSWORD
+      # -- Optional secret key for `PAPERLESS_ADMIN_MAIL`.
+      emailKey: ""
+  auth:
+    # -- Allow direct Paperless account signups.
+    allowSignups: false
+    # -- Default Paperless groups for direct account signups.
+    defaultGroups: []
+    # -- Override protocol used for callback and account URLs.
+    # @description When empty and OIDC is enabled, the chart derives this from `paperless.url`, Gateway API, or Ingress when possible.
+    accountDefaultHttpProtocol: ""
+    oidc:
+      # -- Enable generic OpenID Connect SSO via django-allauth.
+      enabled: false
+      existingSecret:
+        # -- Existing secret containing `PAPERLESS_SOCIALACCOUNT_PROVIDERS` JSON. Recommended for production / ExternalSecrets.
+        name: ""
+        # -- Secret key containing the `PAPERLESS_SOCIALACCOUNT_PROVIDERS` JSON payload.
+        key: PAPERLESS_SOCIALACCOUNT_PROVIDERS
+      provider:
+        # -- Provider ID used in callback URLs at `/accounts/oidc/<providerId>/login/callback/`.
+        providerId: oidc
+        # -- Provider label shown on the Paperless login page.
+        name: OpenID Connect
+        # -- OIDC discovery URL / server URL used by django-allauth.
+        serverUrl: ""
+        # -- OIDC client ID.
+        clientId: ""
+        # -- Security note: prefer `paperless.auth.oidc.existingSecret` in production.
+        # @description The convenience path stores the OIDC client secret in Helm values and renders it into a Kubernetes Secret.
+        clientSecret: ""
+        # -- Requested OIDC scopes.
+        scope:
+          - openid
+          - profile
+          - email
+        # -- Enable PKCE for the generated OIDC provider configuration.
+        usePkce: true
+        # -- Fetch the userinfo endpoint in addition to the ID token.
+        fetchUserInfo: true
+        # -- Optional token endpoint authentication method (`client_secret_basic` or `client_secret_post`).
+        tokenAuthMethod: ""
+        # -- Additional top-level django-allauth OpenID Connect provider keys merged into `openid_connect`.
+        extraProviderConfig: {}
+        # -- Additional per-app django-allauth OpenID Connect app keys merged into the generated app entry.
+        extraAppConfig: {}
+        # -- Additional django-allauth OIDC `settings` keys merged into the generated app settings block.
+        extraSettings: {}
+      # -- Attempt to create a Paperless account from IdP claims on first login.
+      socialAutoSignup: false
+      # -- Allow creating new Paperless accounts via OIDC.
+      allowSignups: false
+      # -- Sync Paperless groups from the IdP.
+      # @description When enabled, the chart automatically appends `groups` to the generated OIDC scope list.
+      syncGroups: false
+      # -- Default Paperless groups for newly created OIDC users.
+      defaultGroups: []
+      # -- Disable the frontend username/password login form once OIDC is configured.
+      disableRegularLogin: false
+      # -- Automatically redirect the login page to the first configured OIDC provider.
+      redirectLoginToSso: false
   secretKey:
     existingSecret:
       # -- Existing secret name containing `PAPERLESS_SECRET_KEY`. Leave empty to let the chart generate and preserve one.

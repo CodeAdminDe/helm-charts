@@ -178,6 +178,89 @@ http
 {{- end -}}
 {{- end }}
 
+{{/* Derived public URL scheme helper. */}}
+{{- define "paperless-ngx.publicScheme" -}}
+{{- $publicUrl := include "paperless-ngx.publicUrl" . -}}
+{{- if $publicUrl -}}
+{{- first (splitList "://" $publicUrl) -}}
+{{- end -}}
+{{- end }}
+
+{{/* Derived PAPERLESS_APPS helper. */}}
+{{- define "paperless-ngx.paperlessApps" -}}
+{{- $apps := list -}}
+{{- range .Values.paperless.additionalApps -}}
+  {{- if . -}}
+    {{- $apps = append $apps . -}}
+  {{- end -}}
+{{- end -}}
+{{- if .Values.paperless.auth.oidc.enabled -}}
+{{- $apps = append $apps "allauth.socialaccount.providers.openid_connect" -}}
+{{- end -}}
+{{- if gt (len $apps) 0 -}}
+{{- join "," (uniq $apps) -}}
+{{- end -}}
+{{- end }}
+
+{{/* Derived account default protocol helper. */}}
+{{- define "paperless-ngx.accountDefaultHttpProtocol" -}}
+{{- if .Values.paperless.auth.accountDefaultHttpProtocol -}}
+{{- .Values.paperless.auth.accountDefaultHttpProtocol -}}
+{{- else if .Values.paperless.auth.oidc.enabled -}}
+{{- include "paperless-ngx.publicScheme" . -}}
+{{- end -}}
+{{- end }}
+
+{{/* Secret name helper for OIDC provider config. */}}
+{{- define "paperless-ngx.oidcSecretName" -}}
+{{- if .Values.paperless.auth.oidc.existingSecret.name -}}
+{{- .Values.paperless.auth.oidc.existingSecret.name -}}
+{{- else -}}
+{{- printf "%s-oidc" (include "paperless-ngx.fullname" .) | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end }}
+
+{{/* Secret key helper for OIDC provider config. */}}
+{{- define "paperless-ngx.oidcSecretKeyName" -}}
+{{- default "PAPERLESS_SOCIALACCOUNT_PROVIDERS" .Values.paperless.auth.oidc.existingSecret.key -}}
+{{- end }}
+
+{{/* Generated django-allauth OpenID Connect provider JSON. */}}
+{{- define "paperless-ngx.oidcProvidersConfig" -}}
+{{- $oidc := .Values.paperless.auth.oidc -}}
+{{- $scope := $oidc.provider.scope | default (list) -}}
+{{- if and $oidc.syncGroups (not (has "groups" $scope)) -}}
+{{- $scope = append $scope "groups" -}}
+{{- end -}}
+{{- $providerConfig := dict -}}
+{{- if gt (len $scope) 0 -}}
+{{- $_ := set $providerConfig "SCOPE" $scope -}}
+{{- end -}}
+{{- $_ := set $providerConfig "OAUTH_PKCE_ENABLED" $oidc.provider.usePkce -}}
+{{- with $oidc.provider.extraProviderConfig -}}
+  {{- range $k, $v := . -}}
+    {{- $_ := set $providerConfig $k $v -}}
+  {{- end -}}
+{{- end -}}
+{{- $settings := dict "server_url" $oidc.provider.serverUrl "fetch_userinfo" $oidc.provider.fetchUserInfo -}}
+{{- with $oidc.provider.tokenAuthMethod -}}
+{{- $_ := set $settings "token_auth_method" . -}}
+{{- end -}}
+{{- with $oidc.provider.extraSettings -}}
+  {{- range $k, $v := . -}}
+    {{- $_ := set $settings $k $v -}}
+  {{- end -}}
+{{- end -}}
+{{- $app := dict "provider_id" $oidc.provider.providerId "name" $oidc.provider.name "client_id" $oidc.provider.clientId "secret" $oidc.provider.clientSecret "settings" $settings -}}
+{{- with $oidc.provider.extraAppConfig -}}
+  {{- range $k, $v := . -}}
+    {{- $_ := set $app $k $v -}}
+  {{- end -}}
+{{- end -}}
+{{- $_ := set $providerConfig "APPS" (list $app) -}}
+{{- toJson (dict "openid_connect" $providerConfig) -}}
+{{- end }}
+
 {{/* Internal or external Gotenberg endpoint helper. */}}
 {{- define "paperless-ngx.gotenbergEndpoint" -}}
 {{- if .Values.documentConversion.gotenbergEndpoint -}}

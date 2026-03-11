@@ -2,7 +2,7 @@
 
 # paperless-ngx
 
-![Version: 0.2.2](https://img.shields.io/badge/Version-0.2.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.20.10](https://img.shields.io/badge/AppVersion-2.20.10-informational?style=flat-square)
+![Version: 0.2.3](https://img.shields.io/badge/Version-0.2.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.20.10](https://img.shields.io/badge/AppVersion-2.20.10-informational?style=flat-square)
 
 A Helm chart for deploying Paperless-ngx on Kubernetes.
 
@@ -97,7 +97,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="additionalEnvSecrets"><a href="./values.yaml#L430">additionalEnvSecrets</a></td>
+			<td id="additionalEnvSecrets"><a href="./values.yaml#L514">additionalEnvSecrets</a></td>
 			<td>
 object
 </td>
@@ -123,7 +123,7 @@ additionalEnvSecrets:
 ```</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L533">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L617">affinity</a></td>
 			<td>
 object
 </td>
@@ -151,7 +151,7 @@ false
 			<td>Allow more than one Paperless pod. Disabled by default because the upstream container bundles web, consumer, and scheduler processes together.</td>
 		</tr>
 		<tr>
-			<td id="applyHealthChecks"><a href="./values.yaml#L445">applyHealthChecks</a></td>
+			<td id="applyHealthChecks"><a href="./values.yaml#L529">applyHealthChecks</a></td>
 			<td>
 bool
 </td>
@@ -165,7 +165,7 @@ true
 			<td>Enable startup, liveness, and readiness probes.</td>
 		</tr>
 		<tr>
-			<td id="applySecurity"><a href="./values.yaml#L143">applySecurity</a></td>
+			<td id="applySecurity"><a href="./values.yaml#L227">applySecurity</a></td>
 			<td>
 bool
 </td>
@@ -179,7 +179,7 @@ true
 			<td>Apply default pod and container security settings.</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L495">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L579">cnps</a></td>
 			<td>
 object
 </td>
@@ -217,7 +217,7 @@ object
 			<td>App-specific CiliumNetworkPolicies settings.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L509">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L593">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -231,7 +231,7 @@ true
 			<td>Allow egress traffic from the Paperless pod.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEndpoints"><a href="./values.yaml#L511">cnps.appTraffic.egress.toEndpoints</a></td>
+			<td id="cnps--appTraffic--egress--toEndpoints"><a href="./values.yaml#L595">cnps.appTraffic.egress.toEndpoints</a></td>
 			<td>
 list
 </td>
@@ -245,7 +245,7 @@ list
 			<td>Additional egress endpoint selectors.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L513">cnps.appTraffic.egress.toEntities</a></td>
+			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L597">cnps.appTraffic.egress.toEntities</a></td>
 			<td>
 list
 </td>
@@ -261,7 +261,7 @@ list
 			<td>Additional egress entities.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L516">cnps.appTraffic.egress.toPorts</a></td>
+			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L600">cnps.appTraffic.egress.toPorts</a></td>
 			<td>
 list
 </td>
@@ -280,7 +280,7 @@ list
 			<td>Additional egress ports.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L502">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L586">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -294,7 +294,7 @@ true
 			<td>Allow ingress traffic to the Paperless pod.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L504">cnps.appTraffic.ingress.fromEndpoints</a></td>
+			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L588">cnps.appTraffic.ingress.fromEndpoints</a></td>
 			<td>
 list
 </td>
@@ -308,7 +308,7 @@ list
 			<td>Additional ingress endpoint selectors.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L506">cnps.appTraffic.ingress.fromEntities</a></td>
+			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L590">cnps.appTraffic.ingress.fromEntities</a></td>
 			<td>
 list
 </td>
@@ -322,7 +322,7 @@ list
 			<td>Additional ingress entities.</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L498">cnps.cnpgTraffic.instanceExtraEgress</a></td>
+			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L582">cnps.cnpgTraffic.instanceExtraEgress</a></td>
 			<td>
 list
 </td>
@@ -336,7 +336,7 @@ list
 			<td>Extra egress rules for CNPG policy rendering.</td>
 		</tr>
 		<tr>
-			<td id="database"><a href="./values.yaml#L274">database</a></td>
+			<td id="database"><a href="./values.yaml#L358">database</a></td>
 			<td>
 object
 </td>
@@ -375,7 +375,7 @@ object
 			<td>Database configuration. SQLite is the default simple fallback; production deployments should prefer PostgreSQL or CNPG.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--database"><a href="./values.yaml#L283">database.postgres.database</a></td>
+			<td id="database--postgres--database"><a href="./values.yaml#L367">database.postgres.database</a></td>
 			<td>
 string
 </td>
@@ -389,7 +389,7 @@ string
 			<td>PostgreSQL database name.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--host"><a href="./values.yaml#L279">database.postgres.host</a></td>
+			<td id="database--postgres--host"><a href="./values.yaml#L363">database.postgres.host</a></td>
 			<td>
 string
 </td>
@@ -403,7 +403,7 @@ string
 			<td>PostgreSQL host when `database.type=postgresql` and CNPG is disabled.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--passwordSecret--key"><a href="./values.yaml#L292">database.postgres.passwordSecret.key</a></td>
+			<td id="database--postgres--passwordSecret--key"><a href="./values.yaml#L376">database.postgres.passwordSecret.key</a></td>
 			<td>
 string
 </td>
@@ -417,7 +417,7 @@ string
 			<td>Secret key containing the PostgreSQL password.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--passwordSecret--name"><a href="./values.yaml#L290">database.postgres.passwordSecret.name</a></td>
+			<td id="database--postgres--passwordSecret--name"><a href="./values.yaml#L374">database.postgres.passwordSecret.name</a></td>
 			<td>
 string
 </td>
@@ -431,7 +431,7 @@ string
 			<td>Existing secret containing the PostgreSQL password.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--port"><a href="./values.yaml#L281">database.postgres.port</a></td>
+			<td id="database--postgres--port"><a href="./values.yaml#L365">database.postgres.port</a></td>
 			<td>
 int
 </td>
@@ -445,7 +445,7 @@ int
 			<td>PostgreSQL port.</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--sslMode"><a href="./values.yaml#L287">database.postgres.sslMode</a></td>
+			<td id="database--postgres--sslMode"><a href="./values.yaml#L371">database.postgres.sslMode</a></td>
 			<td>
 string
 </td>
@@ -459,7 +459,7 @@ string
 			<td>PostgreSQL SSL mode (`PAPERLESS_DBSSLMODE`).</td>
 		</tr>
 		<tr>
-			<td id="database--postgres--user"><a href="./values.yaml#L285">database.postgres.user</a></td>
+			<td id="database--postgres--user"><a href="./values.yaml#L369">database.postgres.user</a></td>
 			<td>
 string
 </td>
@@ -473,7 +473,7 @@ string
 			<td>PostgreSQL username.</td>
 		</tr>
 		<tr>
-			<td id="database--type"><a href="./values.yaml#L276">database.type</a></td>
+			<td id="database--type"><a href="./values.yaml#L360">database.type</a></td>
 			<td>
 string
 </td>
@@ -487,7 +487,7 @@ string
 			<td>Database type. Supported values: `sqlite`, `postgresql`.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--appConnectionSecretName"><a href="./values.yaml#L301">database.useCnpgCluster.appConnectionSecretName</a></td>
+			<td id="database--useCnpgCluster--appConnectionSecretName"><a href="./values.yaml#L385">database.useCnpgCluster.appConnectionSecretName</a></td>
 			<td>
 string
 </td>
@@ -501,7 +501,7 @@ string
 			<td>Explicit CNPG app secret name. Defaults to `<clusterName>-app`.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--clusterName"><a href="./values.yaml#L297">database.useCnpgCluster.clusterName</a></td>
+			<td id="database--useCnpgCluster--clusterName"><a href="./values.yaml#L381">database.useCnpgCluster.clusterName</a></td>
 			<td>
 string
 </td>
@@ -515,7 +515,7 @@ string
 			<td>CNPG cluster name. The RW service is derived as `<clusterName>-rw`.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--enabled"><a href="./values.yaml#L295">database.useCnpgCluster.enabled</a></td>
+			<td id="database--useCnpgCluster--enabled"><a href="./values.yaml#L379">database.useCnpgCluster.enabled</a></td>
 			<td>
 bool
 </td>
@@ -529,7 +529,7 @@ false
 			<td>Resolve PostgreSQL credentials from an existing CNPG app secret.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--port"><a href="./values.yaml#L299">database.useCnpgCluster.port</a></td>
+			<td id="database--useCnpgCluster--port"><a href="./values.yaml#L383">database.useCnpgCluster.port</a></td>
 			<td>
 int
 </td>
@@ -543,7 +543,7 @@ int
 			<td>CNPG RW service port.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--secretKeys--database"><a href="./values.yaml#L306">database.useCnpgCluster.secretKeys.database</a></td>
+			<td id="database--useCnpgCluster--secretKeys--database"><a href="./values.yaml#L390">database.useCnpgCluster.secretKeys.database</a></td>
 			<td>
 string
 </td>
@@ -557,7 +557,7 @@ string
 			<td>Key containing the PostgreSQL database name in the CNPG app secret.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--secretKeys--password"><a href="./values.yaml#L310">database.useCnpgCluster.secretKeys.password</a></td>
+			<td id="database--useCnpgCluster--secretKeys--password"><a href="./values.yaml#L394">database.useCnpgCluster.secretKeys.password</a></td>
 			<td>
 string
 </td>
@@ -571,7 +571,7 @@ string
 			<td>Key containing the PostgreSQL password in the CNPG app secret.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--secretKeys--username"><a href="./values.yaml#L308">database.useCnpgCluster.secretKeys.username</a></td>
+			<td id="database--useCnpgCluster--secretKeys--username"><a href="./values.yaml#L392">database.useCnpgCluster.secretKeys.username</a></td>
 			<td>
 string
 </td>
@@ -585,7 +585,7 @@ string
 			<td>Key containing the PostgreSQL username in the CNPG app secret.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--sslMode"><a href="./values.yaml#L303">database.useCnpgCluster.sslMode</a></td>
+			<td id="database--useCnpgCluster--sslMode"><a href="./values.yaml#L387">database.useCnpgCluster.sslMode</a></td>
 			<td>
 string
 </td>
@@ -599,7 +599,7 @@ string
 			<td>PostgreSQL SSL mode (`PAPERLESS_DBSSLMODE`) used with CNPG.</td>
 		</tr>
 		<tr>
-			<td id="documentConversion"><a href="./values.yaml#L313">documentConversion</a></td>
+			<td id="documentConversion"><a href="./values.yaml#L397">documentConversion</a></td>
 			<td>
 object
 </td>
@@ -617,7 +617,7 @@ object
 			<td>Optional document conversion support for Office documents and `.eml` conversion.</td>
 		</tr>
 		<tr>
-			<td id="documentConversion--enabled"><a href="./values.yaml#L315">documentConversion.enabled</a></td>
+			<td id="documentConversion--enabled"><a href="./values.yaml#L399">documentConversion.enabled</a></td>
 			<td>
 bool
 </td>
@@ -631,7 +631,7 @@ false
 			<td>Enable Paperless Tika/Gotenberg integration.</td>
 		</tr>
 		<tr>
-			<td id="documentConversion--gotenbergEndpoint"><a href="./values.yaml#L317">documentConversion.gotenbergEndpoint</a></td>
+			<td id="documentConversion--gotenbergEndpoint"><a href="./values.yaml#L401">documentConversion.gotenbergEndpoint</a></td>
 			<td>
 string
 </td>
@@ -645,7 +645,7 @@ string
 			<td>External Gotenberg endpoint. Leave empty to use the in-chart Gotenberg deployment when `gotenberg.enabled=true`.</td>
 		</tr>
 		<tr>
-			<td id="documentConversion--tikaEndpoint"><a href="./values.yaml#L319">documentConversion.tikaEndpoint</a></td>
+			<td id="documentConversion--tikaEndpoint"><a href="./values.yaml#L403">documentConversion.tikaEndpoint</a></td>
 			<td>
 string
 </td>
@@ -659,7 +659,7 @@ string
 			<td>External Tika endpoint. Leave empty to use the in-chart Tika deployment when `tika.enabled=true`.</td>
 		</tr>
 		<tr>
-			<td id="envFromConfigMaps"><a href="./values.yaml#L436">envFromConfigMaps</a></td>
+			<td id="envFromConfigMaps"><a href="./values.yaml#L520">envFromConfigMaps</a></td>
 			<td>
 list
 </td>
@@ -673,7 +673,7 @@ list
 			<td>Import all keys from listed existing configmaps.</td>
 		</tr>
 		<tr>
-			<td id="envFromSecrets"><a href="./values.yaml#L433">envFromSecrets</a></td>
+			<td id="envFromSecrets"><a href="./values.yaml#L517">envFromSecrets</a></td>
 			<td>
 list
 </td>
@@ -687,7 +687,7 @@ list
 			<td>Import all keys from listed existing secrets.</td>
 		</tr>
 		<tr>
-			<td id="extraEnv"><a href="./values.yaml#L413">extraEnv</a></td>
+			<td id="extraEnv"><a href="./values.yaml#L497">extraEnv</a></td>
 			<td>
 object
 </td>
@@ -701,7 +701,7 @@ object
 			<td>Additional non-sensitive environment variables passed to Paperless.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumeMounts"><a href="./values.yaml#L442">extraVolumeMounts</a></td>
+			<td id="extraVolumeMounts"><a href="./values.yaml#L526">extraVolumeMounts</a></td>
 			<td>
 list
 </td>
@@ -715,7 +715,7 @@ list
 			<td>Additional volume mounts for the main Paperless container.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumes"><a href="./values.yaml#L439">extraVolumes</a></td>
+			<td id="extraVolumes"><a href="./values.yaml#L523">extraVolumes</a></td>
 			<td>
 list
 </td>
@@ -743,7 +743,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gatewayApi"><a href="./values.yaml#L85">gatewayApi</a></td>
+			<td id="gatewayApi"><a href="./values.yaml#L169">gatewayApi</a></td>
 			<td>
 object
 </td>
@@ -786,7 +786,7 @@ object
 			<td>Gateway API HTTPRoute configuration.</td>
 		</tr>
 		<tr>
-			<td id="gatewayApi--annotations"><a href="./values.yaml#L96">gatewayApi.annotations</a></td>
+			<td id="gatewayApi--annotations"><a href="./values.yaml#L180">gatewayApi.annotations</a></td>
 			<td>
 object
 </td>
@@ -800,7 +800,7 @@ object
 			<td>HTTPRoute annotations.</td>
 		</tr>
 		<tr>
-			<td id="gatewayApi--backendRefs"><a href="./values.yaml#L115">gatewayApi.backendRefs</a></td>
+			<td id="gatewayApi--backendRefs"><a href="./values.yaml#L199">gatewayApi.backendRefs</a></td>
 			<td>
 list
 </td>
@@ -814,7 +814,7 @@ list
 			<td>Optional backend references. Defaults to the main Paperless service when empty.</td>
 		</tr>
 		<tr>
-			<td id="gatewayApi--controllerSelector"><a href="./values.yaml#L92">gatewayApi.controllerSelector</a></td>
+			<td id="gatewayApi--controllerSelector"><a href="./values.yaml#L176">gatewayApi.controllerSelector</a></td>
 			<td>
 object
 </td>
@@ -831,7 +831,7 @@ object
 			<td>Labels for the Gateway API controller pods, used to generate default CiliumNetworkPolicies ingress rules. If empty, you must provide explicit `cnps.appTraffic.ingress.fromEndpoints` when gatewayApi is enabled.</td>
 		</tr>
 		<tr>
-			<td id="gatewayApi--enabled"><a href="./values.yaml#L87">gatewayApi.enabled</a></td>
+			<td id="gatewayApi--enabled"><a href="./values.yaml#L171">gatewayApi.enabled</a></td>
 			<td>
 bool
 </td>
@@ -845,7 +845,7 @@ false
 			<td>Enable HTTPRoute resource creation.</td>
 		</tr>
 		<tr>
-			<td id="gatewayApi--filters"><a href="./values.yaml#L113">gatewayApi.filters</a></td>
+			<td id="gatewayApi--filters"><a href="./values.yaml#L197">gatewayApi.filters</a></td>
 			<td>
 list
 </td>
@@ -859,7 +859,7 @@ list
 			<td>Optional filters for the HTTPRoute rule.</td>
 		</tr>
 		<tr>
-			<td id="gatewayApi--hostnames"><a href="./values.yaml#L105">gatewayApi.hostnames</a></td>
+			<td id="gatewayApi--hostnames"><a href="./values.yaml#L189">gatewayApi.hostnames</a></td>
 			<td>
 list
 </td>
@@ -875,7 +875,7 @@ list
 			<td>Hostnames served by this route.</td>
 		</tr>
 		<tr>
-			<td id="gatewayApi--labels"><a href="./values.yaml#L98">gatewayApi.labels</a></td>
+			<td id="gatewayApi--labels"><a href="./values.yaml#L182">gatewayApi.labels</a></td>
 			<td>
 object
 </td>
@@ -889,7 +889,7 @@ object
 			<td>HTTPRoute labels.</td>
 		</tr>
 		<tr>
-			<td id="gatewayApi--matches"><a href="./values.yaml#L108">gatewayApi.matches</a></td>
+			<td id="gatewayApi--matches"><a href="./values.yaml#L192">gatewayApi.matches</a></td>
 			<td>
 list
 </td>
@@ -910,7 +910,7 @@ list
 			<td>Match rules for the default HTTPRoute rule.</td>
 		</tr>
 		<tr>
-			<td id="gatewayApi--parentRefs"><a href="./values.yaml#L100">gatewayApi.parentRefs</a></td>
+			<td id="gatewayApi--parentRefs"><a href="./values.yaml#L184">gatewayApi.parentRefs</a></td>
 			<td>
 list
 </td>
@@ -930,7 +930,7 @@ list
 			<td>ParentRefs for the HTTPRoute.</td>
 		</tr>
 		<tr>
-			<td id="gatewayApi--scheme"><a href="./values.yaml#L89">gatewayApi.scheme</a></td>
+			<td id="gatewayApi--scheme"><a href="./values.yaml#L173">gatewayApi.scheme</a></td>
 			<td>
 string
 </td>
@@ -944,7 +944,7 @@ string
 			<td>Public URL scheme used when deriving `paperless.url` from Gateway API.</td>
 		</tr>
 		<tr>
-			<td id="gnupgVolume"><a href="./values.yaml#L181">gnupgVolume</a></td>
+			<td id="gnupgVolume"><a href="./values.yaml#L265">gnupgVolume</a></td>
 			<td>
 object
 </td>
@@ -962,7 +962,7 @@ object
 			<td>Writable GnuPG directory used by Paperless for optional mail/decryption features.</td>
 		</tr>
 		<tr>
-			<td id="gnupgVolume--enabled"><a href="./values.yaml#L183">gnupgVolume.enabled</a></td>
+			<td id="gnupgVolume--enabled"><a href="./values.yaml#L267">gnupgVolume.enabled</a></td>
 			<td>
 bool
 </td>
@@ -976,7 +976,7 @@ true
 			<td>Enable a writable `emptyDir` for `/usr/src/paperless/.gnupg`.</td>
 		</tr>
 		<tr>
-			<td id="gnupgVolume--mountPath"><a href="./values.yaml#L185">gnupgVolume.mountPath</a></td>
+			<td id="gnupgVolume--mountPath"><a href="./values.yaml#L269">gnupgVolume.mountPath</a></td>
 			<td>
 string
 </td>
@@ -990,7 +990,7 @@ string
 			<td>Mount path.</td>
 		</tr>
 		<tr>
-			<td id="gnupgVolume--sizeLimit"><a href="./values.yaml#L187">gnupgVolume.sizeLimit</a></td>
+			<td id="gnupgVolume--sizeLimit"><a href="./values.yaml#L271">gnupgVolume.sizeLimit</a></td>
 			<td>
 string
 </td>
@@ -1004,7 +1004,7 @@ string
 			<td>Optional size limit.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg"><a href="./values.yaml#L322">gotenberg</a></td>
+			<td id="gotenberg"><a href="./values.yaml#L406">gotenberg</a></td>
 			<td>
 object
 </td>
@@ -1058,7 +1058,7 @@ object
 			<td>Gotenberg helper deployment using the official upstream image.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--args"><a href="./values.yaml#L347">gotenberg.args</a></td>
+			<td id="gotenberg--args"><a href="./values.yaml#L431">gotenberg.args</a></td>
 			<td>
 list
 </td>
@@ -1075,7 +1075,7 @@ list
 			<td>Default upstream-compatible flags.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--command"><a href="./values.yaml#L344">gotenberg.command</a></td>
+			<td id="gotenberg--command"><a href="./values.yaml#L428">gotenberg.command</a></td>
 			<td>
 list
 </td>
@@ -1091,7 +1091,7 @@ list
 			<td>Command override.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--enabled"><a href="./values.yaml#L324">gotenberg.enabled</a></td>
+			<td id="gotenberg--enabled"><a href="./values.yaml#L408">gotenberg.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1105,7 +1105,7 @@ true
 			<td>Deploy the internal Gotenberg helper service when `documentConversion.enabled=true`.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--image--pullPolicy"><a href="./values.yaml#L329">gotenberg.image.pullPolicy</a></td>
+			<td id="gotenberg--image--pullPolicy"><a href="./values.yaml#L413">gotenberg.image.pullPolicy</a></td>
 			<td>
 string
 </td>
@@ -1119,7 +1119,7 @@ string
 			<td>Image pull policy.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--image--repository"><a href="./values.yaml#L327">gotenberg.image.repository</a></td>
+			<td id="gotenberg--image--repository"><a href="./values.yaml#L411">gotenberg.image.repository</a></td>
 			<td>
 string
 </td>
@@ -1133,7 +1133,7 @@ string
 			<td>Image repository.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--image--tag"><a href="./values.yaml#L331">gotenberg.image.tag</a></td>
+			<td id="gotenberg--image--tag"><a href="./values.yaml#L415">gotenberg.image.tag</a></td>
 			<td>
 string
 </td>
@@ -1147,7 +1147,7 @@ string
 			<td>Image tag.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--resources"><a href="./values.yaml#L368">gotenberg.resources</a></td>
+			<td id="gotenberg--resources"><a href="./values.yaml#L452">gotenberg.resources</a></td>
 			<td>
 object
 </td>
@@ -1161,7 +1161,7 @@ object
 			<td>Resource requests and limits.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--securityContext"><a href="./values.yaml#L351">gotenberg.securityContext</a></td>
+			<td id="gotenberg--securityContext"><a href="./values.yaml#L435">gotenberg.securityContext</a></td>
 			<td>
 object
 </td>
@@ -1187,7 +1187,7 @@ object
 			<td>Container security context.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--service--annotations"><a href="./values.yaml#L334">gotenberg.service.annotations</a></td>
+			<td id="gotenberg--service--annotations"><a href="./values.yaml#L418">gotenberg.service.annotations</a></td>
 			<td>
 object
 </td>
@@ -1201,7 +1201,7 @@ object
 			<td>Service annotations.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--service--labels"><a href="./values.yaml#L336">gotenberg.service.labels</a></td>
+			<td id="gotenberg--service--labels"><a href="./values.yaml#L420">gotenberg.service.labels</a></td>
 			<td>
 object
 </td>
@@ -1215,7 +1215,7 @@ object
 			<td>Service labels.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--service--port"><a href="./values.yaml#L338">gotenberg.service.port</a></td>
+			<td id="gotenberg--service--port"><a href="./values.yaml#L422">gotenberg.service.port</a></td>
 			<td>
 int
 </td>
@@ -1229,7 +1229,7 @@ int
 			<td>Service port.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--service--targetPort"><a href="./values.yaml#L340">gotenberg.service.targetPort</a></td>
+			<td id="gotenberg--service--targetPort"><a href="./values.yaml#L424">gotenberg.service.targetPort</a></td>
 			<td>
 int
 </td>
@@ -1243,7 +1243,7 @@ int
 			<td>Container target port.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--service--targetProtocol"><a href="./values.yaml#L342">gotenberg.service.targetProtocol</a></td>
+			<td id="gotenberg--service--targetProtocol"><a href="./values.yaml#L426">gotenberg.service.targetProtocol</a></td>
 			<td>
 string
 </td>
@@ -1257,7 +1257,7 @@ string
 			<td>Service protocol.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--tmpVolume--enabled"><a href="./values.yaml#L362">gotenberg.tmpVolume.enabled</a></td>
+			<td id="gotenberg--tmpVolume--enabled"><a href="./values.yaml#L446">gotenberg.tmpVolume.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1271,7 +1271,7 @@ true
 			<td>Mount writable `emptyDir` at `/tmp`.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--tmpVolume--mountPath"><a href="./values.yaml#L364">gotenberg.tmpVolume.mountPath</a></td>
+			<td id="gotenberg--tmpVolume--mountPath"><a href="./values.yaml#L448">gotenberg.tmpVolume.mountPath</a></td>
 			<td>
 string
 </td>
@@ -1285,7 +1285,7 @@ string
 			<td>Mount path.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--tmpVolume--sizeLimit"><a href="./values.yaml#L366">gotenberg.tmpVolume.sizeLimit</a></td>
+			<td id="gotenberg--tmpVolume--sizeLimit"><a href="./values.yaml#L450">gotenberg.tmpVolume.sizeLimit</a></td>
 			<td>
 string
 </td>
@@ -1373,7 +1373,7 @@ list
 			<td>Image pull secrets for private registries.</td>
 		</tr>
 		<tr>
-			<td id="ingress"><a href="./values.yaml#L57">ingress</a></td>
+			<td id="ingress"><a href="./values.yaml#L141">ingress</a></td>
 			<td>
 object
 </td>
@@ -1414,7 +1414,7 @@ object
 			<td>Ingress configuration (ingress-nginx style).</td>
 		</tr>
 		<tr>
-			<td id="ingress--annotations"><a href="./values.yaml#L63">ingress.annotations</a></td>
+			<td id="ingress--annotations"><a href="./values.yaml#L147">ingress.annotations</a></td>
 			<td>
 object
 </td>
@@ -1428,7 +1428,7 @@ object
 			<td>Additional ingress annotations.</td>
 		</tr>
 		<tr>
-			<td id="ingress--className"><a href="./values.yaml#L61">ingress.className</a></td>
+			<td id="ingress--className"><a href="./values.yaml#L145">ingress.className</a></td>
 			<td>
 string
 </td>
@@ -1442,7 +1442,7 @@ string
 			<td>Ingress class name.</td>
 		</tr>
 		<tr>
-			<td id="ingress--enabled"><a href="./values.yaml#L59">ingress.enabled</a></td>
+			<td id="ingress--enabled"><a href="./values.yaml#L143">ingress.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1456,7 +1456,7 @@ false
 			<td>Enable ingress resource creation.</td>
 		</tr>
 		<tr>
-			<td id="ingress--hosts"><a href="./values.yaml#L76">ingress.hosts</a></td>
+			<td id="ingress--hosts"><a href="./values.yaml#L160">ingress.hosts</a></td>
 			<td>
 list
 </td>
@@ -1480,7 +1480,7 @@ list
 			<td>Host/path rules.</td>
 		</tr>
 		<tr>
-			<td id="ingress--secureDefaults"><a href="./values.yaml#L65">ingress.secureDefaults</a></td>
+			<td id="ingress--secureDefaults"><a href="./values.yaml#L149">ingress.secureDefaults</a></td>
 			<td>
 object
 </td>
@@ -1504,7 +1504,7 @@ object
 			<td>Secure default ingress annotations for uploads and long-running requests.</td>
 		</tr>
 		<tr>
-			<td id="ingress--secureDefaults--enabled"><a href="./values.yaml#L67">ingress.secureDefaults.enabled</a></td>
+			<td id="ingress--secureDefaults--enabled"><a href="./values.yaml#L151">ingress.secureDefaults.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1518,7 +1518,7 @@ true
 			<td>Enable secure default ingress annotations.</td>
 		</tr>
 		<tr>
-			<td id="ingress--tls"><a href="./values.yaml#L82">ingress.tls</a></td>
+			<td id="ingress--tls"><a href="./values.yaml#L166">ingress.tls</a></td>
 			<td>
 list
 </td>
@@ -1532,7 +1532,7 @@ list
 			<td>TLS host/secret blocks.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L488">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L572">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -1549,7 +1549,7 @@ object
 			<td>Optional `libchart-cnps` integration.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--enabled"><a href="./values.yaml#L490">libchartCnps.enabled</a></td>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L574">libchartCnps.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1563,7 +1563,7 @@ false
 			<td>Enable CiliumNetworkPolicy rendering via the `libchart-cnps` dependency.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L492">libchartCnps.includeCnpgPolicies</a></td>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L576">libchartCnps.includeCnpgPolicies</a></td>
 			<td>
 bool
 </td>
@@ -1577,7 +1577,7 @@ false
 			<td>Include the CNPG traffic policy set.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L448">livenessProbe</a></td>
+			<td id="livenessProbe"><a href="./values.yaml#L532">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -1614,7 +1614,7 @@ string
 			<td>Override release-based naming.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L527">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L611">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -1636,6 +1636,59 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
+  "additionalApps": [],
+  "auth": {
+    "accountDefaultHttpProtocol": "",
+    "allowSignups": false,
+    "defaultGroups": [],
+    "oidc": {
+      "allowSignups": false,
+      "defaultGroups": [],
+      "disableRegularLogin": false,
+      "enabled": false,
+      "existingSecret": {
+        "key": "PAPERLESS_SOCIALACCOUNT_PROVIDERS",
+        "name": ""
+      },
+      "provider": {
+        "clientId": "",
+        "clientSecret": "",
+        "extraAppConfig": {},
+        "extraProviderConfig": {},
+        "extraSettings": {},
+        "fetchUserInfo": true,
+        "name": "OpenID Connect",
+        "providerId": "oidc",
+        "scope": [
+          "openid",
+          "profile",
+          "email"
+        ],
+        "serverUrl": "",
+        "tokenAuthMethod": "",
+        "usePkce": true
+      },
+      "redirectLoginToSso": false,
+      "socialAutoSignup": false,
+      "syncGroups": false
+    }
+  },
+  "bootstrapAdmin": {
+    "email": "",
+    "enabled": false,
+    "existingSecret": {
+      "emailKey": "",
+      "name": "",
+      "passwordKey": "PAPERLESS_ADMIN_PASSWORD",
+      "usernameKey": "PAPERLESS_ADMIN_USER"
+    },
+    "password": "",
+    "username": ""
+  },
+  "branding": {
+    "appTitle": "",
+    "customLogoUrl": ""
+  },
   "ocrLanguage": "eng",
   "ocrLanguages": "",
   "secretKey": {
@@ -1651,6 +1704,500 @@ object
 </div>
 			</td>
 			<td>Paperless application settings.</td>
+		</tr>
+		<tr>
+			<td id="paperless--additionalApps"><a href="./values.yaml#L40">paperless.additionalApps</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Additional Django apps appended to `PAPERLESS_APPS`.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--accountDefaultHttpProtocol"><a href="./values.yaml#L67">paperless.auth.accountDefaultHttpProtocol</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Override protocol used for callback and account URLs. @description When empty and OIDC is enabled, the chart derives this from `paperless.url`, Gateway API, or Ingress when possible.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--allowSignups"><a href="./values.yaml#L62">paperless.auth.allowSignups</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Allow direct Paperless account signups.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--defaultGroups"><a href="./values.yaml#L64">paperless.auth.defaultGroups</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Default Paperless groups for direct account signups.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--allowSignups"><a href="./values.yaml#L108">paperless.auth.oidc.allowSignups</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Allow creating new Paperless accounts via OIDC.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--defaultGroups"><a href="./values.yaml#L113">paperless.auth.oidc.defaultGroups</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Default Paperless groups for newly created OIDC users.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--disableRegularLogin"><a href="./values.yaml#L115">paperless.auth.oidc.disableRegularLogin</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Disable the frontend username/password login form once OIDC is configured.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--enabled"><a href="./values.yaml#L70">paperless.auth.oidc.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Enable generic OpenID Connect SSO via django-allauth.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--existingSecret--key"><a href="./values.yaml#L75">paperless.auth.oidc.existingSecret.key</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"PAPERLESS_SOCIALACCOUNT_PROVIDERS"
+</pre>
+</div>
+			</td>
+			<td>Secret key containing the `PAPERLESS_SOCIALACCOUNT_PROVIDERS` JSON payload.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--existingSecret--name"><a href="./values.yaml#L73">paperless.auth.oidc.existingSecret.name</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Existing secret containing `PAPERLESS_SOCIALACCOUNT_PROVIDERS` JSON. Recommended for production / ExternalSecrets.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--provider--clientId"><a href="./values.yaml#L84">paperless.auth.oidc.provider.clientId</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>OIDC client ID.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--provider--clientSecret"><a href="./values.yaml#L87">paperless.auth.oidc.provider.clientSecret</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Security note: prefer `paperless.auth.oidc.existingSecret` in production. @description The convenience path stores the OIDC client secret in Helm values and renders it into a Kubernetes Secret.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--provider--extraAppConfig"><a href="./values.yaml#L102">paperless.auth.oidc.provider.extraAppConfig</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>Additional per-app django-allauth OpenID Connect app keys merged into the generated app entry.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--provider--extraProviderConfig"><a href="./values.yaml#L100">paperless.auth.oidc.provider.extraProviderConfig</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>Additional top-level django-allauth OpenID Connect provider keys merged into `openid_connect`.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--provider--extraSettings"><a href="./values.yaml#L104">paperless.auth.oidc.provider.extraSettings</a></td>
+			<td>
+object
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+{}
+</pre>
+</div>
+			</td>
+			<td>Additional django-allauth OIDC `settings` keys merged into the generated app settings block.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--provider--fetchUserInfo"><a href="./values.yaml#L96">paperless.auth.oidc.provider.fetchUserInfo</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Fetch the userinfo endpoint in addition to the ID token.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--provider--name"><a href="./values.yaml#L80">paperless.auth.oidc.provider.name</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"OpenID Connect"
+</pre>
+</div>
+			</td>
+			<td>Provider label shown on the Paperless login page.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--provider--providerId"><a href="./values.yaml#L78">paperless.auth.oidc.provider.providerId</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"oidc"
+</pre>
+</div>
+			</td>
+			<td>Provider ID used in callback URLs at `/accounts/oidc/<providerId>/login/callback/`.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--provider--scope"><a href="./values.yaml#L89">paperless.auth.oidc.provider.scope</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[
+  "openid",
+  "profile",
+  "email"
+]
+</pre>
+</div>
+			</td>
+			<td>Requested OIDC scopes.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--provider--serverUrl"><a href="./values.yaml#L82">paperless.auth.oidc.provider.serverUrl</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>OIDC discovery URL / server URL used by django-allauth.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--provider--tokenAuthMethod"><a href="./values.yaml#L98">paperless.auth.oidc.provider.tokenAuthMethod</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Optional token endpoint authentication method (`client_secret_basic` or `client_secret_post`).</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--provider--usePkce"><a href="./values.yaml#L94">paperless.auth.oidc.provider.usePkce</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td>Enable PKCE for the generated OIDC provider configuration.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--redirectLoginToSso"><a href="./values.yaml#L117">paperless.auth.oidc.redirectLoginToSso</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Automatically redirect the login page to the first configured OIDC provider.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--socialAutoSignup"><a href="./values.yaml#L106">paperless.auth.oidc.socialAutoSignup</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Attempt to create a Paperless account from IdP claims on first login.</td>
+		</tr>
+		<tr>
+			<td id="paperless--auth--oidc--syncGroups"><a href="./values.yaml#L111">paperless.auth.oidc.syncGroups</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Sync Paperless groups from the IdP. @description When enabled, the chart automatically appends `groups` to the generated OIDC scope list.</td>
+		</tr>
+		<tr>
+			<td id="paperless--bootstrapAdmin--email"><a href="./values.yaml#L50">paperless.bootstrapAdmin.email</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Optional initial admin email used with the convenience path.</td>
+		</tr>
+		<tr>
+			<td id="paperless--bootstrapAdmin--enabled"><a href="./values.yaml#L43">paperless.bootstrapAdmin.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+false
+</pre>
+</div>
+			</td>
+			<td>Ensure a Paperless admin user exists on startup.</td>
+		</tr>
+		<tr>
+			<td id="paperless--bootstrapAdmin--existingSecret--emailKey"><a href="./values.yaml#L59">paperless.bootstrapAdmin.existingSecret.emailKey</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Optional secret key for `PAPERLESS_ADMIN_MAIL`.</td>
+		</tr>
+		<tr>
+			<td id="paperless--bootstrapAdmin--existingSecret--name"><a href="./values.yaml#L53">paperless.bootstrapAdmin.existingSecret.name</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Existing secret providing `PAPERLESS_ADMIN_*` bootstrap credentials.</td>
+		</tr>
+		<tr>
+			<td id="paperless--bootstrapAdmin--existingSecret--passwordKey"><a href="./values.yaml#L57">paperless.bootstrapAdmin.existingSecret.passwordKey</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"PAPERLESS_ADMIN_PASSWORD"
+</pre>
+</div>
+			</td>
+			<td>Secret key for `PAPERLESS_ADMIN_PASSWORD`.</td>
+		</tr>
+		<tr>
+			<td id="paperless--bootstrapAdmin--existingSecret--usernameKey"><a href="./values.yaml#L55">paperless.bootstrapAdmin.existingSecret.usernameKey</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"PAPERLESS_ADMIN_USER"
+</pre>
+</div>
+			</td>
+			<td>Secret key for `PAPERLESS_ADMIN_USER`.</td>
+		</tr>
+		<tr>
+			<td id="paperless--bootstrapAdmin--password"><a href="./values.yaml#L48">paperless.bootstrapAdmin.password</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Security note: prefer `paperless.bootstrapAdmin.existingSecret` in production. @description The convenience path stores the initial admin password in Helm values. For GitOps, prefer an existing Secret managed by ExternalSecrets or SealedSecrets.</td>
+		</tr>
+		<tr>
+			<td id="paperless--bootstrapAdmin--username"><a href="./values.yaml#L45">paperless.bootstrapAdmin.username</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Initial admin username used with the convenience path.</td>
+		</tr>
+		<tr>
+			<td id="paperless--branding--appTitle"><a href="./values.yaml#L36">paperless.branding.appTitle</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Optional application title shown in the Paperless UI (`PAPERLESS_APP_TITLE`).</td>
+		</tr>
+		<tr>
+			<td id="paperless--branding--customLogoUrl"><a href="./values.yaml#L38">paperless.branding.customLogoUrl</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Optional custom logo URL shown in the Paperless UI (`PAPERLESS_CUSTOM_LOGO`).</td>
 		</tr>
 		<tr>
 			<td id="paperless--ocrLanguage"><a href="./values.yaml#L30">paperless.ocrLanguage</a></td>
@@ -1681,7 +2228,7 @@ string
 			<td>Additional OCR languages already shipped in the official image (`PAPERLESS_OCR_LANGUAGES`). @description This chart intentionally does not install extra language packages into the upstream image.</td>
 		</tr>
 		<tr>
-			<td id="paperless--secretKey--existingSecret--key"><a href="./values.yaml#L39">paperless.secretKey.existingSecret.key</a></td>
+			<td id="paperless--secretKey--existingSecret--key"><a href="./values.yaml#L123">paperless.secretKey.existingSecret.key</a></td>
 			<td>
 string
 </td>
@@ -1695,7 +2242,7 @@ string
 			<td>Secret key containing `PAPERLESS_SECRET_KEY`.</td>
 		</tr>
 		<tr>
-			<td id="paperless--secretKey--existingSecret--name"><a href="./values.yaml#L37">paperless.secretKey.existingSecret.name</a></td>
+			<td id="paperless--secretKey--existingSecret--name"><a href="./values.yaml#L121">paperless.secretKey.existingSecret.name</a></td>
 			<td>
 string
 </td>
@@ -1737,7 +2284,7 @@ string
 			<td>Explicit public URL (`PAPERLESS_URL`). When empty, the chart derives it from Gateway API or Ingress when possible.</td>
 		</tr>
 		<tr>
-			<td id="paperlessReadOnlyRootFix"><a href="./values.yaml#L140">paperlessReadOnlyRootFix</a></td>
+			<td id="paperlessReadOnlyRootFix"><a href="./values.yaml#L224">paperlessReadOnlyRootFix</a></td>
 			<td>
 bool
 </td>
@@ -1751,7 +2298,7 @@ true
 			<td>Enable env vars to allow read-only root-fs with /run as emptyDir. Necessary fix for paperless to run within k8s hardenend environments. For reference: https://github.com/just-containers/s6-overlay/issues/600.</td>
 		</tr>
 		<tr>
-			<td id="persistence"><a href="./values.yaml#L190">persistence</a></td>
+			<td id="persistence"><a href="./values.yaml#L274">persistence</a></td>
 			<td>
 object
 </td>
@@ -1822,7 +2369,7 @@ object
 			<td>Runtime persistence for Paperless state directories.</td>
 		</tr>
 		<tr>
-			<td id="persistence--consume--enabled"><a href="./values.yaml#L228">persistence.consume.enabled</a></td>
+			<td id="persistence--consume--enabled"><a href="./values.yaml#L312">persistence.consume.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1836,7 +2383,7 @@ true
 			<td>Persist `/usr/src/paperless/consume`.</td>
 		</tr>
 		<tr>
-			<td id="persistence--data--accessModes"><a href="./values.yaml#L203">persistence.data.accessModes</a></td>
+			<td id="persistence--data--accessModes"><a href="./values.yaml#L287">persistence.data.accessModes</a></td>
 			<td>
 list
 </td>
@@ -1852,7 +2399,7 @@ list
 			<td>PVC access modes.</td>
 		</tr>
 		<tr>
-			<td id="persistence--data--annotations"><a href="./values.yaml#L206">persistence.data.annotations</a></td>
+			<td id="persistence--data--annotations"><a href="./values.yaml#L290">persistence.data.annotations</a></td>
 			<td>
 object
 </td>
@@ -1866,7 +2413,7 @@ object
 			<td>PVC annotations.</td>
 		</tr>
 		<tr>
-			<td id="persistence--data--emptyDirSizeLimit"><a href="./values.yaml#L210">persistence.data.emptyDirSizeLimit</a></td>
+			<td id="persistence--data--emptyDirSizeLimit"><a href="./values.yaml#L294">persistence.data.emptyDirSizeLimit</a></td>
 			<td>
 string
 </td>
@@ -1880,7 +2427,7 @@ string
 			<td>Optional `emptyDir` size limit when persistence is disabled.</td>
 		</tr>
 		<tr>
-			<td id="persistence--data--enabled"><a href="./values.yaml#L193">persistence.data.enabled</a></td>
+			<td id="persistence--data--enabled"><a href="./values.yaml#L277">persistence.data.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1894,7 +2441,7 @@ true
 			<td>Persist `/usr/src/paperless/data`.</td>
 		</tr>
 		<tr>
-			<td id="persistence--data--existingClaim"><a href="./values.yaml#L197">persistence.data.existingClaim</a></td>
+			<td id="persistence--data--existingClaim"><a href="./values.yaml#L281">persistence.data.existingClaim</a></td>
 			<td>
 string
 </td>
@@ -1908,7 +2455,7 @@ string
 			<td>Existing PVC to use instead of creating one.</td>
 		</tr>
 		<tr>
-			<td id="persistence--data--mountPath"><a href="./values.yaml#L212">persistence.data.mountPath</a></td>
+			<td id="persistence--data--mountPath"><a href="./values.yaml#L296">persistence.data.mountPath</a></td>
 			<td>
 string
 </td>
@@ -1922,7 +2469,7 @@ string
 			<td>Mount path inside the container.</td>
 		</tr>
 		<tr>
-			<td id="persistence--data--retain"><a href="./values.yaml#L195">persistence.data.retain</a></td>
+			<td id="persistence--data--retain"><a href="./values.yaml#L279">persistence.data.retain</a></td>
 			<td>
 bool
 </td>
@@ -1936,7 +2483,7 @@ false
 			<td>Keep the PVC on uninstall.</td>
 		</tr>
 		<tr>
-			<td id="persistence--data--size"><a href="./values.yaml#L199">persistence.data.size</a></td>
+			<td id="persistence--data--size"><a href="./values.yaml#L283">persistence.data.size</a></td>
 			<td>
 string
 </td>
@@ -1950,7 +2497,7 @@ string
 			<td>PVC size.</td>
 		</tr>
 		<tr>
-			<td id="persistence--data--storageClass"><a href="./values.yaml#L201">persistence.data.storageClass</a></td>
+			<td id="persistence--data--storageClass"><a href="./values.yaml#L285">persistence.data.storageClass</a></td>
 			<td>
 string
 </td>
@@ -1964,7 +2511,7 @@ string
 			<td>PVC storageClass.</td>
 		</tr>
 		<tr>
-			<td id="persistence--data--volumeName"><a href="./values.yaml#L208">persistence.data.volumeName</a></td>
+			<td id="persistence--data--volumeName"><a href="./values.yaml#L292">persistence.data.volumeName</a></td>
 			<td>
 string
 </td>
@@ -1978,7 +2525,7 @@ string
 			<td>PVC volumeName binding.</td>
 		</tr>
 		<tr>
-			<td id="persistence--export--enabled"><a href="./values.yaml#L241">persistence.export.enabled</a></td>
+			<td id="persistence--export--enabled"><a href="./values.yaml#L325">persistence.export.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1992,7 +2539,7 @@ true
 			<td>Persist `/usr/src/paperless/export`.</td>
 		</tr>
 		<tr>
-			<td id="persistence--media--enabled"><a href="./values.yaml#L215">persistence.media.enabled</a></td>
+			<td id="persistence--media--enabled"><a href="./values.yaml#L299">persistence.media.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2006,7 +2553,7 @@ true
 			<td>Persist `/usr/src/paperless/media`.</td>
 		</tr>
 		<tr>
-			<td id="podAnnotations"><a href="./values.yaml#L521">podAnnotations</a></td>
+			<td id="podAnnotations"><a href="./values.yaml#L605">podAnnotations</a></td>
 			<td>
 object
 </td>
@@ -2020,7 +2567,7 @@ object
 			<td>Pod annotations.</td>
 		</tr>
 		<tr>
-			<td id="podLabels"><a href="./values.yaml#L524">podLabels</a></td>
+			<td id="podLabels"><a href="./values.yaml#L608">podLabels</a></td>
 			<td>
 object
 </td>
@@ -2034,7 +2581,7 @@ object
 			<td>Pod labels.</td>
 		</tr>
 		<tr>
-			<td id="podSecurityContext"><a href="./values.yaml#L146">podSecurityContext</a></td>
+			<td id="podSecurityContext"><a href="./values.yaml#L230">podSecurityContext</a></td>
 			<td>
 object
 </td>
@@ -2050,7 +2597,7 @@ object
 			<td>Pod-level security context for the main Paperless workload.</td>
 		</tr>
 		<tr>
-			<td id="rbac"><a href="./values.yaml#L129">rbac</a></td>
+			<td id="rbac"><a href="./values.yaml#L213">rbac</a></td>
 			<td>
 object
 </td>
@@ -2068,7 +2615,7 @@ object
 			<td>Optional namespace-scoped RBAC configuration.</td>
 		</tr>
 		<tr>
-			<td id="rbac--create"><a href="./values.yaml#L131">rbac.create</a></td>
+			<td id="rbac--create"><a href="./values.yaml#L215">rbac.create</a></td>
 			<td>
 bool
 </td>
@@ -2082,7 +2629,7 @@ false
 			<td>Create Role and RoleBinding.</td>
 		</tr>
 		<tr>
-			<td id="rbac--namespace"><a href="./values.yaml#L133">rbac.namespace</a></td>
+			<td id="rbac--namespace"><a href="./values.yaml#L217">rbac.namespace</a></td>
 			<td>
 string
 </td>
@@ -2096,7 +2643,7 @@ string
 			<td>Namespace override for RBAC resources.</td>
 		</tr>
 		<tr>
-			<td id="rbac--rules"><a href="./values.yaml#L135">rbac.rules</a></td>
+			<td id="rbac--rules"><a href="./values.yaml#L219">rbac.rules</a></td>
 			<td>
 list
 </td>
@@ -2110,7 +2657,7 @@ list
 			<td>Explicit RBAC rules required when `rbac.create=true`.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe"><a href="./values.yaml#L458">readinessProbe</a></td>
+			<td id="readinessProbe"><a href="./values.yaml#L542">readinessProbe</a></td>
 			<td>
 object
 </td>
@@ -2133,7 +2680,7 @@ object
 			<td>Readiness probe for the main Paperless service.</td>
 		</tr>
 		<tr>
-			<td id="redis"><a href="./values.yaml#L254">redis</a></td>
+			<td id="redis"><a href="./values.yaml#L338">redis</a></td>
 			<td>
 object
 </td>
@@ -2164,7 +2711,7 @@ object
 			<td>Redis connectivity. Paperless requires Redis for task processing and caching.</td>
 		</tr>
 		<tr>
-			<td id="redis--enabled"><a href="./values.yaml#L256">redis.enabled</a></td>
+			<td id="redis--enabled"><a href="./values.yaml#L340">redis.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2178,7 +2725,7 @@ true
 			<td>Deploy the bundled local Redis subchart.</td>
 		</tr>
 		<tr>
-			<td id="redis--external--existingSecret--key"><a href="./values.yaml#L262">redis.external.existingSecret.key</a></td>
+			<td id="redis--external--existingSecret--key"><a href="./values.yaml#L346">redis.external.existingSecret.key</a></td>
 			<td>
 string
 </td>
@@ -2192,7 +2739,7 @@ string
 			<td>Secret key containing the full Redis URL.</td>
 		</tr>
 		<tr>
-			<td id="redis--external--existingSecret--name"><a href="./values.yaml#L260">redis.external.existingSecret.name</a></td>
+			<td id="redis--external--existingSecret--name"><a href="./values.yaml#L344">redis.external.existingSecret.name</a></td>
 			<td>
 string
 </td>
@@ -2206,7 +2753,7 @@ string
 			<td>Existing secret containing a full Redis URL used for `PAPERLESS_REDIS`.</td>
 		</tr>
 		<tr>
-			<td id="redis--external--url"><a href="./values.yaml#L265">redis.external.url</a></td>
+			<td id="redis--external--url"><a href="./values.yaml#L349">redis.external.url</a></td>
 			<td>
 string
 </td>
@@ -2234,7 +2781,7 @@ int
 			<td>Number of Paperless application pod replicas.</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L478">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L562">resources</a></td>
 			<td>
 object
 </td>
@@ -2248,7 +2795,7 @@ object
 			<td>Main Paperless resource requests and limits.</td>
 		</tr>
 		<tr>
-			<td id="runVolume"><a href="./values.yaml#L172">runVolume</a></td>
+			<td id="runVolume"><a href="./values.yaml#L256">runVolume</a></td>
 			<td>
 object
 </td>
@@ -2266,7 +2813,7 @@ object
 			<td>Writable `/run` mount required by the upstream entrypoint stack when `securityContext.readOnlyRootFilesystem=true`.</td>
 		</tr>
 		<tr>
-			<td id="runVolume--enabled"><a href="./values.yaml#L174">runVolume.enabled</a></td>
+			<td id="runVolume--enabled"><a href="./values.yaml#L258">runVolume.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2280,7 +2827,7 @@ true
 			<td>Enable a writable `emptyDir` for `/run`.</td>
 		</tr>
 		<tr>
-			<td id="runVolume--mountPath"><a href="./values.yaml#L176">runVolume.mountPath</a></td>
+			<td id="runVolume--mountPath"><a href="./values.yaml#L260">runVolume.mountPath</a></td>
 			<td>
 string
 </td>
@@ -2294,7 +2841,7 @@ string
 			<td>Mount path.</td>
 		</tr>
 		<tr>
-			<td id="runVolume--sizeLimit"><a href="./values.yaml#L178">runVolume.sizeLimit</a></td>
+			<td id="runVolume--sizeLimit"><a href="./values.yaml#L262">runVolume.sizeLimit</a></td>
 			<td>
 string
 </td>
@@ -2308,7 +2855,7 @@ string
 			<td>Optional size limit.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L481">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L565">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -2325,7 +2872,7 @@ object
 			<td>RuntimeClass names.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--pods"><a href="./values.yaml#L483">runtimeClass.pods</a></td>
+			<td id="runtimeClass--pods"><a href="./values.yaml#L567">runtimeClass.pods</a></td>
 			<td>
 string
 </td>
@@ -2339,7 +2886,7 @@ string
 			<td>RuntimeClass for all regular pods.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--tests"><a href="./values.yaml#L485">runtimeClass.tests</a></td>
+			<td id="runtimeClass--tests"><a href="./values.yaml#L569">runtimeClass.tests</a></td>
 			<td>
 string
 </td>
@@ -2353,7 +2900,7 @@ string
 			<td>RuntimeClass for Helm test pods.</td>
 		</tr>
 		<tr>
-			<td id="securityContext"><a href="./values.yaml#L150">securityContext</a></td>
+			<td id="securityContext"><a href="./values.yaml#L234">securityContext</a></td>
 			<td>
 object
 </td>
@@ -2381,7 +2928,7 @@ object
 			<td>Container-level security context for the main Paperless container.</td>
 		</tr>
 		<tr>
-			<td id="service"><a href="./values.yaml#L42">service</a></td>
+			<td id="service"><a href="./values.yaml#L126">service</a></td>
 			<td>
 object
 </td>
@@ -2402,7 +2949,7 @@ object
 			<td>Kubernetes Service for the main Paperless web UI/API.</td>
 		</tr>
 		<tr>
-			<td id="service--annotations"><a href="./values.yaml#L46">service.annotations</a></td>
+			<td id="service--annotations"><a href="./values.yaml#L130">service.annotations</a></td>
 			<td>
 object
 </td>
@@ -2416,7 +2963,7 @@ object
 			<td>Service annotations.</td>
 		</tr>
 		<tr>
-			<td id="service--labels"><a href="./values.yaml#L48">service.labels</a></td>
+			<td id="service--labels"><a href="./values.yaml#L132">service.labels</a></td>
 			<td>
 object
 </td>
@@ -2430,7 +2977,7 @@ object
 			<td>Service labels.</td>
 		</tr>
 		<tr>
-			<td id="service--port"><a href="./values.yaml#L50">service.port</a></td>
+			<td id="service--port"><a href="./values.yaml#L134">service.port</a></td>
 			<td>
 int
 </td>
@@ -2444,7 +2991,7 @@ int
 			<td>Service port exposed to the cluster.</td>
 		</tr>
 		<tr>
-			<td id="service--targetPort"><a href="./values.yaml#L52">service.targetPort</a></td>
+			<td id="service--targetPort"><a href="./values.yaml#L136">service.targetPort</a></td>
 			<td>
 int
 </td>
@@ -2458,7 +3005,7 @@ int
 			<td>Container target port used by the Paperless webserver.</td>
 		</tr>
 		<tr>
-			<td id="service--targetProtocol"><a href="./values.yaml#L54">service.targetProtocol</a></td>
+			<td id="service--targetProtocol"><a href="./values.yaml#L138">service.targetProtocol</a></td>
 			<td>
 string
 </td>
@@ -2472,7 +3019,7 @@ string
 			<td>Service protocol.</td>
 		</tr>
 		<tr>
-			<td id="service--type"><a href="./values.yaml#L44">service.type</a></td>
+			<td id="service--type"><a href="./values.yaml#L128">service.type</a></td>
 			<td>
 string
 </td>
@@ -2486,7 +3033,7 @@ string
 			<td>Service type. This chart enforces `ClusterIP`.</td>
 		</tr>
 		<tr>
-			<td id="serviceAccount"><a href="./values.yaml#L118">serviceAccount</a></td>
+			<td id="serviceAccount"><a href="./values.yaml#L202">serviceAccount</a></td>
 			<td>
 object
 </td>
@@ -2505,7 +3052,7 @@ object
 			<td>ServiceAccount settings.</td>
 		</tr>
 		<tr>
-			<td id="serviceAccount--annotations"><a href="./values.yaml#L122">serviceAccount.annotations</a></td>
+			<td id="serviceAccount--annotations"><a href="./values.yaml#L206">serviceAccount.annotations</a></td>
 			<td>
 object
 </td>
@@ -2519,7 +3066,7 @@ object
 			<td>ServiceAccount annotations.</td>
 		</tr>
 		<tr>
-			<td id="serviceAccount--automountServiceAccountToken"><a href="./values.yaml#L126">serviceAccount.automountServiceAccountToken</a></td>
+			<td id="serviceAccount--automountServiceAccountToken"><a href="./values.yaml#L210">serviceAccount.automountServiceAccountToken</a></td>
 			<td>
 bool
 </td>
@@ -2533,7 +3080,7 @@ false
 			<td>Automount the ServiceAccount token.</td>
 		</tr>
 		<tr>
-			<td id="serviceAccount--create"><a href="./values.yaml#L120">serviceAccount.create</a></td>
+			<td id="serviceAccount--create"><a href="./values.yaml#L204">serviceAccount.create</a></td>
 			<td>
 bool
 </td>
@@ -2547,7 +3094,7 @@ true
 			<td>Create a dedicated ServiceAccount.</td>
 		</tr>
 		<tr>
-			<td id="serviceAccount--name"><a href="./values.yaml#L124">serviceAccount.name</a></td>
+			<td id="serviceAccount--name"><a href="./values.yaml#L208">serviceAccount.name</a></td>
 			<td>
 string
 </td>
@@ -2561,7 +3108,7 @@ string
 			<td>ServiceAccount name override.</td>
 		</tr>
 		<tr>
-			<td id="startupProbe"><a href="./values.yaml#L468">startupProbe</a></td>
+			<td id="startupProbe"><a href="./values.yaml#L552">startupProbe</a></td>
 			<td>
 object
 </td>
@@ -2584,7 +3131,7 @@ object
 			<td>Startup probe for the main Paperless service.</td>
 		</tr>
 		<tr>
-			<td id="tika"><a href="./values.yaml#L371">tika</a></td>
+			<td id="tika"><a href="./values.yaml#L455">tika</a></td>
 			<td>
 object
 </td>
@@ -2631,7 +3178,7 @@ object
 			<td>Apache Tika helper deployment using the official upstream image.</td>
 		</tr>
 		<tr>
-			<td id="tika--enabled"><a href="./values.yaml#L373">tika.enabled</a></td>
+			<td id="tika--enabled"><a href="./values.yaml#L457">tika.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2645,7 +3192,7 @@ true
 			<td>Deploy the internal Tika helper service when `documentConversion.enabled=true`.</td>
 		</tr>
 		<tr>
-			<td id="tika--image--pullPolicy"><a href="./values.yaml#L378">tika.image.pullPolicy</a></td>
+			<td id="tika--image--pullPolicy"><a href="./values.yaml#L462">tika.image.pullPolicy</a></td>
 			<td>
 string
 </td>
@@ -2659,7 +3206,7 @@ string
 			<td>Image pull policy.</td>
 		</tr>
 		<tr>
-			<td id="tika--image--repository"><a href="./values.yaml#L376">tika.image.repository</a></td>
+			<td id="tika--image--repository"><a href="./values.yaml#L460">tika.image.repository</a></td>
 			<td>
 string
 </td>
@@ -2673,7 +3220,7 @@ string
 			<td>Image repository.</td>
 		</tr>
 		<tr>
-			<td id="tika--image--tag"><a href="./values.yaml#L380">tika.image.tag</a></td>
+			<td id="tika--image--tag"><a href="./values.yaml#L464">tika.image.tag</a></td>
 			<td>
 string
 </td>
@@ -2687,7 +3234,7 @@ string
 			<td>Image tag.</td>
 		</tr>
 		<tr>
-			<td id="tika--resources"><a href="./values.yaml#L410">tika.resources</a></td>
+			<td id="tika--resources"><a href="./values.yaml#L494">tika.resources</a></td>
 			<td>
 object
 </td>
@@ -2701,7 +3248,7 @@ object
 			<td>Resource requests and limits.</td>
 		</tr>
 		<tr>
-			<td id="tika--securityContext"><a href="./values.yaml#L393">tika.securityContext</a></td>
+			<td id="tika--securityContext"><a href="./values.yaml#L477">tika.securityContext</a></td>
 			<td>
 object
 </td>
@@ -2727,7 +3274,7 @@ object
 			<td>Container security context.</td>
 		</tr>
 		<tr>
-			<td id="tika--service--annotations"><a href="./values.yaml#L383">tika.service.annotations</a></td>
+			<td id="tika--service--annotations"><a href="./values.yaml#L467">tika.service.annotations</a></td>
 			<td>
 object
 </td>
@@ -2741,7 +3288,7 @@ object
 			<td>Service annotations.</td>
 		</tr>
 		<tr>
-			<td id="tika--service--labels"><a href="./values.yaml#L385">tika.service.labels</a></td>
+			<td id="tika--service--labels"><a href="./values.yaml#L469">tika.service.labels</a></td>
 			<td>
 object
 </td>
@@ -2755,7 +3302,7 @@ object
 			<td>Service labels.</td>
 		</tr>
 		<tr>
-			<td id="tika--service--port"><a href="./values.yaml#L387">tika.service.port</a></td>
+			<td id="tika--service--port"><a href="./values.yaml#L471">tika.service.port</a></td>
 			<td>
 int
 </td>
@@ -2769,7 +3316,7 @@ int
 			<td>Service port.</td>
 		</tr>
 		<tr>
-			<td id="tika--service--targetPort"><a href="./values.yaml#L389">tika.service.targetPort</a></td>
+			<td id="tika--service--targetPort"><a href="./values.yaml#L473">tika.service.targetPort</a></td>
 			<td>
 int
 </td>
@@ -2783,7 +3330,7 @@ int
 			<td>Container target port.</td>
 		</tr>
 		<tr>
-			<td id="tika--service--targetProtocol"><a href="./values.yaml#L391">tika.service.targetProtocol</a></td>
+			<td id="tika--service--targetProtocol"><a href="./values.yaml#L475">tika.service.targetProtocol</a></td>
 			<td>
 string
 </td>
@@ -2797,7 +3344,7 @@ string
 			<td>Service protocol.</td>
 		</tr>
 		<tr>
-			<td id="tika--tmpVolume--enabled"><a href="./values.yaml#L404">tika.tmpVolume.enabled</a></td>
+			<td id="tika--tmpVolume--enabled"><a href="./values.yaml#L488">tika.tmpVolume.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2811,7 +3358,7 @@ true
 			<td>Mount writable `emptyDir` at `/tmp`.</td>
 		</tr>
 		<tr>
-			<td id="tika--tmpVolume--mountPath"><a href="./values.yaml#L406">tika.tmpVolume.mountPath</a></td>
+			<td id="tika--tmpVolume--mountPath"><a href="./values.yaml#L490">tika.tmpVolume.mountPath</a></td>
 			<td>
 string
 </td>
@@ -2825,7 +3372,7 @@ string
 			<td>Mount path.</td>
 		</tr>
 		<tr>
-			<td id="tika--tmpVolume--sizeLimit"><a href="./values.yaml#L408">tika.tmpVolume.sizeLimit</a></td>
+			<td id="tika--tmpVolume--sizeLimit"><a href="./values.yaml#L492">tika.tmpVolume.sizeLimit</a></td>
 			<td>
 string
 </td>
@@ -2839,7 +3386,7 @@ string
 			<td>Optional size limit.</td>
 		</tr>
 		<tr>
-			<td id="tmpVolume"><a href="./values.yaml#L163">tmpVolume</a></td>
+			<td id="tmpVolume"><a href="./values.yaml#L247">tmpVolume</a></td>
 			<td>
 object
 </td>
@@ -2857,7 +3404,7 @@ object
 			<td>Writable `/tmp` mount required when `securityContext.readOnlyRootFilesystem=true`.</td>
 		</tr>
 		<tr>
-			<td id="tmpVolume--enabled"><a href="./values.yaml#L165">tmpVolume.enabled</a></td>
+			<td id="tmpVolume--enabled"><a href="./values.yaml#L249">tmpVolume.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2871,7 +3418,7 @@ true
 			<td>Enable a writable `emptyDir` for `/tmp`.</td>
 		</tr>
 		<tr>
-			<td id="tmpVolume--mountPath"><a href="./values.yaml#L167">tmpVolume.mountPath</a></td>
+			<td id="tmpVolume--mountPath"><a href="./values.yaml#L251">tmpVolume.mountPath</a></td>
 			<td>
 string
 </td>
@@ -2885,7 +3432,7 @@ string
 			<td>Mount path.</td>
 		</tr>
 		<tr>
-			<td id="tmpVolume--sizeLimit"><a href="./values.yaml#L169">tmpVolume.sizeLimit</a></td>
+			<td id="tmpVolume--sizeLimit"><a href="./values.yaml#L253">tmpVolume.sizeLimit</a></td>
 			<td>
 string
 </td>
@@ -2899,7 +3446,7 @@ string
 			<td>Optional size limit.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L530">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L614">tolerations</a></td>
 			<td>
 list
 </td>
@@ -2974,6 +3521,20 @@ Autogenerated from chart metadata using [helm-docs](https://github.com/norwoodj/
 * The main Paperless workload defaults to `runAsNonRoot`, dropped Linux capabilities, `RuntimeDefault` seccomp, and `readOnlyRootFilesystem=true`.
 * Writable runtime paths required by the official image are mounted explicitly at `/tmp`, `/run`, and `/usr/src/paperless/.gnupg`.
 * This chart intentionally does not mutate the official image to install extra OCR packages. Use `paperless.ocrLanguages` only for language packs already shipped in the upstream image.
+
+### Authentication and SSO
+
+* `paperless.auth.oidc.enabled=true` auto-enables `allauth.socialaccount.providers.openid_connect` and wires the Paperless OIDC login flags.
+* For production, prefer `paperless.auth.oidc.existingSecret` with a pre-created `PAPERLESS_SOCIALACCOUNT_PROVIDERS` payload from SealedSecrets / ExternalSecrets.
+* For quick onboarding, the chart can also generate that JSON from structured values under `paperless.auth.oidc.provider`, including Authentik-compatible discovery URLs.
+* When OIDC is enabled and `paperless.auth.accountDefaultHttpProtocol` is left empty, the chart derives it from the configured public URL, Gateway API, or Ingress scheme so callback URLs stay consistent behind reverse proxies.
+* `paperless.auth.oidc.syncGroups` and the default-group flags can GitOps user-to-group assignment, but Paperless does not document env-based group permission/RBAC seeding. If you want fully declarative group permissions, use a separate bootstrap job or management-command workflow.
+
+### GitOps bootstrap and branding
+
+* `paperless.bootstrapAdmin` can seed the initial admin user from either inline values or a pre-created Secret.
+* `paperless.branding` exposes optional UI title and custom logo settings.
+* Basic instance defaults such as `paperless.timeZone`, `paperless.ocrLanguage`, and `paperless.ocrLanguages` remain optional and are kept separate so a minimal install is not overloaded.
 
 ### Exposure model
 
