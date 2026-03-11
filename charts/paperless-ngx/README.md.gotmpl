@@ -40,7 +40,9 @@
 ### GitOps bootstrap and branding
 
 * `paperless.bootstrapAdmin` can seed the initial admin user from either inline values or a pre-created Secret.
-* `paperless.branding` exposes optional UI title and custom logo settings.
+* `paperless.branding.appTitle` sets `PAPERLESS_APP_TITLE`, and `paperless.branding.logo` can mount an existing Secret or ConfigMap asset into the media tree and wire `PAPERLESS_APP_LOGO` on the officially supported file-based path.
+* `paperless.auth` also exposes optional upstream account/session settings such as email verification mode, unknown-account email behavior, cookie prefixing, and session lifetime without forcing them on by default.
+* `paperless.hosting` exposes optional reverse-proxy and subpath settings such as trusted proxies, `PAPERLESS_FORCE_SCRIPT_NAME`, and `PAPERLESS_STATIC_URL`.
 * Basic instance defaults such as `paperless.timeZone`, `paperless.ocrLanguage`, and `paperless.ocrLanguages` remain optional and are kept separate so a minimal install is not overloaded.
 
 ### Exposure model

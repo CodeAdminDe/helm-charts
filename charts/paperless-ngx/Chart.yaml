@@ -3,7 +3,7 @@ name: paperless-ngx
 description: A Helm chart for deploying Paperless-ngx on Kubernetes.
 type: application
 # renovate: bumpVersion
-version: 0.2.3
+version: 0.2.4
 # renovate: image=ghcr.io/paperless-ngx/paperless-ngx
 appVersion: "2.20.10"
 kubeVersion: ">=1.24.0"

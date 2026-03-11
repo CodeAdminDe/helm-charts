@@ -34,8 +34,20 @@ paperless:
   branding:
     # -- Optional application title shown in the Paperless UI (`PAPERLESS_APP_TITLE`).
     appTitle: ""
-    # -- Optional custom logo URL shown in the Paperless UI (`PAPERLESS_CUSTOM_LOGO`).
-    customLogoUrl: ""
+    logo:
+      existingSecret:
+        # -- Existing Secret containing the logo asset mounted into the Paperless media tree.
+        name: ""
+        # -- Secret key containing the logo file bytes.
+        key: ""
+      existingConfigMap:
+        # -- Existing ConfigMap containing the logo asset mounted into the Paperless media tree.
+        name: ""
+        # -- ConfigMap key containing the logo file contents.
+        key: ""
+      # -- Logo file name rendered under `/logo/<fileName>` for `PAPERLESS_APP_LOGO`.
+      # @description Paperless expects the configured path to include `logo`, for example `company_logo.svg`.
+      fileName: ""
   # -- Additional Django apps appended to `PAPERLESS_APPS`.
   additionalApps: []
   bootstrapAdmin:
@@ -65,6 +77,17 @@ paperless:
     # -- Override protocol used for callback and account URLs.
     # @description When empty and OIDC is enabled, the chart derives this from `paperless.url`, Gateway API, or Ingress when possible.
     accountDefaultHttpProtocol: ""
+    # -- Email verification mode for Paperless / django-allauth (`PAPERLESS_ACCOUNT_EMAIL_VERIFICATION`).
+    # @description Allowed values are `mandatory`, `optional`, or `none`. Leave empty to keep the upstream default behavior.
+    emailVerification: ""
+    # -- Control whether account-related email flows reveal unknown addresses (`PAPERLESS_ACCOUNT_EMAIL_UNKNOWN_ACCOUNTS`).
+    emailUnknownAccounts: null
+    # -- Prefix session cookies when running multiple Paperless instances on one host (`PAPERLESS_COOKIE_PREFIX`).
+    cookiePrefix: ""
+    # -- Keep login sessions beyond browser close (`PAPERLESS_ACCOUNT_SESSION_REMEMBER`).
+    sessionRemember: null
+    # -- Session cookie max age in seconds (`PAPERLESS_SESSION_COOKIE_AGE`).
+    sessionCookieAge: null
     oidc:
       # -- Enable generic OpenID Connect SSO via django-allauth.
       enabled: false
@@ -115,6 +138,14 @@ paperless:
       disableRegularLogin: false
       # -- Automatically redirect the login page to the first configured OIDC provider.
       redirectLoginToSso: false
+  hosting:
+    # -- Trusted reverse proxy source IPs (`PAPERLESS_TRUSTED_PROXIES`).
+    trustedProxies: []
+    # -- Host Paperless under a subpath such as `/paperless` (`PAPERLESS_FORCE_SCRIPT_NAME`).
+    forceScriptName: ""
+    # -- Override static asset URL path (`PAPERLESS_STATIC_URL`).
+    # @description Only needed for subpath or otherwise customized static asset routing. Include a trailing slash when set.
+    staticUrl: ""
   secretKey:
     existingSecret:
       # -- Existing secret name containing `PAPERLESS_SECRET_KEY`. Leave empty to let the chart generate and preserve one.

@@ -211,6 +211,18 @@ http
 {{- end -}}
 {{- end }}
 
+{{/* Logo asset mount path under the Paperless media tree. */}}
+{{- define "paperless-ngx.logoMountPath" -}}
+{{- printf "%s/logo" .Values.persistence.media.mountPath -}}
+{{- end }}
+
+{{/* Public Paperless app logo path. */}}
+{{- define "paperless-ngx.appLogoPath" -}}
+{{- if and .Values.paperless.branding.logo.fileName (or .Values.paperless.branding.logo.existingSecret.name .Values.paperless.branding.logo.existingConfigMap.name) -}}
+{{- printf "/logo/%s" .Values.paperless.branding.logo.fileName -}}
+{{- end -}}
+{{- end }}
+
 {{/* Secret name helper for OIDC provider config. */}}
 {{- define "paperless-ngx.oidcSecretName" -}}
 {{- if .Values.paperless.auth.oidc.existingSecret.name -}}
