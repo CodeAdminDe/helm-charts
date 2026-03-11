@@ -163,11 +163,13 @@ spec:
               value: {{ ternary "true" "false" $sessionRemember | quote }}
             {{- end }}
             {{- if ne $sessionCookieAge nil }}
-            {{- if not (or (kindIs "int" $sessionCookieAge) (kindIs "int64" $sessionCookieAge) (kindIs "float64" $sessionCookieAge)) }}
-            {{- fail "paperless.auth.sessionCookieAge must be a number when set." }}
+            {{- if not (kindIs "string" $sessionCookieAge) }}
+            {{- fail "paperless.auth.sessionCookieAge must be a string when set. Quote numeric values such as \"1209600\"." }}
             {{- end }}
+            {{- if $sessionCookieAge }}
             - name: PAPERLESS_SESSION_COOKIE_AGE
-              value: {{ printf "%v" $sessionCookieAge | quote }}
+              value: {{ $sessionCookieAge | quote }}
+            {{- end }}
             {{- end }}
             {{- if .Values.paperless.auth.oidc.enabled }}
             - name: PAPERLESS_SOCIALACCOUNT_PROVIDERS
