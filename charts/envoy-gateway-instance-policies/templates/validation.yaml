@@ -1,0 +1,217 @@
+{{- define "envoy-gateway-instance-policies.validation.requireSlice" -}}
+{{- $value := index . 0 -}}
+{{- $path := index . 1 -}}
+{{- if not (kindIs "slice" $value) -}}
+{{- fail (printf "%s must be a list." $path) -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "envoy-gateway-instance-policies.validation.itemEnabled" -}}
+{{- $item := index . 0 -}}
+{{- if hasKey $item "enabled" -}}
+{{- $item.enabled -}}
+{{- else -}}
+true
+{{- end -}}
+{{- end -}}
+
+{{- define "envoy-gateway-instance-policies.validation.hasSecurityBody" -}}
+{{- $policy := index . 0 -}}
+{{- if or $policy.apiKeyAuth $policy.cors $policy.basicAuth $policy.jwt $policy.oidc $policy.extAuth $policy.authorization -}}
+true
+{{- else -}}
+false
+{{- end -}}
+{{- end -}}
+
+{{- define "envoy-gateway-instance-policies.validation.hasClientTrafficBody" -}}
+{{- $policy := index . 0 -}}
+{{- if or $policy.tcpKeepalive $policy.proxyProtocol $policy.clientIPDetection $policy.tls $policy.path $policy.headers $policy.timeout $policy.connection $policy.http1 $policy.http2 $policy.http3 $policy.healthCheck $policy.scheme -}}
+true
+{{- else -}}
+false
+{{- end -}}
+{{- end -}}
+
+{{- define "envoy-gateway-instance-policies.validation.hasBackendTrafficBody" -}}
+{{- $policy := index . 0 -}}
+{{- if or $policy.loadBalancer $policy.retry $policy.proxyProtocol $policy.tcpKeepalive $policy.healthCheck $policy.circuitBreaker $policy.timeout $policy.connection $policy.dns $policy.http2 $policy.mergeType $policy.rateLimit $policy.faultInjection (hasKey $policy "useClientProtocol") -}}
+true
+{{- else -}}
+false
+{{- end -}}
+{{- end -}}
+
+{{- include "envoy-gateway-instance-policies.validation.requireSlice" (list .Values.securityPolicies "securityPolicies") -}}
+{{- include "envoy-gateway-instance-policies.validation.requireSlice" (list .Values.clientTrafficPolicies "clientTrafficPolicies") -}}
+{{- include "envoy-gateway-instance-policies.validation.requireSlice" (list .Values.backendTrafficPolicies "backendTrafficPolicies") -}}
+
+{{- $securityNames := dict -}}
+{{- range $idx, $policy := .Values.securityPolicies -}}
+  {{- if eq (include "envoy-gateway-instance-policies.validation.itemEnabled" (list $policy)) "true" -}}
+    {{- if empty $policy.name -}}
+      {{- fail (printf "securityPolicies[%d].name must be set." $idx) -}}
+    {{- end -}}
+    {{- if hasKey $securityNames $policy.name -}}
+      {{- fail (printf "securityPolicies[%d].name '%s' is duplicated." $idx $policy.name) -}}
+    {{- end -}}
+    {{- $_ := set $securityNames $policy.name true -}}
+    {{- if not (kindIs "slice" $policy.targetRefs) -}}
+      {{- fail (printf "securityPolicies[%d].targetRefs must be a list." $idx) -}}
+    {{- end -}}
+    {{- if not $policy.targetRefs -}}
+      {{- fail (printf "securityPolicies[%d].targetRefs must contain at least one target reference." $idx) -}}
+    {{- end -}}
+    {{- if ne (include "envoy-gateway-instance-policies.validation.hasSecurityBody" (list $policy)) "true" -}}
+      {{- fail (printf "securityPolicies[%d] must define at least one policy section such as basicAuth, jwt, oidc, extAuth, apiKeyAuth, cors, or authorization." $idx) -}}
+    {{- end -}}
+    {{- range $refIdx, $ref := $policy.targetRefs -}}
+      {{- if or (empty $ref.group) (empty $ref.kind) (empty $ref.name) -}}
+        {{- fail (printf "securityPolicies[%d].targetRefs[%d] must set group, kind, and name." $idx $refIdx) -}}
+      {{- end -}}
+      {{- if hasKey $ref "namespace" -}}
+        {{- fail (printf "securityPolicies[%d].targetRefs[%d].namespace is not supported because Envoy Gateway policy attachment is same-namespace." $idx $refIdx) -}}
+      {{- end -}}
+      {{- if ne $ref.group "gateway.networking.k8s.io" -}}
+        {{- fail (printf "securityPolicies[%d].targetRefs[%d].group must be 'gateway.networking.k8s.io'." $idx $refIdx) -}}
+      {{- end -}}
+      {{- if not (has $ref.kind (list "Gateway" "HTTPRoute" "GRPCRoute" "TCPRoute")) -}}
+        {{- fail (printf "securityPolicies[%d].targetRefs[%d].kind must be one of Gateway, HTTPRoute, GRPCRoute, or TCPRoute." $idx $refIdx) -}}
+      {{- end -}}
+      {{- if and (hasKey $ref "sectionName") (empty $ref.sectionName) -}}
+        {{- fail (printf "securityPolicies[%d].targetRefs[%d].sectionName must not be empty when set." $idx $refIdx) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- with $policy.basicAuth -}}
+      {{- if empty .users.name -}}
+        {{- fail (printf "securityPolicies[%d].basicAuth.users.name must be set when basicAuth is configured." $idx) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- with $policy.apiKeyAuth -}}
+      {{- if not (kindIs "slice" .credentialRefs) -}}
+        {{- fail (printf "securityPolicies[%d].apiKeyAuth.credentialRefs must be a list." $idx) -}}
+      {{- end -}}
+      {{- if not .credentialRefs -}}
+        {{- fail (printf "securityPolicies[%d].apiKeyAuth.credentialRefs must contain at least one Secret reference." $idx) -}}
+      {{- end -}}
+      {{- if not (kindIs "slice" .extractFrom) -}}
+        {{- fail (printf "securityPolicies[%d].apiKeyAuth.extractFrom must be a list." $idx) -}}
+      {{- end -}}
+      {{- if not .extractFrom -}}
+        {{- fail (printf "securityPolicies[%d].apiKeyAuth.extractFrom must contain at least one extraction source." $idx) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- with $policy.jwt -}}
+      {{- if not (kindIs "slice" .providers) -}}
+        {{- fail (printf "securityPolicies[%d].jwt.providers must be a list." $idx) -}}
+      {{- end -}}
+      {{- if not .providers -}}
+        {{- fail (printf "securityPolicies[%d].jwt.providers must contain at least one JWT provider." $idx) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- with $policy.oidc -}}
+      {{- if not .provider -}}
+        {{- fail (printf "securityPolicies[%d].oidc.provider must be set when oidc is configured." $idx) -}}
+      {{- end -}}
+      {{- if eq (hasKey . "clientID") (hasKey . "clientIDRef") -}}
+        {{- fail (printf "securityPolicies[%d].oidc must set exactly one of clientID or clientIDRef." $idx) -}}
+      {{- end -}}
+      {{- if and (hasKey . "clientIDRef") (empty .clientIDRef.name) -}}
+        {{- fail (printf "securityPolicies[%d].oidc.clientIDRef.name must be set when clientIDRef is configured." $idx) -}}
+      {{- end -}}
+      {{- if empty .clientSecret.name -}}
+        {{- fail (printf "securityPolicies[%d].oidc.clientSecret.name must be set when oidc is configured." $idx) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- with $policy.extAuth -}}
+      {{- if eq (hasKey . "http") (hasKey . "grpc") -}}
+        {{- fail (printf "securityPolicies[%d].extAuth must set exactly one of http or grpc." $idx) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $clientNames := dict -}}
+{{- range $idx, $policy := .Values.clientTrafficPolicies -}}
+  {{- if eq (include "envoy-gateway-instance-policies.validation.itemEnabled" (list $policy)) "true" -}}
+    {{- if empty $policy.name -}}
+      {{- fail (printf "clientTrafficPolicies[%d].name must be set." $idx) -}}
+    {{- end -}}
+    {{- if hasKey $clientNames $policy.name -}}
+      {{- fail (printf "clientTrafficPolicies[%d].name '%s' is duplicated." $idx $policy.name) -}}
+    {{- end -}}
+    {{- $_ := set $clientNames $policy.name true -}}
+    {{- if not (kindIs "slice" $policy.targetRefs) -}}
+      {{- fail (printf "clientTrafficPolicies[%d].targetRefs must be a list." $idx) -}}
+    {{- end -}}
+    {{- if not $policy.targetRefs -}}
+      {{- fail (printf "clientTrafficPolicies[%d].targetRefs must contain at least one target reference." $idx) -}}
+    {{- end -}}
+    {{- if ne (include "envoy-gateway-instance-policies.validation.hasClientTrafficBody" (list $policy)) "true" -}}
+      {{- fail (printf "clientTrafficPolicies[%d] must define at least one client traffic policy section." $idx) -}}
+    {{- end -}}
+    {{- range $refIdx, $ref := $policy.targetRefs -}}
+      {{- if or (empty $ref.group) (empty $ref.kind) (empty $ref.name) -}}
+        {{- fail (printf "clientTrafficPolicies[%d].targetRefs[%d] must set group, kind, and name." $idx $refIdx) -}}
+      {{- end -}}
+      {{- if hasKey $ref "namespace" -}}
+        {{- fail (printf "clientTrafficPolicies[%d].targetRefs[%d].namespace is not supported because Envoy Gateway policy attachment is same-namespace." $idx $refIdx) -}}
+      {{- end -}}
+      {{- if ne $ref.group "gateway.networking.k8s.io" -}}
+        {{- fail (printf "clientTrafficPolicies[%d].targetRefs[%d].group must be 'gateway.networking.k8s.io'." $idx $refIdx) -}}
+      {{- end -}}
+      {{- if ne $ref.kind "Gateway" -}}
+        {{- fail (printf "clientTrafficPolicies[%d].targetRefs[%d].kind must be 'Gateway'." $idx $refIdx) -}}
+      {{- end -}}
+      {{- if and (hasKey $ref "sectionName") (empty $ref.sectionName) -}}
+        {{- fail (printf "clientTrafficPolicies[%d].targetRefs[%d].sectionName must not be empty when set." $idx $refIdx) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $backendNames := dict -}}
+{{- range $idx, $policy := .Values.backendTrafficPolicies -}}
+  {{- if eq (include "envoy-gateway-instance-policies.validation.itemEnabled" (list $policy)) "true" -}}
+    {{- if empty $policy.name -}}
+      {{- fail (printf "backendTrafficPolicies[%d].name must be set." $idx) -}}
+    {{- end -}}
+    {{- if hasKey $backendNames $policy.name -}}
+      {{- fail (printf "backendTrafficPolicies[%d].name '%s' is duplicated." $idx $policy.name) -}}
+    {{- end -}}
+    {{- $_ := set $backendNames $policy.name true -}}
+    {{- if not (kindIs "slice" $policy.targetRefs) -}}
+      {{- fail (printf "backendTrafficPolicies[%d].targetRefs must be a list." $idx) -}}
+    {{- end -}}
+    {{- if not $policy.targetRefs -}}
+      {{- fail (printf "backendTrafficPolicies[%d].targetRefs must contain at least one target reference." $idx) -}}
+    {{- end -}}
+    {{- if ne (include "envoy-gateway-instance-policies.validation.hasBackendTrafficBody" (list $policy)) "true" -}}
+      {{- fail (printf "backendTrafficPolicies[%d] must define at least one backend traffic policy section." $idx) -}}
+    {{- end -}}
+    {{- $targetsGateway := false -}}
+    {{- range $refIdx, $ref := $policy.targetRefs -}}
+      {{- if or (empty $ref.group) (empty $ref.kind) (empty $ref.name) -}}
+        {{- fail (printf "backendTrafficPolicies[%d].targetRefs[%d] must set group, kind, and name." $idx $refIdx) -}}
+      {{- end -}}
+      {{- if hasKey $ref "namespace" -}}
+        {{- fail (printf "backendTrafficPolicies[%d].targetRefs[%d].namespace is not supported because Envoy Gateway policy attachment is same-namespace." $idx $refIdx) -}}
+      {{- end -}}
+      {{- if ne $ref.group "gateway.networking.k8s.io" -}}
+        {{- fail (printf "backendTrafficPolicies[%d].targetRefs[%d].group must be 'gateway.networking.k8s.io'." $idx $refIdx) -}}
+      {{- end -}}
+      {{- if not (has $ref.kind (list "Gateway" "HTTPRoute" "GRPCRoute" "TCPRoute" "UDPRoute" "TLSRoute")) -}}
+        {{- fail (printf "backendTrafficPolicies[%d].targetRefs[%d].kind must be one of Gateway, HTTPRoute, GRPCRoute, TCPRoute, UDPRoute, or TLSRoute." $idx $refIdx) -}}
+      {{- end -}}
+      {{- if eq $ref.kind "Gateway" -}}
+        {{- $targetsGateway = true -}}
+      {{- end -}}
+      {{- if and (hasKey $ref "sectionName") (empty $ref.sectionName) -}}
+        {{- fail (printf "backendTrafficPolicies[%d].targetRefs[%d].sectionName must not be empty when set." $idx $refIdx) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if and $targetsGateway (hasKey $policy "mergeType") -}}
+      {{- fail (printf "backendTrafficPolicies[%d].mergeType is not supported when targeting Gateway resources. Use route-level policies for mergeType-specific behavior." $idx) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

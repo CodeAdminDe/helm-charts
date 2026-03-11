@@ -1,0 +1,48 @@
+{{- range $policy := .Values.securityPolicies }}
+{{- if eq (include "envoy-gateway-instance-policies.itemEnabled" (list $policy)) "true" }}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: {{ $policy.name | quote }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "envoy-gateway-instance-policies.itemLabels" (list $ $policy) | nindent 4 }}
+  {{- $annotations := include "envoy-gateway-instance-policies.itemAnnotations" (list $ $policy) }}
+  {{- if $annotations }}
+  annotations:
+    {{- $annotations | nindent 4 }}
+  {{- end }}
+spec:
+  targetRefs:
+    {{- toYaml $policy.targetRefs | nindent 4 }}
+  {{- with $policy.apiKeyAuth }}
+  apiKeyAuth:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.cors }}
+  cors:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.basicAuth }}
+  basicAuth:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.jwt }}
+  jwt:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.oidc }}
+  oidc:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.extAuth }}
+  extAuth:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.authorization }}
+  authorization:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+---
+{{- end }}
+{{- end }}

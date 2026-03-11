@@ -1,0 +1,18 @@
+{{- $enabledSecurity := 0 -}}
+{{- range .Values.securityPolicies }}{{- if eq (include "envoy-gateway-instance-policies.itemEnabled" (list .)) "true" }}{{- $enabledSecurity = add1 $enabledSecurity }}{{- end }}{{- end }}
+{{- $enabledClient := 0 -}}
+{{- range .Values.clientTrafficPolicies }}{{- if eq (include "envoy-gateway-instance-policies.itemEnabled" (list .)) "true" }}{{- $enabledClient = add1 $enabledClient }}{{- end }}{{- end }}
+{{- $enabledBackend := 0 -}}
+{{- range .Values.backendTrafficPolicies }}{{- if eq (include "envoy-gateway-instance-policies.itemEnabled" (list .)) "true" }}{{- $enabledBackend = add1 $enabledBackend }}{{- end }}{{- end }}
+This release manages Envoy Gateway policy resources in namespace {{ .Release.Namespace }}.
+
+Enabled policy objects:
+- SecurityPolicy: {{ $enabledSecurity }}
+- ClientTrafficPolicy: {{ $enabledClient }}
+- BackendTrafficPolicy: {{ $enabledBackend }}
+
+{{- if eq (add $enabledSecurity $enabledClient $enabledBackend) 0 }}
+No policy CRs were rendered because all policy lists are empty or disabled.
+{{- else }}
+Reminder: policy attachment is same-namespace. Target resources must exist in {{ .Release.Namespace }}.
+{{- end }}
