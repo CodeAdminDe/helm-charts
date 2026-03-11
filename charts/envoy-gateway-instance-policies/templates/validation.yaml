@@ -6,15 +6,6 @@
 {{- end -}}
 {{- end -}}
 
-{{- define "envoy-gateway-instance-policies.validation.itemEnabled" -}}
-{{- $item := index . 0 -}}
-{{- if hasKey $item "enabled" -}}
-{{- $item.enabled -}}
-{{- else -}}
-true
-{{- end -}}
-{{- end -}}
-
 {{- define "envoy-gateway-instance-policies.validation.hasSecurityBody" -}}
 {{- $policy := index . 0 -}}
 {{- if or $policy.apiKeyAuth $policy.cors $policy.basicAuth $policy.jwt $policy.oidc $policy.extAuth $policy.authorization -}}
@@ -48,7 +39,7 @@ false
 
 {{- $securityNames := dict -}}
 {{- range $idx, $policy := .Values.securityPolicies -}}
-  {{- if eq (include "envoy-gateway-instance-policies.validation.itemEnabled" (list $policy)) "true" -}}
+  {{- if eq (include "envoy-gateway-instance-policies.itemEnabled" (list $policy)) "true" -}}
     {{- if empty $policy.name -}}
       {{- fail (printf "securityPolicies[%d].name must be set." $idx) -}}
     {{- end -}}
@@ -61,6 +52,9 @@ false
     {{- end -}}
     {{- if not $policy.targetRefs -}}
       {{- fail (printf "securityPolicies[%d].targetRefs must contain at least one target reference." $idx) -}}
+    {{- end -}}
+    {{- if hasKey $policy "targetSelectors" -}}
+      {{- fail (printf "securityPolicies[%d].targetSelectors is not supported; use targetRefs only." $idx) -}}
     {{- end -}}
     {{- if ne (include "envoy-gateway-instance-policies.validation.hasSecurityBody" (list $policy)) "true" -}}
       {{- fail (printf "securityPolicies[%d] must define at least one policy section such as basicAuth, jwt, oidc, extAuth, apiKeyAuth, cors, or authorization." $idx) -}}
@@ -113,7 +107,12 @@ false
       {{- if not .provider -}}
         {{- fail (printf "securityPolicies[%d].oidc.provider must be set when oidc is configured." $idx) -}}
       {{- end -}}
-      {{- if eq (hasKey . "clientID") (hasKey . "clientIDRef") -}}
+      {{- $hasClientID := and (hasKey . "clientID") (not (empty .clientID)) -}}
+      {{- $hasClientIDRef := hasKey . "clientIDRef" -}}
+      {{- if and (hasKey . "clientID") (empty .clientID) -}}
+        {{- fail (printf "securityPolicies[%d].oidc.clientID must not be empty when clientID is configured." $idx) -}}
+      {{- end -}}
+      {{- if eq $hasClientID $hasClientIDRef -}}
         {{- fail (printf "securityPolicies[%d].oidc must set exactly one of clientID or clientIDRef." $idx) -}}
       {{- end -}}
       {{- if and (hasKey . "clientIDRef") (empty .clientIDRef.name) -}}
@@ -133,7 +132,7 @@ false
 
 {{- $clientNames := dict -}}
 {{- range $idx, $policy := .Values.clientTrafficPolicies -}}
-  {{- if eq (include "envoy-gateway-instance-policies.validation.itemEnabled" (list $policy)) "true" -}}
+  {{- if eq (include "envoy-gateway-instance-policies.itemEnabled" (list $policy)) "true" -}}
     {{- if empty $policy.name -}}
       {{- fail (printf "clientTrafficPolicies[%d].name must be set." $idx) -}}
     {{- end -}}
@@ -146,6 +145,9 @@ false
     {{- end -}}
     {{- if not $policy.targetRefs -}}
       {{- fail (printf "clientTrafficPolicies[%d].targetRefs must contain at least one target reference." $idx) -}}
+    {{- end -}}
+    {{- if hasKey $policy "targetSelectors" -}}
+      {{- fail (printf "clientTrafficPolicies[%d].targetSelectors is not supported; use targetRefs only." $idx) -}}
     {{- end -}}
     {{- if ne (include "envoy-gateway-instance-policies.validation.hasClientTrafficBody" (list $policy)) "true" -}}
       {{- fail (printf "clientTrafficPolicies[%d] must define at least one client traffic policy section." $idx) -}}
@@ -172,7 +174,7 @@ false
 
 {{- $backendNames := dict -}}
 {{- range $idx, $policy := .Values.backendTrafficPolicies -}}
-  {{- if eq (include "envoy-gateway-instance-policies.validation.itemEnabled" (list $policy)) "true" -}}
+  {{- if eq (include "envoy-gateway-instance-policies.itemEnabled" (list $policy)) "true" -}}
     {{- if empty $policy.name -}}
       {{- fail (printf "backendTrafficPolicies[%d].name must be set." $idx) -}}
     {{- end -}}
@@ -185,6 +187,9 @@ false
     {{- end -}}
     {{- if not $policy.targetRefs -}}
       {{- fail (printf "backendTrafficPolicies[%d].targetRefs must contain at least one target reference." $idx) -}}
+    {{- end -}}
+    {{- if hasKey $policy "targetSelectors" -}}
+      {{- fail (printf "backendTrafficPolicies[%d].targetSelectors is not supported; use targetRefs only." $idx) -}}
     {{- end -}}
     {{- if ne (include "envoy-gateway-instance-policies.validation.hasBackendTrafficBody" (list $policy)) "true" -}}
       {{- fail (printf "backendTrafficPolicies[%d] must define at least one backend traffic policy section." $idx) -}}
