@@ -22,12 +22,33 @@
   {{- end -}}
 {{- end -}}
 
-{{- if and (or .Values.paperless.auth.oidc.enabled (gt (len (.Values.paperless.additionalApps | default (list))) 0)) (hasKey .Values.extraEnv "PAPERLESS_APPS") -}}
-{{- fail "Use paperless.additionalApps / paperless.auth.oidc instead of extraEnv.PAPERLESS_APPS to avoid duplicate env rendering." -}}
+{{- $additionalEnvSecretsHasPaperlessApps := false -}}
+{{- $additionalEnvSecretsHasSocialAccountProviders := false -}}
+{{- if kindIs "map" .Values.additionalEnvSecrets -}}
+  {{- if hasKey .Values.additionalEnvSecrets "PAPERLESS_APPS" -}}
+    {{- $additionalEnvSecretsHasPaperlessApps = true -}}
+  {{- end -}}
+  {{- if hasKey .Values.additionalEnvSecrets "PAPERLESS_SOCIALACCOUNT_PROVIDERS" -}}
+    {{- $additionalEnvSecretsHasSocialAccountProviders = true -}}
+  {{- end -}}
+{{- else if kindIs "slice" .Values.additionalEnvSecrets -}}
+  {{- range $secretConfig := .Values.additionalEnvSecrets -}}
+    {{- $envName := (default "" (index $secretConfig "name")) -}}
+    {{- if eq $envName "PAPERLESS_APPS" -}}
+      {{- $additionalEnvSecretsHasPaperlessApps = true -}}
+    {{- end -}}
+    {{- if eq $envName "PAPERLESS_SOCIALACCOUNT_PROVIDERS" -}}
+      {{- $additionalEnvSecretsHasSocialAccountProviders = true -}}
+    {{- end -}}
+  {{- end -}}
 {{- end -}}
 
-{{- if and .Values.paperless.auth.oidc.enabled (hasKey .Values.extraEnv "PAPERLESS_SOCIALACCOUNT_PROVIDERS") -}}
-{{- fail "paperless.auth.oidc.enabled=true cannot be combined with extraEnv.PAPERLESS_SOCIALACCOUNT_PROVIDERS. Use paperless.auth.oidc.existingSecret or the structured OIDC values instead." -}}
+{{- if and (or .Values.paperless.auth.oidc.enabled (gt (len (.Values.paperless.additionalApps | default (list))) 0)) (or (hasKey .Values.extraEnv "PAPERLESS_APPS") $additionalEnvSecretsHasPaperlessApps) -}}
+{{- fail "Use paperless.additionalApps / paperless.auth.oidc instead of extraEnv.PAPERLESS_APPS or additionalEnvSecrets.PAPERLESS_APPS to avoid duplicate env rendering." -}}
+{{- end -}}
+
+{{- if and .Values.paperless.auth.oidc.enabled (or (hasKey .Values.extraEnv "PAPERLESS_SOCIALACCOUNT_PROVIDERS") $additionalEnvSecretsHasSocialAccountProviders) -}}
+{{- fail "paperless.auth.oidc.enabled=true cannot be combined with extraEnv.PAPERLESS_SOCIALACCOUNT_PROVIDERS or additionalEnvSecrets.PAPERLESS_SOCIALACCOUNT_PROVIDERS. Use paperless.auth.oidc.existingSecret or the structured OIDC values instead." -}}
 {{- end -}}
 
 {{- if and .Values.paperless.auth.accountDefaultHttpProtocol (not (has .Values.paperless.auth.accountDefaultHttpProtocol (list "http" "https"))) -}}
@@ -38,9 +59,30 @@
 {{- fail "paperless.auth.emailVerification must be one of: mandatory, optional, none." -}}
 {{- end -}}
 
-{{- with .Values.paperless.auth.sessionCookieAge -}}
-  {{- if lt (int .) 1 -}}
-    {{- fail "paperless.auth.sessionCookieAge must be greater than zero when set." -}}
+{{- if ne .Values.paperless.auth.emailUnknownAccounts nil -}}
+  {{- if not (kindIs "bool" .Values.paperless.auth.emailUnknownAccounts) -}}
+    {{- fail "paperless.auth.emailUnknownAccounts must be a boolean when set." -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if ne .Values.paperless.auth.cookiePrefix nil -}}
+  {{- if not (kindIs "string" .Values.paperless.auth.cookiePrefix) -}}
+    {{- fail "paperless.auth.cookiePrefix must be a string when set." -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if ne .Values.paperless.auth.sessionRemember nil -}}
+  {{- if not (kindIs "bool" .Values.paperless.auth.sessionRemember) -}}
+    {{- fail "paperless.auth.sessionRemember must be a boolean when set." -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if ne .Values.paperless.auth.sessionCookieAge nil -}}
+  {{- if not (or (kindIs "int" .Values.paperless.auth.sessionCookieAge) (kindIs "int64" .Values.paperless.auth.sessionCookieAge) (kindIs "float64" .Values.paperless.auth.sessionCookieAge)) -}}
+    {{- fail "paperless.auth.sessionCookieAge must be a number when set." -}}
+  {{- end -}}
+  {{- if lt (int .Values.paperless.auth.sessionCookieAge) 0 -}}
+    {{- fail "paperless.auth.sessionCookieAge must be zero or greater when set." -}}
   {{- end -}}
 {{- end -}}
 

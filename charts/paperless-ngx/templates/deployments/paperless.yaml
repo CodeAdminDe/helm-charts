@@ -4,6 +4,10 @@
 {{- $accountDefaultHttpProtocol := include "paperless-ngx.accountDefaultHttpProtocol" . -}}
 {{- $bootstrapAdmin := .Values.paperless.bootstrapAdmin -}}
 {{- $appLogoPath := include "paperless-ngx.appLogoPath" . -}}
+{{- $emailUnknownAccounts := .Values.paperless.auth.emailUnknownAccounts -}}
+{{- $cookiePrefix := .Values.paperless.auth.cookiePrefix -}}
+{{- $sessionRemember := .Values.paperless.auth.sessionRemember -}}
+{{- $sessionCookieAge := .Values.paperless.auth.sessionCookieAge -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -135,21 +139,35 @@ spec:
             - name: PAPERLESS_ACCOUNT_EMAIL_VERIFICATION
               value: {{ .Values.paperless.auth.emailVerification | quote }}
             {{- end }}
-            {{- if kindIs "bool" .Values.paperless.auth.emailUnknownAccounts }}
+            {{- if ne $emailUnknownAccounts nil }}
+            {{- if not (kindIs "bool" $emailUnknownAccounts) }}
+            {{- fail "paperless.auth.emailUnknownAccounts must be a boolean when set." }}
+            {{- end }}
             - name: PAPERLESS_ACCOUNT_EMAIL_UNKNOWN_ACCOUNTS
-              value: {{ ternary "true" "false" .Values.paperless.auth.emailUnknownAccounts | quote }}
+              value: {{ ternary "true" "false" $emailUnknownAccounts | quote }}
             {{- end }}
-            {{- if .Values.paperless.auth.cookiePrefix }}
+            {{- if ne $cookiePrefix nil }}
+            {{- if not (kindIs "string" $cookiePrefix) }}
+            {{- fail "paperless.auth.cookiePrefix must be a string when set." }}
+            {{- end }}
+            {{- if $cookiePrefix }}
             - name: PAPERLESS_COOKIE_PREFIX
-              value: {{ .Values.paperless.auth.cookiePrefix | quote }}
+              value: {{ $cookiePrefix | quote }}
             {{- end }}
-            {{- if kindIs "bool" .Values.paperless.auth.sessionRemember }}
+            {{- end }}
+            {{- if ne $sessionRemember nil }}
+            {{- if not (kindIs "bool" $sessionRemember) }}
+            {{- fail "paperless.auth.sessionRemember must be a boolean when set." }}
+            {{- end }}
             - name: PAPERLESS_ACCOUNT_SESSION_REMEMBER
-              value: {{ ternary "true" "false" .Values.paperless.auth.sessionRemember | quote }}
+              value: {{ ternary "true" "false" $sessionRemember | quote }}
             {{- end }}
-            {{- with .Values.paperless.auth.sessionCookieAge }}
+            {{- if ne $sessionCookieAge nil }}
+            {{- if not (or (kindIs "int" $sessionCookieAge) (kindIs "int64" $sessionCookieAge) (kindIs "float64" $sessionCookieAge)) }}
+            {{- fail "paperless.auth.sessionCookieAge must be a number when set." }}
+            {{- end }}
             - name: PAPERLESS_SESSION_COOKIE_AGE
-              value: {{ printf "%v" . | quote }}
+              value: {{ printf "%v" $sessionCookieAge | quote }}
             {{- end }}
             {{- if .Values.paperless.auth.oidc.enabled }}
             - name: PAPERLESS_SOCIALACCOUNT_PROVIDERS
