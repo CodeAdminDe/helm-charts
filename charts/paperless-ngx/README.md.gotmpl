@@ -33,6 +33,7 @@
 
 * `paperless.auth.oidc.enabled=true` auto-enables `allauth.socialaccount.providers.openid_connect` and wires the Paperless OIDC login flags.
 * For production, prefer `paperless.auth.oidc.existingSecret` with a pre-created `PAPERLESS_SOCIALACCOUNT_PROVIDERS` payload from SealedSecrets / ExternalSecrets.
+* Changes to externally managed OIDC secrets are still only applied through container environment variables at pod start. Secret reconciliation alone will not refresh running pods, so trigger a rollout / restart or use a secret-reloader pattern. The chart-generated `paperless.auth.oidc.provider` path updates with values changes, but new env values still require a pod restart to take effect.
 * For quick onboarding, the chart can also generate that JSON from structured values under `paperless.auth.oidc.provider`, including Authentik-compatible discovery URLs.
 * When OIDC is enabled and `paperless.auth.accountDefaultHttpProtocol` is left empty, the chart derives it from the configured public URL, Gateway API, or Ingress scheme so callback URLs stay consistent behind reverse proxies.
 * `paperless.auth.oidc.syncGroups` and the default-group flags can GitOps user-to-group assignment, but Paperless does not document env-based group permission/RBAC seeding. If you want fully declarative group permissions, use a separate bootstrap job or management-command workflow.
