@@ -1,0 +1,112 @@
+# -- Override release-based naming.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- Shared metadata extensions applied to every generated policy resource.
+policyMetadata:
+  labels: {}
+  annotations: {}
+
+# -- Envoy Gateway SecurityPolicy resources.
+# @description Rendered as `gateway.envoyproxy.io/v1alpha1` `SecurityPolicy` objects in `.Release.Namespace`. This chart intentionally uses explicit `targetRefs` only.
+# @raw
+# ```yaml
+# securityPolicies:
+#   - name: app-oidc
+#     targetRefs:
+#       - group: gateway.networking.k8s.io
+#         kind: Gateway
+#         name: prod-public
+#         sectionName: https-app
+#     oidc:
+#       provider:
+#         issuer: https://login.example.com/realms/prod
+#         authorizationEndpoint: https://login.example.com/realms/prod/protocol/openid-connect/auth
+#         tokenEndpoint: https://login.example.com/realms/prod/protocol/openid-connect/token
+#       clientIDRef:
+#         group: ""
+#         kind: Secret
+#         name: app-oidc-client
+#       clientSecret:
+#         group: ""
+#         kind: Secret
+#         name: app-oidc-client
+#       redirectURL: https://app.prod.example.com/oauth2/callback
+#       logoutPath: /logout
+#       scopes:
+#         - profile
+#         - email
+# ```
+securityPolicies: []
+
+# -- Envoy Gateway ClientTrafficPolicy resources.
+# @description Rendered as `gateway.envoyproxy.io/v1alpha1` `ClientTrafficPolicy` objects in `.Release.Namespace`. These policies are same-namespace attachments and, for practical use in this chart, should target Gateway listeners via `targetRefs`.
+# @raw
+# ```yaml
+# clientTrafficPolicies:
+#   - name: prod-public-client
+#     targetRefs:
+#       - group: gateway.networking.k8s.io
+#         kind: Gateway
+#         name: prod-public
+#         sectionName: https-public
+#     clientIPDetection:
+#       xForwardedFor:
+#         numTrustedHops: 1
+#     tls:
+#       alpnProtocols:
+#         - h2
+#         - http/1.1
+#     timeout:
+#       http:
+#         requestTimeout: 60s
+# ```
+clientTrafficPolicies: []
+
+# -- Envoy Gateway BackendTrafficPolicy resources.
+# @description Rendered as `gateway.envoyproxy.io/v1alpha1` `BackendTrafficPolicy` objects in `.Release.Namespace`. This chart favors Gateway/listener attachment but can also target same-namespace routes where appropriate.
+# @raw
+# ```yaml
+# backendTrafficPolicies:
+#   - name: prod-public-backend
+#     targetRefs:
+#       - group: gateway.networking.k8s.io
+#         kind: Gateway
+#         name: prod-public
+#     retry:
+#       numRetries: 3
+#       retryOn:
+#         triggers:
+#           - connect-failure
+#           - unavailable
+#     healthCheck:
+#       active:
+#         type: HTTP
+#         http:
+#           path: /healthz
+#         interval: 5s
+#         timeout: 2s
+#     circuitBreaker:
+#       maxConnections: 2048
+# ```
+backendTrafficPolicies: []
+
+# -- RuntimeClass names.
+runtimeClass:
+  tests: ""
+
+# -- Pod-level security context for Helm test pods.
+podSecurityContext: {}
+
+# -- Container-level security context for Helm test pods.
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault

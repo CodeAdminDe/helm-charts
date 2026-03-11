@@ -1,0 +1,72 @@
+{{- range $policy := .Values.clientTrafficPolicies }}
+{{- if eq (include "envoy-gateway-instance-policies.itemEnabled" (list $policy)) "true" }}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata:
+  name: {{ $policy.name | quote }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "envoy-gateway-instance-policies.itemLabels" (list $ $policy) | nindent 4 }}
+  {{- $annotations := include "envoy-gateway-instance-policies.itemAnnotations" (list $ $policy) }}
+  {{- if $annotations }}
+  annotations:
+    {{- $annotations | nindent 4 }}
+  {{- end }}
+spec:
+  targetRefs:
+    {{- toYaml $policy.targetRefs | nindent 4 }}
+  {{- with $policy.tcpKeepalive }}
+  tcpKeepalive:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.proxyProtocol }}
+  proxyProtocol:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.clientIPDetection }}
+  clientIPDetection:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.tls }}
+  tls:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.path }}
+  path:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.headers }}
+  headers:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.timeout }}
+  timeout:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.connection }}
+  connection:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.http1 }}
+  http1:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.http2 }}
+  http2:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.http3 }}
+  http3:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.healthCheck }}
+  healthCheck:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.scheme }}
+  scheme:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+---
+{{- end }}
+{{- end }}

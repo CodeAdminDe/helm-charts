@@ -1,0 +1,74 @@
+{{- range $policy := .Values.backendTrafficPolicies }}
+{{- if eq (include "envoy-gateway-instance-policies.itemEnabled" (list $policy)) "true" }}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: {{ $policy.name | quote }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "envoy-gateway-instance-policies.itemLabels" (list $ $policy) | nindent 4 }}
+  {{- $annotations := include "envoy-gateway-instance-policies.itemAnnotations" (list $ $policy) }}
+  {{- if $annotations }}
+  annotations:
+    {{- $annotations | nindent 4 }}
+  {{- end }}
+spec:
+  targetRefs:
+    {{- toYaml $policy.targetRefs | nindent 4 }}
+  {{- with $policy.loadBalancer }}
+  loadBalancer:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.retry }}
+  retry:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.proxyProtocol }}
+  proxyProtocol:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.tcpKeepalive }}
+  tcpKeepalive:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.healthCheck }}
+  healthCheck:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.circuitBreaker }}
+  circuitBreaker:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.timeout }}
+  timeout:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.connection }}
+  connection:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.dns }}
+  dns:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.http2 }}
+  http2:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.mergeType }}
+  mergeType: {{ . | quote }}
+  {{- end }}
+  {{- with $policy.rateLimit }}
+  rateLimit:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $policy.faultInjection }}
+  faultInjection:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- if hasKey $policy "useClientProtocol" }}
+  useClientProtocol: {{ $policy.useClientProtocol }}
+  {{- end }}
+---
+{{- end }}
+{{- end }}

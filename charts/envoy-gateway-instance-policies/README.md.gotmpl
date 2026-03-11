@@ -1,0 +1,38 @@
+{{ template "extra.templates.readme.complexvalues" . }}
+
+## Scope
+
+This chart renders Envoy Gateway policy CRs for a single Gateway namespace / instance boundary.
+It intentionally does not deploy the Envoy Gateway controller, GatewayClass, Gateway, or EnvoyProxy resources.
+It also does not create Services, Deployments, StatefulSets, or PersistentVolumeClaims.
+
+Supported policy kinds:
+- `SecurityPolicy`
+- `ClientTrafficPolicy`
+- `BackendTrafficPolicy`
+
+## Policy Attachment Model
+
+This chart uses explicit `targetRefs` only.
+It does not implement `targetSelectors`.
+
+Important constraints:
+- policies are rendered into `.Release.Namespace`
+- policy attachment is same-namespace
+- this chart is designed primarily for Gateway- and listener-level attachment
+- same-namespace route targets are supported where Envoy Gateway allows them
+
+## Secret Handling
+
+This chart does not create credentials or embed secrets into policy values.
+Reference pre-created Kubernetes Secrets from the target namespace, for example:
+- OIDC client credentials
+- Basic Auth `.htpasswd` secrets
+- API key credential secrets
+- external authorization backend credentials
+
+## Notes
+
+- `ClientTrafficPolicy` targets must be `Gateway` resources.
+- `BackendTrafficPolicy.mergeType` is intentionally rejected for Gateway targets to avoid ambiguous parent-level merges.
+- If all policy lists are empty or fully disabled, the chart renders no policy CRs by design.
