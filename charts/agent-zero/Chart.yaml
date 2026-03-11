@@ -3,7 +3,7 @@ name: agent-zero
 description: A Helm chart for deploying Agent Zero (AI Operating System) on Kubernetes.
 type: application
 # renovate: bumpVersion
-version: 0.1.4
+version: 0.1.5
 # renovate: image=agent0ai/agent-zero
 appVersion: "v0.9.8.2"
 kubeVersion: ">=1.24.0"
@@ -33,6 +33,6 @@ annotations:
     - name: agent-zero
       image: agent0ai/agent-zero:v0.9.8.2
     - name: netbird-sidecar
-      image: netbirdio/netbird:0.66.3-rootless
+      image: netbirdio/netbird:0.66.4-rootless
     - name: tailscale-sidecar
       image: ghcr.io/tailscale/tailscale:v1.94.2

@@ -184,7 +184,7 @@ vpn:
       # -- NetBird sidecar image pull policy.
       pullPolicy: IfNotPresent
       # -- NetBird sidecar image tag.
-      tag: 0.66.3-rootless
+      tag: 0.66.4-rootless
     setupKeySecret:
       # -- Secret name containing NetBird setup key.
       name: ""
