@@ -5,6 +5,9 @@ fullnameOverride: ""
 # -- Selector for the Envoy Gateway dataplane pods this release should govern.
 # @description Defaults are aligned to the managed Envoy Gateway dataplane pod labels used by Envoy Gateway `v1.7.0`. Add `gateway.envoyproxy.io/owning-gateway-name=<gateway>` when you want per-Gateway scoping. The chart never uses a broad empty selector for dataplane policies.
 selector:
+  # -- Optional Gateway name for additional per-Gateway dataplane scoping.
+  # @description When set, the chart adds `gateway.envoyproxy.io/owning-gateway-name=<value>` to the rendered endpoint selectors.
+  owningGatewayName: ""
   matchLabels:
     app.kubernetes.io/name: envoy
     app.kubernetes.io/component: proxy
