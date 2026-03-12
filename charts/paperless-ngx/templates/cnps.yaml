@@ -64,6 +64,9 @@ metadata:
 {{- $internalEgressEndpoints = append $internalEgressEndpoints (dict "app.kubernetes.io/name" (include "paperless-ngx.name" .) "app.kubernetes.io/instance" .Release.Name "app.kubernetes.io/component" "tika") -}}
 {{- end -}}
 {{- $effectiveEgressEndpoints := concat $internalEgressEndpoints (.Values.cnps.appTraffic.egress.toEndpoints | default (list)) -}}
+{{- $effectiveEgressFQDNs := .Values.cnps.appTraffic.egress.toFQDNs | default (list) -}}
+{{- $effectiveEgressEntities := .Values.cnps.appTraffic.egress.toEntities | default (list) -}}
+{{- $includeWorldFallback := and (empty $effectiveEgressEntities) (empty $effectiveEgressFQDNs) -}}
 {{- $effectiveEgressPorts := .Values.cnps.appTraffic.egress.toPorts | default (list) -}}
 {{- if .Values.redis.enabled -}}
 {{- $effectiveEgressPorts = concat $effectiveEgressPorts (list (dict "port" "6379" "protocol" "TCP")) -}}
@@ -122,13 +125,32 @@ spec:
             - port: {{ .port | quote }}
               {{- if hasKey . "endPort" }}
               endPort: {{ .endPort }}
-              {{- end }}
+          {{- end }}
               protocol: {{ .protocol | default "TCP" }}
           {{- end }}
     {{- end }}
+    {{- if $effectiveEgressFQDNs }}
+    - toFQDNs:
+        {{- toYaml $effectiveEgressFQDNs | nindent 8 }}
+      toPorts:
+        - ports:
+          {{- if .Values.cnps.appTraffic.egress.toPorts }}
+          {{- range .Values.cnps.appTraffic.egress.toPorts }}
+            - port: {{ .port | quote }}
+              {{- if hasKey . "endPort" }}
+              endPort: {{ .endPort }}
+              {{- end }}
+              protocol: {{ .protocol | default "TCP" }}
+          {{- end }}
+          {{- else }}
+            - port: "443"
+              protocol: TCP
+          {{- end }}
+    {{- end }}
+    {{- if or $includeWorldFallback $effectiveEgressEntities }}
     - toEntities:
-      {{- if .Values.cnps.appTraffic.egress.toEntities }}
-        {{- toYaml .Values.cnps.appTraffic.egress.toEntities | nindent 8 }}
+      {{- if $effectiveEgressEntities }}
+        {{- toYaml $effectiveEgressEntities | nindent 8 }}
       {{- else }}
         - world
       {{- end }}
@@ -146,6 +168,7 @@ spec:
             - port: "443"
               protocol: TCP
           {{- end }}
+    {{- end }}
   {{- else }}
   egress:
     - toEndpoints:

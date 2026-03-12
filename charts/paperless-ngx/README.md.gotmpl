@@ -56,7 +56,7 @@
 
 * `libchartCnps.enabled=true` is optional and disabled by default.
 * Default policy generation includes ingress-nginx and Envoy Gateway source selectors when those exposure modes are enabled.
-* If you use external Redis or PostgreSQL with Cilium policies enabled, add the required egress selectors and ports under `cnps.appTraffic.egress`.
+* If you use external Redis, PostgreSQL, or an external OIDC identity provider with Cilium policies enabled, add the required egress selectors and ports under `cnps.appTraffic.egress`. For hostname-based IdPs, use `cnps.appTraffic.egress.toFQDNs`.
 
 {{- end -}}
 
