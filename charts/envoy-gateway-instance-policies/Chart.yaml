@@ -3,9 +3,9 @@ name: envoy-gateway-instance-policies
 description: A Helm chart for Envoy Gateway Gateway-instance policy resources on Kubernetes.
 type: application
 # renovate: bumpVersion
-version: 0.1.1
+version: 0.1.2
 # renovate: image=envoyproxy/gateway
-appVersion: "v1.7.0"
+appVersion: "v1.7.1"
 kubeVersion: ">=1.24.0"
 home: https://github.com/CodeAdminDe/helm-charts
 icon: https://raw.githubusercontent.com/envoyproxy/gateway/main/site/assets/icons/logo.svg
