@@ -89,6 +89,10 @@ spec:
     {{- if .Values.cnps.controlPlane.egress.kubeApiServer.enabled }}
     - toEntities:
         - kube-apiserver
+      toPorts:
+        - ports:
+            - port: {{ printf "%v" .Values.cnps.controlPlane.egress.kubeApiServer.port | quote }}
+              protocol: TCP
     {{- end }}
     {{- if .Values.cnps.controlPlane.egress.dns.enabled }}
     - toEndpoints:
