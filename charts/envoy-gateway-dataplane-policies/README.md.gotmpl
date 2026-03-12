@@ -46,6 +46,11 @@
 * This chart does not infer backends from `HTTPRoute` resources.
 * The default control-plane selector assumes the Envoy Gateway controller runs in the `envoy-gateway-system` namespace. Override `egress.controlPlane.toEndpoints` when your controller namespace or labels differ.
 
+### Port model
+
+* Dataplane ingress `ports` in this chart must be the real Envoy pod target ports, not the Service listener ports.
+* Cilium enforces the policy on the pod endpoint, so a Service exposed on `80/443` may still require `10080/10443` in the dataplane CNP.
+
 {{- end -}}
 
 {{ template "extra.templates.readme.complexvalues" . }}
