@@ -2,7 +2,7 @@
 
 # paperless-ngx
 
-![Version: 0.2.6](https://img.shields.io/badge/Version-0.2.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.20.10](https://img.shields.io/badge/AppVersion-2.20.10-informational?style=flat-square)
+![Version: 0.2.7](https://img.shields.io/badge/Version-0.2.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.20.10](https://img.shields.io/badge/AppVersion-2.20.10-informational?style=flat-square)
 
 A Helm chart for deploying Paperless-ngx on Kubernetes.
 
@@ -123,7 +123,7 @@ additionalEnvSecrets:
 ```</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L653">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L682">affinity</a></td>
 			<td>
 object
 </td>
@@ -190,6 +190,7 @@ object
   "appTraffic": {
     "egress": {
       "allow": true,
+      "extraRules": [],
       "toEndpoints": [],
       "toEntities": [
         "world"
@@ -218,7 +219,7 @@ object
 			<td>App-specific CiliumNetworkPolicies settings.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L624">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L631">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -232,7 +233,7 @@ true
 			<td>Allow egress traffic from the Paperless pod.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEndpoints"><a href="./values.yaml#L626">cnps.appTraffic.egress.toEndpoints</a></td>
+			<td id="cnps--appTraffic--egress--extraRules"><a href="./values.yaml#L667">cnps.appTraffic.egress.extraRules</a></td>
 			<td>
 list
 </td>
@@ -243,10 +244,35 @@ list
 </pre>
 </div>
 			</td>
-			<td>Additional egress endpoint selectors.</td>
+			<td>Additional raw Cilium egress rules appended after the chart-managed ones.
+```yaml
+extraRules:
+  - toEndpoints:
+      - matchLabels:
+          io.kubernetes.pod.namespace: ingress-nginx
+          app.kubernetes.io/name: ingress-nginx
+    toPorts:
+      - ports:
+          - port: "443"
+            protocol: TCP
+```</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L633">cnps.appTraffic.egress.toEntities</a></td>
+			<td id="cnps--appTraffic--egress--toEndpoints"><a href="./values.yaml#L640">cnps.appTraffic.egress.toEndpoints</a></td>
+			<td>
+list
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+[]
+</pre>
+</div>
+			</td>
+			<td>Additional egress endpoint selectors rendered as a dedicated CNP egress rule. @description Accepts either flat label maps or Cilium-style entries with `matchLabels`. - app.kubernetes.io/name: ingress-nginx   io.kubernetes.pod.namespace: ingress-nginx ## OR ## - matchLabels:     app.kubernetes.io/name: ingress-nginx     io.kubernetes.pod.namespace: ingress-nginx</td>
+		</tr>
+		<tr>
+			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L647">cnps.appTraffic.egress.toEntities</a></td>
 			<td>
 list
 </td>
@@ -262,7 +288,7 @@ list
 			<td>Additional egress entities.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toFQDNs"><a href="./values.yaml#L631">cnps.appTraffic.egress.toFQDNs</a></td>
+			<td id="cnps--appTraffic--egress--toFQDNs"><a href="./values.yaml#L645">cnps.appTraffic.egress.toFQDNs</a></td>
 			<td>
 list
 </td>
@@ -276,7 +302,7 @@ list
 			<td>Additional egress FQDN selectors for external services such as OIDC identity providers. @description When this is non-empty and `toEntities` is left empty, the chart suppresses the default `world` fallback so egress can be narrowed to the configured hostnames. - matchName: auth.example.com - matchPattern: "*.example.com"</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L636">cnps.appTraffic.egress.toPorts</a></td>
+			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L651">cnps.appTraffic.egress.toPorts</a></td>
 			<td>
 list
 </td>
@@ -292,7 +318,7 @@ list
 </pre>
 </div>
 			</td>
-			<td>Additional egress ports.</td>
+			<td>Ports for the user-configured endpoint/FQDN/entity egress rules. @description Built-in internal dependencies such as Redis, Gotenberg, and Tika always render as separate rules with their own fixed ports.</td>
 		</tr>
 		<tr>
 			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L617">cnps.appTraffic.ingress.allow</a></td>
@@ -309,7 +335,7 @@ true
 			<td>Allow ingress traffic to the Paperless pod.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L619">cnps.appTraffic.ingress.fromEndpoints</a></td>
+			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L626">cnps.appTraffic.ingress.fromEndpoints</a></td>
 			<td>
 list
 </td>
@@ -320,10 +346,10 @@ list
 </pre>
 </div>
 			</td>
-			<td>Additional ingress endpoint selectors.</td>
+			<td>Additional ingress endpoint selectors. @description Accepts either flat label maps or Cilium-style entries with `matchLabels`. - app.kubernetes.io/name: ingress-nginx   io.kubernetes.pod.namespace: ingress-nginx ## OR ## - matchLabels:     app.kubernetes.io/name: ingress-nginx     io.kubernetes.pod.namespace: ingress-nginx</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L621">cnps.appTraffic.ingress.fromEntities</a></td>
+			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L628">cnps.appTraffic.ingress.fromEntities</a></td>
 			<td>
 list
 </td>
@@ -1629,7 +1655,7 @@ string
 			<td>Override release-based naming.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L647">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L676">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -2756,7 +2782,7 @@ true
 			<td>Persist `/usr/src/paperless/media`.</td>
 		</tr>
 		<tr>
-			<td id="podAnnotations"><a href="./values.yaml#L641">podAnnotations</a></td>
+			<td id="podAnnotations"><a href="./values.yaml#L670">podAnnotations</a></td>
 			<td>
 object
 </td>
@@ -2770,7 +2796,7 @@ object
 			<td>Pod annotations.</td>
 		</tr>
 		<tr>
-			<td id="podLabels"><a href="./values.yaml#L644">podLabels</a></td>
+			<td id="podLabels"><a href="./values.yaml#L673">podLabels</a></td>
 			<td>
 object
 </td>
@@ -3649,7 +3675,7 @@ string
 			<td>Optional size limit.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L650">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L679">tolerations</a></td>
 			<td>
 list
 </td>
@@ -3752,4 +3778,5 @@ Autogenerated from chart metadata using [helm-docs](https://github.com/norwoodj/
 
 * `libchartCnps.enabled=true` is optional and disabled by default.
 * Default policy generation includes ingress-nginx and Envoy Gateway source selectors when those exposure modes are enabled.
-* If you use external Redis, PostgreSQL, or an external OIDC identity provider with Cilium policies enabled, add the required egress selectors and ports under `cnps.appTraffic.egress`. For hostname-based IdPs, use `cnps.appTraffic.egress.toFQDNs`.
+* Chart-managed internal dependencies such as Redis, Gotenberg, and Tika render as dedicated egress rules with their own fixed ports. User-provided `cnps.appTraffic.egress.toEndpoints`, `toEntities`, and `toFQDNs` render as separate rules so they do not broaden internal service access.
+* If you use external Redis, PostgreSQL, or an external OIDC identity provider with Cilium policies enabled, add the required egress selectors and ports under `cnps.appTraffic.egress`. For hostname-based IdPs, use `cnps.appTraffic.egress.toFQDNs`. For more specialized cases, append raw rules via `cnps.appTraffic.egress.extraRules`.
