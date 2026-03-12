@@ -4,7 +4,7 @@ description: A Helm chart for deploying Envoy Gateway Gateway and EnvoyProxy ins
 type: application
 # renovate: bumpVersion
 version: 0.1.0
-# renovate: chart=gateway-helm repository=https://hub.docker.com/r/envoyproxy/gateway-helm
+# renovate: image=envoyproxy/gateway
 appVersion: "v1.7.0"
 kubeVersion: ">=1.24.0"
 home: https://github.com/CodeAdminDe/helm-charts

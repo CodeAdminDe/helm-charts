@@ -37,6 +37,48 @@
   ],
   "packageRules": [
     {
+      "groupName": "envoy-gateway",
+      "groupSlug": "envoy-gateway-upstream",
+      "matchFileNames": [
+        "charts/envoy-gateway/**"
+      ],
+      "matchPackageNames": [
+        "gateway-helm",
+        "envoyproxy/gateway",
+        "envoyproxy/ratelimit"
+      ]
+    },
+    {
+      "groupName": "envoy-gateway-dataplane-policies",
+      "groupSlug": "envoy-gateway-dataplane-policies-upstream",
+      "matchFileNames": [
+        "charts/envoy-gateway-dataplane-policies/**"
+      ],
+      "matchPackageNames": [
+        "envoyproxy/gateway"
+      ]
+    },
+    {
+      "groupName": "envoy-gateway-instance",
+      "groupSlug": "envoy-gateway-instance-upstream",
+      "matchFileNames": [
+        "charts/envoy-gateway-instance/**"
+      ],
+      "matchPackageNames": [
+        "envoyproxy/gateway"
+      ]
+    },
+    {
+      "groupName": "envoy-gateway-instance-policies",
+      "groupSlug": "envoy-gateway-instance-policies-upstream",
+      "matchFileNames": [
+        "charts/envoy-gateway-instance-policies/**"
+      ],
+      "matchPackageNames": [
+        "envoyproxy/gateway"
+      ]
+    },
+    {
       "groupName": "netbirdio/netbird-agent",
       "matchPackageNames": [
         "netbirdio/**"
