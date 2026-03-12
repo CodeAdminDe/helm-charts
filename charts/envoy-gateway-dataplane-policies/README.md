@@ -92,7 +92,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="egress"><a href="./values.yaml#L66">egress</a></td>
+			<td id="egress"><a href="./values.yaml#L69">egress</a></td>
 			<td>
 object
 </td>
@@ -130,7 +130,7 @@ object
 			<td>Dataplane egress policy controls.</td>
 		</tr>
 		<tr>
-			<td id="egress--backends"><a href="./values.yaml#L99">egress.backends</a></td>
+			<td id="egress--backends"><a href="./values.yaml#L102">egress.backends</a></td>
 			<td>
 list
 </td>
@@ -154,7 +154,7 @@ backends:
 ```</td>
 		</tr>
 		<tr>
-			<td id="egress--controlPlane--enabled"><a href="./values.yaml#L69">egress.controlPlane.enabled</a></td>
+			<td id="egress--controlPlane--enabled"><a href="./values.yaml#L72">egress.controlPlane.enabled</a></td>
 			<td>
 bool
 </td>
@@ -168,7 +168,7 @@ true
 			<td>Allow dataplane egress back to the Envoy Gateway control plane.</td>
 		</tr>
 		<tr>
-			<td id="egress--controlPlane--ports"><a href="./values.yaml#L78">egress.controlPlane.ports</a></td>
+			<td id="egress--controlPlane--ports"><a href="./values.yaml#L81">egress.controlPlane.ports</a></td>
 			<td>
 list
 </td>
@@ -186,7 +186,7 @@ list
 			<td>Control-plane ports required by Envoy Gateway dataplane workloads.</td>
 		</tr>
 		<tr>
-			<td id="egress--controlPlane--toEndpoints"><a href="./values.yaml#L72">egress.controlPlane.toEndpoints</a></td>
+			<td id="egress--controlPlane--toEndpoints"><a href="./values.yaml#L75">egress.controlPlane.toEndpoints</a></td>
 			<td>
 list
 </td>
@@ -208,7 +208,7 @@ list
 			<td>Endpoint selectors for the Envoy Gateway control plane. @description Defaults assume the controller runs in the `envoy-gateway-system` namespace. Override these selectors when the controller namespace or labels differ.</td>
 		</tr>
 		<tr>
-			<td id="egress--dns--enabled"><a href="./values.yaml#L85">egress.dns.enabled</a></td>
+			<td id="egress--dns--enabled"><a href="./values.yaml#L88">egress.dns.enabled</a></td>
 			<td>
 bool
 </td>
@@ -222,7 +222,7 @@ true
 			<td>Allow DNS egress to kube-dns.</td>
 		</tr>
 		<tr>
-			<td id="egress--external"><a href="./values.yaml#L111">egress.external</a></td>
+			<td id="egress--external"><a href="./values.yaml#L114">egress.external</a></td>
 			<td>
 list
 </td>
@@ -244,7 +244,7 @@ external:
 ```</td>
 		</tr>
 		<tr>
-			<td id="egress--extraRules"><a href="./values.yaml#L114">egress.extraRules</a></td>
+			<td id="egress--extraRules"><a href="./values.yaml#L117">egress.extraRules</a></td>
 			<td>
 list
 </td>
@@ -272,7 +272,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="ingress"><a href="./values.yaml#L25">ingress</a></td>
+			<td id="ingress"><a href="./values.yaml#L28">ingress</a></td>
 			<td>
 object
 </td>
@@ -307,7 +307,7 @@ object
 			<td>Dataplane ingress policy controls.</td>
 		</tr>
 		<tr>
-			<td id="ingress--extraRules"><a href="./values.yaml#L63">ingress.extraRules</a></td>
+			<td id="ingress--extraRules"><a href="./values.yaml#L66">ingress.extraRules</a></td>
 			<td>
 list
 </td>
@@ -332,7 +332,7 @@ extraRules:
 ```</td>
 		</tr>
 		<tr>
-			<td id="ingress--private--enabled"><a href="./values.yaml#L41">ingress.private.enabled</a></td>
+			<td id="ingress--private--enabled"><a href="./values.yaml#L44">ingress.private.enabled</a></td>
 			<td>
 bool
 </td>
@@ -346,7 +346,7 @@ false
 			<td>Allow private cluster-internal traffic to dedicated listener ports.</td>
 		</tr>
 		<tr>
-			<td id="ingress--private--fromEndpoints"><a href="./values.yaml#L46">ingress.private.fromEndpoints</a></td>
+			<td id="ingress--private--fromEndpoints"><a href="./values.yaml#L49">ingress.private.fromEndpoints</a></td>
 			<td>
 list
 </td>
@@ -360,7 +360,7 @@ list
 			<td>Optional endpoint selectors for private listener traffic.</td>
 		</tr>
 		<tr>
-			<td id="ingress--private--fromEntities"><a href="./values.yaml#L43">ingress.private.fromEntities</a></td>
+			<td id="ingress--private--fromEntities"><a href="./values.yaml#L46">ingress.private.fromEntities</a></td>
 			<td>
 list
 </td>
@@ -376,7 +376,7 @@ list
 			<td>Allowed Cilium entities for private listener traffic.</td>
 		</tr>
 		<tr>
-			<td id="ingress--private--ports"><a href="./values.yaml#L48">ingress.private.ports</a></td>
+			<td id="ingress--private--ports"><a href="./values.yaml#L51">ingress.private.ports</a></td>
 			<td>
 list
 </td>
@@ -390,7 +390,7 @@ list
 			<td>Private listener ports.</td>
 		</tr>
 		<tr>
-			<td id="ingress--public--enabled"><a href="./values.yaml#L28">ingress.public.enabled</a></td>
+			<td id="ingress--public--enabled"><a href="./values.yaml#L31">ingress.public.enabled</a></td>
 			<td>
 bool
 </td>
@@ -404,7 +404,7 @@ true
 			<td>Allow public north-south traffic to the dataplane listener ports.</td>
 		</tr>
 		<tr>
-			<td id="ingress--public--fromEndpoints"><a href="./values.yaml#L33">ingress.public.fromEndpoints</a></td>
+			<td id="ingress--public--fromEndpoints"><a href="./values.yaml#L36">ingress.public.fromEndpoints</a></td>
 			<td>
 list
 </td>
@@ -418,7 +418,7 @@ list
 			<td>Optional endpoint selectors for public listener traffic.</td>
 		</tr>
 		<tr>
-			<td id="ingress--public--fromEntities"><a href="./values.yaml#L30">ingress.public.fromEntities</a></td>
+			<td id="ingress--public--fromEntities"><a href="./values.yaml#L33">ingress.public.fromEntities</a></td>
 			<td>
 list
 </td>
@@ -434,7 +434,7 @@ list
 			<td>Allowed Cilium entities for public listener traffic.</td>
 		</tr>
 		<tr>
-			<td id="ingress--public--ports"><a href="./values.yaml#L35">ingress.public.ports</a></td>
+			<td id="ingress--public--ports"><a href="./values.yaml#L38">ingress.public.ports</a></td>
 			<td>
 list
 </td>
@@ -465,7 +465,7 @@ string
 			<td>Override release-based naming.</td>
 		</tr>
 		<tr>
-			<td id="namespaceBaseline"><a href="./values.yaml#L19">namespaceBaseline</a></td>
+			<td id="namespaceBaseline"><a href="./values.yaml#L22">namespaceBaseline</a></td>
 			<td>
 object
 </td>
@@ -482,7 +482,7 @@ object
 			<td>Optional namespace-wide baseline for dedicated dataplane namespaces. @description Advanced feature. Only enable when the release namespace is dedicated to the targeted dataplane workloads. This intentionally applies to all endpoints in the namespace.</td>
 		</tr>
 		<tr>
-			<td id="namespaceBaseline--confirmDedicatedNamespace"><a href="./values.yaml#L22">namespaceBaseline.confirmDedicatedNamespace</a></td>
+			<td id="namespaceBaseline--confirmDedicatedNamespace"><a href="./values.yaml#L25">namespaceBaseline.confirmDedicatedNamespace</a></td>
 			<td>
 bool
 </td>
@@ -496,7 +496,7 @@ false
 			<td>Explicit acknowledgement that the namespace is dedicated to dataplane workloads.</td>
 		</tr>
 		<tr>
-			<td id="podSecurityContext"><a href="./values.yaml#L121">podSecurityContext</a></td>
+			<td id="podSecurityContext"><a href="./values.yaml#L124">podSecurityContext</a></td>
 			<td>
 object
 </td>
@@ -510,7 +510,7 @@ object
 			<td>Pod-level security context for Helm test pods.</td>
 		</tr>
 		<tr>
-			<td id="policyMetadata"><a href="./values.yaml#L13">policyMetadata</a></td>
+			<td id="policyMetadata"><a href="./values.yaml#L16">policyMetadata</a></td>
 			<td>
 object
 </td>
@@ -527,7 +527,7 @@ object
 			<td>Shared policy metadata extensions.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L117">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L120">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -543,7 +543,7 @@ object
 			<td>RuntimeClass names.</td>
 		</tr>
 		<tr>
-			<td id="securityContext"><a href="./values.yaml#L124">securityContext</a></td>
+			<td id="securityContext"><a href="./values.yaml#L127">securityContext</a></td>
 			<td>
 object
 </td>
@@ -582,12 +582,27 @@ object
   "matchLabels": {
     "app.kubernetes.io/component": "proxy",
     "app.kubernetes.io/name": "envoy"
-  }
+  },
+  "owningGatewayName": ""
 }
 </pre>
 </div>
 			</td>
 			<td>Selector for the Envoy Gateway dataplane pods this release should govern. @description Defaults are aligned to the managed Envoy Gateway dataplane pod labels used by Envoy Gateway `v1.7.0`. Add `gateway.envoyproxy.io/owning-gateway-name=<gateway>` when you want per-Gateway scoping. The chart never uses a broad empty selector for dataplane policies.</td>
+		</tr>
+		<tr>
+			<td id="selector--owningGatewayName"><a href="./values.yaml#L10">selector.owningGatewayName</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+""
+</pre>
+</div>
+			</td>
+			<td>Optional Gateway name for additional per-Gateway dataplane scoping. @description When set, the chart adds `gateway.envoyproxy.io/owning-gateway-name=<value>` to the rendered endpoint selectors.</td>
 		</tr>
 	</tbody>
 </table>
@@ -648,7 +663,7 @@ Autogenerated from chart metadata using [helm-docs](https://github.com/norwoodj/
 * The default selector values match the managed Envoy Gateway dataplane pod labels used by Envoy Gateway `v1.7.0`:
   * `app.kubernetes.io/name=envoy`
   * `app.kubernetes.io/component=proxy`
-* Add `gateway.envoyproxy.io/owning-gateway-name=<gateway>` when you want per-Gateway scoping.
+* Set `selector.owningGatewayName` when you want per-Gateway scoping through `gateway.envoyproxy.io/owning-gateway-name=<gateway>`.
 * Keep the selector narrow and environment-specific.
 * Do not use broad selectors that unintentionally combine multiple security domains.
 
