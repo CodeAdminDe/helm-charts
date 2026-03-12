@@ -293,6 +293,9 @@ cnps:
       kubeApiServer:
         # -- Allow egress from the upstream `certgen` hook job to the Kubernetes API server.
         enabled: true
+        # -- Kubernetes API server port used by the upstream `certgen` hook job.
+        # @description Defaults to the in-cluster Kubernetes service port. Override only if your cluster exposes the API server to pods on a different port.
+        port: 443
 
       dns:
         # -- Allow DNS egress from the upstream `certgen` hook job to kube-dns.

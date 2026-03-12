@@ -176,4 +176,7 @@
   {{- if and .Values.cnps.controlPlane.ingress.metrics.enabled (empty .Values.cnps.controlPlane.ingress.metrics.fromEntities) (empty .Values.cnps.controlPlane.ingress.metrics.fromEndpoints) -}}
     {{- fail "cnps.controlPlane.ingress.metrics requires at least one explicit source via fromEntities and/or fromEndpoints when enabled." -}}
   {{- end -}}
+  {{- if and .Values.cnps.certgen.egress.kubeApiServer.enabled (empty .Values.cnps.certgen.egress.kubeApiServer.port) -}}
+    {{- fail "cnps.certgen.egress.kubeApiServer.port must be set when cnps.certgen.egress.kubeApiServer.enabled=true." -}}
+  {{- end -}}
 {{- end -}}
