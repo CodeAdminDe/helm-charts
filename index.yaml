@@ -1594,6 +1594,34 @@ entries:
       securityContext: not-applicable
     apiVersion: v2
     appVersion: v1.7.0
+    created: "2026-03-12T18:49:32.764158066Z"
+    description: A Helm chart for Envoy Gateway dataplane CiliumNetworkPolicies on
+      Kubernetes.
+    digest: 07ce7bda1aacf08630f7ed54dbd0b9a2725eb4471df4f1c4c6dd5af1579cc7aa
+    home: https://github.com/CodeAdminDe/helm-charts
+    icon: https://raw.githubusercontent.com/envoyproxy/gateway/main/site/assets/icons/logo.svg
+    keywords:
+    - envoy-gateway
+    - gateway-api
+    - cilium
+    - network-policy
+    - dataplane
+    - helm
+    kubeVersion: '>=1.24.0'
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: envoy-gateway-dataplane-policies
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/envoy-gateway-dataplane-policies-0.2.2/envoy-gateway-dataplane-policies-0.2.2.tgz
+    version: 0.2.2
+  - annotations:
+      category: Networking
+      securityContext: not-applicable
+    apiVersion: v2
+    appVersion: v1.7.0
     created: "2026-03-12T13:04:02.8473365Z"
     description: A Helm chart for Envoy Gateway dataplane CiliumNetworkPolicies on
       Kubernetes.
@@ -15415,4 +15443,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-12T13:04:02.847942734Z"
+generated: "2026-03-12T18:49:32.764799187Z"
