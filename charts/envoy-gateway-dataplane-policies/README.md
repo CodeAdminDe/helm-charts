@@ -2,7 +2,7 @@
 
 # envoy-gateway-dataplane-policies
 
-![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.7.0](https://img.shields.io/badge/AppVersion-v1.7.0-informational?style=flat-square)
+![Version: 0.2.2](https://img.shields.io/badge/Version-0.2.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.7.0](https://img.shields.io/badge/AppVersion-v1.7.0-informational?style=flat-square)
 
 A Helm chart for Envoy Gateway dataplane CiliumNetworkPolicies on Kubernetes.
 
@@ -92,7 +92,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="egress"><a href="./values.yaml#L69">egress</a></td>
+			<td id="egress"><a href="./values.yaml#L71">egress</a></td>
 			<td>
 object
 </td>
@@ -130,7 +130,7 @@ object
 			<td>Dataplane egress policy controls.</td>
 		</tr>
 		<tr>
-			<td id="egress--backends"><a href="./values.yaml#L102">egress.backends</a></td>
+			<td id="egress--backends"><a href="./values.yaml#L104">egress.backends</a></td>
 			<td>
 list
 </td>
@@ -154,7 +154,7 @@ backends:
 ```</td>
 		</tr>
 		<tr>
-			<td id="egress--controlPlane--enabled"><a href="./values.yaml#L72">egress.controlPlane.enabled</a></td>
+			<td id="egress--controlPlane--enabled"><a href="./values.yaml#L74">egress.controlPlane.enabled</a></td>
 			<td>
 bool
 </td>
@@ -168,7 +168,7 @@ true
 			<td>Allow dataplane egress back to the Envoy Gateway control plane.</td>
 		</tr>
 		<tr>
-			<td id="egress--controlPlane--ports"><a href="./values.yaml#L81">egress.controlPlane.ports</a></td>
+			<td id="egress--controlPlane--ports"><a href="./values.yaml#L83">egress.controlPlane.ports</a></td>
 			<td>
 list
 </td>
@@ -186,7 +186,7 @@ list
 			<td>Control-plane ports required by Envoy Gateway dataplane workloads.</td>
 		</tr>
 		<tr>
-			<td id="egress--controlPlane--toEndpoints"><a href="./values.yaml#L75">egress.controlPlane.toEndpoints</a></td>
+			<td id="egress--controlPlane--toEndpoints"><a href="./values.yaml#L77">egress.controlPlane.toEndpoints</a></td>
 			<td>
 list
 </td>
@@ -208,7 +208,7 @@ list
 			<td>Endpoint selectors for the Envoy Gateway control plane. @description Defaults assume the controller runs in the `envoy-gateway-system` namespace. Override these selectors when the controller namespace or labels differ.</td>
 		</tr>
 		<tr>
-			<td id="egress--dns--enabled"><a href="./values.yaml#L88">egress.dns.enabled</a></td>
+			<td id="egress--dns--enabled"><a href="./values.yaml#L90">egress.dns.enabled</a></td>
 			<td>
 bool
 </td>
@@ -222,7 +222,7 @@ true
 			<td>Allow DNS egress to kube-dns.</td>
 		</tr>
 		<tr>
-			<td id="egress--external"><a href="./values.yaml#L114">egress.external</a></td>
+			<td id="egress--external"><a href="./values.yaml#L116">egress.external</a></td>
 			<td>
 list
 </td>
@@ -244,7 +244,7 @@ external:
 ```</td>
 		</tr>
 		<tr>
-			<td id="egress--extraRules"><a href="./values.yaml#L117">egress.extraRules</a></td>
+			<td id="egress--extraRules"><a href="./values.yaml#L119">egress.extraRules</a></td>
 			<td>
 list
 </td>
@@ -296,8 +296,8 @@ object
       "world"
     ],
     "ports": [
-      80,
-      443
+      10080,
+      10443
     ]
   }
 }
@@ -307,7 +307,7 @@ object
 			<td>Dataplane ingress policy controls.</td>
 		</tr>
 		<tr>
-			<td id="ingress--extraRules"><a href="./values.yaml#L66">ingress.extraRules</a></td>
+			<td id="ingress--extraRules"><a href="./values.yaml#L68">ingress.extraRules</a></td>
 			<td>
 list
 </td>
@@ -332,7 +332,7 @@ extraRules:
 ```</td>
 		</tr>
 		<tr>
-			<td id="ingress--private--enabled"><a href="./values.yaml#L44">ingress.private.enabled</a></td>
+			<td id="ingress--private--enabled"><a href="./values.yaml#L45">ingress.private.enabled</a></td>
 			<td>
 bool
 </td>
@@ -343,10 +343,10 @@ false
 </pre>
 </div>
 			</td>
-			<td>Allow private cluster-internal traffic to dedicated listener ports.</td>
+			<td>Allow private cluster-internal traffic to dedicated dataplane pod target ports.</td>
 		</tr>
 		<tr>
-			<td id="ingress--private--fromEndpoints"><a href="./values.yaml#L49">ingress.private.fromEndpoints</a></td>
+			<td id="ingress--private--fromEndpoints"><a href="./values.yaml#L50">ingress.private.fromEndpoints</a></td>
 			<td>
 list
 </td>
@@ -360,7 +360,7 @@ list
 			<td>Optional endpoint selectors for private listener traffic.</td>
 		</tr>
 		<tr>
-			<td id="ingress--private--fromEntities"><a href="./values.yaml#L46">ingress.private.fromEntities</a></td>
+			<td id="ingress--private--fromEntities"><a href="./values.yaml#L47">ingress.private.fromEntities</a></td>
 			<td>
 list
 </td>
@@ -376,7 +376,7 @@ list
 			<td>Allowed Cilium entities for private listener traffic.</td>
 		</tr>
 		<tr>
-			<td id="ingress--private--ports"><a href="./values.yaml#L51">ingress.private.ports</a></td>
+			<td id="ingress--private--ports"><a href="./values.yaml#L53">ingress.private.ports</a></td>
 			<td>
 list
 </td>
@@ -387,7 +387,7 @@ list
 </pre>
 </div>
 			</td>
-			<td>Private listener ports.</td>
+			<td>Dataplane pod target ports for private listener exposure. @description Use the actual Envoy pod target ports here, not the Service listener ports.</td>
 		</tr>
 		<tr>
 			<td id="ingress--public--enabled"><a href="./values.yaml#L31">ingress.public.enabled</a></td>
@@ -401,7 +401,7 @@ true
 </pre>
 </div>
 			</td>
-			<td>Allow public north-south traffic to the dataplane listener ports.</td>
+			<td>Allow public north-south traffic to the dataplane pod target ports.</td>
 		</tr>
 		<tr>
 			<td id="ingress--public--fromEndpoints"><a href="./values.yaml#L36">ingress.public.fromEndpoints</a></td>
@@ -434,7 +434,7 @@ list
 			<td>Allowed Cilium entities for public listener traffic.</td>
 		</tr>
 		<tr>
-			<td id="ingress--public--ports"><a href="./values.yaml#L38">ingress.public.ports</a></td>
+			<td id="ingress--public--ports"><a href="./values.yaml#L39">ingress.public.ports</a></td>
 			<td>
 list
 </td>
@@ -442,13 +442,13 @@ list
 				<div style="max-width: 300px;">
 <pre lang="json">
 [
-  80,
-  443
+  10080,
+  10443
 ]
 </pre>
 </div>
 			</td>
-			<td>Listener ports exposed publicly.</td>
+			<td>Dataplane pod target ports for public HTTP/HTTPS traffic. @description Cilium enforces these policies on the pod endpoint, so these must be the actual Envoy container target ports, not the Service listener ports.</td>
 		</tr>
 		<tr>
 			<td id="nameOverride"><a href="./values.yaml#L2">nameOverride</a></td>
@@ -496,7 +496,7 @@ false
 			<td>Explicit acknowledgement that the namespace is dedicated to dataplane workloads.</td>
 		</tr>
 		<tr>
-			<td id="podSecurityContext"><a href="./values.yaml#L124">podSecurityContext</a></td>
+			<td id="podSecurityContext"><a href="./values.yaml#L126">podSecurityContext</a></td>
 			<td>
 object
 </td>
@@ -527,7 +527,7 @@ object
 			<td>Shared policy metadata extensions.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L120">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L122">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -543,7 +543,7 @@ object
 			<td>RuntimeClass names.</td>
 		</tr>
 		<tr>
-			<td id="securityContext"><a href="./values.yaml#L127">securityContext</a></td>
+			<td id="securityContext"><a href="./values.yaml#L129">securityContext</a></td>
 			<td>
 object
 </td>
@@ -679,3 +679,8 @@ Autogenerated from chart metadata using [helm-docs](https://github.com/norwoodj/
 * External dependencies such as OIDC or telemetry should be modeled explicitly through `egress.external`.
 * This chart does not infer backends from `HTTPRoute` resources.
 * The default control-plane selector assumes the Envoy Gateway controller runs in the `envoy-gateway-system` namespace. Override `egress.controlPlane.toEndpoints` when your controller namespace or labels differ.
+
+### Port model
+
+* Dataplane ingress `ports` in this chart must be the real Envoy pod target ports, not the Service listener ports.
+* Cilium enforces the policy on the pod endpoint, so a Service exposed on `80/443` may still require `10080/10443` in the dataplane CNP.

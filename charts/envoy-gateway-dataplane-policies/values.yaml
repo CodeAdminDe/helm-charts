@@ -27,27 +27,29 @@ namespaceBaseline:
 # -- Dataplane ingress policy controls.
 ingress:
   public:
-    # -- Allow public north-south traffic to the dataplane listener ports.
+    # -- Allow public north-south traffic to the dataplane pod target ports.
     enabled: true
     # -- Allowed Cilium entities for public listener traffic.
     fromEntities:
       - world
     # -- Optional endpoint selectors for public listener traffic.
     fromEndpoints: []
-    # -- Listener ports exposed publicly.
+    # -- Dataplane pod target ports for public HTTP/HTTPS traffic.
+    # @description Cilium enforces these policies on the pod endpoint, so these must be the actual Envoy container target ports, not the Service listener ports.
     ports:
-      - 80
-      - 443
+      - 10080
+      - 10443
 
   private:
-    # -- Allow private cluster-internal traffic to dedicated listener ports.
+    # -- Allow private cluster-internal traffic to dedicated dataplane pod target ports.
     enabled: false
     # -- Allowed Cilium entities for private listener traffic.
     fromEntities:
       - cluster
     # -- Optional endpoint selectors for private listener traffic.
     fromEndpoints: []
-    # -- Private listener ports.
+    # -- Dataplane pod target ports for private listener exposure.
+    # @description Use the actual Envoy pod target ports here, not the Service listener ports.
     ports: []
 
   # -- Additional raw ingress rules appended to the dataplane ingress CNP.
