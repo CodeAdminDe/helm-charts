@@ -1397,6 +1397,46 @@ entries:
           image: envoyproxy/ratelimit:3fb70258
       securityContext: compatible
     apiVersion: v2
+    appVersion: v1.7.1
+    created: "2026-03-12T21:02:01.262773062Z"
+    dependencies:
+    - alias: envoy-gateway
+      condition: envoy-gateway.enabled
+      name: gateway-helm
+      repository: oci://docker.io/envoyproxy
+      version: 1.7.1
+    description: A Helm chart for deploying Envoy Gateway (Gateway API implementation)
+      on Kubernetes.
+    digest: f297e73418ac0e8e084814aaf8bd9508b21d8f2b350388becbe0e2f76ed053a0
+    home: https://github.com/CodeAdminDe/helm-charts
+    icon: https://raw.githubusercontent.com/envoyproxy/gateway/main/site/assets/icons/logo.svg
+    keywords:
+    - envoy-gateway
+    - gateway-api
+    - envoy
+    - kubernetes
+    - ingress
+    - networking
+    - helm
+    kubeVersion: '>=1.24.0'
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: envoy-gateway
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/envoy-gateway-0.4.5/envoy-gateway-0.4.5.tgz
+    version: 0.4.5
+  - annotations:
+      category: Networking
+      images: |
+        - name: envoy-gateway
+          image: envoyproxy/gateway:v1.7.1
+        - name: ratelimit
+          image: envoyproxy/ratelimit:3fb70258
+      securityContext: compatible
+    apiVersion: v2
     appVersion: v1.7.0
     created: "2026-03-12T18:58:29.664074712Z"
     dependencies:
@@ -15626,4 +15666,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-12T20:59:48.051333187Z"
+generated: "2026-03-12T21:02:01.263329518Z"
