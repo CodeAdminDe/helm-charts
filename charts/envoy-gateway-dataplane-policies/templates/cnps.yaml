@@ -1,6 +1,9 @@
 {{- $selectorLabels := mergeOverwrite (dict) .Values.selector.matchLabels -}}
-{{- if .Values.selector.owningGatewayName -}}
-{{- $_ := set $selectorLabels "gateway.envoyproxy.io/owning-gateway-name" .Values.selector.owningGatewayName -}}
+{{- $selectorLabels := mergeOverwrite (dict) .Values.selector.matchLabels -}}
+{{- $owningGatewayName := .Values.selector.owningGatewayName | trim -}}
+{{- if $owningGatewayName -}}
+{{- $_ := set $selectorLabels "gateway.envoyproxy.io/owning-gateway-name" $owningGatewayName -}}
+{{- end -}}
 {{- end -}}
 {{- $ingressExtraRules := .Values.ingress.extraRules | default (list) -}}
 {{- $egressExtraRules := .Values.egress.extraRules | default (list) -}}
