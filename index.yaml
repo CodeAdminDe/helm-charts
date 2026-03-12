@@ -1816,6 +1816,35 @@ entries:
       category: Networking
       securityContext: not-applicable
     apiVersion: v2
+    appVersion: v1.7.1
+    created: "2026-03-12T19:34:59.310574719Z"
+    description: A Helm chart for Envoy Gateway Gateway-instance policy resources
+      on Kubernetes.
+    digest: 6c03ca41f6db9b0ee45069fc8bdc7413cb5cc0ed775dd8621fe7af0da9a89bcd
+    home: https://github.com/CodeAdminDe/helm-charts
+    icon: https://raw.githubusercontent.com/envoyproxy/gateway/main/site/assets/icons/logo.svg
+    keywords:
+    - envoy-gateway
+    - gateway-api
+    - policy
+    - security
+    - oidc
+    - oauth
+    - helm
+    kubeVersion: '>=1.24.0'
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: envoy-gateway-instance-policies
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/envoy-gateway-instance-policies-0.1.2/envoy-gateway-instance-policies-0.1.2.tgz
+    version: 0.1.2
+  - annotations:
+      category: Networking
+      securityContext: not-applicable
+    apiVersion: v2
     appVersion: v1.7.0
     created: "2026-03-12T09:25:31.306186972Z"
     description: A Helm chart for Envoy Gateway Gateway-instance policy resources
@@ -15523,4 +15552,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-12T18:58:29.665117818Z"
+generated: "2026-03-12T19:34:59.312324749Z"
