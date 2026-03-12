@@ -2,12 +2,12 @@
 nameOverride: ""
 fullnameOverride: ""
 
-# -- Selector for the EnvoyProxy dataplane pods this release should govern.
-# @description Must be narrow and explicit. Override the default example labels before production use. The chart never uses a broad empty selector for dataplane policies.
+# -- Selector for the Envoy Gateway dataplane pods this release should govern.
+# @description Defaults are aligned to the managed Envoy Gateway dataplane pod labels used by Envoy Gateway `v1.7.0`. Add `gateway.envoyproxy.io/owning-gateway-name=<gateway>` when you want per-Gateway scoping. The chart never uses a broad empty selector for dataplane policies.
 selector:
   matchLabels:
-    gateway.envoyproxy.io/owning-gateway-name: example
-    app.kubernetes.io/name: envoy-proxy
+    app.kubernetes.io/name: envoy
+    app.kubernetes.io/component: proxy
 
 # -- Shared policy metadata extensions.
 policyMetadata:
