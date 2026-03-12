@@ -78,11 +78,11 @@
 {{- end -}}
 
 {{- if ne .Values.paperless.auth.sessionCookieAge nil -}}
-  {{- if not (kindIs "string" .Values.paperless.auth.sessionCookieAge) -}}
-    {{- fail "paperless.auth.sessionCookieAge must be a string when set. Quote numeric values such as \"1209600\"." -}}
+  {{- if not (or (kindIs "int" .Values.paperless.auth.sessionCookieAge) (kindIs "int64" .Values.paperless.auth.sessionCookieAge) (kindIs "float64" .Values.paperless.auth.sessionCookieAge)) -}}
+    {{- fail "paperless.auth.sessionCookieAge must be a number when set." -}}
   {{- end -}}
-  {{- if and .Values.paperless.auth.sessionCookieAge (not (regexMatch "^[0-9]+$" .Values.paperless.auth.sessionCookieAge)) -}}
-    {{- fail "paperless.auth.sessionCookieAge must be a quoted non-negative integer string when set, for example \"1209600\"." -}}
+  {{- if lt (int .Values.paperless.auth.sessionCookieAge) 0 -}}
+    {{- fail "paperless.auth.sessionCookieAge must be zero or greater when set." -}}
   {{- end -}}
 {{- end -}}
 
