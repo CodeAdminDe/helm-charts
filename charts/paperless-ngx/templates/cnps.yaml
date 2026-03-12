@@ -53,30 +53,15 @@ metadata:
 {{- $hasIngressEndpoints = true -}}
 {{- end -}}
 {{- $includeIngressRule := or $hasIngressEndpoints $hasIngressEntities -}}
-{{- $internalEgressEndpoints := list -}}
-{{- if .Values.redis.enabled -}}
-{{- $internalEgressEndpoints = append $internalEgressEndpoints (dict "app.kubernetes.io/name" "redis" "app.kubernetes.io/instance" .Release.Name) -}}
-{{- end -}}
-{{- if and .Values.documentConversion.enabled .Values.gotenberg.enabled -}}
-{{- $internalEgressEndpoints = append $internalEgressEndpoints (dict "app.kubernetes.io/name" (include "paperless-ngx.name" .) "app.kubernetes.io/instance" .Release.Name "app.kubernetes.io/component" "gotenberg") -}}
-{{- end -}}
-{{- if and .Values.documentConversion.enabled .Values.tika.enabled -}}
-{{- $internalEgressEndpoints = append $internalEgressEndpoints (dict "app.kubernetes.io/name" (include "paperless-ngx.name" .) "app.kubernetes.io/instance" .Release.Name "app.kubernetes.io/component" "tika") -}}
-{{- end -}}
-{{- $effectiveEgressEndpoints := concat $internalEgressEndpoints (.Values.cnps.appTraffic.egress.toEndpoints | default (list)) -}}
+{{- $userEgressEndpoints := .Values.cnps.appTraffic.egress.toEndpoints | default (list) -}}
 {{- $effectiveEgressFQDNs := .Values.cnps.appTraffic.egress.toFQDNs | default (list) -}}
 {{- $effectiveEgressEntities := .Values.cnps.appTraffic.egress.toEntities | default (list) -}}
 {{- $includeWorldFallback := and (empty $effectiveEgressEntities) (empty $effectiveEgressFQDNs) -}}
 {{- $effectiveEgressPorts := .Values.cnps.appTraffic.egress.toPorts | default (list) -}}
-{{- if .Values.redis.enabled -}}
-{{- $effectiveEgressPorts = concat $effectiveEgressPorts (list (dict "port" "6379" "protocol" "TCP")) -}}
+{{- if empty $effectiveEgressPorts -}}
+{{- $effectiveEgressPorts = list (dict "port" "443" "protocol" "TCP") -}}
 {{- end -}}
-{{- if and .Values.documentConversion.enabled .Values.gotenberg.enabled -}}
-{{- $effectiveEgressPorts = concat $effectiveEgressPorts (list (dict "port" (printf "%v" .Values.gotenberg.service.targetPort) "protocol" "TCP")) -}}
-{{- end -}}
-{{- if and .Values.documentConversion.enabled .Values.tika.enabled -}}
-{{- $effectiveEgressPorts = concat $effectiveEgressPorts (list (dict "port" (printf "%v" .Values.tika.service.targetPort) "protocol" "TCP")) -}}
-{{- end -}}
+{{- $extraEgressRules := .Values.cnps.appTraffic.egress.extraRules | default (list) -}}
 metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
@@ -91,9 +76,13 @@ spec:
   ingress:
     - {{- if $hasIngressEndpoints }}
       fromEndpoints:
-        {{- range $effectiveIngressEndpoints }}
+        {{- range $selector := $effectiveIngressEndpoints }}
+        {{- $matchLabels := $selector -}}
+        {{- if and (kindIs "map" $selector) (hasKey $selector "matchLabels") -}}
+        {{- $matchLabels = (get $selector "matchLabels") -}}
+        {{- end }}
         - matchLabels:
-          {{- range $k, $v := . }}
+          {{- range $k, $v := $matchLabels }}
             {{ $k }}: {{ $v | quote }}
           {{- end }}
         {{- end }}
@@ -111,11 +100,47 @@ spec:
   {{- end }}
   {{- if .Values.cnps.appTraffic.egress.allow }}
   egress:
-    {{- if $effectiveEgressEndpoints }}
+    {{- if .Values.redis.enabled }}
     - toEndpoints:
-        {{- range $effectiveEgressEndpoints }}
         - matchLabels:
-          {{- range $k, $v := . }}
+            app.kubernetes.io/name: redis
+            app.kubernetes.io/instance: {{ .Release.Name | quote }}
+      toPorts:
+        - ports:
+            - port: "6379"
+              protocol: TCP
+    {{- end }}
+    {{- if and .Values.documentConversion.enabled .Values.gotenberg.enabled }}
+    - toEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: {{ include "paperless-ngx.name" . | quote }}
+            app.kubernetes.io/instance: {{ .Release.Name | quote }}
+            app.kubernetes.io/component: gotenberg
+      toPorts:
+        - ports:
+            - port: {{ printf "%v" .Values.gotenberg.service.targetPort | quote }}
+              protocol: TCP
+    {{- end }}
+    {{- if and .Values.documentConversion.enabled .Values.tika.enabled }}
+    - toEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: {{ include "paperless-ngx.name" . | quote }}
+            app.kubernetes.io/instance: {{ .Release.Name | quote }}
+            app.kubernetes.io/component: tika
+      toPorts:
+        - ports:
+            - port: {{ printf "%v" .Values.tika.service.targetPort | quote }}
+              protocol: TCP
+    {{- end }}
+    {{- if $userEgressEndpoints }}
+    - toEndpoints:
+        {{- range $selector := $userEgressEndpoints }}
+        {{- $matchLabels := $selector -}}
+        {{- if and (kindIs "map" $selector) (hasKey $selector "matchLabels") -}}
+        {{- $matchLabels = (get $selector "matchLabels") -}}
+        {{- end }}
+        - matchLabels:
+          {{- range $k, $v := $matchLabels }}
             {{ $k }}: {{ $v | quote }}
           {{- end }}
         {{- end }}
@@ -125,7 +150,7 @@ spec:
             - port: {{ .port | quote }}
               {{- if hasKey . "endPort" }}
               endPort: {{ .endPort }}
-          {{- end }}
+              {{- end }}
               protocol: {{ .protocol | default "TCP" }}
           {{- end }}
     {{- end }}
@@ -134,17 +159,12 @@ spec:
         {{- toYaml $effectiveEgressFQDNs | nindent 8 }}
       toPorts:
         - ports:
-          {{- if .Values.cnps.appTraffic.egress.toPorts }}
-          {{- range .Values.cnps.appTraffic.egress.toPorts }}
+          {{- range $effectiveEgressPorts }}
             - port: {{ .port | quote }}
               {{- if hasKey . "endPort" }}
               endPort: {{ .endPort }}
               {{- end }}
               protocol: {{ .protocol | default "TCP" }}
-          {{- end }}
-          {{- else }}
-            - port: "443"
-              protocol: TCP
           {{- end }}
     {{- end }}
     {{- if or $includeWorldFallback $effectiveEgressEntities }}
@@ -156,18 +176,16 @@ spec:
       {{- end }}
       toPorts:
         - ports:
-          {{- if .Values.cnps.appTraffic.egress.toPorts }}
-          {{- range .Values.cnps.appTraffic.egress.toPorts }}
+          {{- range $effectiveEgressPorts }}
             - port: {{ .port | quote }}
               {{- if hasKey . "endPort" }}
               endPort: {{ .endPort }}
               {{- end }}
               protocol: {{ .protocol | default "TCP" }}
           {{- end }}
-          {{- else }}
-            - port: "443"
-              protocol: TCP
-          {{- end }}
+    {{- end }}
+    {{- range $extraEgressRules }}
+    - {{- toYaml . | nindent 6 }}
     {{- end }}
   {{- else }}
   egress:

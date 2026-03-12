@@ -616,13 +616,27 @@ cnps:
       # -- Allow ingress traffic to the Paperless pod.
       allow: true
       # -- Additional ingress endpoint selectors.
+      # @description Accepts either flat label maps or Cilium-style entries with `matchLabels`.
+      # - app.kubernetes.io/name: ingress-nginx
+      #   io.kubernetes.pod.namespace: ingress-nginx
+      # ## OR ##
+      # - matchLabels:
+      #     app.kubernetes.io/name: ingress-nginx
+      #     io.kubernetes.pod.namespace: ingress-nginx
       fromEndpoints: []
       # -- Additional ingress entities.
       fromEntities: []
     egress:
       # -- Allow egress traffic from the Paperless pod.
       allow: true
-      # -- Additional egress endpoint selectors.
+      # -- Additional egress endpoint selectors rendered as a dedicated CNP egress rule.
+      # @description Accepts either flat label maps or Cilium-style entries with `matchLabels`.
+      # - app.kubernetes.io/name: ingress-nginx
+      #   io.kubernetes.pod.namespace: ingress-nginx
+      # ## OR ##
+      # - matchLabels:
+      #     app.kubernetes.io/name: ingress-nginx
+      #     io.kubernetes.pod.namespace: ingress-nginx
       toEndpoints: []
       # -- Additional egress FQDN selectors for external services such as OIDC identity providers.
       # @description When this is non-empty and `toEntities` is left empty, the chart suppresses the default `world` fallback so egress can be narrowed to the configured hostnames.
@@ -632,10 +646,25 @@ cnps:
       # -- Additional egress entities.
       toEntities:
         - world
-      # -- Additional egress ports.
+      # -- Ports for the user-configured endpoint/FQDN/entity egress rules.
+      # @description Built-in internal dependencies such as Redis, Gotenberg, and Tika always render as separate rules with their own fixed ports.
       toPorts:
         - port: "443"
           protocol: TCP
+      # -- Additional raw Cilium egress rules appended after the chart-managed ones.
+      # @raw
+      # ```yaml
+      # extraRules:
+      #   - toEndpoints:
+      #       - matchLabels:
+      #           io.kubernetes.pod.namespace: ingress-nginx
+      #           app.kubernetes.io/name: ingress-nginx
+      #     toPorts:
+      #       - ports:
+      #           - port: "443"
+      #             protocol: TCP
+      # ```
+      extraRules: []
 
 # -- Pod annotations.
 podAnnotations: {}
