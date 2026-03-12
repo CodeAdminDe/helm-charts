@@ -3,9 +3,9 @@ name: envoy-gateway-dataplane-policies
 description: A Helm chart for Envoy Gateway dataplane CiliumNetworkPolicies on Kubernetes.
 type: application
 # renovate: bumpVersion
-version: 0.2.2
+version: 0.2.3
 # renovate: image=envoyproxy/gateway
-appVersion: "v1.7.0"
+appVersion: "v1.7.1"
 kubeVersion: ">=1.24.0"
 home: https://github.com/CodeAdminDe/helm-charts
 icon: https://raw.githubusercontent.com/envoyproxy/gateway/main/site/assets/icons/logo.svg
