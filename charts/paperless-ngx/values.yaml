@@ -625,6 +625,11 @@ cnps:
       allow: true
       # -- Additional egress endpoint selectors.
       toEndpoints: []
+      # -- Additional egress FQDN selectors for external services such as OIDC identity providers.
+      # @description When this is non-empty and `toEntities` is left empty, the chart suppresses the default `world` fallback so egress can be narrowed to the configured hostnames.
+      # - matchName: auth.example.com
+      # - matchPattern: "*.example.com"
+      toFQDNs: []
       # -- Additional egress entities.
       toEntities:
         - world
