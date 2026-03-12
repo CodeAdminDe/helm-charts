@@ -26,7 +26,10 @@
 ### Selector model
 
 * `selector.matchLabels` must target the EnvoyProxy dataplane pods this release should govern.
-* The default selector values are illustrative placeholders and should be overridden before production use.
+* The default selector values match the managed Envoy Gateway dataplane pod labels used by Envoy Gateway `v1.7.0`:
+  * `app.kubernetes.io/name=envoy`
+  * `app.kubernetes.io/component=proxy`
+* Add `gateway.envoyproxy.io/owning-gateway-name=<gateway>` when you want per-Gateway scoping.
 * Keep the selector narrow and environment-specific.
 * Do not use broad selectors that unintentionally combine multiple security domains.
 
