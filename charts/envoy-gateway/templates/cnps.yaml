@@ -133,6 +133,10 @@ spec:
     {{- if .Values.cnps.certgen.egress.kubeApiServer.enabled }}
     - toEntities:
         - kube-apiserver
+      toPorts:
+        - ports:
+            - port: {{ printf "%v" .Values.cnps.certgen.egress.kubeApiServer.port | quote }}
+              protocol: TCP
     {{- end }}
     {{- if .Values.cnps.certgen.egress.dns.enabled }}
     - toEndpoints:

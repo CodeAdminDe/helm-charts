@@ -2,7 +2,7 @@
 
 # envoy-gateway
 
-![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.7.0](https://img.shields.io/badge/AppVersion-v1.7.0-informational?style=flat-square)
+![Version: 0.4.1](https://img.shields.io/badge/Version-0.4.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.7.0](https://img.shields.io/badge/AppVersion-v1.7.0-informational?style=flat-square)
 
 A Helm chart for deploying Envoy Gateway (Gateway API implementation) on Kubernetes.
 
@@ -829,7 +829,8 @@ object
       },
       "extraRules": [],
       "kubeApiServer": {
-        "enabled": true
+        "enabled": true,
+        "port": 443
       }
     }
   },
@@ -881,7 +882,7 @@ object
 			<td>Optional chart-local CiliumNetworkPolicies for Envoy Gateway controller resources. @description These policies intentionally protect only the known static controller resources managed by this chart integration: the Envoy Gateway control plane and the upstream `certgen` hook job. They do not attempt to govern generic EnvoyProxy dataplane namespaces or backend application traffic.</td>
 		</tr>
 		<tr>
-			<td id="cnps--certgen--egress--dns--enabled"><a href="./values.yaml#L299">cnps.certgen.egress.dns.enabled</a></td>
+			<td id="cnps--certgen--egress--dns--enabled"><a href="./values.yaml#L302">cnps.certgen.egress.dns.enabled</a></td>
 			<td>
 bool
 </td>
@@ -895,7 +896,7 @@ true
 			<td>Allow DNS egress from the upstream `certgen` hook job to kube-dns.</td>
 		</tr>
 		<tr>
-			<td id="cnps--certgen--egress--extraRules"><a href="./values.yaml#L312">cnps.certgen.egress.extraRules</a></td>
+			<td id="cnps--certgen--egress--extraRules"><a href="./values.yaml#L315">cnps.certgen.egress.extraRules</a></td>
 			<td>
 list
 </td>
@@ -930,6 +931,20 @@ true
 </div>
 			</td>
 			<td>Allow egress from the upstream `certgen` hook job to the Kubernetes API server.</td>
+		</tr>
+		<tr>
+			<td id="cnps--certgen--egress--kubeApiServer--port"><a href="./values.yaml#L298">cnps.certgen.egress.kubeApiServer.port</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+443
+</pre>
+</div>
+			</td>
+			<td>Kubernetes API server port used by the upstream `certgen` hook job. @description Defaults to the in-cluster Kubernetes service port. Override only if your cluster exposes the API server to pods on a different port.</td>
 		</tr>
 		<tr>
 			<td id="cnps--controlPlane--egress--dns--enabled"><a href="./values.yaml#L276">cnps.controlPlane.egress.dns.enabled</a></td>
