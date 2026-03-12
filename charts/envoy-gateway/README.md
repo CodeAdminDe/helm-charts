@@ -2,7 +2,7 @@
 
 # envoy-gateway
 
-![Version: 0.4.3](https://img.shields.io/badge/Version-0.4.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.7.0](https://img.shields.io/badge/AppVersion-v1.7.0-informational?style=flat-square)
+![Version: 0.4.4](https://img.shields.io/badge/Version-0.4.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.7.0](https://img.shields.io/badge/AppVersion-v1.7.0-informational?style=flat-square)
 
 A Helm chart for deploying Envoy Gateway (Gateway API implementation) on Kubernetes.
 
@@ -20,7 +20,7 @@ Kubernetes: `>=1.24.0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://docker.io/envoyproxy | envoy-gateway(gateway-helm) | v1.7.0 |
+| oci://docker.io/envoyproxy | envoy-gateway(gateway-helm) | 1.7.1 |
 
 ## TL;DR
 
