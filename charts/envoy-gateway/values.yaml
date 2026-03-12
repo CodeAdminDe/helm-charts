@@ -270,6 +270,9 @@ cnps:
       kubeApiServer:
         # -- Allow egress from the control plane to the Kubernetes API server.
         enabled: true
+        # -- Kubernetes API server port used by the Envoy Gateway control plane.
+        # @description Defaults to `6443`, which is the common kube-apiserver port. Override if your cluster exposes the API server to pods on a different port.
+        port: 6443
 
       dns:
         # -- Allow DNS egress from the control plane to kube-dns.
@@ -294,8 +297,8 @@ cnps:
         # -- Allow egress from the upstream `certgen` hook job to the Kubernetes API server.
         enabled: true
         # -- Kubernetes API server port used by the upstream `certgen` hook job.
-        # @description Defaults to the in-cluster Kubernetes service port. Override only if your cluster exposes the API server to pods on a different port.
-        port: 443
+        # @description Defaults to `6443`, which is the common kube-apiserver port. Override if your cluster exposes the API server to pods on a different port.
+        port: 6443
 
       dns:
         # -- Allow DNS egress from the upstream `certgen` hook job to kube-dns.
