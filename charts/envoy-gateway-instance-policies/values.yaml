@@ -8,7 +8,7 @@ policyMetadata:
   annotations: {}
 
 # -- Envoy Gateway SecurityPolicy resources.
-# @description Rendered as `gateway.envoyproxy.io/v1alpha1` `SecurityPolicy` objects in `.Release.Namespace`. This chart intentionally uses explicit `targetRefs` only.
+# @description Rendered as `gateway.envoyproxy.io/v1alpha1` `SecurityPolicy` objects in `.Release.Namespace`. This chart intentionally uses explicit `targetRefs` only. For `extAuth`, keep `headersToExtAuth` at `extAuth` level, but place `headersToBackend` under `extAuth.http`.
 # @raw
 # ```yaml
 # securityPolicies:
@@ -36,6 +36,25 @@ policyMetadata:
 #       scopes:
 #         - profile
 #         - email
+#   - name: app-forward-auth
+#     targetRefs:
+#       - group: gateway.networking.k8s.io
+#         kind: Gateway
+#         name: prod-public
+#         sectionName: https-app
+#     extAuth:
+#       headersToExtAuth:
+#         - X-Forwarded-Host
+#       http:
+#         backendRefs:
+#           - name: authentik-outpost
+#             kind: Service
+#             port: 9000
+#         path: /outpost.goauthentik.io/auth/nginx
+#         headersToBackend:
+#           - Set-Cookie
+#           - X-authentik-username
+#           - X-authentik-groups
 # ```
 securityPolicies: []
 

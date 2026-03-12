@@ -35,4 +35,5 @@ Reference pre-created Kubernetes Secrets from the target namespace, for example:
 
 - `ClientTrafficPolicy` targets must be `Gateway` resources.
 - `BackendTrafficPolicy.mergeType` is intentionally rejected for Gateway targets to avoid ambiguous parent-level merges.
+- For `SecurityPolicy.extAuth`, keep `headersToExtAuth` at `extAuth` level, but configure `headersToBackend` under `extAuth.http`.
 - If all policy lists are empty or fully disabled, the chart renders no policy CRs by design.

@@ -133,8 +133,18 @@ false
       {{- end -}}
     {{- end -}}
     {{- with $policy.extAuth -}}
+      {{- include "envoy-gateway-instance-policies.validation.requireMap" (list . (printf "securityPolicies[%d].extAuth" $idx)) -}}
       {{- if eq (hasKey . "http") (hasKey . "grpc") -}}
         {{- fail (printf "securityPolicies[%d].extAuth must set exactly one of http or grpc." $idx) -}}
+      {{- end -}}
+      {{- if hasKey . "headersToBackend" -}}
+        {{- fail (printf "securityPolicies[%d].extAuth.headersToBackend is not supported; use securityPolicies[%d].extAuth.http.headersToBackend." $idx $idx) -}}
+      {{- end -}}
+      {{- with .http -}}
+        {{- include "envoy-gateway-instance-policies.validation.requireMap" (list . (printf "securityPolicies[%d].extAuth.http" $idx)) -}}
+      {{- end -}}
+      {{- with .grpc -}}
+        {{- include "envoy-gateway-instance-policies.validation.requireMap" (list . (printf "securityPolicies[%d].extAuth.grpc" $idx)) -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}

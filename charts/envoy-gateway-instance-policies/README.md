@@ -2,7 +2,7 @@
 
 # envoy-gateway-instance-policies
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.7.0](https://img.shields.io/badge/AppVersion-v1.7.0-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.7.0](https://img.shields.io/badge/AppVersion-v1.7.0-informational?style=flat-square)
 
 A Helm chart for Envoy Gateway Gateway-instance policy resources on Kubernetes.
 
@@ -92,7 +92,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="backendTrafficPolicies"><a href="./values.yaml#L92">backendTrafficPolicies</a></td>
+			<td id="backendTrafficPolicies"><a href="./values.yaml#L111">backendTrafficPolicies</a></td>
 			<td>
 list
 </td>
@@ -129,7 +129,7 @@ backendTrafficPolicies:
 ```</td>
 		</tr>
 		<tr>
-			<td id="clientTrafficPolicies"><a href="./values.yaml#L64">clientTrafficPolicies</a></td>
+			<td id="clientTrafficPolicies"><a href="./values.yaml#L83">clientTrafficPolicies</a></td>
 			<td>
 list
 </td>
@@ -190,7 +190,7 @@ string
 			<td>Override release-based naming.</td>
 		</tr>
 		<tr>
-			<td id="podSecurityContext"><a href="./values.yaml#L99">podSecurityContext</a></td>
+			<td id="podSecurityContext"><a href="./values.yaml#L118">podSecurityContext</a></td>
 			<td>
 object
 </td>
@@ -221,7 +221,7 @@ object
 			<td>Shared metadata extensions applied to every generated policy resource.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L95">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L114">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -237,7 +237,7 @@ object
 			<td>RuntimeClass names.</td>
 		</tr>
 		<tr>
-			<td id="securityContext"><a href="./values.yaml#L102">securityContext</a></td>
+			<td id="securityContext"><a href="./values.yaml#L121">securityContext</a></td>
 			<td>
 object
 </td>
@@ -265,7 +265,7 @@ object
 			<td>Container-level security context for Helm test pods.</td>
 		</tr>
 		<tr>
-			<td id="securityPolicies"><a href="./values.yaml#L40">securityPolicies</a></td>
+			<td id="securityPolicies"><a href="./values.yaml#L59">securityPolicies</a></td>
 			<td>
 list
 </td>
@@ -276,7 +276,7 @@ list
 </pre>
 </div>
 			</td>
-			<td>Envoy Gateway SecurityPolicy resources. @description Rendered as `gateway.envoyproxy.io/v1alpha1` `SecurityPolicy` objects in `.Release.Namespace`. This chart intentionally uses explicit `targetRefs` only.
+			<td>Envoy Gateway SecurityPolicy resources. @description Rendered as `gateway.envoyproxy.io/v1alpha1` `SecurityPolicy` objects in `.Release.Namespace`. This chart intentionally uses explicit `targetRefs` only. For `extAuth`, keep `headersToExtAuth` at `extAuth` level, but place `headersToBackend` under `extAuth.http`.
 ```yaml
 securityPolicies:
   - name: app-oidc
@@ -303,6 +303,25 @@ securityPolicies:
       scopes:
         - profile
         - email
+  - name: app-forward-auth
+    targetRefs:
+      - group: gateway.networking.k8s.io
+        kind: Gateway
+        name: prod-public
+        sectionName: https-app
+    extAuth:
+      headersToExtAuth:
+        - X-Forwarded-Host
+      http:
+        backendRefs:
+          - name: authentik-outpost
+            kind: Service
+            port: 9000
+        path: /outpost.goauthentik.io/auth/nginx
+        headersToBackend:
+          - Set-Cookie
+          - X-authentik-username
+          - X-authentik-groups
 ```</td>
 		</tr>
 	</tbody>
@@ -370,4 +389,5 @@ Reference pre-created Kubernetes Secrets from the target namespace, for example:
 
 - `ClientTrafficPolicy` targets must be `Gateway` resources.
 - `BackendTrafficPolicy.mergeType` is intentionally rejected for Gateway targets to avoid ambiguous parent-level merges.
+- For `SecurityPolicy.extAuth`, keep `headersToExtAuth` at `extAuth` level, but configure `headersToBackend` under `extAuth.http`.
 - If all policy lists are empty or fully disabled, the chart renders no policy CRs by design.
