@@ -1,0 +1,435 @@
+# -- Number of Documenso application pod replicas.
+replicaCount: 2
+
+# -- Override release-based naming.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- Container image configuration.
+image:
+  # -- Image repository.
+  repository: documenso/documenso
+  # -- Image pull policy.
+  pullPolicy: IfNotPresent
+  # -- Image tag override (defaults to `.Chart.AppVersion` when empty).
+  tag: ""
+
+# -- Image pull secrets for private registries.
+imagePullSecrets: []
+
+# -- Service account configuration.
+serviceAccount:
+  # -- Create a dedicated ServiceAccount.
+  create: true
+  # -- ServiceAccount annotations.
+  annotations: {}
+  # -- ServiceAccount name override.
+  name: ""
+  # -- Automount the ServiceAccount token.
+  automountServiceAccountToken: false
+
+# -- Optional namespace-scoped RBAC configuration.
+rbac:
+  # -- Create Role and RoleBinding.
+  create: false
+  # -- Namespace override for RBAC resources.
+  namespace: ""
+  # -- Explicit RBAC rules required when `rbac.create=true`.
+  rules: []
+
+# -- Kubernetes Service configuration.
+service:
+  # -- Service type. This chart enforces `ClusterIP`.
+  type: ClusterIP
+  # -- Service annotations.
+  annotations: {}
+  # -- Service labels.
+  labels: {}
+  # -- Service port exposed to the cluster.
+  port: 80
+  # -- Container target port used by Documenso.
+  targetPort: 3000
+  # -- Service protocol.
+  targetProtocol: TCP
+
+# -- Ingress configuration (ingress-nginx style).
+ingress:
+  # -- Enable ingress resource creation.
+  enabled: false
+  # -- Ingress class name.
+  className: ""
+  # -- Additional ingress annotations.
+  annotations: {}
+  # -- Secure default ingress annotations for uploads and long-running requests.
+  secureDefaults:
+    # -- Enable secure default ingress annotations.
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+  # -- Host/path rules.
+  hosts:
+    - host: sign.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  # -- TLS host/secret blocks.
+  tls: []
+
+# -- Gateway API HTTPRoute configuration.
+gatewayApi:
+  # -- Enable HTTPRoute resource creation.
+  enabled: false
+  # -- Public URL scheme used when deriving `documenso.url` from Gateway API.
+  scheme: https
+  # -- Labels for the Gateway API controller pods, used to generate default CiliumNetworkPolicies ingress rules.
+  # If empty, you must provide explicit `cnps.appTraffic.ingress.fromEndpoints` when `gatewayApi.enabled=true`.
+  controllerSelector:
+    app.kubernetes.io/name: envoy-gateway
+    io.kubernetes.pod.namespace: envoy-gateway-system
+  # -- HTTPRoute annotations.
+  annotations: {}
+  # -- HTTPRoute labels.
+  labels: {}
+  # -- ParentRefs for the HTTPRoute.
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
+      sectionName: http
+  # -- Hostnames served by this route.
+  hostnames:
+    - sign.example.com
+  # -- Match rules for the default HTTPRoute rule.
+  matches:
+    - path:
+        type: PathPrefix
+        value: /
+  # -- Optional filters for the HTTPRoute rule.
+  filters: []
+  # -- Optional backend references. Defaults to the main Documenso service when empty.
+  backendRefs: []
+
+# -- RuntimeClass names.
+runtimeClass:
+  # -- RuntimeClass for deployment pods.
+  pods: ""
+  # -- RuntimeClass for Helm test pods.
+  tests: ""
+
+# -- Core Documenso runtime configuration.
+documenso:
+  # -- Explicit public URL (`NEXT_PUBLIC_WEBAPP_URL`). When empty, the chart derives it from Gateway API or Ingress when possible and otherwise falls back to `documenso.internalWebappUrl`.
+  url: ""
+  # -- Internal URL Documenso uses to call itself (`NEXT_PRIVATE_INTERNAL_WEBAPP_URL`).
+  internalWebappUrl: http://localhost:3000
+  # -- Disable public user signups (`NEXT_PUBLIC_DISABLE_SIGNUP`).
+  disableSignup: false
+
+# -- Generated application secrets used by Documenso.
+securitySecrets:
+  # -- Create a chart-managed Secret for `NEXTAUTH_SECRET` and the encryption keys.
+  create: true
+  # -- Existing secret name to use when `create=false`.
+  existingSecret: ""
+  # -- Secret name override when `create=true`.
+  name: ""
+  keys:
+    # -- Key name for `NEXTAUTH_SECRET`.
+    nextAuthSecret: NEXTAUTH_SECRET
+    # -- Key name for `NEXT_PRIVATE_ENCRYPTION_KEY`.
+    encryptionKey: NEXT_PRIVATE_ENCRYPTION_KEY
+    # -- Key name for `NEXT_PRIVATE_ENCRYPTION_SECONDARY_KEY`.
+    encryptionSecondaryKey: NEXT_PRIVATE_ENCRYPTION_SECONDARY_KEY
+
+# -- SMTP configuration for Documenso email delivery.
+smtp:
+  # -- SMTP transport (`NEXT_PRIVATE_SMTP_TRANSPORT`).
+  # @description Supported values documented by Documenso include `smtp-auth`, `smtp-api`, `resend`, and `mailchannels`.
+  transport: smtp-auth
+  # -- SMTP host (`NEXT_PRIVATE_SMTP_HOST`).
+  host: smtp.example.com
+  # -- SMTP port (`NEXT_PRIVATE_SMTP_PORT`).
+  port: 587
+  # -- Force TLS for SMTP (`NEXT_PRIVATE_SMTP_SECURE`).
+  secure: false
+  # -- Sender name (`NEXT_PRIVATE_SMTP_FROM_NAME`).
+  fromName: Documenso
+  # -- Sender address (`NEXT_PRIVATE_SMTP_FROM_ADDRESS`).
+  fromAddress: noreply@example.com
+  credentialsSecret:
+    # -- Existing secret name containing SMTP credentials.
+    name: documenso-smtp
+    # -- Secret key containing `NEXT_PRIVATE_SMTP_USERNAME`.
+    usernameKey: NEXT_PRIVATE_SMTP_USERNAME
+    # -- Secret key containing `NEXT_PRIVATE_SMTP_PASSWORD`.
+    passwordKey: NEXT_PRIVATE_SMTP_PASSWORD
+
+# -- PostgreSQL connectivity configuration.
+database:
+  externalSecret:
+    # -- Existing secret name containing the PostgreSQL connection URLs.
+    # @description This chart expects `NEXT_PRIVATE_DATABASE_URL` and, optionally, `NEXT_PRIVATE_DIRECT_DATABASE_URL` style secrets. If `directUrlKey` is empty, the chart reuses `urlKey` for both env vars. This reference is ignored when `database.useCnpgCluster.enabled=true`.
+    name: documenso-postgresql
+    # -- Secret key containing `NEXT_PRIVATE_DATABASE_URL`.
+    urlKey: NEXT_PRIVATE_DATABASE_URL
+    # -- Secret key containing `NEXT_PRIVATE_DIRECT_DATABASE_URL`. Leave empty to reuse `urlKey`.
+    directUrlKey: NEXT_PRIVATE_DIRECT_DATABASE_URL
+  # -- PostgreSQL port used for Cilium policy defaults when not using CNPG.
+  port: 5432
+  useCnpgCluster:
+    # -- Resolve PostgreSQL credentials from an existing CNPG app secret.
+    enabled: false
+    # -- CNPG cluster name. The RW service is derived as `<clusterName>-rw`.
+    clusterName: cnpg-cluster
+    # -- CNPG RW service port.
+    port: 5432
+    # -- Explicit CNPG app secret name. Defaults to `<clusterName>-app`.
+    appConnectionSecretName: ""
+    secretKeys:
+      # -- Key containing the PostgreSQL connection string used for both pooled and direct Documenso URLs.
+      connectionString: uri
+
+# -- Signing certificate configuration.
+signing:
+  # -- Path used inside the container for the signing certificate (`NEXT_PRIVATE_SIGNING_LOCAL_FILE_PATH`).
+  localFilePath: /opt/documenso/cert.p12
+  certificateSecret:
+    # -- Existing secret name containing the `.p12` signing certificate.
+    # @description If left empty, Documenso still starts, but document signing remains unavailable.
+    name: ""
+    # -- Secret key containing the certificate file bytes.
+    key: cert.p12
+  passphraseSecret:
+    # -- Existing secret name containing `NEXT_PRIVATE_SIGNING_PASSPHRASE`.
+    name: ""
+    # -- Secret key containing the signing passphrase.
+    key: NEXT_PRIVATE_SIGNING_PASSPHRASE
+
+# -- Document upload storage configuration.
+storage:
+  # -- Upload transport (`NEXT_PUBLIC_UPLOAD_TRANSPORT`).
+  # @description Supported values in the official docs are `database` and `s3`.
+  transport: database
+  s3:
+    # -- S3 endpoint (`NEXT_PRIVATE_UPLOAD_ENDPOINT`).
+    endpoint: ""
+    # -- S3 region (`NEXT_PRIVATE_UPLOAD_REGION`).
+    region: ""
+    # -- S3 bucket (`NEXT_PRIVATE_UPLOAD_BUCKET`).
+    bucket: ""
+    credentialsSecret:
+      # -- Existing secret name containing S3 credentials.
+      name: ""
+      # -- Secret key containing `NEXT_PRIVATE_UPLOAD_ACCESS_KEY_ID`.
+      accessKeyIdKey: NEXT_PRIVATE_UPLOAD_ACCESS_KEY_ID
+      # -- Secret key containing `NEXT_PRIVATE_UPLOAD_SECRET_ACCESS_KEY`.
+      secretAccessKeyKey: NEXT_PRIVATE_UPLOAD_SECRET_ACCESS_KEY
+
+# -- Optional command override.
+command: []
+
+# -- Optional args override.
+args: []
+
+# -- Additional non-sensitive environment variables.
+extraEnv: {}
+
+# -- Additional environment variables from existing secrets.
+# @description Supports both map and list forms.
+# @raw
+# ```yaml
+# additionalEnvSecrets:
+#   CUSTOM_TOKEN: my-secret
+#   CUSTOM_PASSWORD:
+#     secretName: my-secret
+#     secretKey: password
+#
+# additionalEnvSecrets:
+#   - name: CUSTOM_TOKEN
+#     secretName: my-secret
+#     secretKey: token
+# ```
+additionalEnvSecrets: {}
+
+# -- Import all keys from listed existing secrets.
+envFromSecrets: []
+
+# -- Import all keys from listed existing configmaps.
+envFromConfigMaps: []
+
+# -- Additional volumes.
+extraVolumes: []
+
+# -- Additional volume mounts.
+extraVolumeMounts: []
+
+# -- Apply default pod and container security settings.
+applySecurity: true
+
+# -- Apply health checks from values.
+applyHealthChecks: true
+
+# -- Pod-level security context for Documenso pods.
+podSecurityContext:
+  fsGroup: 1001
+
+# -- Container-level security context for the Documenso container.
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1001
+  runAsGroup: 1001
+  seccompProfile:
+    type: RuntimeDefault
+  capabilities:
+    drop:
+      - ALL
+
+# -- Optional writable `/tmp` mount for read-only root filesystem mode.
+tmpVolume:
+  # -- Mount writable `emptyDir` at `/tmp`.
+  enabled: true
+  # -- Mount path inside the container.
+  mountPath: /tmp
+  # -- Optional size limit.
+  sizeLimit: 1Gi
+
+# -- Resource requests and limits.
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+# -- Liveness probe.
+livenessProbe:
+  httpGet:
+    path: /api/health
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+# -- Readiness probe.
+readinessProbe:
+  httpGet:
+    path: /api/health
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+# -- Startup probe.
+startupProbe:
+  httpGet:
+    path: /api/health
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 30
+
+# -- HorizontalPodAutoscaler configuration.
+autoscaling:
+  # -- Enable autoscaling.
+  enabled: false
+  # -- Minimum replicas.
+  minReplicas: 2
+  # -- Maximum replicas.
+  maxReplicas: 10
+  # -- Target CPU utilization percentage.
+  targetCPUUtilizationPercentage: 70
+  # -- Enable memory utilization metric.
+  enableMemoryUtilization: true
+  # -- Target memory utilization percentage.
+  targetMemoryUtilizationPercentage: 80
+  # -- Optional raw HPA behavior block.
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+        - type: Percent
+          value: 10
+          periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 15
+        - type: Pods
+          value: 4
+          periodSeconds: 15
+      selectPolicy: Max
+
+# -- PodDisruptionBudget configuration.
+podDisruptionBudget:
+  # -- Enable a PodDisruptionBudget.
+  enabled: false
+  # -- Minimum number of available pods.
+  minAvailable: 1
+
+# -- Pod annotations.
+podAnnotations: {}
+
+# -- Pod labels.
+podLabels: {}
+
+# -- Workload node selector.
+nodeSelector: {}
+
+# -- Workload tolerations.
+tolerations: []
+
+# -- Workload affinity.
+affinity: {}
+
+# -- Cilium policy library toggle.
+libchartCnps:
+  # -- Enable `libchart-cnps` templates.
+  enabled: true
+  # -- Include CNPG policy set from the library.
+  includeCnpgPolicies: false
+
+# -- App-specific Cilium policy settings.
+cnps:
+  # -- Additional CNPG Cilium policy tuning used by libchart-cnps when `includeCnpgPolicies=true`.
+  cnpgTraffic:
+    # -- Extra egress rules appended to CNPG instance policy set.
+    instanceExtraEgress: []
+  appTraffic:
+    ingress:
+      # -- Allow ingress traffic to Documenso pods.
+      allow: true
+      # -- Additional ingress endpoint selectors.
+      # @description Accepts either flat label maps or Cilium-style entries with `matchLabels`.
+      fromEndpoints: []
+      # -- Optional allowed ingress entities.
+      fromEntities: []
+    egress:
+      # -- Allow egress traffic from Documenso pods.
+      allow: true
+      # -- Additional egress endpoint selectors rendered as a dedicated CNP egress rule.
+      # @description Accepts either flat label maps or Cilium-style entries with `matchLabels`.
+      toEndpoints: []
+      # -- Additional egress FQDN selectors for external services such as SMTP, S3, or managed PostgreSQL.
+      toFQDNs: []
+      # -- Additional egress entities.
+      toEntities:
+        - cluster
+        - world
+      # -- Ports for the user-configured endpoint/FQDN/entity egress rules.
+      # @description The chart appends the configured PostgreSQL and SMTP ports automatically.
+      toPorts:
+        - port: "80"
+          protocol: TCP
+        - port: "443"
+          protocol: TCP
+      # -- Additional raw Cilium egress rules appended after the chart-managed ones.
+      extraRules: []

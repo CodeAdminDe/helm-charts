@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "documenso.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "documenso.labels" . | nindent 4 }}
+    {{- include "documenso.componentLabels" (dict "component" "webserver") | nindent 4 }}
+    {{- with .Values.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: {{ .Values.service.targetProtocol }}
+  selector:
+    {{- include "documenso.componentSelectorLabels" (dict "root" . "component" "webserver") | nindent 4 }}

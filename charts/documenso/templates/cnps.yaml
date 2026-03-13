@@ -1,0 +1,194 @@
+{{- define "documenso.CiliumNetworkPolicies-NamespaceSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "documenso.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-NamespaceSet" (list . "documenso.CiliumNetworkPolicies-NamespaceSet") }}
+---
+{{- end -}}
+
+{{- define "documenso.CiliumNetworkPolicies-CnpgSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "documenso.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if and .Values.libchartCnps.enabled .Values.libchartCnps.includeCnpgPolicies .Values.database.useCnpgCluster.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-CnpgSet" (list . "documenso.CiliumNetworkPolicies-CnpgSet") }}
+---
+{{- end -}}
+
+{{- define "documenso.CiliumNetworkPolicies-AppSet" -}}
+{{- $defaultIngressEndpoints := list -}}
+{{- if .Values.ingress.enabled -}}
+{{- $defaultIngressEndpoints = append $defaultIngressEndpoints (dict "app.kubernetes.io/name" "ingress-nginx" "io.kubernetes.pod.namespace" "ingress-nginx") -}}
+{{- end -}}
+{{- if and .Values.gatewayApi.enabled .Values.gatewayApi.controllerSelector -}}
+{{- $defaultIngressEndpoints = append $defaultIngressEndpoints .Values.gatewayApi.controllerSelector -}}
+{{- end -}}
+{{- $defaultDenyMatchLabel := dict "documenso.cnp/default-deny" "true" -}}
+{{- $effectiveIngressEndpoints := .Values.cnps.appTraffic.ingress.fromEndpoints | default (list) -}}
+{{- $effectiveIngressEntities := .Values.cnps.appTraffic.ingress.fromEntities | default (list) -}}
+{{- if and (empty $effectiveIngressEndpoints) (gt (len $defaultIngressEndpoints) 0) -}}
+{{- $effectiveIngressEndpoints = $defaultIngressEndpoints -}}
+{{- end -}}
+{{- if not .Values.cnps.appTraffic.ingress.allow -}}
+{{- $effectiveIngressEndpoints = list $defaultDenyMatchLabel -}}
+{{- $effectiveIngressEntities = list -}}
+{{- end -}}
+{{- $hasIngressEndpoints := gt (len $effectiveIngressEndpoints) 0 -}}
+{{- $hasIngressEntities := not (empty $effectiveIngressEntities) -}}
+{{- if and .Values.cnps.appTraffic.ingress.allow (not $hasIngressEndpoints) (not $hasIngressEntities) -}}
+{{- $effectiveIngressEndpoints = list $defaultDenyMatchLabel -}}
+{{- $hasIngressEndpoints = true -}}
+{{- end -}}
+{{- $includeIngressRule := or $hasIngressEndpoints $hasIngressEntities -}}
+{{- $cnpgMode := .Values.database.useCnpgCluster.enabled -}}
+{{- $userEgressEndpoints := .Values.cnps.appTraffic.egress.toEndpoints | default (list) -}}
+{{- $effectiveEgressFQDNs := .Values.cnps.appTraffic.egress.toFQDNs | default (list) -}}
+{{- $effectiveEgressEntities := .Values.cnps.appTraffic.egress.toEntities | default (list) -}}
+{{- $extraEgressRules := .Values.cnps.appTraffic.egress.extraRules | default (list) -}}
+{{- $hasEgressEndpoints := gt (len $userEgressEndpoints) 0 -}}
+{{- $hasEgressFQDNs := not (empty $effectiveEgressFQDNs) -}}
+{{- $hasEgressEntities := not (empty $effectiveEgressEntities) -}}
+{{- $hasExtraEgressRules := gt (len $extraEgressRules) 0 -}}
+{{- $includeManagedEgressRules := or $hasEgressEndpoints $hasEgressFQDNs $hasEgressEntities $hasExtraEgressRules -}}
+{{- $portIndex := dict -}}
+{{- range $portSpec := (.Values.cnps.appTraffic.egress.toPorts | default (list)) -}}
+  {{- $port := printf "%v" (get $portSpec "port") -}}
+  {{- $protocol := default "TCP" (get $portSpec "protocol") -}}
+  {{- $endPort := "" -}}
+  {{- if hasKey $portSpec "endPort" -}}
+    {{- $endPort = printf "%v" (get $portSpec "endPort") -}}
+  {{- end -}}
+  {{- $key := printf "%s/%s/%s" $port $protocol $endPort -}}
+  {{- $normalized := dict "port" $port "protocol" $protocol -}}
+  {{- if hasKey $portSpec "endPort" -}}
+    {{- $_ := set $normalized "endPort" (get $portSpec "endPort") -}}
+  {{- end -}}
+  {{- $_ := set $portIndex $key $normalized -}}
+{{- end -}}
+{{- $dbPort := printf "%v" (ternary .Values.database.useCnpgCluster.port .Values.database.port $cnpgMode) -}}
+{{- $_ := set $portIndex (printf "%s/TCP/" $dbPort) (dict "port" $dbPort "protocol" "TCP") -}}
+{{- $smtpPort := printf "%v" .Values.smtp.port -}}
+{{- $_ := set $portIndex (printf "%s/TCP/" $smtpPort) (dict "port" $smtpPort "protocol" "TCP") -}}
+{{- $effectiveEgressPorts := list -}}
+{{- range $portKey := (keys $portIndex | sortAlpha) -}}
+{{- $effectiveEgressPorts = append $effectiveEgressPorts (index $portIndex $portKey) -}}
+{{- end -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "documenso.labels" . | nindent 4 }}
+spec:
+  endpointSelector:
+    matchLabels:
+      {{- include "documenso.componentSelectorLabels" (dict "root" . "component" "webserver") | nindent 6 }}
+  {{- if $includeIngressRule }}
+  ingress:
+    - {{- if $hasIngressEndpoints }}
+      fromEndpoints:
+        {{- range $selector := $effectiveIngressEndpoints }}
+        {{- $matchLabels := $selector -}}
+        {{- if and (kindIs "map" $selector) (hasKey $selector "matchLabels") -}}
+        {{- $matchLabels = (get $selector "matchLabels") -}}
+        {{- end }}
+        - matchLabels:
+          {{- range $k, $v := $matchLabels }}
+            {{ $k }}: {{ $v | quote }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+      {{- if $hasIngressEntities }}
+      fromEntities:
+        {{- toYaml $effectiveIngressEntities | nindent 8 }}
+      {{- end }}
+      toPorts:
+        - ports:
+            - port: {{ printf "%v" .Values.service.targetPort | quote }}
+              protocol: {{ .Values.service.targetProtocol | default "TCP" }}
+  {{- else }}
+  ingress: []
+  {{- end }}
+  {{- if .Values.cnps.appTraffic.egress.allow }}
+  {{- if $includeManagedEgressRules }}
+  egress:
+    {{- if $hasEgressEndpoints }}
+    - toEndpoints:
+        {{- range $selector := $userEgressEndpoints }}
+        {{- $matchLabels := $selector -}}
+        {{- if and (kindIs "map" $selector) (hasKey $selector "matchLabels") -}}
+        {{- $matchLabels = (get $selector "matchLabels") -}}
+        {{- end }}
+        - matchLabels:
+          {{- range $k, $v := $matchLabels }}
+            {{ $k }}: {{ $v | quote }}
+          {{- end }}
+        {{- end }}
+      toPorts:
+        - ports:
+          {{- range $effectiveEgressPorts }}
+            - port: {{ .port | quote }}
+              {{- if hasKey . "endPort" }}
+              endPort: {{ .endPort }}
+              {{- end }}
+              protocol: {{ .protocol | default "TCP" }}
+          {{- end }}
+    {{- end }}
+    {{- if $hasEgressFQDNs }}
+    - toFQDNs:
+        {{- toYaml $effectiveEgressFQDNs | nindent 8 }}
+      toPorts:
+        - ports:
+          {{- range $effectiveEgressPorts }}
+            - port: {{ .port | quote }}
+              {{- if hasKey . "endPort" }}
+              endPort: {{ .endPort }}
+              {{- end }}
+              protocol: {{ .protocol | default "TCP" }}
+          {{- end }}
+    {{- end }}
+    {{- if $hasEgressEntities }}
+    - toEntities:
+        {{- toYaml $effectiveEgressEntities | nindent 8 }}
+      toPorts:
+        - ports:
+          {{- range $effectiveEgressPorts }}
+            - port: {{ .port | quote }}
+              {{- if hasKey . "endPort" }}
+              endPort: {{ .endPort }}
+              {{- end }}
+              protocol: {{ .protocol | default "TCP" }}
+          {{- end }}
+    {{- end }}
+    {{- range $extraEgressRules }}
+    - {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- else }}
+  egress: []
+  {{- end }}
+  {{- else }}
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            documenso.cnp/default-deny: "true"
+      toPorts:
+        - ports:
+            - port: "65535"
+              protocol: TCP
+  {{- end }}
+{{- end -}}
+
+{{- if .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "documenso.CiliumNetworkPolicies-AppSet") }}
+{{- end -}}

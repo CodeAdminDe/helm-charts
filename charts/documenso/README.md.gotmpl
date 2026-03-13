@@ -1,0 +1,43 @@
+{{- define "extra.specifics.fromchart.documenso" -}}
+<hr /><hr />
+
+## Appendix - Chart-specifics
+
+### Scope and runtime model
+
+* This chart deploys the official `documenso/documenso` image and keeps the runtime stateless by default.
+* The application requires PostgreSQL and SMTP configuration. This chart can source PostgreSQL URLs either from an existing Secret or from an existing CNPG app Secret.
+* The signing certificate is optional at chart level because the official Documenso startup flow continues without it, but document-signing features stay unavailable until you mount a valid certificate and passphrase.
+
+### Secrets and GitOps behavior
+
+* `securitySecrets.create=true` generates and preserves `NEXTAUTH_SECRET`, `NEXT_PRIVATE_ENCRYPTION_KEY`, and `NEXT_PRIVATE_ENCRYPTION_SECONDARY_KEY`.
+* SMTP credentials, database URLs, signing material, and optional S3 credentials are always sourced from existing Secrets so sensitive values stay out of `values.yaml`.
+* Changes to externally managed Secrets are only consumed through environment variables at container start. Secret reconciliation alone will not refresh running pods, so trigger a rollout/restart or use a secret-reloader pattern when those values change.
+
+### Exposure model
+
+* The Service stays `ClusterIP` only.
+* North-south traffic is exposed through either `Ingress` or `HTTPRoute`.
+* The `gatewayApi` values are wired for Envoy Gateway by default via `gatewayApi.controllerSelector`, while still allowing other Gateway API controllers through explicit selector overrides.
+* `documenso.url` can be set explicitly. If left empty, the chart derives the public URL from Gateway API or Ingress where possible and otherwise falls back to `documenso.internalWebappUrl`.
+* The default ingress annotations follow the upstream Documenso Kubernetes guide for uploads and long-running requests.
+
+### Storage and uploads
+
+* `storage.transport=database` keeps uploaded content in PostgreSQL and requires no extra storage setup.
+* `storage.transport=s3` enables the upstream S3-compatible upload path and expects endpoint, region, bucket, and credentials to be provided explicitly.
+* `database.useCnpgCluster.enabled=true` switches the application to an existing CNPG app Secret and takes precedence over the `database.externalSecret` reference so CNPG-enabled installs do not need to clear the external Secret placeholder first.
+* Additional Documenso env flags that are not modeled directly by the chart can be added via `extraEnv`, `additionalEnvSecrets`, `envFromSecrets`, or `envFromConfigMaps`, subject to the reserved env validation rules.
+
+### Security defaults
+
+* The main workload defaults to `runAsNonRoot`, numeric UID/GID `1001`, dropped Linux capabilities, `RuntimeDefault` seccomp, and `readOnlyRootFilesystem=true`.
+* A writable `/tmp` `emptyDir` is mounted by default because the hardened container still needs a small writable scratch area.
+* `libchartCnps.enabled=true` is supported out of the box. Default policy generation includes ingress-nginx or Gateway-controller source selectors when those exposure modes are enabled.
+* PostgreSQL and SMTP ports are appended automatically to the app egress ports. Additional external egress can be declared via `cnps.appTraffic.egress.toEntities`, `toEndpoints`, `toFQDNs`, or raw `extraRules`.
+
+{{- end -}}
+
+{{ template "extra.templates.readme.complexvalues" . }}
+{{ template "extra.specifics.fromchart.documenso" . }}

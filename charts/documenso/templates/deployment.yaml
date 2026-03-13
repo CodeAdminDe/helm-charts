@@ -1,0 +1,231 @@
+{{- $cnpgMode := .Values.database.useCnpgCluster.enabled -}}
+{{- $securitySecretName := include "documenso.securitySecretName" . -}}
+{{- $externalDbSecretName := .Values.database.externalSecret.name -}}
+{{- $directUrlKey := .Values.database.externalSecret.directUrlKey | default .Values.database.externalSecret.urlKey -}}
+{{- $s3Mode := eq .Values.storage.transport "s3" -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "documenso.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "documenso.labels" . | nindent 4 }}
+    {{- include "documenso.componentLabels" (dict "component" "webserver") | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "documenso.componentSelectorLabels" (dict "root" . "component" "webserver") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "documenso.componentSelectorLabels" (dict "root" . "component" "webserver") | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/values: {{ toJson .Values | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- if .Values.securitySecrets.create }}
+        checksum/security-secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{- end }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "documenso.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      {{- if and .Values.applySecurity .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ include "documenso.name" . }}
+          image: {{ printf "%s:%s" .Values.image.repository (default .Chart.AppVersion .Values.image.tag) }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.command }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: {{ .Values.service.targetProtocol }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "documenso.configMapName" . }}
+            - secretRef:
+                name: {{ $securitySecretName }}
+            {{- range .Values.envFromSecrets }}
+            - secretRef:
+                name: {{ . }}
+            {{- end }}
+            {{- range .Values.envFromConfigMaps }}
+            - configMapRef:
+                name: {{ . }}
+            {{- end }}
+          env:
+            - name: PORT
+              value: {{ printf "%v" .Values.service.targetPort | quote }}
+            {{- if $cnpgMode }}
+            - name: NEXT_PRIVATE_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "documenso.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.connectionString | quote }}
+            - name: NEXT_PRIVATE_DIRECT_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "documenso.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.connectionString | quote }}
+            {{- else }}
+            - name: NEXT_PRIVATE_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $externalDbSecretName }}
+                  key: {{ .Values.database.externalSecret.urlKey | quote }}
+            - name: NEXT_PRIVATE_DIRECT_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $externalDbSecretName }}
+                  key: {{ $directUrlKey | quote }}
+            {{- end }}
+            - name: NEXT_PRIVATE_SMTP_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.smtp.credentialsSecret.name }}
+                  key: {{ .Values.smtp.credentialsSecret.usernameKey | quote }}
+            - name: NEXT_PRIVATE_SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.smtp.credentialsSecret.name }}
+                  key: {{ .Values.smtp.credentialsSecret.passwordKey | quote }}
+            {{- if .Values.signing.passphraseSecret.name }}
+            - name: NEXT_PRIVATE_SIGNING_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.signing.passphraseSecret.name }}
+                  key: {{ .Values.signing.passphraseSecret.key | quote }}
+            {{- end }}
+            {{- if $s3Mode }}
+            - name: NEXT_PRIVATE_UPLOAD_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.storage.s3.credentialsSecret.name }}
+                  key: {{ .Values.storage.s3.credentialsSecret.accessKeyIdKey | quote }}
+            - name: NEXT_PRIVATE_UPLOAD_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.storage.s3.credentialsSecret.name }}
+                  key: {{ .Values.storage.s3.credentialsSecret.secretAccessKeyKey | quote }}
+            {{- end }}
+            {{- $extraEnvKeys := keys .Values.extraEnv | sortAlpha }}
+            {{- range $key := $extraEnvKeys }}
+            - name: {{ $key }}
+              value: {{ index $.Values.extraEnv $key | quote }}
+            {{- end }}
+            {{- if kindIs "map" .Values.additionalEnvSecrets }}
+            {{- range $envName := keys .Values.additionalEnvSecrets | sortAlpha }}
+            {{- $secretConfig := index $.Values.additionalEnvSecrets $envName }}
+            {{- if kindIs "string" $secretConfig }}
+            - name: {{ $envName }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretConfig }}
+                  key: {{ $envName | quote }}
+            {{- else if kindIs "map" $secretConfig }}
+            {{- $secretName := default "" (index $secretConfig "secretName") }}
+            {{- if $secretName }}
+            - name: {{ default $envName (index $secretConfig "name") }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretName }}
+                  key: {{ default $envName (index $secretConfig "secretKey") | quote }}
+            {{- end }}
+            {{- end }}
+            {{- end }}
+            {{- else if kindIs "slice" .Values.additionalEnvSecrets }}
+            {{- range $secretConfig := .Values.additionalEnvSecrets }}
+            {{- $envName := default "" (index $secretConfig "name") }}
+            {{- $secretName := default "" (index $secretConfig "secretName") }}
+            {{- if and $envName $secretName }}
+            - name: {{ $envName }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretName }}
+                  key: {{ default $envName (index $secretConfig "secretKey") | quote }}
+            {{- end }}
+            {{- end }}
+            {{- end }}
+          {{- if and .Values.applySecurity .Values.securityContext }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          {{- if .Values.applyHealthChecks }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          startupProbe:
+            {{- toYaml .Values.startupProbe | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            {{- if .Values.tmpVolume.enabled }}
+            - name: tmp
+              mountPath: {{ .Values.tmpVolume.mountPath }}
+            {{- end }}
+            {{- if .Values.signing.certificateSecret.name }}
+            - name: signing-certificate
+              mountPath: {{ .Values.signing.localFilePath }}
+              subPath: {{ base .Values.signing.localFilePath }}
+              readOnly: true
+            {{- end }}
+            {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+      volumes:
+        {{- if .Values.tmpVolume.enabled }}
+        - name: tmp
+          emptyDir:
+            {{- with .Values.tmpVolume.sizeLimit }}
+            sizeLimit: {{ . }}
+            {{- end }}
+        {{- end }}
+        {{- if .Values.signing.certificateSecret.name }}
+        - name: signing-certificate
+          secret:
+            secretName: {{ .Values.signing.certificateSecret.name }}
+            items:
+              - key: {{ .Values.signing.certificateSecret.key | quote }}
+                path: {{ base .Values.signing.localFilePath | quote }}
+        {{- end }}
+        {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

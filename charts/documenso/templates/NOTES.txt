@@ -1,0 +1,24 @@
+1. Access the application inside the cluster:
+   kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "documenso.fullname" . }} 8080:{{ .Values.service.port }}
+   open http://127.0.0.1:8080
+
+2. Public URL:
+   {{ include "documenso.publicUrl" . }}
+
+3. If Ingress is enabled, use one of the configured hosts:
+   {{- if .Values.ingress.enabled }}
+   {{- range .Values.ingress.hosts }}
+   - {{ if $.Values.ingress.tls }}https{{ else }}http{{ end }}://{{ .host }}
+   {{- end }}
+   {{- else }}
+   ingress disabled
+   {{- end }}
+
+4. If Gateway API is enabled, use one of the configured hostnames:
+   {{- if .Values.gatewayApi.enabled }}
+   {{- range .Values.gatewayApi.hostnames }}
+   - {{ $.Values.gatewayApi.scheme | default "https" }}://{{ . }}
+   {{- end }}
+   {{- else }}
+   gatewayApi disabled
+   {{- end }}
