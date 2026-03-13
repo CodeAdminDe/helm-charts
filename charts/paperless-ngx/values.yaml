@@ -466,6 +466,10 @@ gotenberg:
   securityContext:
     allowPrivilegeEscalation: false
     runAsNonRoot: true
+    # -- Numeric UID from the official Gotenberg image, required so kubelet can verify `runAsNonRoot`.
+    runAsUser: 1001
+    # -- Numeric GID from the official Gotenberg image.
+    runAsGroup: 1001
     readOnlyRootFilesystem: true
     seccompProfile:
       type: RuntimeDefault
@@ -508,6 +512,10 @@ tika:
   securityContext:
     allowPrivilegeEscalation: false
     runAsNonRoot: true
+    # -- Numeric UID from the official Apache Tika image.
+    runAsUser: 35002
+    # -- Numeric GID from the official Apache Tika image.
+    runAsGroup: 35002
     readOnlyRootFilesystem: true
     seccompProfile:
       type: RuntimeDefault

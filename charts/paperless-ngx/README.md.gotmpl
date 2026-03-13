@@ -27,6 +27,7 @@
 
 * The main Paperless workload defaults to `runAsNonRoot`, dropped Linux capabilities, `RuntimeDefault` seccomp, and `readOnlyRootFilesystem=true`.
 * Writable runtime paths required by the official image are mounted explicitly at `/tmp`, `/run`, and `/usr/src/paperless/.gnupg`.
+* The optional in-chart Gotenberg and Tika helper deployments pin the numeric UID/GID used by their official images so `runAsNonRoot` remains kubelet-verifiable on hardened clusters.
 * This chart intentionally does not mutate the official image to install extra OCR packages. Use `paperless.ocrLanguages` only for language packs already shipped in the upstream image.
 
 ### Authentication and SSO

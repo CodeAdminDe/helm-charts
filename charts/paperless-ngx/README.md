@@ -2,7 +2,7 @@
 
 # paperless-ngx
 
-![Version: 0.2.7](https://img.shields.io/badge/Version-0.2.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.20.10](https://img.shields.io/badge/AppVersion-2.20.10-informational?style=flat-square)
+![Version: 0.2.8](https://img.shields.io/badge/Version-0.2.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.20.10](https://img.shields.io/badge/AppVersion-2.20.10-informational?style=flat-square)
 
 A Helm chart for deploying Paperless-ngx on Kubernetes.
 
@@ -97,7 +97,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="additionalEnvSecrets"><a href="./values.yaml#L545">additionalEnvSecrets</a></td>
+			<td id="additionalEnvSecrets"><a href="./values.yaml#L553">additionalEnvSecrets</a></td>
 			<td>
 object
 </td>
@@ -123,7 +123,7 @@ additionalEnvSecrets:
 ```</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L682">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L690">affinity</a></td>
 			<td>
 object
 </td>
@@ -151,7 +151,7 @@ false
 			<td>Allow more than one Paperless pod. Disabled by default because the upstream container bundles web, consumer, and scheduler processes together.</td>
 		</tr>
 		<tr>
-			<td id="applyHealthChecks"><a href="./values.yaml#L560">applyHealthChecks</a></td>
+			<td id="applyHealthChecks"><a href="./values.yaml#L568">applyHealthChecks</a></td>
 			<td>
 bool
 </td>
@@ -179,7 +179,7 @@ true
 			<td>Apply default pod and container security settings.</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L610">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L618">cnps</a></td>
 			<td>
 object
 </td>
@@ -219,7 +219,7 @@ object
 			<td>App-specific CiliumNetworkPolicies settings.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L631">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L639">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -233,7 +233,7 @@ true
 			<td>Allow egress traffic from the Paperless pod.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--extraRules"><a href="./values.yaml#L667">cnps.appTraffic.egress.extraRules</a></td>
+			<td id="cnps--appTraffic--egress--extraRules"><a href="./values.yaml#L675">cnps.appTraffic.egress.extraRules</a></td>
 			<td>
 list
 </td>
@@ -258,7 +258,7 @@ extraRules:
 ```</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEndpoints"><a href="./values.yaml#L640">cnps.appTraffic.egress.toEndpoints</a></td>
+			<td id="cnps--appTraffic--egress--toEndpoints"><a href="./values.yaml#L648">cnps.appTraffic.egress.toEndpoints</a></td>
 			<td>
 list
 </td>
@@ -272,7 +272,7 @@ list
 			<td>Additional egress endpoint selectors rendered as a dedicated CNP egress rule. @description Accepts either flat label maps or Cilium-style entries with `matchLabels`. - app.kubernetes.io/name: ingress-nginx   io.kubernetes.pod.namespace: ingress-nginx ## OR ## - matchLabels:     app.kubernetes.io/name: ingress-nginx     io.kubernetes.pod.namespace: ingress-nginx</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L647">cnps.appTraffic.egress.toEntities</a></td>
+			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L655">cnps.appTraffic.egress.toEntities</a></td>
 			<td>
 list
 </td>
@@ -288,7 +288,7 @@ list
 			<td>Additional egress entities.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toFQDNs"><a href="./values.yaml#L645">cnps.appTraffic.egress.toFQDNs</a></td>
+			<td id="cnps--appTraffic--egress--toFQDNs"><a href="./values.yaml#L653">cnps.appTraffic.egress.toFQDNs</a></td>
 			<td>
 list
 </td>
@@ -302,7 +302,7 @@ list
 			<td>Additional egress FQDN selectors for external services such as OIDC identity providers. @description When this is non-empty and `toEntities` is left empty, the chart suppresses the default `world` fallback so egress can be narrowed to the configured hostnames. - matchName: auth.example.com - matchPattern: "*.example.com"</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L651">cnps.appTraffic.egress.toPorts</a></td>
+			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L659">cnps.appTraffic.egress.toPorts</a></td>
 			<td>
 list
 </td>
@@ -321,7 +321,7 @@ list
 			<td>Ports for the user-configured endpoint/FQDN/entity egress rules. @description Built-in internal dependencies such as Redis, Gotenberg, and Tika always render as separate rules with their own fixed ports.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L617">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L625">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -335,7 +335,7 @@ true
 			<td>Allow ingress traffic to the Paperless pod.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L626">cnps.appTraffic.ingress.fromEndpoints</a></td>
+			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L634">cnps.appTraffic.ingress.fromEndpoints</a></td>
 			<td>
 list
 </td>
@@ -349,7 +349,7 @@ list
 			<td>Additional ingress endpoint selectors. @description Accepts either flat label maps or Cilium-style entries with `matchLabels`. - app.kubernetes.io/name: ingress-nginx   io.kubernetes.pod.namespace: ingress-nginx ## OR ## - matchLabels:     app.kubernetes.io/name: ingress-nginx     io.kubernetes.pod.namespace: ingress-nginx</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L628">cnps.appTraffic.ingress.fromEntities</a></td>
+			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L636">cnps.appTraffic.ingress.fromEntities</a></td>
 			<td>
 list
 </td>
@@ -363,7 +363,7 @@ list
 			<td>Additional ingress entities.</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L613">cnps.cnpgTraffic.instanceExtraEgress</a></td>
+			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L621">cnps.cnpgTraffic.instanceExtraEgress</a></td>
 			<td>
 list
 </td>
@@ -700,7 +700,7 @@ string
 			<td>External Tika endpoint. Leave empty to use the in-chart Tika deployment when `tika.enabled=true`.</td>
 		</tr>
 		<tr>
-			<td id="envFromConfigMaps"><a href="./values.yaml#L551">envFromConfigMaps</a></td>
+			<td id="envFromConfigMaps"><a href="./values.yaml#L559">envFromConfigMaps</a></td>
 			<td>
 list
 </td>
@@ -714,7 +714,7 @@ list
 			<td>Import all keys from listed existing configmaps.</td>
 		</tr>
 		<tr>
-			<td id="envFromSecrets"><a href="./values.yaml#L548">envFromSecrets</a></td>
+			<td id="envFromSecrets"><a href="./values.yaml#L556">envFromSecrets</a></td>
 			<td>
 list
 </td>
@@ -728,7 +728,7 @@ list
 			<td>Import all keys from listed existing secrets.</td>
 		</tr>
 		<tr>
-			<td id="extraEnv"><a href="./values.yaml#L528">extraEnv</a></td>
+			<td id="extraEnv"><a href="./values.yaml#L536">extraEnv</a></td>
 			<td>
 object
 </td>
@@ -742,7 +742,7 @@ object
 			<td>Additional non-sensitive environment variables passed to Paperless.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumeMounts"><a href="./values.yaml#L557">extraVolumeMounts</a></td>
+			<td id="extraVolumeMounts"><a href="./values.yaml#L565">extraVolumeMounts</a></td>
 			<td>
 list
 </td>
@@ -756,7 +756,7 @@ list
 			<td>Additional volume mounts for the main Paperless container.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumes"><a href="./values.yaml#L554">extraVolumes</a></td>
+			<td id="extraVolumes"><a href="./values.yaml#L562">extraVolumes</a></td>
 			<td>
 list
 </td>
@@ -1075,7 +1075,9 @@ object
       ]
     },
     "readOnlyRootFilesystem": true,
+    "runAsGroup": 1001,
     "runAsNonRoot": true,
+    "runAsUser": 1001,
     "seccompProfile": {
       "type": "RuntimeDefault"
     }
@@ -1188,7 +1190,7 @@ string
 			<td>Image tag.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--resources"><a href="./values.yaml#L483">gotenberg.resources</a></td>
+			<td id="gotenberg--resources"><a href="./values.yaml#L487">gotenberg.resources</a></td>
 			<td>
 object
 </td>
@@ -1217,7 +1219,9 @@ object
     ]
   },
   "readOnlyRootFilesystem": true,
+  "runAsGroup": 1001,
   "runAsNonRoot": true,
+  "runAsUser": 1001,
   "seccompProfile": {
     "type": "RuntimeDefault"
   }
@@ -1226,6 +1230,34 @@ object
 </div>
 			</td>
 			<td>Container security context.</td>
+		</tr>
+		<tr>
+			<td id="gotenberg--securityContext--runAsGroup"><a href="./values.yaml#L472">gotenberg.securityContext.runAsGroup</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+1001
+</pre>
+</div>
+			</td>
+			<td>Numeric GID from the official Gotenberg image.</td>
+		</tr>
+		<tr>
+			<td id="gotenberg--securityContext--runAsUser"><a href="./values.yaml#L470">gotenberg.securityContext.runAsUser</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+1001
+</pre>
+</div>
+			</td>
+			<td>Numeric UID from the official Gotenberg image, required so kubelet can verify `runAsNonRoot`.</td>
 		</tr>
 		<tr>
 			<td id="gotenberg--service--annotations"><a href="./values.yaml#L449">gotenberg.service.annotations</a></td>
@@ -1298,7 +1330,7 @@ string
 			<td>Service protocol.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--tmpVolume--enabled"><a href="./values.yaml#L477">gotenberg.tmpVolume.enabled</a></td>
+			<td id="gotenberg--tmpVolume--enabled"><a href="./values.yaml#L481">gotenberg.tmpVolume.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1312,7 +1344,7 @@ true
 			<td>Mount writable `emptyDir` at `/tmp`.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--tmpVolume--mountPath"><a href="./values.yaml#L479">gotenberg.tmpVolume.mountPath</a></td>
+			<td id="gotenberg--tmpVolume--mountPath"><a href="./values.yaml#L483">gotenberg.tmpVolume.mountPath</a></td>
 			<td>
 string
 </td>
@@ -1326,7 +1358,7 @@ string
 			<td>Mount path.</td>
 		</tr>
 		<tr>
-			<td id="gotenberg--tmpVolume--sizeLimit"><a href="./values.yaml#L481">gotenberg.tmpVolume.sizeLimit</a></td>
+			<td id="gotenberg--tmpVolume--sizeLimit"><a href="./values.yaml#L485">gotenberg.tmpVolume.sizeLimit</a></td>
 			<td>
 string
 </td>
@@ -1573,7 +1605,7 @@ list
 			<td>TLS host/secret blocks.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L603">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L611">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -1590,7 +1622,7 @@ object
 			<td>Optional `libchart-cnps` integration.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--enabled"><a href="./values.yaml#L605">libchartCnps.enabled</a></td>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L613">libchartCnps.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1604,7 +1636,7 @@ false
 			<td>Enable CiliumNetworkPolicy rendering via the `libchart-cnps` dependency.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L607">libchartCnps.includeCnpgPolicies</a></td>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L615">libchartCnps.includeCnpgPolicies</a></td>
 			<td>
 bool
 </td>
@@ -1618,7 +1650,7 @@ false
 			<td>Include the CNPG traffic policy set.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L563">livenessProbe</a></td>
+			<td id="livenessProbe"><a href="./values.yaml#L571">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -1655,7 +1687,7 @@ string
 			<td>Override release-based naming.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L676">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L684">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -2782,7 +2814,7 @@ true
 			<td>Persist `/usr/src/paperless/media`.</td>
 		</tr>
 		<tr>
-			<td id="podAnnotations"><a href="./values.yaml#L670">podAnnotations</a></td>
+			<td id="podAnnotations"><a href="./values.yaml#L678">podAnnotations</a></td>
 			<td>
 object
 </td>
@@ -2796,7 +2828,7 @@ object
 			<td>Pod annotations.</td>
 		</tr>
 		<tr>
-			<td id="podLabels"><a href="./values.yaml#L673">podLabels</a></td>
+			<td id="podLabels"><a href="./values.yaml#L681">podLabels</a></td>
 			<td>
 object
 </td>
@@ -2886,7 +2918,7 @@ list
 			<td>Explicit RBAC rules required when `rbac.create=true`.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe"><a href="./values.yaml#L573">readinessProbe</a></td>
+			<td id="readinessProbe"><a href="./values.yaml#L581">readinessProbe</a></td>
 			<td>
 object
 </td>
@@ -3010,7 +3042,7 @@ int
 			<td>Number of Paperless application pod replicas.</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L593">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L601">resources</a></td>
 			<td>
 object
 </td>
@@ -3084,7 +3116,7 @@ string
 			<td>Optional size limit.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L596">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L604">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -3101,7 +3133,7 @@ object
 			<td>RuntimeClass names.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--pods"><a href="./values.yaml#L598">runtimeClass.pods</a></td>
+			<td id="runtimeClass--pods"><a href="./values.yaml#L606">runtimeClass.pods</a></td>
 			<td>
 string
 </td>
@@ -3115,7 +3147,7 @@ string
 			<td>RuntimeClass for all regular pods.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--tests"><a href="./values.yaml#L600">runtimeClass.tests</a></td>
+			<td id="runtimeClass--tests"><a href="./values.yaml#L608">runtimeClass.tests</a></td>
 			<td>
 string
 </td>
@@ -3337,7 +3369,7 @@ string
 			<td>ServiceAccount name override.</td>
 		</tr>
 		<tr>
-			<td id="startupProbe"><a href="./values.yaml#L583">startupProbe</a></td>
+			<td id="startupProbe"><a href="./values.yaml#L591">startupProbe</a></td>
 			<td>
 object
 </td>
@@ -3360,7 +3392,7 @@ object
 			<td>Startup probe for the main Paperless service.</td>
 		</tr>
 		<tr>
-			<td id="tika"><a href="./values.yaml#L486">tika</a></td>
+			<td id="tika"><a href="./values.yaml#L490">tika</a></td>
 			<td>
 object
 </td>
@@ -3383,7 +3415,9 @@ object
       ]
     },
     "readOnlyRootFilesystem": true,
+    "runAsGroup": 35002,
     "runAsNonRoot": true,
+    "runAsUser": 35002,
     "seccompProfile": {
       "type": "RuntimeDefault"
     }
@@ -3407,7 +3441,7 @@ object
 			<td>Apache Tika helper deployment using the official upstream image.</td>
 		</tr>
 		<tr>
-			<td id="tika--enabled"><a href="./values.yaml#L488">tika.enabled</a></td>
+			<td id="tika--enabled"><a href="./values.yaml#L492">tika.enabled</a></td>
 			<td>
 bool
 </td>
@@ -3421,7 +3455,7 @@ true
 			<td>Deploy the internal Tika helper service when `documentConversion.enabled=true`.</td>
 		</tr>
 		<tr>
-			<td id="tika--image--pullPolicy"><a href="./values.yaml#L493">tika.image.pullPolicy</a></td>
+			<td id="tika--image--pullPolicy"><a href="./values.yaml#L497">tika.image.pullPolicy</a></td>
 			<td>
 string
 </td>
@@ -3435,7 +3469,7 @@ string
 			<td>Image pull policy.</td>
 		</tr>
 		<tr>
-			<td id="tika--image--repository"><a href="./values.yaml#L491">tika.image.repository</a></td>
+			<td id="tika--image--repository"><a href="./values.yaml#L495">tika.image.repository</a></td>
 			<td>
 string
 </td>
@@ -3449,7 +3483,7 @@ string
 			<td>Image repository.</td>
 		</tr>
 		<tr>
-			<td id="tika--image--tag"><a href="./values.yaml#L495">tika.image.tag</a></td>
+			<td id="tika--image--tag"><a href="./values.yaml#L499">tika.image.tag</a></td>
 			<td>
 string
 </td>
@@ -3463,7 +3497,7 @@ string
 			<td>Image tag.</td>
 		</tr>
 		<tr>
-			<td id="tika--resources"><a href="./values.yaml#L525">tika.resources</a></td>
+			<td id="tika--resources"><a href="./values.yaml#L533">tika.resources</a></td>
 			<td>
 object
 </td>
@@ -3477,7 +3511,7 @@ object
 			<td>Resource requests and limits.</td>
 		</tr>
 		<tr>
-			<td id="tika--securityContext"><a href="./values.yaml#L508">tika.securityContext</a></td>
+			<td id="tika--securityContext"><a href="./values.yaml#L512">tika.securityContext</a></td>
 			<td>
 object
 </td>
@@ -3492,7 +3526,9 @@ object
     ]
   },
   "readOnlyRootFilesystem": true,
+  "runAsGroup": 35002,
   "runAsNonRoot": true,
+  "runAsUser": 35002,
   "seccompProfile": {
     "type": "RuntimeDefault"
   }
@@ -3503,7 +3539,35 @@ object
 			<td>Container security context.</td>
 		</tr>
 		<tr>
-			<td id="tika--service--annotations"><a href="./values.yaml#L498">tika.service.annotations</a></td>
+			<td id="tika--securityContext--runAsGroup"><a href="./values.yaml#L518">tika.securityContext.runAsGroup</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+35002
+</pre>
+</div>
+			</td>
+			<td>Numeric GID from the official Apache Tika image.</td>
+		</tr>
+		<tr>
+			<td id="tika--securityContext--runAsUser"><a href="./values.yaml#L516">tika.securityContext.runAsUser</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+35002
+</pre>
+</div>
+			</td>
+			<td>Numeric UID from the official Apache Tika image.</td>
+		</tr>
+		<tr>
+			<td id="tika--service--annotations"><a href="./values.yaml#L502">tika.service.annotations</a></td>
 			<td>
 object
 </td>
@@ -3517,7 +3581,7 @@ object
 			<td>Service annotations.</td>
 		</tr>
 		<tr>
-			<td id="tika--service--labels"><a href="./values.yaml#L500">tika.service.labels</a></td>
+			<td id="tika--service--labels"><a href="./values.yaml#L504">tika.service.labels</a></td>
 			<td>
 object
 </td>
@@ -3531,7 +3595,7 @@ object
 			<td>Service labels.</td>
 		</tr>
 		<tr>
-			<td id="tika--service--port"><a href="./values.yaml#L502">tika.service.port</a></td>
+			<td id="tika--service--port"><a href="./values.yaml#L506">tika.service.port</a></td>
 			<td>
 int
 </td>
@@ -3545,7 +3609,7 @@ int
 			<td>Service port.</td>
 		</tr>
 		<tr>
-			<td id="tika--service--targetPort"><a href="./values.yaml#L504">tika.service.targetPort</a></td>
+			<td id="tika--service--targetPort"><a href="./values.yaml#L508">tika.service.targetPort</a></td>
 			<td>
 int
 </td>
@@ -3559,7 +3623,7 @@ int
 			<td>Container target port.</td>
 		</tr>
 		<tr>
-			<td id="tika--service--targetProtocol"><a href="./values.yaml#L506">tika.service.targetProtocol</a></td>
+			<td id="tika--service--targetProtocol"><a href="./values.yaml#L510">tika.service.targetProtocol</a></td>
 			<td>
 string
 </td>
@@ -3573,7 +3637,7 @@ string
 			<td>Service protocol.</td>
 		</tr>
 		<tr>
-			<td id="tika--tmpVolume--enabled"><a href="./values.yaml#L519">tika.tmpVolume.enabled</a></td>
+			<td id="tika--tmpVolume--enabled"><a href="./values.yaml#L527">tika.tmpVolume.enabled</a></td>
 			<td>
 bool
 </td>
@@ -3587,7 +3651,7 @@ true
 			<td>Mount writable `emptyDir` at `/tmp`.</td>
 		</tr>
 		<tr>
-			<td id="tika--tmpVolume--mountPath"><a href="./values.yaml#L521">tika.tmpVolume.mountPath</a></td>
+			<td id="tika--tmpVolume--mountPath"><a href="./values.yaml#L529">tika.tmpVolume.mountPath</a></td>
 			<td>
 string
 </td>
@@ -3601,7 +3665,7 @@ string
 			<td>Mount path.</td>
 		</tr>
 		<tr>
-			<td id="tika--tmpVolume--sizeLimit"><a href="./values.yaml#L523">tika.tmpVolume.sizeLimit</a></td>
+			<td id="tika--tmpVolume--sizeLimit"><a href="./values.yaml#L531">tika.tmpVolume.sizeLimit</a></td>
 			<td>
 string
 </td>
@@ -3675,7 +3739,7 @@ string
 			<td>Optional size limit.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L679">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L687">tolerations</a></td>
 			<td>
 list
 </td>
@@ -3749,6 +3813,7 @@ Autogenerated from chart metadata using [helm-docs](https://github.com/norwoodj/
 
 * The main Paperless workload defaults to `runAsNonRoot`, dropped Linux capabilities, `RuntimeDefault` seccomp, and `readOnlyRootFilesystem=true`.
 * Writable runtime paths required by the official image are mounted explicitly at `/tmp`, `/run`, and `/usr/src/paperless/.gnupg`.
+* The optional in-chart Gotenberg and Tika helper deployments pin the numeric UID/GID used by their official images so `runAsNonRoot` remains kubelet-verifiable on hardened clusters.
 * This chart intentionally does not mutate the official image to install extra OCR packages. Use `paperless.ocrLanguages` only for language packs already shipped in the upstream image.
 
 ### Authentication and SSO
