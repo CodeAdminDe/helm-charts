@@ -32,6 +32,7 @@ The following charts are currently available:
 | anything-llm | 0.1.0 | 1.11.1 | A Helm chart for deploying AnythingLLM on Kubernetes. |
 | bind9-hidden-primary | 0.4.3 | 9.20 | A Helm chart for bind9 to use as hidden primary, based on the offical Docker Image by InternetSystemsConsortium (ISC) |
 | coturn-server | 0.4.0 | 4.9.0 | A Helm chart for an easier coturn deployment at kubernetes. |
+| documenso | 0.1.0 | v2.8.0 | A Helm chart for deploying Documenso on Kubernetes. |
 | envoy-gateway | 0.4.5 | v1.7.1 | A Helm chart for deploying Envoy Gateway (Gateway API implementation) on Kubernetes. |
 | envoy-gateway-dataplane-policies | 0.2.3 | v1.7.1 | A Helm chart for Envoy Gateway dataplane CiliumNetworkPolicies on Kubernetes. |
 | envoy-gateway-instance | 0.1.1 | v1.7.1 | A Helm chart for deploying Envoy Gateway Gateway and EnvoyProxy instances on Kubernetes. |
