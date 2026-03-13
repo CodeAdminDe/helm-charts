@@ -13,5 +13,6 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: {{ include "documenso.serviceAccountName" . }}
+    # The ServiceAccount always lives in the release namespace; only the Role/RoleBinding namespace is overridable via rbac.namespace.
     namespace: {{ .Release.Namespace }}
 {{- end }}

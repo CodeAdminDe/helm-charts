@@ -96,7 +96,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="additionalEnvSecrets"><a href="./values.yaml#L253">additionalEnvSecrets</a></td>
+			<td id="additionalEnvSecrets"><a href="./values.yaml#L255">additionalEnvSecrets</a></td>
 			<td>
 object
 </td>
@@ -122,7 +122,7 @@ additionalEnvSecrets:
 ```</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L391">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L393">affinity</a></td>
 			<td>
 object
 </td>
@@ -136,7 +136,7 @@ object
 			<td>Workload affinity.</td>
 		</tr>
 		<tr>
-			<td id="applyHealthChecks"><a href="./values.yaml#L271">applyHealthChecks</a></td>
+			<td id="applyHealthChecks"><a href="./values.yaml#L273">applyHealthChecks</a></td>
 			<td>
 bool
 </td>
@@ -150,7 +150,7 @@ true
 			<td>Apply health checks from values.</td>
 		</tr>
 		<tr>
-			<td id="applySecurity"><a href="./values.yaml#L268">applySecurity</a></td>
+			<td id="applySecurity"><a href="./values.yaml#L270">applySecurity</a></td>
 			<td>
 bool
 </td>
@@ -164,7 +164,7 @@ true
 			<td>Apply default pod and container security settings.</td>
 		</tr>
 		<tr>
-			<td id="args"><a href="./values.yaml#L233">args</a></td>
+			<td id="args"><a href="./values.yaml#L235">args</a></td>
 			<td>
 list
 </td>
@@ -178,7 +178,7 @@ list
 			<td>Optional args override.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L339">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L341">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -227,7 +227,7 @@ object
 			<td>HorizontalPodAutoscaler configuration.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--behavior"><a href="./values.yaml#L353">autoscaling.behavior</a></td>
+			<td id="autoscaling--behavior"><a href="./values.yaml#L355">autoscaling.behavior</a></td>
 			<td>
 object
 </td>
@@ -268,7 +268,7 @@ object
 			<td>Optional raw HPA behavior block.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--enableMemoryUtilization"><a href="./values.yaml#L349">autoscaling.enableMemoryUtilization</a></td>
+			<td id="autoscaling--enableMemoryUtilization"><a href="./values.yaml#L351">autoscaling.enableMemoryUtilization</a></td>
 			<td>
 bool
 </td>
@@ -282,7 +282,7 @@ true
 			<td>Enable memory utilization metric.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--enabled"><a href="./values.yaml#L341">autoscaling.enabled</a></td>
+			<td id="autoscaling--enabled"><a href="./values.yaml#L343">autoscaling.enabled</a></td>
 			<td>
 bool
 </td>
@@ -296,7 +296,7 @@ false
 			<td>Enable autoscaling.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--maxReplicas"><a href="./values.yaml#L345">autoscaling.maxReplicas</a></td>
+			<td id="autoscaling--maxReplicas"><a href="./values.yaml#L347">autoscaling.maxReplicas</a></td>
 			<td>
 int
 </td>
@@ -310,7 +310,7 @@ int
 			<td>Maximum replicas.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--minReplicas"><a href="./values.yaml#L343">autoscaling.minReplicas</a></td>
+			<td id="autoscaling--minReplicas"><a href="./values.yaml#L345">autoscaling.minReplicas</a></td>
 			<td>
 int
 </td>
@@ -324,7 +324,7 @@ int
 			<td>Minimum replicas.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--targetCPUUtilizationPercentage"><a href="./values.yaml#L347">autoscaling.targetCPUUtilizationPercentage</a></td>
+			<td id="autoscaling--targetCPUUtilizationPercentage"><a href="./values.yaml#L349">autoscaling.targetCPUUtilizationPercentage</a></td>
 			<td>
 int
 </td>
@@ -338,7 +338,7 @@ int
 			<td>Target CPU utilization percentage.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling--targetMemoryUtilizationPercentage"><a href="./values.yaml#L351">autoscaling.targetMemoryUtilizationPercentage</a></td>
+			<td id="autoscaling--targetMemoryUtilizationPercentage"><a href="./values.yaml#L353">autoscaling.targetMemoryUtilizationPercentage</a></td>
 			<td>
 int
 </td>
@@ -352,7 +352,7 @@ int
 			<td>Target memory utilization percentage.</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L401">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L403">cnps</a></td>
 			<td>
 object
 </td>
@@ -397,7 +397,7 @@ object
 			<td>App-specific Cilium policy settings.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L417">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L419">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -411,7 +411,7 @@ true
 			<td>Allow egress traffic from Documenso pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--extraRules"><a href="./values.yaml#L435">cnps.appTraffic.egress.extraRules</a></td>
+			<td id="cnps--appTraffic--egress--extraRules"><a href="./values.yaml#L437">cnps.appTraffic.egress.extraRules</a></td>
 			<td>
 list
 </td>
@@ -425,7 +425,7 @@ list
 			<td>Additional raw Cilium egress rules appended after the chart-managed ones.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEndpoints"><a href="./values.yaml#L420">cnps.appTraffic.egress.toEndpoints</a></td>
+			<td id="cnps--appTraffic--egress--toEndpoints"><a href="./values.yaml#L422">cnps.appTraffic.egress.toEndpoints</a></td>
 			<td>
 list
 </td>
@@ -439,7 +439,7 @@ list
 			<td>Additional egress endpoint selectors rendered as a dedicated CNP egress rule. @description Accepts either flat label maps or Cilium-style entries with `matchLabels`.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L424">cnps.appTraffic.egress.toEntities</a></td>
+			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L426">cnps.appTraffic.egress.toEntities</a></td>
 			<td>
 list
 </td>
@@ -456,7 +456,7 @@ list
 			<td>Additional egress entities.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toFQDNs"><a href="./values.yaml#L422">cnps.appTraffic.egress.toFQDNs</a></td>
+			<td id="cnps--appTraffic--egress--toFQDNs"><a href="./values.yaml#L424">cnps.appTraffic.egress.toFQDNs</a></td>
 			<td>
 list
 </td>
@@ -470,7 +470,7 @@ list
 			<td>Additional egress FQDN selectors for external services such as SMTP, S3, or managed PostgreSQL.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L429">cnps.appTraffic.egress.toPorts</a></td>
+			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L431">cnps.appTraffic.egress.toPorts</a></td>
 			<td>
 list
 </td>
@@ -493,7 +493,7 @@ list
 			<td>Ports for the user-configured endpoint/FQDN/entity egress rules. @description The chart appends the configured PostgreSQL and SMTP ports automatically.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L409">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L411">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -507,7 +507,7 @@ true
 			<td>Allow ingress traffic to Documenso pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L412">cnps.appTraffic.ingress.fromEndpoints</a></td>
+			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L414">cnps.appTraffic.ingress.fromEndpoints</a></td>
 			<td>
 list
 </td>
@@ -521,7 +521,7 @@ list
 			<td>Additional ingress endpoint selectors. @description Accepts either flat label maps or Cilium-style entries with `matchLabels`.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L414">cnps.appTraffic.ingress.fromEntities</a></td>
+			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L416">cnps.appTraffic.ingress.fromEntities</a></td>
 			<td>
 list
 </td>
@@ -535,7 +535,7 @@ list
 			<td>Optional allowed ingress entities.</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L403">cnps.cnpgTraffic</a></td>
+			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L405">cnps.cnpgTraffic</a></td>
 			<td>
 object
 </td>
@@ -551,7 +551,7 @@ object
 			<td>Additional CNPG Cilium policy tuning used by libchart-cnps when `includeCnpgPolicies=true`.</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L405">cnps.cnpgTraffic.instanceExtraEgress</a></td>
+			<td id="cnps--cnpgTraffic--instanceExtraEgress"><a href="./values.yaml#L407">cnps.cnpgTraffic.instanceExtraEgress</a></td>
 			<td>
 list
 </td>
@@ -565,7 +565,7 @@ list
 			<td>Extra egress rules appended to CNPG instance policy set.</td>
 		</tr>
 		<tr>
-			<td id="command"><a href="./values.yaml#L230">command</a></td>
+			<td id="command"><a href="./values.yaml#L232">command</a></td>
 			<td>
 list
 </td>
@@ -579,7 +579,7 @@ list
 			<td>Optional command override.</td>
 		</tr>
 		<tr>
-			<td id="database"><a href="./values.yaml#L169">database</a></td>
+			<td id="database"><a href="./values.yaml#L171">database</a></td>
 			<td>
 object
 </td>
@@ -609,7 +609,7 @@ object
 			<td>PostgreSQL connectivity configuration.</td>
 		</tr>
 		<tr>
-			<td id="database--externalSecret--directUrlKey"><a href="./values.yaml#L177">database.externalSecret.directUrlKey</a></td>
+			<td id="database--externalSecret--directUrlKey"><a href="./values.yaml#L179">database.externalSecret.directUrlKey</a></td>
 			<td>
 string
 </td>
@@ -623,7 +623,7 @@ string
 			<td>Secret key containing `NEXT_PRIVATE_DIRECT_DATABASE_URL`. Leave empty to reuse `urlKey`.</td>
 		</tr>
 		<tr>
-			<td id="database--externalSecret--name"><a href="./values.yaml#L173">database.externalSecret.name</a></td>
+			<td id="database--externalSecret--name"><a href="./values.yaml#L175">database.externalSecret.name</a></td>
 			<td>
 string
 </td>
@@ -637,7 +637,7 @@ string
 			<td>Existing secret name containing the PostgreSQL connection URLs. @description This chart expects `NEXT_PRIVATE_DATABASE_URL` and, optionally, `NEXT_PRIVATE_DIRECT_DATABASE_URL` style secrets. If `directUrlKey` is empty, the chart reuses `urlKey` for both env vars. This reference is ignored when `database.useCnpgCluster.enabled=true`.</td>
 		</tr>
 		<tr>
-			<td id="database--externalSecret--urlKey"><a href="./values.yaml#L175">database.externalSecret.urlKey</a></td>
+			<td id="database--externalSecret--urlKey"><a href="./values.yaml#L177">database.externalSecret.urlKey</a></td>
 			<td>
 string
 </td>
@@ -651,7 +651,7 @@ string
 			<td>Secret key containing `NEXT_PRIVATE_DATABASE_URL`.</td>
 		</tr>
 		<tr>
-			<td id="database--port"><a href="./values.yaml#L179">database.port</a></td>
+			<td id="database--port"><a href="./values.yaml#L181">database.port</a></td>
 			<td>
 int
 </td>
@@ -665,7 +665,7 @@ int
 			<td>PostgreSQL port used for Cilium policy defaults when not using CNPG.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--appConnectionSecretName"><a href="./values.yaml#L188">database.useCnpgCluster.appConnectionSecretName</a></td>
+			<td id="database--useCnpgCluster--appConnectionSecretName"><a href="./values.yaml#L190">database.useCnpgCluster.appConnectionSecretName</a></td>
 			<td>
 string
 </td>
@@ -679,7 +679,7 @@ string
 			<td>Explicit CNPG app secret name. Defaults to `<clusterName>-app`.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--clusterName"><a href="./values.yaml#L184">database.useCnpgCluster.clusterName</a></td>
+			<td id="database--useCnpgCluster--clusterName"><a href="./values.yaml#L186">database.useCnpgCluster.clusterName</a></td>
 			<td>
 string
 </td>
@@ -693,7 +693,7 @@ string
 			<td>CNPG cluster name. The RW service is derived as `<clusterName>-rw`.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--enabled"><a href="./values.yaml#L182">database.useCnpgCluster.enabled</a></td>
+			<td id="database--useCnpgCluster--enabled"><a href="./values.yaml#L184">database.useCnpgCluster.enabled</a></td>
 			<td>
 bool
 </td>
@@ -707,7 +707,7 @@ false
 			<td>Resolve PostgreSQL credentials from an existing CNPG app secret.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--port"><a href="./values.yaml#L186">database.useCnpgCluster.port</a></td>
+			<td id="database--useCnpgCluster--port"><a href="./values.yaml#L188">database.useCnpgCluster.port</a></td>
 			<td>
 int
 </td>
@@ -721,7 +721,7 @@ int
 			<td>CNPG RW service port.</td>
 		</tr>
 		<tr>
-			<td id="database--useCnpgCluster--secretKeys--connectionString"><a href="./values.yaml#L191">database.useCnpgCluster.secretKeys.connectionString</a></td>
+			<td id="database--useCnpgCluster--secretKeys--connectionString"><a href="./values.yaml#L193">database.useCnpgCluster.secretKeys.connectionString</a></td>
 			<td>
 string
 </td>
@@ -795,7 +795,7 @@ string
 			<td>Explicit public URL (`NEXT_PUBLIC_WEBAPP_URL`). When empty, the chart derives it from Gateway API or Ingress when possible and otherwise falls back to `documenso.internalWebappUrl`.</td>
 		</tr>
 		<tr>
-			<td id="envFromConfigMaps"><a href="./values.yaml#L259">envFromConfigMaps</a></td>
+			<td id="envFromConfigMaps"><a href="./values.yaml#L261">envFromConfigMaps</a></td>
 			<td>
 list
 </td>
@@ -809,7 +809,7 @@ list
 			<td>Import all keys from listed existing configmaps.</td>
 		</tr>
 		<tr>
-			<td id="envFromSecrets"><a href="./values.yaml#L256">envFromSecrets</a></td>
+			<td id="envFromSecrets"><a href="./values.yaml#L258">envFromSecrets</a></td>
 			<td>
 list
 </td>
@@ -823,7 +823,7 @@ list
 			<td>Import all keys from listed existing secrets.</td>
 		</tr>
 		<tr>
-			<td id="extraEnv"><a href="./values.yaml#L236">extraEnv</a></td>
+			<td id="extraEnv"><a href="./values.yaml#L238">extraEnv</a></td>
 			<td>
 object
 </td>
@@ -837,7 +837,7 @@ object
 			<td>Additional non-sensitive environment variables.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumeMounts"><a href="./values.yaml#L265">extraVolumeMounts</a></td>
+			<td id="extraVolumeMounts"><a href="./values.yaml#L267">extraVolumeMounts</a></td>
 			<td>
 list
 </td>
@@ -851,7 +851,7 @@ list
 			<td>Additional volume mounts.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumes"><a href="./values.yaml#L262">extraVolumes</a></td>
+			<td id="extraVolumes"><a href="./values.yaml#L264">extraVolumes</a></td>
 			<td>
 list
 </td>
@@ -1307,7 +1307,7 @@ list
 			<td>TLS host/secret blocks.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L394">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L396">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -1324,7 +1324,7 @@ object
 			<td>Cilium policy library toggle.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--enabled"><a href="./values.yaml#L396">libchartCnps.enabled</a></td>
+			<td id="libchartCnps--enabled"><a href="./values.yaml#L398">libchartCnps.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1338,7 +1338,7 @@ true
 			<td>Enable `libchart-cnps` templates.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L398">libchartCnps.includeCnpgPolicies</a></td>
+			<td id="libchartCnps--includeCnpgPolicies"><a href="./values.yaml#L400">libchartCnps.includeCnpgPolicies</a></td>
 			<td>
 bool
 </td>
@@ -1352,7 +1352,7 @@ false
 			<td>Include CNPG policy set from the library.</td>
 		</tr>
 		<tr>
-			<td id="livenessProbe"><a href="./values.yaml#L309">livenessProbe</a></td>
+			<td id="livenessProbe"><a href="./values.yaml#L311">livenessProbe</a></td>
 			<td>
 object
 </td>
@@ -1389,7 +1389,7 @@ string
 			<td>Override release-based naming.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L385">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L387">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -1403,7 +1403,7 @@ object
 			<td>Workload node selector.</td>
 		</tr>
 		<tr>
-			<td id="podAnnotations"><a href="./values.yaml#L379">podAnnotations</a></td>
+			<td id="podAnnotations"><a href="./values.yaml#L381">podAnnotations</a></td>
 			<td>
 object
 </td>
@@ -1417,7 +1417,7 @@ object
 			<td>Pod annotations.</td>
 		</tr>
 		<tr>
-			<td id="podDisruptionBudget"><a href="./values.yaml#L372">podDisruptionBudget</a></td>
+			<td id="podDisruptionBudget"><a href="./values.yaml#L374">podDisruptionBudget</a></td>
 			<td>
 object
 </td>
@@ -1434,7 +1434,7 @@ object
 			<td>PodDisruptionBudget configuration.</td>
 		</tr>
 		<tr>
-			<td id="podDisruptionBudget--enabled"><a href="./values.yaml#L374">podDisruptionBudget.enabled</a></td>
+			<td id="podDisruptionBudget--enabled"><a href="./values.yaml#L376">podDisruptionBudget.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1448,7 +1448,7 @@ false
 			<td>Enable a PodDisruptionBudget.</td>
 		</tr>
 		<tr>
-			<td id="podDisruptionBudget--minAvailable"><a href="./values.yaml#L376">podDisruptionBudget.minAvailable</a></td>
+			<td id="podDisruptionBudget--minAvailable"><a href="./values.yaml#L378">podDisruptionBudget.minAvailable</a></td>
 			<td>
 int
 </td>
@@ -1462,7 +1462,7 @@ int
 			<td>Minimum number of available pods.</td>
 		</tr>
 		<tr>
-			<td id="podLabels"><a href="./values.yaml#L382">podLabels</a></td>
+			<td id="podLabels"><a href="./values.yaml#L384">podLabels</a></td>
 			<td>
 object
 </td>
@@ -1476,7 +1476,7 @@ object
 			<td>Pod labels.</td>
 		</tr>
 		<tr>
-			<td id="podSecurityContext"><a href="./values.yaml#L274">podSecurityContext</a></td>
+			<td id="podSecurityContext"><a href="./values.yaml#L276">podSecurityContext</a></td>
 			<td>
 object
 </td>
@@ -1535,7 +1535,7 @@ string
 </pre>
 </div>
 			</td>
-			<td>Namespace override for RBAC resources.</td>
+			<td>Namespace override for Role and RoleBinding resources. The ServiceAccount remains in the release namespace.</td>
 		</tr>
 		<tr>
 			<td id="rbac--rules"><a href="./values.yaml#L38">rbac.rules</a></td>
@@ -1552,7 +1552,7 @@ list
 			<td>Explicit RBAC rules required when `rbac.create=true`.</td>
 		</tr>
 		<tr>
-			<td id="readinessProbe"><a href="./values.yaml#L319">readinessProbe</a></td>
+			<td id="readinessProbe"><a href="./values.yaml#L321">readinessProbe</a></td>
 			<td>
 object
 </td>
@@ -1589,7 +1589,7 @@ int
 			<td>Number of Documenso application pod replicas.</td>
 		</tr>
 		<tr>
-			<td id="resources"><a href="./values.yaml#L300">resources</a></td>
+			<td id="resources"><a href="./values.yaml#L302">resources</a></td>
 			<td>
 object
 </td>
@@ -1657,7 +1657,7 @@ string
 			<td>RuntimeClass for Helm test pods.</td>
 		</tr>
 		<tr>
-			<td id="securityContext"><a href="./values.yaml#L278">securityContext</a></td>
+			<td id="securityContext"><a href="./values.yaml#L280">securityContext</a></td>
 			<td>
 object
 </td>
@@ -1972,7 +1972,7 @@ string
 			<td>ServiceAccount name override.</td>
 		</tr>
 		<tr>
-			<td id="signing"><a href="./values.yaml#L194">signing</a></td>
+			<td id="signing"><a href="./values.yaml#L196">signing</a></td>
 			<td>
 object
 </td>
@@ -1996,7 +1996,7 @@ object
 			<td>Signing certificate configuration.</td>
 		</tr>
 		<tr>
-			<td id="signing--certificateSecret--key"><a href="./values.yaml#L202">signing.certificateSecret.key</a></td>
+			<td id="signing--certificateSecret--key"><a href="./values.yaml#L204">signing.certificateSecret.key</a></td>
 			<td>
 string
 </td>
@@ -2010,7 +2010,7 @@ string
 			<td>Secret key containing the certificate file bytes.</td>
 		</tr>
 		<tr>
-			<td id="signing--certificateSecret--name"><a href="./values.yaml#L200">signing.certificateSecret.name</a></td>
+			<td id="signing--certificateSecret--name"><a href="./values.yaml#L202">signing.certificateSecret.name</a></td>
 			<td>
 string
 </td>
@@ -2024,7 +2024,7 @@ string
 			<td>Existing secret name containing the `.p12` signing certificate. @description If left empty, Documenso still starts, but document signing remains unavailable.</td>
 		</tr>
 		<tr>
-			<td id="signing--localFilePath"><a href="./values.yaml#L196">signing.localFilePath</a></td>
+			<td id="signing--localFilePath"><a href="./values.yaml#L198">signing.localFilePath</a></td>
 			<td>
 string
 </td>
@@ -2038,7 +2038,7 @@ string
 			<td>Path used inside the container for the signing certificate (`NEXT_PRIVATE_SIGNING_LOCAL_FILE_PATH`).</td>
 		</tr>
 		<tr>
-			<td id="signing--passphraseSecret--key"><a href="./values.yaml#L207">signing.passphraseSecret.key</a></td>
+			<td id="signing--passphraseSecret--key"><a href="./values.yaml#L209">signing.passphraseSecret.key</a></td>
 			<td>
 string
 </td>
@@ -2052,7 +2052,7 @@ string
 			<td>Secret key containing the signing passphrase.</td>
 		</tr>
 		<tr>
-			<td id="signing--passphraseSecret--name"><a href="./values.yaml#L205">signing.passphraseSecret.name</a></td>
+			<td id="signing--passphraseSecret--name"><a href="./values.yaml#L207">signing.passphraseSecret.name</a></td>
 			<td>
 string
 </td>
@@ -2092,7 +2092,7 @@ object
 			<td>SMTP configuration for Documenso email delivery.</td>
 		</tr>
 		<tr>
-			<td id="smtp--credentialsSecret--name"><a href="./values.yaml#L162">smtp.credentialsSecret.name</a></td>
+			<td id="smtp--credentialsSecret--name"><a href="./values.yaml#L164">smtp.credentialsSecret.name</a></td>
 			<td>
 string
 </td>
@@ -2106,7 +2106,7 @@ string
 			<td>Existing secret name containing SMTP credentials.</td>
 		</tr>
 		<tr>
-			<td id="smtp--credentialsSecret--passwordKey"><a href="./values.yaml#L166">smtp.credentialsSecret.passwordKey</a></td>
+			<td id="smtp--credentialsSecret--passwordKey"><a href="./values.yaml#L168">smtp.credentialsSecret.passwordKey</a></td>
 			<td>
 string
 </td>
@@ -2120,7 +2120,7 @@ string
 			<td>Secret key containing `NEXT_PRIVATE_SMTP_PASSWORD`.</td>
 		</tr>
 		<tr>
-			<td id="smtp--credentialsSecret--usernameKey"><a href="./values.yaml#L164">smtp.credentialsSecret.usernameKey</a></td>
+			<td id="smtp--credentialsSecret--usernameKey"><a href="./values.yaml#L166">smtp.credentialsSecret.usernameKey</a></td>
 			<td>
 string
 </td>
@@ -2134,7 +2134,7 @@ string
 			<td>Secret key containing `NEXT_PRIVATE_SMTP_USERNAME`.</td>
 		</tr>
 		<tr>
-			<td id="smtp--fromAddress"><a href="./values.yaml#L159">smtp.fromAddress</a></td>
+			<td id="smtp--fromAddress"><a href="./values.yaml#L161">smtp.fromAddress</a></td>
 			<td>
 string
 </td>
@@ -2145,10 +2145,10 @@ string
 </pre>
 </div>
 			</td>
-			<td>Sender address (`NEXT_PRIVATE_SMTP_FROM_ADDRESS`).</td>
+			<td>Sender address (`NEXT_PRIVATE_SMTP_FROM_ADDRESS`). @description Replace `noreply@example.com` with the real sender address your SMTP provider accepts for Documenso mail delivery.</td>
 		</tr>
 		<tr>
-			<td id="smtp--fromName"><a href="./values.yaml#L157">smtp.fromName</a></td>
+			<td id="smtp--fromName"><a href="./values.yaml#L158">smtp.fromName</a></td>
 			<td>
 string
 </td>
@@ -2162,7 +2162,7 @@ string
 			<td>Sender name (`NEXT_PRIVATE_SMTP_FROM_NAME`).</td>
 		</tr>
 		<tr>
-			<td id="smtp--host"><a href="./values.yaml#L151">smtp.host</a></td>
+			<td id="smtp--host"><a href="./values.yaml#L152">smtp.host</a></td>
 			<td>
 string
 </td>
@@ -2173,10 +2173,10 @@ string
 </pre>
 </div>
 			</td>
-			<td>SMTP host (`NEXT_PRIVATE_SMTP_HOST`).</td>
+			<td>SMTP host (`NEXT_PRIVATE_SMTP_HOST`). @description Replace `smtp.example.com` with your real SMTP server hostname. SMTP credentials are sourced from `smtp.credentialsSecret.name` using `smtp.credentialsSecret.usernameKey` and `smtp.credentialsSecret.passwordKey`.</td>
 		</tr>
 		<tr>
-			<td id="smtp--port"><a href="./values.yaml#L153">smtp.port</a></td>
+			<td id="smtp--port"><a href="./values.yaml#L154">smtp.port</a></td>
 			<td>
 int
 </td>
@@ -2190,7 +2190,7 @@ int
 			<td>SMTP port (`NEXT_PRIVATE_SMTP_PORT`).</td>
 		</tr>
 		<tr>
-			<td id="smtp--secure"><a href="./values.yaml#L155">smtp.secure</a></td>
+			<td id="smtp--secure"><a href="./values.yaml#L156">smtp.secure</a></td>
 			<td>
 bool
 </td>
@@ -2218,7 +2218,7 @@ string
 			<td>SMTP transport (`NEXT_PRIVATE_SMTP_TRANSPORT`). @description Supported values documented by Documenso include `smtp-auth`, `smtp-api`, `resend`, and `mailchannels`.</td>
 		</tr>
 		<tr>
-			<td id="startupProbe"><a href="./values.yaml#L329">startupProbe</a></td>
+			<td id="startupProbe"><a href="./values.yaml#L331">startupProbe</a></td>
 			<td>
 object
 </td>
@@ -2241,7 +2241,7 @@ object
 			<td>Startup probe.</td>
 		</tr>
 		<tr>
-			<td id="storage"><a href="./values.yaml#L210">storage</a></td>
+			<td id="storage"><a href="./values.yaml#L212">storage</a></td>
 			<td>
 object
 </td>
@@ -2267,7 +2267,7 @@ object
 			<td>Document upload storage configuration.</td>
 		</tr>
 		<tr>
-			<td id="storage--s3--bucket"><a href="./values.yaml#L220">storage.s3.bucket</a></td>
+			<td id="storage--s3--bucket"><a href="./values.yaml#L222">storage.s3.bucket</a></td>
 			<td>
 string
 </td>
@@ -2281,7 +2281,7 @@ string
 			<td>S3 bucket (`NEXT_PRIVATE_UPLOAD_BUCKET`).</td>
 		</tr>
 		<tr>
-			<td id="storage--s3--credentialsSecret--accessKeyIdKey"><a href="./values.yaml#L225">storage.s3.credentialsSecret.accessKeyIdKey</a></td>
+			<td id="storage--s3--credentialsSecret--accessKeyIdKey"><a href="./values.yaml#L227">storage.s3.credentialsSecret.accessKeyIdKey</a></td>
 			<td>
 string
 </td>
@@ -2295,7 +2295,7 @@ string
 			<td>Secret key containing `NEXT_PRIVATE_UPLOAD_ACCESS_KEY_ID`.</td>
 		</tr>
 		<tr>
-			<td id="storage--s3--credentialsSecret--name"><a href="./values.yaml#L223">storage.s3.credentialsSecret.name</a></td>
+			<td id="storage--s3--credentialsSecret--name"><a href="./values.yaml#L225">storage.s3.credentialsSecret.name</a></td>
 			<td>
 string
 </td>
@@ -2309,7 +2309,7 @@ string
 			<td>Existing secret name containing S3 credentials.</td>
 		</tr>
 		<tr>
-			<td id="storage--s3--credentialsSecret--secretAccessKeyKey"><a href="./values.yaml#L227">storage.s3.credentialsSecret.secretAccessKeyKey</a></td>
+			<td id="storage--s3--credentialsSecret--secretAccessKeyKey"><a href="./values.yaml#L229">storage.s3.credentialsSecret.secretAccessKeyKey</a></td>
 			<td>
 string
 </td>
@@ -2323,7 +2323,7 @@ string
 			<td>Secret key containing `NEXT_PRIVATE_UPLOAD_SECRET_ACCESS_KEY`.</td>
 		</tr>
 		<tr>
-			<td id="storage--s3--endpoint"><a href="./values.yaml#L216">storage.s3.endpoint</a></td>
+			<td id="storage--s3--endpoint"><a href="./values.yaml#L218">storage.s3.endpoint</a></td>
 			<td>
 string
 </td>
@@ -2337,7 +2337,7 @@ string
 			<td>S3 endpoint (`NEXT_PRIVATE_UPLOAD_ENDPOINT`).</td>
 		</tr>
 		<tr>
-			<td id="storage--s3--region"><a href="./values.yaml#L218">storage.s3.region</a></td>
+			<td id="storage--s3--region"><a href="./values.yaml#L220">storage.s3.region</a></td>
 			<td>
 string
 </td>
@@ -2351,7 +2351,7 @@ string
 			<td>S3 region (`NEXT_PRIVATE_UPLOAD_REGION`).</td>
 		</tr>
 		<tr>
-			<td id="storage--transport"><a href="./values.yaml#L213">storage.transport</a></td>
+			<td id="storage--transport"><a href="./values.yaml#L215">storage.transport</a></td>
 			<td>
 string
 </td>
@@ -2365,7 +2365,7 @@ string
 			<td>Upload transport (`NEXT_PUBLIC_UPLOAD_TRANSPORT`). @description Supported values in the official docs are `database` and `s3`.</td>
 		</tr>
 		<tr>
-			<td id="tmpVolume"><a href="./values.yaml#L291">tmpVolume</a></td>
+			<td id="tmpVolume"><a href="./values.yaml#L293">tmpVolume</a></td>
 			<td>
 object
 </td>
@@ -2383,7 +2383,7 @@ object
 			<td>Optional writable `/tmp` mount for read-only root filesystem mode.</td>
 		</tr>
 		<tr>
-			<td id="tmpVolume--enabled"><a href="./values.yaml#L293">tmpVolume.enabled</a></td>
+			<td id="tmpVolume--enabled"><a href="./values.yaml#L295">tmpVolume.enabled</a></td>
 			<td>
 bool
 </td>
@@ -2397,7 +2397,7 @@ true
 			<td>Mount writable `emptyDir` at `/tmp`.</td>
 		</tr>
 		<tr>
-			<td id="tmpVolume--mountPath"><a href="./values.yaml#L295">tmpVolume.mountPath</a></td>
+			<td id="tmpVolume--mountPath"><a href="./values.yaml#L297">tmpVolume.mountPath</a></td>
 			<td>
 string
 </td>
@@ -2411,7 +2411,7 @@ string
 			<td>Mount path inside the container.</td>
 		</tr>
 		<tr>
-			<td id="tmpVolume--sizeLimit"><a href="./values.yaml#L297">tmpVolume.sizeLimit</a></td>
+			<td id="tmpVolume--sizeLimit"><a href="./values.yaml#L299">tmpVolume.sizeLimit</a></td>
 			<td>
 string
 </td>
@@ -2425,7 +2425,7 @@ string
 			<td>Optional size limit.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L388">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L390">tolerations</a></td>
 			<td>
 list
 </td>

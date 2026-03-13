@@ -32,7 +32,7 @@ serviceAccount:
 rbac:
   # -- Create Role and RoleBinding.
   create: false
-  # -- Namespace override for RBAC resources.
+  # -- Namespace override for Role and RoleBinding resources. The ServiceAccount remains in the release namespace.
   namespace: ""
   # -- Explicit RBAC rules required when `rbac.create=true`.
   rules: []
@@ -148,6 +148,7 @@ smtp:
   # @description Supported values documented by Documenso include `smtp-auth`, `smtp-api`, `resend`, and `mailchannels`.
   transport: smtp-auth
   # -- SMTP host (`NEXT_PRIVATE_SMTP_HOST`).
+  # @description Replace `smtp.example.com` with your real SMTP server hostname. SMTP credentials are sourced from `smtp.credentialsSecret.name` using `smtp.credentialsSecret.usernameKey` and `smtp.credentialsSecret.passwordKey`.
   host: smtp.example.com
   # -- SMTP port (`NEXT_PRIVATE_SMTP_PORT`).
   port: 587
@@ -156,6 +157,7 @@ smtp:
   # -- Sender name (`NEXT_PRIVATE_SMTP_FROM_NAME`).
   fromName: Documenso
   # -- Sender address (`NEXT_PRIVATE_SMTP_FROM_ADDRESS`).
+  # @description Replace `noreply@example.com` with the real sender address your SMTP provider accepts for Documenso mail delivery.
   fromAddress: noreply@example.com
   credentialsSecret:
     # -- Existing secret name containing SMTP credentials.
