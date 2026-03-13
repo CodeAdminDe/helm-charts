@@ -1387,6 +1387,43 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/coturn-server-0.1.0/coturn-server-0.1.0.tgz
     version: 0.1.0
+  documenso:
+  - annotations:
+      category: Productivity
+      images: |
+        - name: documenso
+          image: documenso/documenso:v2.8.0
+      securityContext: compatible
+    apiVersion: v2
+    appVersion: v2.8.0
+    created: "2026-03-13T20:27:51.599826897Z"
+    dependencies:
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for deploying Documenso on Kubernetes.
+    digest: 3f6f4602e63e6f7a33877c4ab2e2ca4c2e9dddff201cc7aed1816148e7ea01b5
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - documenso
+    - documents
+    - signatures
+    - contracts
+    - productivity
+    - cloud-native
+    - helm
+    kubeVersion: '>=1.24.0'
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: documenso
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/documenso-0.1.0/documenso-0.1.0.tgz
+    version: 0.1.0
   envoy-gateway:
   - annotations:
       category: Networking
@@ -15741,4 +15778,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-13T18:42:34.821037125Z"
+generated: "2026-03-13T20:27:51.600526778Z"
