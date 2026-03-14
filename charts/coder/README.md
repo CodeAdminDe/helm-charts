@@ -96,7 +96,7 @@ Alternatively, you could provide the values which you want to override at the CL
 	</thead>
 	<tbody>
 		<tr>
-			<td id="additionalEnvSecrets"><a href="./values.yaml#L295">additionalEnvSecrets</a></td>
+			<td id="additionalEnvSecrets"><a href="./values.yaml#L298">additionalEnvSecrets</a></td>
 			<td>
 object
 </td>
@@ -110,7 +110,7 @@ object
 			<td>Additional secret-backed environment variables appended after the chart-managed Coder env vars. @description Supports either map form (`ENV_NAME: secret-name` or `ENV_NAME: {secretName: ..., secretKey: ...}`) or list form (`[{name, secretName, secretKey}]`).</td>
 		</tr>
 		<tr>
-			<td id="affinity"><a href="./values.yaml#L356">affinity</a></td>
+			<td id="affinity"><a href="./values.yaml#L359">affinity</a></td>
 			<td>
 object
 </td>
@@ -152,7 +152,7 @@ true
 			<td>Apply default pod and container security settings.</td>
 		</tr>
 		<tr>
-			<td id="args"><a href="./values.yaml#L279">args</a></td>
+			<td id="args"><a href="./values.yaml#L282">args</a></td>
 			<td>
 list
 </td>
@@ -166,7 +166,7 @@ list
 			<td>Optional args override for the Coder container.</td>
 		</tr>
 		<tr>
-			<td id="autoscaling"><a href="./values.yaml#L252">autoscaling</a></td>
+			<td id="autoscaling"><a href="./values.yaml#L255">autoscaling</a></td>
 			<td>
 object
 </td>
@@ -185,7 +185,7 @@ object
 			<td>HorizontalPodAutoscaler configuration.</td>
 		</tr>
 		<tr>
-			<td id="cnps"><a href="./values.yaml#L309">cnps</a></td>
+			<td id="cnps"><a href="./values.yaml#L312">cnps</a></td>
 			<td>
 object
 </td>
@@ -230,7 +230,7 @@ object
 			<td>App-specific CiliumNetworkPolicies settings.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L324">cnps.appTraffic.egress.allow</a></td>
+			<td id="cnps--appTraffic--egress--allow"><a href="./values.yaml#L327">cnps.appTraffic.egress.allow</a></td>
 			<td>
 bool
 </td>
@@ -244,7 +244,7 @@ true
 			<td>Allow outbound traffic from the Coder webserver pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--extraRules"><a href="./values.yaml#L341">cnps.appTraffic.egress.extraRules</a></td>
+			<td id="cnps--appTraffic--egress--extraRules"><a href="./values.yaml#L344">cnps.appTraffic.egress.extraRules</a></td>
 			<td>
 list
 </td>
@@ -258,7 +258,7 @@ list
 			<td>Additional raw Cilium egress rules appended as-is.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEndpoints"><a href="./values.yaml#L326">cnps.appTraffic.egress.toEndpoints</a></td>
+			<td id="cnps--appTraffic--egress--toEndpoints"><a href="./values.yaml#L329">cnps.appTraffic.egress.toEndpoints</a></td>
 			<td>
 list
 </td>
@@ -272,7 +272,7 @@ list
 			<td>Additional endpoint selectors for egress.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L331">cnps.appTraffic.egress.toEntities</a></td>
+			<td id="cnps--appTraffic--egress--toEntities"><a href="./values.yaml#L334">cnps.appTraffic.egress.toEntities</a></td>
 			<td>
 list
 </td>
@@ -289,7 +289,7 @@ list
 			<td>Cilium entities allowed for general egress. @description The chart defaults to `kube-apiserver` and `world` because Coder needs Kubernetes API access and commonly connects to external identity and Git providers.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toFQDNs"><a href="./values.yaml#L328">cnps.appTraffic.egress.toFQDNs</a></td>
+			<td id="cnps--appTraffic--egress--toFQDNs"><a href="./values.yaml#L331">cnps.appTraffic.egress.toFQDNs</a></td>
 			<td>
 list
 </td>
@@ -303,7 +303,7 @@ list
 			<td>Additional fully-qualified domain names for egress, for example OIDC providers.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L335">cnps.appTraffic.egress.toPorts</a></td>
+			<td id="cnps--appTraffic--egress--toPorts"><a href="./values.yaml#L338">cnps.appTraffic.egress.toPorts</a></td>
 			<td>
 list
 </td>
@@ -326,7 +326,7 @@ list
 			<td>Additional egress ports for the general egress rules. The chart appends the external database port automatically when CNPG is disabled.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L316">cnps.appTraffic.ingress.allow</a></td>
+			<td id="cnps--appTraffic--ingress--allow"><a href="./values.yaml#L319">cnps.appTraffic.ingress.allow</a></td>
 			<td>
 bool
 </td>
@@ -340,7 +340,7 @@ true
 			<td>Allow ingress traffic to the Coder webserver pods.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L319">cnps.appTraffic.ingress.fromEndpoints</a></td>
+			<td id="cnps--appTraffic--ingress--fromEndpoints"><a href="./values.yaml#L322">cnps.appTraffic.ingress.fromEndpoints</a></td>
 			<td>
 list
 </td>
@@ -354,7 +354,7 @@ list
 			<td>Explicit endpoint selectors allowed to reach the Coder webserver. @description When `ingress.enabled=true` and this list is empty, the chart assumes an ingress-nginx controller with labels `app.kubernetes.io/name=ingress-nginx` in namespace `ingress-nginx`. Override this list when your ingress controller uses different labels or a different namespace.</td>
 		</tr>
 		<tr>
-			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L321">cnps.appTraffic.ingress.fromEntities</a></td>
+			<td id="cnps--appTraffic--ingress--fromEntities"><a href="./values.yaml#L324">cnps.appTraffic.ingress.fromEntities</a></td>
 			<td>
 list
 </td>
@@ -368,7 +368,7 @@ list
 			<td>Explicit Cilium entities allowed to reach the Coder webserver.</td>
 		</tr>
 		<tr>
-			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L311">cnps.cnpgTraffic</a></td>
+			<td id="cnps--cnpgTraffic"><a href="./values.yaml#L314">cnps.cnpgTraffic</a></td>
 			<td>
 object
 </td>
@@ -561,7 +561,7 @@ string
 			<td>Wildcard access host for workspace apps and port forwards (`CODER_WILDCARD_ACCESS_URL`), for example `*.coder.example.com`.</td>
 		</tr>
 		<tr>
-			<td id="command"><a href="./values.yaml#L276">command</a></td>
+			<td id="command"><a href="./values.yaml#L279">command</a></td>
 			<td>
 list
 </td>
@@ -716,7 +716,7 @@ string
 			<td>CNPG app secret key containing the PostgreSQL connection string.</td>
 		</tr>
 		<tr>
-			<td id="envFromConfigMaps"><a href="./values.yaml#L288">envFromConfigMaps</a></td>
+			<td id="envFromConfigMaps"><a href="./values.yaml#L291">envFromConfigMaps</a></td>
 			<td>
 list
 </td>
@@ -730,7 +730,7 @@ list
 			<td>Additional ConfigMap refs exposed with `envFrom`.</td>
 		</tr>
 		<tr>
-			<td id="envFromSecrets"><a href="./values.yaml#L285">envFromSecrets</a></td>
+			<td id="envFromSecrets"><a href="./values.yaml#L288">envFromSecrets</a></td>
 			<td>
 list
 </td>
@@ -744,7 +744,7 @@ list
 			<td>Additional Secret refs exposed with `envFrom`.</td>
 		</tr>
 		<tr>
-			<td id="extraEnv"><a href="./values.yaml#L291">extraEnv</a></td>
+			<td id="extraEnv"><a href="./values.yaml#L294">extraEnv</a></td>
 			<td>
 object
 </td>
@@ -758,7 +758,7 @@ object
 			<td>Additional non-secret environment variables appended after the chart-managed Coder env vars.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumeMounts"><a href="./values.yaml#L301">extraVolumeMounts</a></td>
+			<td id="extraVolumeMounts"><a href="./values.yaml#L304">extraVolumeMounts</a></td>
 			<td>
 list
 </td>
@@ -772,7 +772,7 @@ list
 			<td>Additional volume mounts for the main Coder container.</td>
 		</tr>
 		<tr>
-			<td id="extraVolumes"><a href="./values.yaml#L298">extraVolumes</a></td>
+			<td id="extraVolumes"><a href="./values.yaml#L301">extraVolumes</a></td>
 			<td>
 list
 </td>
@@ -1262,7 +1262,7 @@ string
 			<td>Optional wildcard host rule for workspace app subdomains. When empty, the chart falls back to `coder.wildcardAccessUrl` if set.</td>
 		</tr>
 		<tr>
-			<td id="initContainers"><a href="./values.yaml#L282">initContainers</a></td>
+			<td id="initContainers"><a href="./values.yaml#L285">initContainers</a></td>
 			<td>
 list
 </td>
@@ -1276,7 +1276,7 @@ list
 			<td>Optional init containers added to the Coder pod.</td>
 		</tr>
 		<tr>
-			<td id="libchartCnps"><a href="./values.yaml#L304">libchartCnps</a></td>
+			<td id="libchartCnps"><a href="./values.yaml#L307">libchartCnps</a></td>
 			<td>
 object
 </td>
@@ -1330,7 +1330,7 @@ string
 			<td>Override release-based naming.</td>
 		</tr>
 		<tr>
-			<td id="nodeSelector"><a href="./values.yaml#L350">nodeSelector</a></td>
+			<td id="nodeSelector"><a href="./values.yaml#L353">nodeSelector</a></td>
 			<td>
 object
 </td>
@@ -1344,7 +1344,7 @@ object
 			<td>Workload node selector.</td>
 		</tr>
 		<tr>
-			<td id="podAnnotations"><a href="./values.yaml#L344">podAnnotations</a></td>
+			<td id="podAnnotations"><a href="./values.yaml#L347">podAnnotations</a></td>
 			<td>
 object
 </td>
@@ -1358,7 +1358,7 @@ object
 			<td>Pod annotations.</td>
 		</tr>
 		<tr>
-			<td id="podDisruptionBudget"><a href="./values.yaml#L259">podDisruptionBudget</a></td>
+			<td id="podDisruptionBudget"><a href="./values.yaml#L262">podDisruptionBudget</a></td>
 			<td>
 object
 </td>
@@ -1375,7 +1375,7 @@ object
 			<td>PodDisruptionBudget configuration.</td>
 		</tr>
 		<tr>
-			<td id="podDisruptionBudget--enabled"><a href="./values.yaml#L261">podDisruptionBudget.enabled</a></td>
+			<td id="podDisruptionBudget--enabled"><a href="./values.yaml#L264">podDisruptionBudget.enabled</a></td>
 			<td>
 bool
 </td>
@@ -1389,7 +1389,7 @@ false
 			<td>Create a PodDisruptionBudget.</td>
 		</tr>
 		<tr>
-			<td id="podDisruptionBudget--minAvailable"><a href="./values.yaml#L263">podDisruptionBudget.minAvailable</a></td>
+			<td id="podDisruptionBudget--minAvailable"><a href="./values.yaml#L266">podDisruptionBudget.minAvailable</a></td>
 			<td>
 int
 </td>
@@ -1403,7 +1403,7 @@ int
 			<td>Minimum number of available pods during voluntary disruptions.</td>
 		</tr>
 		<tr>
-			<td id="podLabels"><a href="./values.yaml#L347">podLabels</a></td>
+			<td id="podLabels"><a href="./values.yaml#L350">podLabels</a></td>
 			<td>
 object
 </td>
@@ -1433,7 +1433,7 @@ object
 			<td>Pod-level security context for the Coder workload.</td>
 		</tr>
 		<tr>
-			<td id="priorityClassName"><a href="./values.yaml#L273">priorityClassName</a></td>
+			<td id="priorityClassName"><a href="./values.yaml#L276">priorityClassName</a></td>
 			<td>
 string
 </td>
@@ -1597,6 +1597,10 @@ object
 				<div style="max-width: 300px;">
 <pre lang="json">
 {
+  "limits": {
+    "cpu": "500m",
+    "memory": "512Mi"
+  },
   "requests": {
     "cpu": "100m",
     "memory": "256Mi"
@@ -1608,7 +1612,7 @@ object
 			<td>Resource requests/limits.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass"><a href="./values.yaml#L266">runtimeClass</a></td>
+			<td id="runtimeClass"><a href="./values.yaml#L269">runtimeClass</a></td>
 			<td>
 object
 </td>
@@ -1625,7 +1629,7 @@ object
 			<td>RuntimeClass names.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--pods"><a href="./values.yaml#L268">runtimeClass.pods</a></td>
+			<td id="runtimeClass--pods"><a href="./values.yaml#L271">runtimeClass.pods</a></td>
 			<td>
 string
 </td>
@@ -1639,7 +1643,7 @@ string
 			<td>RuntimeClass for workload pods.</td>
 		</tr>
 		<tr>
-			<td id="runtimeClass--tests"><a href="./values.yaml#L270">runtimeClass.tests</a></td>
+			<td id="runtimeClass--tests"><a href="./values.yaml#L273">runtimeClass.tests</a></td>
 			<td>
 string
 </td>
@@ -1959,7 +1963,7 @@ string
 			<td>Optional EmptyDir size limit.</td>
 		</tr>
 		<tr>
-			<td id="tolerations"><a href="./values.yaml#L353">tolerations</a></td>
+			<td id="tolerations"><a href="./values.yaml#L356">tolerations</a></td>
 			<td>
 list
 </td>
