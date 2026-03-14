@@ -89,6 +89,41 @@ app.kubernetes.io/component: {{ $component }}
 {{- printf "%s-workspace-perms" (include "coder.fullname" .) | trunc 63 | trimSuffix "-" -}}
 {{- end }}
 
+{{/* Effective workspace namespace config map shared by Role and RoleBinding rendering. */}}
+{{- define "coder.rbacNamespaceConfigs" -}}
+{{- $rootPerms := .Values.rbac.workspacePerms | default false -}}
+{{- $rootDeploy := and $rootPerms (.Values.rbac.enableDeployments | default false) -}}
+{{- $rootExtra := .Values.rbac.extraRules | default (list) -}}
+{{- $namespaceConfigs := dict -}}
+{{- $_ := set $namespaceConfigs (include "coder.rbacNamespace" .) (dict "workspacePerms" $rootPerms "enableDeployments" $rootDeploy "extraRules" $rootExtra) -}}
+{{- range $entry := (.Values.rbac.workspaceNamespaces | default (list)) -}}
+  {{- $ns := "" -}}
+  {{- $workspacePerms := $rootPerms -}}
+  {{- $enableDeployments := $rootDeploy -}}
+  {{- $extraRules := $rootExtra -}}
+  {{- if kindIs "string" $entry -}}
+    {{- $ns = $entry -}}
+  {{- else if kindIs "map" $entry -}}
+    {{- $ns = default "" (index $entry "name") -}}
+    {{- if hasKey $entry "workspacePerms" -}}
+      {{- $workspacePerms = (index $entry "workspacePerms") -}}
+    {{- end -}}
+    {{- if hasKey $entry "enableDeployments" -}}
+      {{- $enableDeployments = and $workspacePerms (index $entry "enableDeployments") -}}
+    {{- else -}}
+      {{- $enableDeployments = and $workspacePerms $rootDeploy -}}
+    {{- end -}}
+    {{- if hasKey $entry "extraRules" -}}
+      {{- $extraRules = default (list) (index $entry "extraRules") -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if $ns -}}
+    {{- $_ := set $namespaceConfigs $ns (dict "workspacePerms" $workspacePerms "enableDeployments" $enableDeployments "extraRules" $extraRules) -}}
+  {{- end -}}
+{{- end -}}
+{{- toJson $namespaceConfigs -}}
+{{- end -}}
+
 {{/* Main Coder image helper. */}}
 {{- define "coder.image" -}}
 {{- printf "%s:%s" .Values.image.repository (default .Chart.AppVersion .Values.image.tag) -}}
