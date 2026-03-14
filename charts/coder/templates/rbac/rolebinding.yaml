@@ -1,0 +1,56 @@
+{{- if .Values.rbac.create }}
+{{- $rootPerms := .Values.rbac.workspacePerms | default false -}}
+{{- $rootDeploy := and $rootPerms (.Values.rbac.enableDeployments | default false) -}}
+{{- $rootExtra := .Values.rbac.extraRules | default (list) -}}
+{{- $namespaceConfigs := dict -}}
+{{- $_ := set $namespaceConfigs (include "coder.rbacNamespace" .) (dict "workspacePerms" $rootPerms "enableDeployments" $rootDeploy "extraRules" $rootExtra) -}}
+{{- range $entry := (.Values.rbac.workspaceNamespaces | default (list)) -}}
+  {{- $ns := "" -}}
+  {{- $workspacePerms := $rootPerms -}}
+  {{- $enableDeployments := $rootDeploy -}}
+  {{- $extraRules := $rootExtra -}}
+  {{- if kindIs "string" $entry -}}
+    {{- $ns = $entry -}}
+  {{- else if kindIs "map" $entry -}}
+    {{- $ns = default "" (index $entry "name") -}}
+    {{- if hasKey $entry "workspacePerms" -}}
+      {{- $workspacePerms = (index $entry "workspacePerms") -}}
+    {{- end -}}
+    {{- if hasKey $entry "enableDeployments" -}}
+      {{- $enableDeployments = and $workspacePerms (index $entry "enableDeployments") -}}
+    {{- else -}}
+      {{- $enableDeployments = and $workspacePerms $rootDeploy -}}
+    {{- end -}}
+    {{- if hasKey $entry "extraRules" -}}
+      {{- $extraRules = default (list) (index $entry "extraRules") -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if $ns -}}
+    {{- $_ := set $namespaceConfigs $ns (dict "workspacePerms" $workspacePerms "enableDeployments" $enableDeployments "extraRules" $extraRules) -}}
+  {{- end -}}
+{{- end -}}
+{{- range $ns := (keys $namespaceConfigs | sortAlpha) }}
+{{- $cfg := index $namespaceConfigs $ns -}}
+{{- $extraRules := default (list) (index $cfg "extraRules") -}}
+{{- $hasExtraRules := gt (len $extraRules) 0 -}}
+{{- if or (index $cfg "workspacePerms") (index $cfg "enableDeployments") $hasExtraRules }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "coder.serviceAccountName" $ | quote }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "coder.labels" $ | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "coder.rbacWorkspaceRoleName" $ }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "coder.serviceAccountName" $ | quote }}
+    # The ServiceAccount always lives in the release namespace, even when additional workspace namespaces get their own RoleBinding.
+    namespace: {{ $.Release.Namespace }}
+{{- end }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,57 @@
+{{- if .Values.rbac.create }}
+{{- $rootPerms := .Values.rbac.workspacePerms | default false -}}
+{{- $rootDeploy := and $rootPerms (.Values.rbac.enableDeployments | default false) -}}
+{{- $rootExtra := .Values.rbac.extraRules | default (list) -}}
+{{- $namespaceConfigs := dict -}}
+{{- $_ := set $namespaceConfigs (include "coder.rbacNamespace" .) (dict "workspacePerms" $rootPerms "enableDeployments" $rootDeploy "extraRules" $rootExtra) -}}
+{{- range $entry := (.Values.rbac.workspaceNamespaces | default (list)) -}}
+  {{- $ns := "" -}}
+  {{- $workspacePerms := $rootPerms -}}
+  {{- $enableDeployments := $rootDeploy -}}
+  {{- $extraRules := $rootExtra -}}
+  {{- if kindIs "string" $entry -}}
+    {{- $ns = $entry -}}
+  {{- else if kindIs "map" $entry -}}
+    {{- $ns = default "" (index $entry "name") -}}
+    {{- if hasKey $entry "workspacePerms" -}}
+      {{- $workspacePerms = (index $entry "workspacePerms") -}}
+    {{- end -}}
+    {{- if hasKey $entry "enableDeployments" -}}
+      {{- $enableDeployments = and $workspacePerms (index $entry "enableDeployments") -}}
+    {{- else -}}
+      {{- $enableDeployments = and $workspacePerms $rootDeploy -}}
+    {{- end -}}
+    {{- if hasKey $entry "extraRules" -}}
+      {{- $extraRules = default (list) (index $entry "extraRules") -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if $ns -}}
+    {{- $_ := set $namespaceConfigs $ns (dict "workspacePerms" $workspacePerms "enableDeployments" $enableDeployments "extraRules" $extraRules) -}}
+  {{- end -}}
+{{- end -}}
+{{- range $ns := (keys $namespaceConfigs | sortAlpha) }}
+{{- $cfg := index $namespaceConfigs $ns -}}
+{{- $extraRules := default (list) (index $cfg "extraRules") -}}
+{{- $hasExtraRules := gt (len $extraRules) 0 -}}
+{{- if or (index $cfg "workspacePerms") (index $cfg "enableDeployments") $hasExtraRules }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "coder.rbacWorkspaceRoleName" $ }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "coder.labels" $ | nindent 4 }}
+rules:
+  {{- if index $cfg "workspacePerms" }}
+  {{- include "coder.rbac.rules.basic" $ | nindent 2 }}
+  {{- end }}
+  {{- if index $cfg "enableDeployments" }}
+  {{- include "coder.rbac.rules.deployments" $ | nindent 2 }}
+  {{- end }}
+  {{- if $hasExtraRules }}
+  {{- toYaml $extraRules | nindent 2 }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

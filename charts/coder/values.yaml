@@ -1,0 +1,352 @@
+# -- Number of Coder application pod replicas.
+replicaCount: 1
+
+# -- Override release-based naming.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- Coder container image configuration.
+image:
+  # -- Image repository.
+  repository: ghcr.io/coder/coder
+  # -- Image pull policy.
+  pullPolicy: IfNotPresent
+  # -- Image tag override (defaults to `.Chart.AppVersion` when empty).
+  tag: ""
+
+# -- Image pull secrets for private registries.
+imagePullSecrets: []
+
+# -- Coder application settings.
+coder:
+  # -- Explicit public access URL (`CODER_ACCESS_URL`). When empty, the chart derives it from Gateway API, Ingress, or falls back to the in-cluster Service URL.
+  accessUrl: ""
+  # -- Wildcard access host for workspace apps and port forwards (`CODER_WILDCARD_ACCESS_URL`), for example `*.coder.example.com`.
+  wildcardAccessUrl: ""
+  oauth2:
+    # -- Enable the built-in default GitHub OAuth2 provider (`CODER_OAUTH2_GITHUB_DEFAULT_PROVIDER_ENABLE`).
+    # @description The chart defaults this to `false`, matching the upstream production recommendation to avoid shipping a public default provider unintentionally.
+    githubDefaultProviderEnabled: false
+  telemetry:
+    # -- Enable upstream telemetry (`CODER_TELEMETRY_ENABLE`).
+    # @description The chart defaults this to `false` so repo deployments do not emit vendor telemetry unless intentionally enabled.
+    enabled: false
+  prometheus:
+    # -- Enable the internal Prometheus endpoint (`CODER_PROMETHEUS_ENABLE`).
+    enabled: false
+    # -- Override the Prometheus bind address (`CODER_PROMETHEUS_ADDRESS`). Defaults to `0.0.0.0:2112` when metrics are enabled and this is left empty.
+    address: ""
+  pprof:
+    # -- Enable the pprof debug endpoint (`CODER_PPROF_ENABLE`).
+    enabled: false
+    # -- Override the pprof bind address (`CODER_PPROF_ADDRESS`). Defaults to `0.0.0.0:6060` when profiling is enabled and this is left empty.
+    address: ""
+  provisionerDaemon:
+    pskSecret:
+      # -- Existing Secret containing `CODER_PROVISIONER_DAEMON_PSK`.
+      name: ""
+      # -- Secret key containing `CODER_PROVISIONER_DAEMON_PSK`.
+      key: CODER_PROVISIONER_DAEMON_PSK
+
+# -- Kubernetes Service for the main Coder UI/API.
+service:
+  # -- Service type. This chart enforces `ClusterIP`.
+  type: ClusterIP
+  # -- Service annotations.
+  annotations: {}
+  # -- Service labels.
+  labels: {}
+  # -- Service port exposed to the cluster.
+  port: 80
+  # -- Container target port used by Coder.
+  targetPort: 8080
+  # -- Service protocol.
+  targetProtocol: TCP
+
+# -- Ingress configuration (ingress-nginx style).
+ingress:
+  # -- Enable ingress resource creation.
+  enabled: false
+  # -- Ingress class name.
+  className: ""
+  # -- Additional ingress annotations.
+  annotations: {}
+  # -- Secure default ingress annotations for websocket and long-running session traffic.
+  secureDefaults:
+    # -- Enable secure default ingress annotations.
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+      nginx.ingress.kubernetes.io/proxy-buffering: "off"
+      nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+      nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+  # -- Host/path rules.
+  hosts:
+    - host: coder.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  # -- Optional wildcard host rule for workspace app subdomains. When empty, the chart falls back to `coder.wildcardAccessUrl` if set.
+  wildcardHost: ""
+  # -- TLS host/secret blocks.
+  tls: []
+
+# -- Gateway API HTTPRoute configuration.
+gatewayApi:
+  # -- Enable HTTPRoute resource creation.
+  enabled: false
+  # -- Public URL scheme used when deriving `coder.accessUrl` from Gateway API.
+  scheme: https
+  # -- Labels for the Gateway API controller pods, used to generate default CiliumNetworkPolicies ingress rules.
+  # If empty, you must provide explicit `cnps.appTraffic.ingress.fromEndpoints` when `gatewayApi.enabled=true`.
+  controllerSelector:
+    app.kubernetes.io/name: envoy-gateway
+    io.kubernetes.pod.namespace: envoy-gateway-system
+  # -- HTTPRoute annotations.
+  annotations: {}
+  # -- HTTPRoute labels.
+  labels: {}
+  # -- ParentRefs for the HTTPRoute.
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
+      sectionName: http
+  # -- Hostnames served by this route.
+  hostnames:
+    - coder.example.com
+  # -- Optional wildcard hostname for workspace app subdomains. When empty, the chart falls back to `coder.wildcardAccessUrl` if set.
+  wildcardHostname: ""
+  # -- Match rules for the default HTTPRoute rule.
+  matches:
+    - path:
+        type: PathPrefix
+        value: /
+  # -- Optional filters for the HTTPRoute rule.
+  filters: []
+  # -- Optional backend references. Defaults to the main Coder service when empty.
+  backendRefs: []
+
+# -- ServiceAccount settings.
+serviceAccount:
+  # -- Create a dedicated ServiceAccount.
+  create: true
+  # -- ServiceAccount annotations.
+  annotations: {}
+  # -- ServiceAccount labels.
+  labels: {}
+  # -- ServiceAccount name override.
+  name: ""
+  # -- Automount the ServiceAccount token.
+  # @description Coder needs Kubernetes API access for workspace provisioning unless you supply equivalent credentials out-of-band.
+  automountServiceAccountToken: true
+
+# -- Namespace-scoped RBAC for Kubernetes workspace provisioning.
+rbac:
+  # -- Create Role and RoleBinding resources for the release namespace and optional extra workspace namespaces.
+  create: true
+  # -- Namespace override for the primary workspace Role and RoleBinding. Empty means the release namespace.
+  namespace: ""
+  # -- Grant permissions to manage Pods and PersistentVolumeClaims for workspaces.
+  workspacePerms: true
+  # -- Additionally grant Deployment management permissions for templates that create Deployments.
+  enableDeployments: true
+  # -- Additional RBAC rules appended to each generated workspace Role.
+  extraRules: []
+  # -- Additional namespaces that should receive the same workspace Role/RoleBinding.
+  # @description Each entry can be either a namespace string or an object with `name`, `workspacePerms`, `enableDeployments`, and `extraRules`.
+  workspaceNamespaces: []
+
+# -- Preferred database connection mode.
+database:
+  # -- PostgreSQL port used for egress policy rendering when `database.useCnpgCluster.enabled=false`.
+  port: 5432
+  externalSecret:
+    # -- Existing Secret containing the PostgreSQL connection URL in vendor-compatible form.
+    # @description The official Coder docs use a Secret named `coder-db-url` with a `url` key. This chart follows that pattern when CNPG integration is disabled.
+    name: coder-db-url
+    # -- Secret key containing the PostgreSQL connection URL.
+    urlKey: url
+  useCnpgCluster:
+    # -- Use a CloudNativePG cluster app secret instead of a standalone external connection URL secret.
+    enabled: false
+    # -- CNPG cluster name. The default app secret resolves to `<clusterName>-app`.
+    clusterName: ""
+    # -- Optional explicit CNPG app secret name override.
+    appConnectionSecretName: ""
+    # -- PostgreSQL port exposed by the CNPG cluster.
+    port: 5432
+    secretKeys:
+      # -- CNPG app secret key containing the PostgreSQL connection string.
+      connectionString: uri
+
+# -- Enable env vars to allow `readOnlyRootFilesystem` with a writable `/tmp`.
+tmpVolume:
+  # -- Mount an EmptyDir at `/tmp`.
+  enabled: true
+  # -- EmptyDir mount path used by Coder cache files.
+  mountPath: /tmp
+  # -- Optional EmptyDir size limit.
+  sizeLimit: ""
+
+# -- Apply default pod and container security settings.
+applySecurity: true
+
+# -- Apply health probes from values.
+applyHealthChecks: true
+
+# -- Pod-level security context for the Coder workload.
+podSecurityContext:
+  fsGroup: 1000
+
+# -- Container-level security context for the Coder workload.
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- Startup probe for the main Coder container.
+startupProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 30
+
+# -- Liveness probe for the main Coder container.
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+# -- Readiness probe for the main Coder container.
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+# -- Resource requests/limits.
+resources: {}
+
+# -- HorizontalPodAutoscaler configuration.
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+
+# -- PodDisruptionBudget configuration.
+podDisruptionBudget:
+  # -- Create a PodDisruptionBudget.
+  enabled: false
+  # -- Minimum number of available pods during voluntary disruptions.
+  minAvailable: 1
+
+# -- RuntimeClass names.
+runtimeClass:
+  # -- RuntimeClass for workload pods.
+  pods: ""
+  # -- RuntimeClass for Helm test pods.
+  tests: ""
+
+# -- Optional PriorityClass assigned to Coder pods.
+priorityClassName: ""
+
+# -- Optional command override for the Coder container.
+command: []
+
+# -- Optional args override for the Coder container.
+args: []
+
+# -- Optional init containers added to the Coder pod.
+initContainers: []
+
+# -- Additional Secret refs exposed with `envFrom`.
+envFromSecrets: []
+
+# -- Additional ConfigMap refs exposed with `envFrom`.
+envFromConfigMaps: []
+
+# -- Additional non-secret environment variables appended after the chart-managed Coder env vars.
+extraEnv: {}
+
+# -- Additional secret-backed environment variables appended after the chart-managed Coder env vars.
+# @description Supports either map form (`ENV_NAME: secret-name` or `ENV_NAME: {secretName: ..., secretKey: ...}`) or list form (`[{name, secretName, secretKey}]`).
+additionalEnvSecrets: {}
+
+# -- Additional volumes mounted into the Coder pod.
+extraVolumes: []
+
+# -- Additional volume mounts for the main Coder container.
+extraVolumeMounts: []
+
+# -- CiliumNetworkPolicies dependency toggle.
+libchartCnps:
+  enabled: false
+  includeCnpgPolicies: false
+
+# -- App-specific CiliumNetworkPolicies settings.
+cnps:
+  # -- Additional CNPG Cilium policy tuning used by libchart-cnps when `includeCnpgPolicies=true`.
+  cnpgTraffic:
+    instanceExtraEgress: []
+  appTraffic:
+    ingress:
+      # -- Allow ingress traffic to the Coder webserver pods.
+      allow: true
+      # -- Explicit endpoint selectors allowed to reach the Coder webserver.
+      fromEndpoints: []
+      # -- Explicit Cilium entities allowed to reach the Coder webserver.
+      fromEntities: []
+    egress:
+      # -- Allow outbound traffic from the Coder webserver pods.
+      allow: true
+      # -- Additional endpoint selectors for egress.
+      toEndpoints: []
+      # -- Additional fully-qualified domain names for egress, for example OIDC providers.
+      toFQDNs: []
+      # -- Cilium entities allowed for general egress.
+      # @description The chart defaults to `kube-apiserver` and `world` because Coder needs Kubernetes API access and commonly connects to external identity and Git providers.
+      toEntities:
+        - kube-apiserver
+        - world
+      # -- Additional egress ports for the general egress rules. The chart appends the external database port automatically when CNPG is disabled.
+      toPorts:
+        - port: "443"
+          protocol: TCP
+        - port: "6443"
+          protocol: TCP
+      # -- Additional raw Cilium egress rules appended as-is.
+      extraRules: []
+
+# -- Pod annotations.
+podAnnotations: {}
+
+# -- Pod labels.
+podLabels: {}
+
+# -- Workload node selector.
+nodeSelector: {}
+
+# -- Workload tolerations.
+tolerations: []
+
+# -- Workload affinity.
+affinity: {}
