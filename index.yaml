@@ -802,6 +802,42 @@ entries:
       category: Developer Tools
       images: |
         - name: coder
+          image: ghcr.io/coder/coder:v2.31.5
+      securityContext: required
+    apiVersion: v2
+    appVersion: v2.31.5
+    created: "2026-03-14T19:27:51.912037005Z"
+    dependencies:
+    - alias: libchart-cnps
+      condition: libchartCnps.enabled
+      name: libchart-cnps
+      repository: https://codeadminde.github.io/helm-charts
+      version: 0.2.1
+    description: A Helm chart for deploying Coder on Kubernetes.
+    digest: ca474905cc17e2e978ed732a73648e6a873cc95983de057376f4b1237098bc6b
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - coder
+    - development
+    - workspaces
+    - ide
+    - cnpg
+    - cloud-native
+    - helm
+    kubeVersion: '>=1.24.0'
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: coder
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/coder-0.2.0/coder-0.2.0.tgz
+    version: 0.2.0
+  - annotations:
+      category: Developer Tools
+      images: |
+        - name: coder
           image: ghcr.io/coder/coder:v2.30.3
       securityContext: required
     apiVersion: v2
@@ -15887,4 +15923,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-14T19:22:22.77013998Z"
+generated: "2026-03-14T19:27:51.913046575Z"
