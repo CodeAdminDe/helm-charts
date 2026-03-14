@@ -1,0 +1,121 @@
+{{- if ne .Values.controller.service.type "ClusterIP" -}}
+{{- fail "controller.service.type must be ClusterIP in this repo style. Expose externally via ingress/gateway resources." -}}
+{{- end -}}
+
+{{- if and .Values.ui.enabled (ne .Values.ui.service.type "ClusterIP") -}}
+{{- fail "ui.service.type must be ClusterIP in this repo style. Expose externally via ingress/gateway resources." -}}
+{{- end -}}
+
+{{- if and .Values.ingress.enabled (not .Values.ui.enabled) -}}
+{{- fail "ingress.enabled=true requires ui.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.gatewayApi.enabled (not .Values.ui.enabled) -}}
+{{- fail "gatewayApi.enabled=true requires ui.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.ingress.enabled (not .Values.ingress.hosts) -}}
+{{- fail "ingress.enabled=true requires at least one ingress.hosts entry." -}}
+{{- end -}}
+
+{{- if .Values.gatewayApi.enabled -}}
+  {{- if not .Values.gatewayApi.parentRefs -}}
+    {{- fail "gatewayApi.enabled=true requires at least one gatewayApi.parentRefs entry." -}}
+  {{- end -}}
+  {{- if not .Values.gatewayApi.hostnames -}}
+    {{- fail "gatewayApi.enabled=true requires at least one gatewayApi.hostnames entry." -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not (or (eq .Values.database.type "sqlite") (eq .Values.database.type "postgres")) -}}
+{{- fail "database.type must be either 'sqlite' or 'postgres'." -}}
+{{- end -}}
+
+{{- if and (eq .Values.database.type "sqlite") (gt (int .Values.controller.replicas) 1) -}}
+{{- fail "controller.replicas must be 1 when database.type=sqlite." -}}
+{{- end -}}
+
+{{- if and (eq .Values.database.type "sqlite") .Values.controller.autoscaling.enabled -}}
+{{- fail "controller.autoscaling.enabled is not supported when database.type=sqlite." -}}
+{{- end -}}
+
+{{- if and (eq .Values.database.type "sqlite") (not .Values.persistence.enabled) (not .Values.persistence.emptyDir.enabled) -}}
+{{- fail "sqlite mode requires either persistence.enabled=true or persistence.emptyDir.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.persistence.existingClaim (not .Values.persistence.enabled) -}}
+{{- fail "persistence.existingClaim requires persistence.enabled=true." -}}
+{{- end -}}
+
+{{- if and (eq .Values.database.type "postgres") .Values.database.useCnpgCluster.enabled -}}
+  {{- if empty .Values.database.useCnpgCluster.clusterName -}}
+    {{- fail "database.useCnpgCluster.clusterName must be set when CNPG mode is enabled." -}}
+  {{- end -}}
+  {{- if empty .Values.database.useCnpgCluster.secretKeys.uri -}}
+    {{- fail "database.useCnpgCluster.secretKeys.uri must be set when CNPG mode is enabled." -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and (eq .Values.database.type "postgres") (not .Values.database.useCnpgCluster.enabled) -}}
+  {{- if and (empty .Values.database.postgres.url) (empty .Values.database.postgres.urlFile) (empty .Values.database.postgres.urlSecret.name) -}}
+    {{- fail "database.postgres requires one of: postgres.url, postgres.urlFile, or postgres.urlSecret.name when CNPG mode is disabled." -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and .Values.database.postgres.urlSecret.name (empty .Values.database.postgres.urlSecret.key) -}}
+{{- fail "database.postgres.urlSecret.key must be set when database.postgres.urlSecret.name is provided." -}}
+{{- end -}}
+
+{{- if and .Values.database.useCnpgCluster.enabled (ne .Values.database.type "postgres") -}}
+{{- fail "database.useCnpgCluster.enabled=true requires database.type=postgres." -}}
+{{- end -}}
+
+{{- if and .Values.rbac.create (not .Values.serviceAccount.controller.create) (empty .Values.serviceAccount.controller.name) -}}
+{{- fail "rbac.create=true requires serviceAccount.controller.create=true or a non-empty serviceAccount.controller.name." -}}
+{{- end -}}
+
+{{- if and .Values.rbac.create (empty .Values.rbac.getterRules) -}}
+{{- fail "rbac.create=true requires non-empty rbac.getterRules." -}}
+{{- end -}}
+
+{{- if and .Values.rbac.create (empty .Values.rbac.writerRules) -}}
+{{- fail "rbac.create=true requires non-empty rbac.writerRules." -}}
+{{- end -}}
+
+{{- if and .Values.libchartCnps.includeCnpgPolicies (not .Values.libchartCnps.enabled) -}}
+{{- fail "libchartCnps.includeCnpgPolicies=true requires libchartCnps.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.libchartCnps.includeCnpgPolicies (not (and (eq .Values.database.type "postgres") .Values.database.useCnpgCluster.enabled)) -}}
+{{- fail "libchartCnps.includeCnpgPolicies=true requires database.type=postgres and database.useCnpgCluster.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.ui.securityContext.readOnlyRootFilesystem (not .Values.ui.tmpVolume.enabled) -}}
+{{- fail "ui.securityContext.readOnlyRootFilesystem=true requires ui.tmpVolume.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.modelConfig.enabled (not (hasKey .Values.providers (.Values.providers.default | default "openAI"))) -}}
+{{- fail "providers.default must reference an existing key under providers when modelConfig.enabled=true." -}}
+{{- end -}}
+
+{{- if .Values.modelConfig.enabled -}}
+  {{- $providerKey := .Values.providers.default | default "openAI" -}}
+  {{- if hasKey .Values.providers $providerKey -}}
+    {{- $provider := index .Values.providers $providerKey -}}
+    {{- if empty $provider.provider -}}
+      {{- fail (printf "providers.%s.provider must be set when modelConfig.enabled=true." $providerKey) -}}
+    {{- end -}}
+    {{- if empty $provider.model -}}
+      {{- fail (printf "providers.%s.model must be set when modelConfig.enabled=true." $providerKey) -}}
+    {{- end -}}
+    {{- if and (empty $provider.apiKeySecretRef) (empty $provider.apiKey) -}}
+      {{- fail (printf "providers.%s requires either apiKeySecretRef or apiKey when modelConfig.enabled=true." $providerKey) -}}
+    {{- end -}}
+    {{- if and $provider.apiKeySecretRef (empty $provider.apiKeySecretKey) -}}
+      {{- fail (printf "providers.%s.apiKeySecretKey must be set when apiKeySecretRef is provided." $providerKey) -}}
+    {{- end -}}
+    {{- if and $provider.apiKey (not .Values.modelConfig.createSecretFromApiKeyValues) (empty $provider.apiKeySecretRef) -}}
+      {{- fail (printf "providers.%s.apiKey is set but modelConfig.createSecretFromApiKeyValues=false and apiKeySecretRef is empty." $providerKey) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

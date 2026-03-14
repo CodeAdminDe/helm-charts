@@ -1,0 +1,95 @@
+{{- if .Values.ui.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "kagent.fullname" . }}-ui
+  namespace: {{ include "kagent.namespace" . }}
+  labels:
+    {{- include "kagent.ui.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.ui.replicas }}
+  selector:
+    matchLabels:
+      {{- include "kagent.ui.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "kagent.ui.selectorLabels" . | nindent 8 }}
+        kagent.cnp/default-deny: "true"
+        {{- with .Values.ui.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/values: {{ toJson .Values | sha256sum }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.ui.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "kagent.ui.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.ui.automountServiceAccountToken }}
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      {{- with .Values.ui.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.ui.tmpVolume.enabled }}
+      volumes:
+        - name: tmp
+          emptyDir:
+            {{- if .Values.ui.tmpVolume.sizeLimit }}
+            sizeLimit: {{ .Values.ui.tmpVolume.sizeLimit }}
+            {{- end }}
+      {{- end }}
+      {{- with .Values.ui.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ui.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ui.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: ui
+          image: {{ include "kagent.ui.image" . }}
+          imagePullPolicy: {{ .Values.ui.image.pullPolicy | default .Values.global.imagePullPolicy }}
+          env:
+            - name: NEXT_PUBLIC_BACKEND_URL
+              value: {{ include "kagent.ui.backendUrl" . | quote }}
+            {{- $keys := keys .Values.ui.env | sortAlpha }}
+            {{- range $keys }}
+            - name: {{ . }}
+              value: {{ index $.Values.ui.env . | quote }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.ui.service.targetPort }}
+              protocol: {{ .Values.ui.service.targetProtocol }}
+          resources:
+            {{- toYaml .Values.ui.resources | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.ui.securityContext | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.ui.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.ui.readinessProbe | nindent 12 }}
+          startupProbe:
+            {{- toYaml .Values.ui.startupProbe | nindent 12 }}
+          {{- if .Values.ui.tmpVolume.enabled }}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          {{- end }}
+{{- end }}

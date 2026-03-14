@@ -1,0 +1,36 @@
+apiVersion: v2
+name: kagent
+description: A Helm chart for deploying kagent on Kubernetes.
+type: application
+# renovate: bumpVersion
+version: 0.1.0
+# renovate: image=cr.kagent.dev/kagent-dev/kagent/controller
+appVersion: "v0.7.22"
+kubeVersion: ">=1.24.0"
+home: https://github.com/CodeAdminDe/helm-charts
+keywords:
+  - kagent
+  - ai
+  - agents
+  - mcp
+  - cloud-native
+  - kubernetes
+  - helm
+maintainers:
+  - name: Frederic Roggon
+    email: frederic.roggon@codeadmin.de
+    url: https://github.com/CodeAdminDe
+dependencies:
+  - name: libchart-cnps
+    version: 0.2.1
+    repository: https://codeadminde.github.io/helm-charts
+    alias: libchart-cnps
+    condition: libchartCnps.enabled
+annotations:
+  category: AI
+  securityContext: "compatible"
+  images: |
+    - name: kagent-controller
+      image: cr.kagent.dev/kagent-dev/kagent/controller:v0.7.22
+    - name: kagent-ui
+      image: cr.kagent.dev/kagent-dev/kagent/ui:v0.7.22

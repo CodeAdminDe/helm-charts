@@ -1,0 +1,36 @@
+1. kagent CRDs are required before this chart can function.
+   Install/upgrade CRDs first, for example:
+
+     helm upgrade --install kagent-crds oci://ghcr.io/kagent-dev/kagent/helm/kagent-crds \
+       --namespace {{ include "kagent.namespace" . }} \
+       --create-namespace
+
+2. Access kagent UI:
+{{- if and .Values.ui.enabled .Values.ingress.enabled }}
+  - Ingress hosts:
+{{- range .Values.ingress.hosts }}
+    * http{{ if $.Values.ingress.tls }}s{{ end }}://{{ .host }}
+{{- end }}
+{{- else if and .Values.ui.enabled .Values.gatewayApi.enabled }}
+  - HTTPRoute is enabled. Access via your configured Gateway listeners/hostnames.
+{{- else if .Values.ui.enabled }}
+  - Port-forward locally:
+
+      kubectl port-forward -n {{ include "kagent.namespace" . }} svc/{{ include "kagent.fullname" . }}-ui 8080:{{ .Values.ui.service.port }}
+
+    Then open http://127.0.0.1:8080
+{{- else }}
+  - UI is disabled.
+{{- end }}
+
+3. Selected provider:
+  - providers.default={{ .Values.providers.default }}
+{{- if .Values.modelConfig.enabled }}
+  - modelConfig name={{ include "kagent.defaultModelConfigName" . }}
+{{- else }}
+  - modelConfig generation disabled
+{{- end }}
+
+4. Database mode:
+  - database.type={{ .Values.database.type }}
+  - controller.replicas={{ .Values.controller.replicas }}

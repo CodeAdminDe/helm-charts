@@ -1,0 +1,44 @@
+{{- define "extra.specifics.fromchart.atom.opinionated" -}}
+<hr /><hr />
+
+## Appendix - Chart-specifics
+
+### Scope and prerequisites
+
+* This chart deploys the **kagent controller + UI + default ModelConfig**.
+* kagent CRDs are **not** shipped here and must be installed beforehand (for example via `kagent-crds` chart).
+* Upstream subcharts such as `kmcp` and built-in tool/agent bundles are intentionally not deployed by this chart to keep the implementation environment-agnostic and monorepo-aligned.
+
+### Networking and exposure
+
+* Both services are `ClusterIP` only.
+* External exposure is intentionally done through optional `ingress` or `gatewayApi` resources for the UI.
+* Controller API stays internal by default.
+
+### Database and scaling behavior
+
+* `database.type=sqlite` is the default and intended for single-replica controller setups.
+* `controller.replicas > 1` requires `database.type=postgres`.
+* Postgres can be supplied via:
+  * `database.postgres.urlSecret`
+  * `database.postgres.url`
+  * `database.postgres.urlFile`
+* CNPG integration is supported through `database.useCnpgCluster.*` using the app secret URI key.
+
+### RBAC and security
+
+* Controller RBAC is enabled by default because kagent reconciles cluster resources and requires cluster-scoped access.
+* Review `rbac.getterRules` and `rbac.writerRules` for your environment and reduce scope where possible.
+* Provider API keys should be supplied via existing Kubernetes Secrets.
+* Plaintext API key values in `values.yaml` are only for bootstrap/demo workflows.
+
+### Cilium policy integration
+
+* `libchartCnps.enabled=false` by default for broad cluster compatibility.
+* When enabled, app traffic policy adds defaults for ingress-nginx / Envoy Gateway source labels conditionally based on `ingress.enabled` / `gatewayApi.enabled`.
+* App egress defaults to HTTPS world egress and optional Kubernetes API server access for controller reconciliation.
+
+{{- end -}}
+
+{{ template "extra.templates.readme.complexvalues" . }}
+{{ template "extra.specifics.fromchart.atom.opinionated" . }}
