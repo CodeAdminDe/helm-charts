@@ -2,7 +2,7 @@
 
 # coder
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.30.3](https://img.shields.io/badge/AppVersion-v2.30.3-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.31.5](https://img.shields.io/badge/AppVersion-v2.31.5-informational?style=flat-square)
 
 A Helm chart for deploying Coder on Kubernetes.
 
