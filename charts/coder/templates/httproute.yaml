@@ -39,7 +39,8 @@ spec:
     - {{ $wildcardHost | quote }}
     {{- end }}
   rules:
-    - {{- with .Values.gatewayApi.matches }}
+    -
+      {{- with .Values.gatewayApi.matches }}
       matches:
         {{- toYaml . | nindent 8 }}
       {{- end }}

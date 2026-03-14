@@ -243,7 +243,10 @@ readinessProbe:
   failureThreshold: 3
 
 # -- Resource requests/limits.
-resources: {}
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
 
 # -- HorizontalPodAutoscaler configuration.
 autoscaling:
@@ -312,6 +315,7 @@ cnps:
       # -- Allow ingress traffic to the Coder webserver pods.
       allow: true
       # -- Explicit endpoint selectors allowed to reach the Coder webserver.
+      # @description When `ingress.enabled=true` and this list is empty, the chart assumes an ingress-nginx controller with labels `app.kubernetes.io/name=ingress-nginx` in namespace `ingress-nginx`. Override this list when your ingress controller uses different labels or a different namespace.
       fromEndpoints: []
       # -- Explicit Cilium entities allowed to reach the Coder webserver.
       fromEntities: []
