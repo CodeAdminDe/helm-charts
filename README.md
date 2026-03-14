@@ -48,7 +48,7 @@ The following charts are currently available:
 | mastodon | 0.1.2 | v4.5.7 | A Helm chart for deploying Mastodon on Kubernetes with repo-aligned secure defaults and integrations. |
 | netbird-agent | 0.11.3 | 0.66.3 | A Helm chart for an easier NetBird agent (https://netbird.io) deployment at kubernetes. |
 | netbird-management | 1.16.0 | 0.66.3 | A Helm chart for an easier NetBird management stack (https://netbird.io) deployment at kubernetes. |
-| ollama | 0.19.6 | 0.17.7 | A Helm chart for an easier ollama (https://ollama.com) deployment on k8s. Please note that this is a private helm chart and not directly or indirectly affiliated with ollama or its authors. |
+| ollama | 0.20.0 | 0.18.0 | A Helm chart for an easier ollama (https://ollama.com) deployment on k8s. Please note that this is a private helm chart and not directly or indirectly affiliated with ollama or its authors. |
 | outline | 1.12.1 | 1.5.0 | A Helm chart for an easier outline (https://getoutline.com) deployment at kubernetes. |
 | paperless-ngx | 0.2.8 | 2.20.10 | A Helm chart for deploying Paperless-ngx on Kubernetes. |
 | redis | 0.4.1 | 8.6.1 | A Helm chart for Redis k8s deployment, based on library/redis |
