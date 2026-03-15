@@ -365,8 +365,10 @@ ui:
       cpu: 500m
       memory: 256Mi
   # -- Pod-level security context for UI pods.
+  # @description When empty, the chart injects provider-specific writable-volume defaults: `fsGroup: 1000` for `headscale-ui` and `fsGroup: 65532` for `headplane`.
   podSecurityContext: {}
   # -- Container-level security context for UI container.
+  # @description The chart adds provider-specific numeric `runAsUser`/`runAsGroup` defaults when they are not set: `1000` for `headscale-ui` (Alpine appuser) and `65532` for `headplane` (Distroless-compatible non-root runtime).
   securityContext:
     capabilities:
       drop:

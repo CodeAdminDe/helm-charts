@@ -3,9 +3,34 @@
 {{- $isHeadplane := eq $provider "headplane" -}}
 {{- $image := .Values.ui.image -}}
 {{- $service := .Values.ui.service -}}
+{{- $uiPodSecurityContext := deepCopy (.Values.ui.podSecurityContext | default dict) -}}
+{{- $uiSecurityContext := deepCopy (.Values.ui.securityContext | default dict) -}}
 {{- if $isHeadplane -}}
 {{- $image = .Values.ui.headplane.image -}}
 {{- $service = .Values.ui.headplane.service -}}
+{{- end -}}
+{{- if .Values.applySecurity -}}
+  {{- if $isHeadplane -}}
+    {{- if not (hasKey $uiPodSecurityContext "fsGroup") -}}
+      {{- $_ := set $uiPodSecurityContext "fsGroup" 65532 -}}
+    {{- end -}}
+    {{- if not (hasKey $uiSecurityContext "runAsUser") -}}
+      {{- $_ := set $uiSecurityContext "runAsUser" 65532 -}}
+    {{- end -}}
+    {{- if not (hasKey $uiSecurityContext "runAsGroup") -}}
+      {{- $_ := set $uiSecurityContext "runAsGroup" 65532 -}}
+    {{- end -}}
+  {{- else -}}
+    {{- if not (hasKey $uiPodSecurityContext "fsGroup") -}}
+      {{- $_ := set $uiPodSecurityContext "fsGroup" 1000 -}}
+    {{- end -}}
+    {{- if not (hasKey $uiSecurityContext "runAsUser") -}}
+      {{- $_ := set $uiSecurityContext "runAsUser" 1000 -}}
+    {{- end -}}
+    {{- if not (hasKey $uiSecurityContext "runAsGroup") -}}
+      {{- $_ := set $uiSecurityContext "runAsGroup" 1000 -}}
+    {{- end -}}
+  {{- end -}}
 {{- end -}}
 {{- $podAnnotations := dict "checksum/values" (toJson .Values.ui | sha256sum) -}}
 {{- if $isHeadplane -}}
@@ -45,9 +70,9 @@ spec:
       {{- if .Values.runtimeClass.pods }}
       runtimeClassName: {{ .Values.runtimeClass.pods }}
       {{- end }}
-      {{- if and .Values.applySecurity .Values.ui.podSecurityContext }}
+      {{- if and .Values.applySecurity $uiPodSecurityContext }}
       securityContext:
-        {{- toYaml .Values.ui.podSecurityContext | nindent 8 }}
+        {{- toYaml $uiPodSecurityContext | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ ternary "headplane" "headscale-ui" $isHeadplane }}
@@ -98,9 +123,9 @@ spec:
             - name: headscale-ui-tmp
               mountPath: /tmp
             {{- end }}
-          {{- if and .Values.applySecurity .Values.ui.securityContext }}
+          {{- if and .Values.applySecurity $uiSecurityContext }}
           securityContext:
-            {{- toYaml .Values.ui.securityContext | nindent 12 }}
+            {{- toYaml $uiSecurityContext | nindent 12 }}
           {{- end }}
           {{- if .Values.applyHealthChecks }}
           livenessProbe:
