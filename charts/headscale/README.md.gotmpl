@@ -13,6 +13,7 @@
 * `ui.provider` supports `headscale-ui` (default) and `headplane`.
 * `headscale-ui` should usually be exposed on the same host via `/web` (for CORS compatibility with headscale API), using `ui.ingress.*`.
 * `headplane` config is rendered against upstream 0.6.1 schema and requires an existing secret (`ui.headplane.secret.*`) for session cookie secret path support.
+* The chart injects provider-specific numeric UI runtime IDs by default so Kubernetes can enforce `runAsNonRoot`: `1000:1000` for `headscale-ui` and `65532:65532` for `headplane`.
 
 {{- end -}}
 
