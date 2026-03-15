@@ -1,0 +1,267 @@
+{{- define "forgejo.CiliumNetworkPolicies-NamespaceSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "forgejo.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-NamespaceSet" (list . "forgejo.CiliumNetworkPolicies-NamespaceSet") }}
+---
+{{- end -}}
+
+{{- define "forgejo.CiliumNetworkPolicies-CnpgSet" -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "forgejo.labels" . | nindent 4 }}
+{{- end -}}
+
+{{- if and .Values.libchartCnps.enabled .Values.libchartCnps.includeCnpgPolicies .Values.database.useCnpgCluster.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-CnpgSet" (list . "forgejo.CiliumNetworkPolicies-CnpgSet") }}
+---
+{{- end -}}
+
+{{- define "forgejo.CiliumNetworkPolicies-AppSet" -}}
+{{- $cnpgMode := and (eq .Values.database.type "postgresql") .Values.database.useCnpgCluster.enabled -}}
+{{- $redisMode := and .Values.redis.enabled .Values.redisIntegration.enabled -}}
+{{- $defaultWebIngressEndpoints := list -}}
+{{- if .Values.ingress.enabled -}}
+{{- $defaultWebIngressEndpoints = append $defaultWebIngressEndpoints (dict "app.kubernetes.io/name" "ingress-nginx" "io.kubernetes.pod.namespace" "ingress-nginx") -}}
+{{- end -}}
+{{- if and .Values.gatewayApi.enabled .Values.gatewayApi.controllerSelector -}}
+{{- $defaultWebIngressEndpoints = append $defaultWebIngressEndpoints .Values.gatewayApi.controllerSelector -}}
+{{- end -}}
+{{- $defaultSshIngressEndpoints := list -}}
+{{- $defaultSshIngressEntities := list -}}
+{{- if and .Values.tcpRoute.enabled .Values.gatewayApi.controllerSelector -}}
+{{- $defaultSshIngressEndpoints = append $defaultSshIngressEndpoints .Values.gatewayApi.controllerSelector -}}
+{{- end -}}
+{{- if and .Values.service.ssh.enabled (ne .Values.service.ssh.type "ClusterIP") -}}
+{{- $defaultSshIngressEntities = append $defaultSshIngressEntities "world" -}}
+{{- end -}}
+{{- $defaultDenyMatchLabel := dict "forgejo.cnp/default-deny" "true" -}}
+{{- $effectiveWebIngressEndpoints := .Values.cnps.appTraffic.webIngress.fromEndpoints | default (list) -}}
+{{- $effectiveWebIngressEntities := .Values.cnps.appTraffic.webIngress.fromEntities | default (list) -}}
+{{- if and (empty $effectiveWebIngressEndpoints) (gt (len $defaultWebIngressEndpoints) 0) -}}
+{{- $effectiveWebIngressEndpoints = $defaultWebIngressEndpoints -}}
+{{- end -}}
+{{- if not .Values.cnps.appTraffic.webIngress.allow -}}
+{{- $effectiveWebIngressEndpoints = list $defaultDenyMatchLabel -}}
+{{- $effectiveWebIngressEntities = list -}}
+{{- end -}}
+{{- $hasWebIngressEndpoints := gt (len $effectiveWebIngressEndpoints) 0 -}}
+{{- $hasWebIngressEntities := not (empty $effectiveWebIngressEntities) -}}
+{{- if and .Values.cnps.appTraffic.webIngress.allow (not $hasWebIngressEndpoints) (not $hasWebIngressEntities) -}}
+{{- $effectiveWebIngressEndpoints = list $defaultDenyMatchLabel -}}
+{{- $hasWebIngressEndpoints = true -}}
+{{- end -}}
+{{- $includeWebIngressRule := or $hasWebIngressEndpoints $hasWebIngressEntities -}}
+{{- $effectiveSshIngressEndpoints := .Values.cnps.appTraffic.sshIngress.fromEndpoints | default (list) -}}
+{{- $effectiveSshIngressEntities := .Values.cnps.appTraffic.sshIngress.fromEntities | default (list) -}}
+{{- if and (empty $effectiveSshIngressEndpoints) (gt (len $defaultSshIngressEndpoints) 0) -}}
+{{- $effectiveSshIngressEndpoints = $defaultSshIngressEndpoints -}}
+{{- end -}}
+{{- if and (empty $effectiveSshIngressEntities) (gt (len $defaultSshIngressEntities) 0) -}}
+{{- $effectiveSshIngressEntities = $defaultSshIngressEntities -}}
+{{- end -}}
+{{- if not .Values.cnps.appTraffic.sshIngress.allow -}}
+{{- $effectiveSshIngressEndpoints = list $defaultDenyMatchLabel -}}
+{{- $effectiveSshIngressEntities = list -}}
+{{- end -}}
+{{- $hasSshIngressEndpoints := gt (len $effectiveSshIngressEndpoints) 0 -}}
+{{- $hasSshIngressEntities := not (empty $effectiveSshIngressEntities) -}}
+{{- if and .Values.service.ssh.enabled .Values.cnps.appTraffic.sshIngress.allow (not $hasSshIngressEndpoints) (not $hasSshIngressEntities) -}}
+{{- $effectiveSshIngressEndpoints = list $defaultDenyMatchLabel -}}
+{{- $hasSshIngressEndpoints = true -}}
+{{- end -}}
+{{- $includeSshIngressRule := and .Values.service.ssh.enabled (or $hasSshIngressEndpoints $hasSshIngressEntities) -}}
+{{- $portIndex := dict -}}
+{{- range $portSpec := (.Values.cnps.appTraffic.egress.toPorts | default (list)) -}}
+  {{- $port := printf "%v" (get $portSpec "port") -}}
+  {{- $protocol := default "TCP" (get $portSpec "protocol") -}}
+  {{- $endPort := "" -}}
+  {{- if hasKey $portSpec "endPort" -}}
+    {{- $endPort = printf "%v" (get $portSpec "endPort") -}}
+  {{- end -}}
+  {{- $key := printf "%s/%s/%s" $port $protocol $endPort -}}
+  {{- $normalized := dict "port" $port "protocol" $protocol -}}
+  {{- if hasKey $portSpec "endPort" -}}
+    {{- $_ := set $normalized "endPort" (get $portSpec "endPort") -}}
+  {{- end -}}
+  {{- $_ := set $portIndex $key $normalized -}}
+{{- end -}}
+{{- $effectiveEgressPorts := list -}}
+{{- range $portKey := (keys $portIndex | sortAlpha) -}}
+{{- $effectiveEgressPorts = append $effectiveEgressPorts (index $portIndex $portKey) -}}
+{{- end -}}
+{{- $userEgressEndpoints := .Values.cnps.appTraffic.egress.toEndpoints | default (list) -}}
+{{- $effectiveEgressFQDNs := .Values.cnps.appTraffic.egress.toFQDNs | default (list) -}}
+{{- $effectiveEgressEntities := .Values.cnps.appTraffic.egress.toEntities | default (list) -}}
+{{- $extraEgressRules := .Values.cnps.appTraffic.egress.extraRules | default (list) -}}
+{{- $hasEgressEndpoints := gt (len $userEgressEndpoints) 0 -}}
+{{- $hasEgressFQDNs := not (empty $effectiveEgressFQDNs) -}}
+{{- $hasEgressEntities := not (empty $effectiveEgressEntities) -}}
+{{- $hasExtraEgressRules := gt (len $extraEgressRules) 0 -}}
+{{- $includeManagedEgressRules := or $hasEgressEndpoints $hasEgressFQDNs $hasEgressEntities $hasExtraEgressRules $cnpgMode $redisMode -}}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "forgejo.labels" . | nindent 4 }}
+spec:
+  endpointSelector:
+    matchLabels:
+      {{- include "forgejo.componentSelectorLabels" (dict "root" . "component" "server") | nindent 6 }}
+  {{- if or $includeWebIngressRule $includeSshIngressRule }}
+  ingress:
+    {{- if $includeWebIngressRule }}
+    - {{- if $hasWebIngressEndpoints }}
+      fromEndpoints:
+        {{- range $selector := $effectiveWebIngressEndpoints }}
+        {{- $matchLabels := $selector -}}
+        {{- if and (kindIs "map" $selector) (hasKey $selector "matchLabels") -}}
+        {{- $matchLabels = (get $selector "matchLabels") -}}
+        {{- end }}
+        - matchLabels:
+          {{- range $k, $v := $matchLabels }}
+            {{ $k }}: {{ $v | quote }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+      {{- if $hasWebIngressEntities }}
+      fromEntities:
+        {{- toYaml $effectiveWebIngressEntities | nindent 8 }}
+      {{- end }}
+      toPorts:
+        - ports:
+            - port: {{ printf "%v" .Values.service.http.targetPort | quote }}
+              protocol: {{ .Values.service.http.targetProtocol | default "TCP" }}
+    {{- end }}
+    {{- if $includeSshIngressRule }}
+    - {{- if $hasSshIngressEndpoints }}
+      fromEndpoints:
+        {{- range $selector := $effectiveSshIngressEndpoints }}
+        {{- $matchLabels := $selector -}}
+        {{- if and (kindIs "map" $selector) (hasKey $selector "matchLabels") -}}
+        {{- $matchLabels = (get $selector "matchLabels") -}}
+        {{- end }}
+        - matchLabels:
+          {{- range $k, $v := $matchLabels }}
+            {{ $k }}: {{ $v | quote }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+      {{- if $hasSshIngressEntities }}
+      fromEntities:
+        {{- toYaml $effectiveSshIngressEntities | nindent 8 }}
+      {{- end }}
+      toPorts:
+        - ports:
+            - port: {{ include "forgejo.sshListenPort" . | quote }}
+              protocol: TCP
+    {{- end }}
+  {{- else }}
+  ingress: []
+  {{- end }}
+  {{- if .Values.cnps.appTraffic.egress.allow }}
+  {{- if $includeManagedEgressRules }}
+  egress:
+    {{- if $redisMode }}
+    - toEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: redis
+            app.kubernetes.io/instance: {{ .Release.Name | quote }}
+      toPorts:
+        - ports:
+            - port: {{ printf "%v" .Values.redis.service.port | quote }}
+              protocol: TCP
+    {{- end }}
+    {{- if $cnpgMode }}
+    - toEntities:
+        - cluster
+      toPorts:
+        - ports:
+            - port: {{ printf "%v" .Values.database.useCnpgCluster.port | quote }}
+              protocol: TCP
+    {{- end }}
+    {{- if $hasEgressEndpoints }}
+    - toEndpoints:
+        {{- range $selector := $userEgressEndpoints }}
+        {{- $matchLabels := $selector -}}
+        {{- if and (kindIs "map" $selector) (hasKey $selector "matchLabels") -}}
+        {{- $matchLabels = (get $selector "matchLabels") -}}
+        {{- end }}
+        - matchLabels:
+          {{- range $k, $v := $matchLabels }}
+            {{ $k }}: {{ $v | quote }}
+          {{- end }}
+        {{- end }}
+      {{- if gt (len $effectiveEgressPorts) 0 }}
+      toPorts:
+        - ports:
+          {{- range $effectiveEgressPorts }}
+            - port: {{ .port | quote }}
+              {{- if hasKey . "endPort" }}
+              endPort: {{ .endPort }}
+              {{- end }}
+              protocol: {{ .protocol | default "TCP" }}
+          {{- end }}
+      {{- end }}
+    {{- end }}
+    {{- if $hasEgressFQDNs }}
+    - toFQDNs:
+        {{- toYaml $effectiveEgressFQDNs | nindent 8 }}
+      {{- if gt (len $effectiveEgressPorts) 0 }}
+      toPorts:
+        - ports:
+          {{- range $effectiveEgressPorts }}
+            - port: {{ .port | quote }}
+              {{- if hasKey . "endPort" }}
+              endPort: {{ .endPort }}
+              {{- end }}
+              protocol: {{ .protocol | default "TCP" }}
+          {{- end }}
+      {{- end }}
+    {{- end }}
+    {{- if $hasEgressEntities }}
+    - toEntities:
+        {{- toYaml $effectiveEgressEntities | nindent 8 }}
+      {{- if gt (len $effectiveEgressPorts) 0 }}
+      toPorts:
+        - ports:
+          {{- range $effectiveEgressPorts }}
+            - port: {{ .port | quote }}
+              {{- if hasKey . "endPort" }}
+              endPort: {{ .endPort }}
+              {{- end }}
+              protocol: {{ .protocol | default "TCP" }}
+          {{- end }}
+      {{- end }}
+    {{- end }}
+    {{- range $extraEgressRules }}
+    - {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- else }}
+  egress: []
+  {{- end }}
+  {{- else }}
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            forgejo.cnp/default-deny: "true"
+      toPorts:
+        - ports:
+            - port: "65535"
+              protocol: TCP
+  {{- end }}
+{{- end -}}
+
+{{- if .Values.libchartCnps.enabled -}}
+{{ include "libchart-cnps.CiliumNetworkPolicies-AppSet" (list . "forgejo.CiliumNetworkPolicies-AppSet") }}
+{{- end -}}

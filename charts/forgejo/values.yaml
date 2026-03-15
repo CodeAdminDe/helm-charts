@@ -1,0 +1,527 @@
+# -- Number of Forgejo pod replicas.
+# @description This chart intentionally targets the single-pod deployment model. High-availability and multi-replica operation are out of scope for this repo-native chart.
+replicaCount: 1
+
+# -- Deployment strategy.
+strategy:
+  # -- Strategy type. Forgejo should use `Recreate` by default.
+  type: Recreate
+
+# -- Override release-based naming.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- Cluster DNS suffix used for internal service URLs.
+clusterDomain: cluster.local
+
+# -- Container image configuration.
+image:
+  # -- Forgejo image repository.
+  repository: code.forgejo.org/forgejo/forgejo
+  # -- Image pull policy.
+  pullPolicy: IfNotPresent
+  # -- Image tag override (defaults to .Chart.AppVersion when empty).
+  tag: ""
+  # -- Pull the official rootless image variant.
+  rootless: true
+  # -- Fully override registry/repository/tag/digest handling when needed.
+  fullOverride: ""
+
+# -- Image pull secrets (for private registries).
+imagePullSecrets: []
+
+# -- Main HTTP service configuration.
+service:
+  http:
+    # -- HTTP service type. This chart enforces `ClusterIP`.
+    type: ClusterIP
+    # -- HTTP service port exposed inside the cluster.
+    port: 3000
+    # -- Forgejo HTTP container port.
+    targetPort: 3000
+    # -- HTTP service target protocol.
+    targetProtocol: TCP
+    # -- Additional HTTP service annotations.
+    annotations: {}
+    # -- Additional HTTP service labels.
+    labels: {}
+  ssh:
+    # -- Enable the dedicated SSH service.
+    enabled: true
+    # -- SSH service type. Unlike HTTP, SSH may use `ClusterIP`, `NodePort`, or `LoadBalancer`.
+    type: ClusterIP
+    # -- SSH service port advertised by Forgejo clone URLs unless explicitly overridden in `forgejo.config.server.SSH_PORT`.
+    port: 22
+    # -- Optional hostPort bound to the Forgejo SSH container port.
+    hostPort: null
+    # -- Optional NodePort when `service.ssh.type=NodePort`.
+    nodePort: null
+    # -- Optional LoadBalancer IP when `service.ssh.type=LoadBalancer`.
+    loadBalancerIP: ""
+    # -- Optional LoadBalancer class when `service.ssh.type=LoadBalancer`.
+    loadBalancerClass: ""
+    # -- Optional LoadBalancer source ranges when `service.ssh.type=LoadBalancer`.
+    loadBalancerSourceRanges: []
+    # -- Optional external traffic policy when `service.ssh.type` is `NodePort` or `LoadBalancer`.
+    externalTrafficPolicy: ""
+    # -- Additional SSH service annotations.
+    annotations: {}
+    # -- Additional SSH service labels.
+    labels: {}
+
+# -- Ingress configuration for the Forgejo web UI/API.
+ingress:
+  # -- Enable ingress resource creation.
+  enabled: false
+  # -- Ingress class name.
+  className: ""
+  # -- Additional ingress annotations.
+  annotations: {}
+  # -- Secure-by-default ingress annotation baseline.
+  # @description Merged first; `ingress.annotations` overrides duplicate keys.
+  secureDefaults:
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+  # -- Host/path rules.
+  hosts:
+    - host: git.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  # -- TLS host/secret blocks.
+  tls: []
+
+# -- Gateway API HTTPRoute configuration for the Forgejo web UI/API.
+gatewayApi:
+  # -- Enable HTTPRoute resource creation.
+  enabled: false
+  # -- Public URL scheme used when deriving Forgejo `ROOT_URL` from Gateway API.
+  scheme: https
+  # -- Labels for the Gateway API controller pods, used to generate default CiliumNetworkPolicies ingress rules for both HTTPRoute and TCPRoute.
+  # If empty, you must provide explicit `cnps.appTraffic.webIngress.fromEndpoints` / `cnps.appTraffic.sshIngress.fromEndpoints` when Gateway API exposure is enabled together with Cilium policies.
+  controllerSelector:
+    app.kubernetes.io/name: envoy-gateway
+    io.kubernetes.pod.namespace: envoy-gateway-system
+  # -- HTTPRoute annotations.
+  annotations: {}
+  # -- HTTPRoute labels.
+  labels: {}
+  # -- ParentRefs for the HTTPRoute.
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
+      sectionName: http
+  # -- Hostnames served by the HTTPRoute.
+  hostnames:
+    - git.example.com
+  # -- Match rules for the default HTTPRoute rule.
+  matches:
+    - path:
+        type: PathPrefix
+        value: /
+  # -- Optional filters for the HTTPRoute rule.
+  filters: []
+  # -- Optional backend references. Defaults to the main Forgejo HTTP service when empty.
+  backendRefs: []
+
+# -- Gateway API TCPRoute configuration for Forgejo SSH traffic.
+tcpRoute:
+  # -- Enable TCPRoute resource creation for SSH.
+  enabled: false
+  # -- TCPRoute annotations.
+  annotations: {}
+  # -- ParentRefs for the TCPRoute.
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
+      sectionName: ssh
+  # -- Optional TCPRoute backend port override. Defaults to `service.ssh.port` when empty.
+  port: null
+
+# -- ServiceAccount settings.
+serviceAccount:
+  # -- Create a dedicated ServiceAccount.
+  create: true
+  # -- ServiceAccount annotations.
+  annotations: {}
+  # -- ServiceAccount labels.
+  labels: {}
+  # -- ServiceAccount name override.
+  name: ""
+  # -- Automount the ServiceAccount token.
+  automountServiceAccountToken: false
+
+# -- Apply default pod and container security settings.
+applySecurity: true
+
+# -- Apply health checks from values.
+applyHealthChecks: true
+
+# -- Pod-level security context for Forgejo pods.
+podSecurityContext:
+  fsGroup: 1000
+
+# -- Container-level security context for Forgejo and init containers.
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+    # -- Additional capabilities to add. Set `SYS_CHROOT` here on CRI-O clusters if Git-over-SSH clone/read operations require it.
+    add: []
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- Writable tmp volume required by Forgejo and the init scripts.
+tmpVolume:
+  # -- Enable the tmp volume mount.
+  enabled: true
+  # -- Mount path for the tmp volume.
+  mountPath: /tmp
+  # -- Optional EmptyDir size limit.
+  sizeLimit: ""
+
+# -- Liveness probe for the main Forgejo container.
+livenessProbe:
+  tcpSocket:
+    port: http
+  initialDelaySeconds: 200
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 10
+
+# -- Readiness probe for the main Forgejo container.
+readinessProbe:
+  httpGet:
+    path: /api/healthz
+    port: http
+  initialDelaySeconds: 5
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+
+# -- Startup probe for the main Forgejo container.
+startupProbe:
+  enabled: false
+  tcpSocket:
+    port: http
+  initialDelaySeconds: 60
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 10
+
+# -- Resource requests/limits for the main Forgejo container.
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    memory: 1Gi
+
+# -- Resource requests/limits for the init containers.
+initContainers:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits: {}
+
+# -- RuntimeClass names.
+runtimeClass:
+  # -- RuntimeClass for Forgejo pods.
+  pods: ""
+  # -- RuntimeClass for Helm test pods.
+  tests: ""
+
+# -- Optional PriorityClass assigned to Forgejo pods.
+priorityClassName: ""
+
+# -- Optional command override for the Forgejo container.
+command: []
+
+# -- Optional args override for the Forgejo container.
+args: []
+
+# -- Pod annotations.
+podAnnotations: {}
+
+# -- Pod labels.
+podLabels: {}
+
+# -- Workload node selector.
+nodeSelector: {}
+
+# -- Workload tolerations.
+tolerations: []
+
+# -- Workload affinity.
+affinity: {}
+
+# -- Optional extra sidecar containers added to the Forgejo pod.
+extraContainers: []
+
+# -- Additional Secret refs exposed with `envFrom` on the main container.
+envFromSecrets: []
+
+# -- Additional ConfigMap refs exposed with `envFrom` on the main container.
+envFromConfigMaps: []
+
+# -- Additional non-secret environment variables appended after the chart-managed Forgejo env vars on the main container.
+extraEnv: {}
+
+# -- Additional secret-backed environment variables appended after the chart-managed Forgejo env vars on the main container.
+# @description Supports either map form (`ENV_NAME: secret-name` or `ENV_NAME: {secretName: ..., secretKey: ...}`) or list form (`[{name, secretName, secretKey}]`).
+additionalEnvSecrets: {}
+
+# -- Additional volumes mounted into the Forgejo pod.
+extraVolumes: []
+
+# -- Additional volume mounts for the main Forgejo container.
+extraVolumeMounts: []
+
+# -- Additional volume mounts for the init containers.
+extraInitVolumeMounts: []
+
+# -- Bash snippet injected at the beginning of the directory-initialization init container.
+initPreScript: ""
+
+# -- Persistence settings for Forgejo data, repositories, attachments, and generated `app.ini`.
+persistence:
+  # -- Enable persistent storage. When disabled, the chart falls back to `emptyDir`.
+  enabled: true
+  # -- Create a PersistentVolumeClaim. Set to `false` when using `existingClaim`.
+  create: true
+  # -- Existing PersistentVolumeClaim to mount instead of creating one.
+  existingClaim: ""
+  # -- PVC size.
+  size: 10Gi
+  # -- PVC storageClass. Empty uses the cluster default.
+  storageClass: ""
+  # -- PVC access modes.
+  accessModes:
+    - ReadWriteOnce
+  # -- Optional PVC volume name.
+  volumeName: ""
+  # -- Optional subPath mounted from the volume.
+  subPath: ""
+  # -- Data mount path inside the Forgejo container.
+  mountPath: /data
+  # -- PVC annotations.
+  annotations:
+    helm.sh/resource-policy: keep
+  # -- PVC labels.
+  labels: {}
+
+# -- PodDisruptionBudget configuration.
+podDisruptionBudget:
+  # -- Create a PodDisruptionBudget.
+  enabled: false
+  # -- Minimum number of available pods during voluntary disruptions.
+  minAvailable: 1
+
+# -- Forgejo runtime configuration.
+forgejo:
+  # -- Explicit public URL used for clone URLs and redirects. When empty, the chart derives it from Gateway API or Ingress and otherwise falls back to the internal HTTP service URL.
+  publicUrl: ""
+  # -- Explicit SSH domain used in clone URLs. When empty, the chart derives it from the public host where possible.
+  sshDomain: ""
+  # -- Additional configuration from existing Secrets or ConfigMaps mounted into the init container.
+  # @raw
+  # ```yaml
+  # additionalConfigSources:
+  #   - secret:
+  #       secretName: forgejo-app-ini-oauth
+  #   - configMap:
+  #       name: forgejo-app-ini-plaintext
+  # ```
+  additionalConfigSources: []
+  # -- Additional `FORGEJO__...` environment variables consumed while building `app.ini`.
+  # @description Useful for sensitive per-setting overrides such as `FORGEJO__DATABASE__PASSWD`.
+  additionalConfigFromEnvs: []
+  # -- Inline Forgejo `app.ini` overrides.
+  # @description Top-level scalar keys map to the generic/default section (`APP_NAME`, `RUN_MODE`, ...). Nested maps map to their lower-cased section names and dotted section names are supported.
+  config:
+    APP_NAME: "Forgejo: Beyond coding. We forge."
+    RUN_MODE: prod
+    repository: {}
+    server: {}
+    database: {}
+    indexer: {}
+    queue: {}
+    admin: {}
+    security: {}
+    service: {}
+    cache: {}
+    session: {}
+    oauth2: {}
+    mailer: {}
+    log: {}
+    metrics: {}
+    packages: {}
+    actions: {}
+    other: {}
+
+# -- Bootstrap admin user settings.
+admin:
+  # -- Enable bootstrap admin reconciliation.
+  enabled: true
+  # -- Existing secret containing the bootstrap admin credentials.
+  existingSecret:
+    # -- Existing secret name.
+    name: ""
+    # -- Secret key containing the admin username.
+    usernameKey: username
+    # -- Secret key containing the admin password.
+    passwordKey: password
+  # -- Admin username used when the chart generates the bootstrap secret.
+  username: forgejo_admin
+  # -- Admin password used when the chart generates the bootstrap secret. Leave empty to let Helm preserve/generate one.
+  password: ""
+  # -- Admin email address.
+  email: forgejo@local.domain
+  # -- Password reconciliation mode. Supported values: `keepUpdated`, `initialOnlyNoReset`, `initialOnlyRequireReset`.
+  passwordMode: keepUpdated
+
+# -- Database configuration. SQLite is the default simple fallback; production deployments should prefer PostgreSQL with CNPG.
+database:
+  # -- Database type. Supported values: `sqlite`, `postgresql`.
+  type: sqlite
+  postgres:
+    # -- PostgreSQL host when `database.type=postgresql` and CNPG is disabled.
+    host: ""
+    # -- PostgreSQL port.
+    port: 5432
+    # -- PostgreSQL database name.
+    database: forgejo
+    # -- PostgreSQL username.
+    user: forgejo
+    # -- PostgreSQL SSL mode (`forgejo.config.database.SSL_MODE`).
+    sslMode: require
+    passwordSecret:
+      # -- Existing secret containing the PostgreSQL password.
+      name: ""
+      # -- Secret key containing the PostgreSQL password.
+      key: password
+  useCnpgCluster:
+    # -- Resolve PostgreSQL credentials from an existing CNPG app secret.
+    enabled: false
+    # -- CNPG cluster name. The chart derives the RW service from this value.
+    clusterName: forgejo
+    # -- Existing CNPG app secret name. Defaults to `<clusterName>-app` when empty.
+    appConnectionSecretName: ""
+    # -- PostgreSQL port used by the CNPG cluster.
+    port: 5432
+    # -- Secret keys inside the CNPG app secret.
+    secretKeys:
+      # -- Key containing the database name.
+      database: dbname
+      # -- Key containing the database username.
+      username: user
+      # -- Key containing the database password.
+      password: password
+    # -- SSL mode used when wiring CNPG-backed PostgreSQL.
+    sslMode: require
+
+# -- Auto-wire Forgejo queue/cache/session to the bundled Redis chart.
+redisIntegration:
+  # -- Enable bundled Redis integration for Forgejo queue/cache/session.
+  # @description Requires `redis.enabled=true`. When disabled, Forgejo keeps its default in-memory session/cache and `level` queue settings unless you override them manually via `forgejo.config` or `forgejo.additionalConfigSources`.
+  enabled: false
+  # -- Redis database number used for queues.
+  queueDb: 0
+  # -- Redis database number used for cache.
+  cacheDb: 1
+  # -- Redis database number used for sessions.
+  sessionDb: 2
+
+# -- Bundled Redis dependency configuration used when `redis.enabled=true`.
+redis:
+  # -- Enable the bundled Redis chart.
+  enabled: false
+  # -- Optional subchart name override.
+  # @description Defaults to `forgejo-cache` to avoid naming collisions with the main Forgejo resources when the Helm release name already contains `redis`.
+  nameOverride: forgejo-cache
+  # -- Optional subchart fullname override.
+  fullnameOverride: ""
+  service:
+    type: ClusterIP
+    port: 6379
+    targetPort: 6379
+    addBackwardsCompatibleMaster: true
+  persistence:
+    enabled: true
+    size: 1Gi
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+
+# -- Enable CiliumNetworkPolicy rendering via the `libchart-cnps` dependency.
+libchartCnps:
+  enabled: false
+  includeCnpgPolicies: false
+
+# -- App-specific CiliumNetworkPolicies settings.
+cnps:
+  # -- Additional CNPG Cilium policy tuning used by libchart-cnps when `includeCnpgPolicies=true`.
+  cnpgTraffic:
+    instanceExtraEgress: []
+  appTraffic:
+    webIngress:
+      # -- Allow web ingress traffic to the Forgejo pod.
+      allow: true
+      # -- Explicit endpoint selectors allowed to reach the Forgejo HTTP port.
+      # @description When `ingress.enabled=true` and this list is empty, the chart assumes an ingress-nginx controller with labels `app.kubernetes.io/name=ingress-nginx` in namespace `ingress-nginx`. When `gatewayApi.enabled=true` and `gatewayApi.controllerSelector` is set, that selector is also used by default.
+      fromEndpoints: []
+      # -- Explicit Cilium entities allowed to reach the Forgejo HTTP port.
+      fromEntities: []
+    sshIngress:
+      # -- Allow SSH ingress traffic to the Forgejo pod.
+      allow: true
+      # -- Explicit endpoint selectors allowed to reach the Forgejo SSH port.
+      # @description When `tcpRoute.enabled=true` and this list is empty, the chart falls back to `gatewayApi.controllerSelector` if set. When `service.ssh.type` is `NodePort` or `LoadBalancer`, the chart also defaults SSH ingress to the `world` entity unless you override it here or via `fromEntities`.
+      fromEndpoints: []
+      # -- Explicit Cilium entities allowed to reach the Forgejo SSH port.
+      fromEntities: []
+    egress:
+      # -- Allow outbound traffic from the Forgejo pod.
+      allow: true
+      # -- Additional endpoint selectors for egress.
+      toEndpoints: []
+      # -- Additional fully-qualified domain names for egress, for example OIDC providers or outbound webhooks.
+      toFQDNs: []
+      # -- Cilium entities allowed for general egress.
+      toEntities:
+        - world
+      # -- Additional egress ports for the general egress rules.
+      # @description When using external PostgreSQL together with `libchartCnps.enabled=true`, explicitly add the database port here and define a matching `toEndpoints`, `toFQDNs`, `toEntities`, or `extraRules` target for that database traffic.
+      toPorts:
+        - port: "22"
+          protocol: TCP
+        - port: "80"
+          protocol: TCP
+        - port: "443"
+          protocol: TCP
+      # -- Additional raw Cilium egress rules appended as-is.
+      extraRules: []
+
+# -- Helm test settings.
+test:
+  # -- Enable the HTTP connectivity smoke test pod.
+  enabled: true
+  image:
+    # -- Test image repository.
+    repository: busybox
+    # -- Test image tag.
+    tag: "1.37"
+    # -- Test image pull policy.
+    pullPolicy: IfNotPresent

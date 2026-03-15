@@ -1,0 +1,228 @@
+{{- if ne .Values.service.http.type "ClusterIP" -}}
+{{- fail "service.http.type must be ClusterIP in this repo style. Expose Forgejo externally via ingress or Gateway API resources." -}}
+{{- end -}}
+
+{{- if gt (int .Values.replicaCount) 1 -}}
+{{- fail "replicaCount>1 is not supported by this repo-native Forgejo chart. Use the single-pod deployment model." -}}
+{{- end -}}
+
+{{- if and .Values.ingress.enabled (not .Values.ingress.hosts) -}}
+{{- fail "ingress.enabled=true requires at least one ingress.hosts entry." -}}
+{{- end -}}
+
+{{- if .Values.gatewayApi.enabled -}}
+  {{- if not .Values.gatewayApi.parentRefs -}}
+    {{- fail "gatewayApi.enabled=true requires at least one gatewayApi.parentRefs entry." -}}
+  {{- end -}}
+  {{- if not .Values.gatewayApi.hostnames -}}
+    {{- fail "gatewayApi.enabled=true requires at least one gatewayApi.hostnames entry." -}}
+  {{- end -}}
+  {{- if not (has .Values.gatewayApi.scheme (list "http" "https")) -}}
+    {{- fail "gatewayApi.scheme must be either \"http\" or \"https\" when gatewayApi.enabled=true." -}}
+  {{- end -}}
+  {{- if and .Values.libchartCnps.enabled (empty .Values.gatewayApi.controllerSelector) (not .Values.cnps.appTraffic.webIngress.fromEndpoints) (not .Values.cnps.appTraffic.webIngress.fromEntities) -}}
+    {{- fail "gatewayApi.enabled=true and libchartCnps.enabled=true requires either gatewayApi.controllerSelector or explicit cnps.appTraffic.webIngress.fromEndpoints/fromEntities for Forgejo web traffic." -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not (has .Values.service.ssh.type (list "ClusterIP" "NodePort" "LoadBalancer")) -}}
+{{- fail "service.ssh.type must be one of: ClusterIP, NodePort, LoadBalancer." -}}
+{{- end -}}
+
+{{- if and (not .Values.service.ssh.enabled) .Values.tcpRoute.enabled -}}
+{{- fail "tcpRoute.enabled=true requires service.ssh.enabled=true." -}}
+{{- end -}}
+
+{{- if and (not .Values.service.ssh.enabled) .Values.service.ssh.hostPort -}}
+{{- fail "service.ssh.hostPort requires service.ssh.enabled=true." -}}
+{{- end -}}
+
+{{- if .Values.tcpRoute.enabled -}}
+  {{- if not .Values.tcpRoute.parentRefs -}}
+    {{- fail "tcpRoute.enabled=true requires at least one tcpRoute.parentRefs entry." -}}
+  {{- end -}}
+  {{- if and .Values.libchartCnps.enabled (empty .Values.gatewayApi.controllerSelector) (not .Values.cnps.appTraffic.sshIngress.fromEndpoints) (not .Values.cnps.appTraffic.sshIngress.fromEntities) -}}
+    {{- fail "tcpRoute.enabled=true and libchartCnps.enabled=true requires either gatewayApi.controllerSelector or explicit cnps.appTraffic.sshIngress.fromEndpoints/fromEntities for Forgejo SSH traffic." -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and .Values.applySecurity .Values.securityContext.readOnlyRootFilesystem (not .Values.tmpVolume.enabled) -}}
+{{- fail "securityContext.readOnlyRootFilesystem=true requires tmpVolume.enabled=true." -}}
+{{- end -}}
+
+{{- if not (has .Values.database.type (list "sqlite" "postgresql")) -}}
+{{- fail "database.type must be one of: sqlite, postgresql." -}}
+{{- end -}}
+
+{{- if and (eq .Values.database.type "sqlite") .Values.database.useCnpgCluster.enabled -}}
+{{- fail "database.useCnpgCluster.enabled=true requires database.type=postgresql." -}}
+{{- end -}}
+
+{{- if eq .Values.database.type "postgresql" -}}
+  {{- if .Values.database.useCnpgCluster.enabled -}}
+    {{- if empty .Values.database.useCnpgCluster.clusterName -}}
+      {{- fail "database.useCnpgCluster.clusterName must be set when CNPG integration is enabled." -}}
+    {{- end -}}
+    {{- if empty .Values.database.useCnpgCluster.secretKeys.database -}}
+      {{- fail "database.useCnpgCluster.secretKeys.database is required when CNPG integration is enabled." -}}
+    {{- end -}}
+    {{- if empty .Values.database.useCnpgCluster.secretKeys.username -}}
+      {{- fail "database.useCnpgCluster.secretKeys.username is required when CNPG integration is enabled." -}}
+    {{- end -}}
+    {{- if empty .Values.database.useCnpgCluster.secretKeys.password -}}
+      {{- fail "database.useCnpgCluster.secretKeys.password is required when CNPG integration is enabled." -}}
+    {{- end -}}
+    {{- if empty .Values.database.useCnpgCluster.sslMode -}}
+      {{- fail "database.useCnpgCluster.sslMode must be set when CNPG integration is enabled." -}}
+    {{- end -}}
+  {{- else -}}
+    {{- if empty .Values.database.postgres.host -}}
+      {{- fail "database.postgres.host must be set when database.type=postgresql and CNPG is disabled." -}}
+    {{- end -}}
+    {{- if empty .Values.database.postgres.database -}}
+      {{- fail "database.postgres.database must be set when database.type=postgresql and CNPG is disabled." -}}
+    {{- end -}}
+    {{- if empty .Values.database.postgres.user -}}
+      {{- fail "database.postgres.user must be set when database.type=postgresql and CNPG is disabled." -}}
+    {{- end -}}
+    {{- if empty .Values.database.postgres.passwordSecret.name -}}
+      {{- fail "database.postgres.passwordSecret.name must be set when database.type=postgresql and CNPG is disabled." -}}
+    {{- end -}}
+    {{- if empty .Values.database.postgres.passwordSecret.key -}}
+      {{- fail "database.postgres.passwordSecret.key must be set when database.type=postgresql and CNPG is disabled." -}}
+    {{- end -}}
+    {{- if empty .Values.database.postgres.sslMode -}}
+      {{- fail "database.postgres.sslMode must be set when database.type=postgresql and CNPG is disabled." -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and .Values.redisIntegration.enabled (not .Values.redis.enabled) -}}
+{{- fail "redisIntegration.enabled=true requires redis.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.libchartCnps.includeCnpgPolicies (not .Values.libchartCnps.enabled) -}}
+{{- fail "libchartCnps.includeCnpgPolicies=true requires libchartCnps.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.libchartCnps.includeCnpgPolicies (not .Values.database.useCnpgCluster.enabled) -}}
+{{- fail "libchartCnps.includeCnpgPolicies=true requires database.useCnpgCluster.enabled=true." -}}
+{{- end -}}
+
+{{- if .Values.admin.enabled -}}
+  {{- if .Values.admin.existingSecret.name -}}
+    {{- if .Values.admin.password -}}
+      {{- fail "admin.password cannot be combined with admin.existingSecret.name." -}}
+    {{- end -}}
+    {{- if empty .Values.admin.existingSecret.usernameKey -}}
+      {{- fail "admin.existingSecret.usernameKey must be set when admin.existingSecret.name is used." -}}
+    {{- end -}}
+    {{- if empty .Values.admin.existingSecret.passwordKey -}}
+      {{- fail "admin.existingSecret.passwordKey must be set when admin.existingSecret.name is used." -}}
+    {{- end -}}
+  {{- else -}}
+    {{- if empty .Values.admin.username -}}
+      {{- fail "admin.username must be set when admin.enabled=true and no existing Secret is used." -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if not (has .Values.admin.passwordMode (list "keepUpdated" "initialOnlyNoReset" "initialOnlyRequireReset")) -}}
+    {{- fail "admin.passwordMode must be one of: keepUpdated, initialOnlyNoReset, initialOnlyRequireReset." -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and (not .Values.persistence.enabled) .Values.persistence.existingClaim -}}
+{{- fail "persistence.existingClaim cannot be set when persistence.enabled=false." -}}
+{{- end -}}
+
+{{- if and .Values.persistence.enabled (not .Values.persistence.create) (empty .Values.persistence.existingClaim) -}}
+{{- fail "persistence.create=false requires persistence.existingClaim when persistence.enabled=true." -}}
+{{- end -}}
+
+{{- range $idx, $source := .Values.forgejo.additionalConfigSources -}}
+  {{- if not (kindIs "map" $source) -}}
+    {{- fail (printf "forgejo.additionalConfigSources[%d] must be an object." $idx) -}}
+  {{- end -}}
+  {{- $hasSecret := hasKey $source "secret" -}}
+  {{- $hasConfigMap := hasKey $source "configMap" -}}
+  {{- if eq (add (ternary 1 0 $hasSecret) (ternary 1 0 $hasConfigMap)) 0 -}}
+    {{- fail (printf "forgejo.additionalConfigSources[%d] must define either secret or configMap." $idx) -}}
+  {{- end -}}
+  {{- if and $hasSecret $hasConfigMap -}}
+    {{- fail (printf "forgejo.additionalConfigSources[%d] cannot define both secret and configMap." $idx) -}}
+  {{- end -}}
+  {{- $secretConfig := get $source "secret" -}}
+  {{- if and $hasSecret (not (kindIs "map" $secretConfig)) -}}
+    {{- fail (printf "forgejo.additionalConfigSources[%d].secret must be an object." $idx) -}}
+  {{- end -}}
+  {{- if and $hasSecret (empty (get $secretConfig "secretName")) -}}
+    {{- fail (printf "forgejo.additionalConfigSources[%d].secret.secretName must be set." $idx) -}}
+  {{- end -}}
+  {{- $configMapConfig := get $source "configMap" -}}
+  {{- if and $hasConfigMap (not (kindIs "map" $configMapConfig)) -}}
+    {{- fail (printf "forgejo.additionalConfigSources[%d].configMap must be an object." $idx) -}}
+  {{- end -}}
+  {{- if and $hasConfigMap (empty (get $configMapConfig "name")) -}}
+    {{- fail (printf "forgejo.additionalConfigSources[%d].configMap.name must be set." $idx) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $reservedEnv := list
+  "SSH_LISTEN_PORT"
+  "SSH_PORT"
+  "GITEA_APP_INI"
+  "GITEA_CUSTOM"
+  "GITEA_WORK_DIR"
+  "GITEA_TEMP"
+  "TMPDIR"
+  "HOME"
+-}}
+
+{{- range $name, $_ := .Values.extraEnv -}}
+  {{- if has $name $reservedEnv -}}
+    {{- fail (printf "extraEnv[%s] would override a chart-managed Forgejo environment variable." $name) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if kindIs "slice" .Values.additionalEnvSecrets -}}
+  {{- range $entry := .Values.additionalEnvSecrets -}}
+    {{- if not (kindIs "map" $entry) -}}
+      {{- fail "additionalEnvSecrets list entries must be objects (maps)." -}}
+    {{- end -}}
+    {{- $name := default "" (index $entry "name") -}}
+    {{- $secretName := default "" (index $entry "secretName") -}}
+    {{- if or (empty $name) (empty $secretName) -}}
+      {{- fail "additionalEnvSecrets list entries must include name and secretName." -}}
+    {{- end -}}
+    {{- if has $name $reservedEnv -}}
+      {{- fail (printf "additionalEnvSecrets entry %s would override a chart-managed Forgejo environment variable." $name) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if kindIs "map" .Values.additionalEnvSecrets -}}
+  {{- range $envName, $secretConfig := .Values.additionalEnvSecrets -}}
+    {{- if has $envName $reservedEnv -}}
+      {{- fail (printf "additionalEnvSecrets[%s] would override a chart-managed Forgejo environment variable." $envName) -}}
+    {{- end -}}
+    {{- if kindIs "string" $secretConfig -}}
+      {{- if empty $secretConfig -}}
+        {{- fail (printf "additionalEnvSecrets[%s] must reference a non-empty secret name." $envName) -}}
+      {{- end -}}
+    {{- else if kindIs "map" $secretConfig -}}
+      {{- $name := default $envName (index $secretConfig "name") -}}
+      {{- $secretName := default "" (index $secretConfig "secretName") -}}
+      {{- if or (empty $name) (empty $secretName) -}}
+        {{- fail (printf "additionalEnvSecrets[%s] map-form entries must resolve to a valid name and secretName." $envName) -}}
+      {{- end -}}
+      {{- if has $name $reservedEnv -}}
+        {{- fail (printf "additionalEnvSecrets[%s] map-form entry would override a chart-managed Forgejo environment variable." $envName) -}}
+      {{- end -}}
+    {{- else -}}
+      {{- fail (printf "additionalEnvSecrets[%s] must be either a secret name string or an object." $envName) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and (not (kindIs "map" .Values.additionalEnvSecrets)) (not (kindIs "slice" .Values.additionalEnvSecrets)) (not (empty .Values.additionalEnvSecrets)) -}}
+{{- fail "additionalEnvSecrets must be either a map or a list." -}}
+{{- end -}}
