@@ -1,0 +1,168 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "derper.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "derper.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "derper.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "derper.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/values: {{ toJson .Values | sha256sum }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "derper.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      {{- if and .Values.applySecurity .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ include "derper.name" . }}
+          image: {{ include "derper.image" . | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            {{- if .Values.service.http.enabled }}
+            - name: http
+              containerPort: {{ .Values.service.http.targetPort }}
+              protocol: TCP
+            {{- end }}
+            - name: https
+              containerPort: {{ .Values.service.https.targetPort }}
+              protocol: TCP
+            {{- if .Values.stun.enabled }}
+            - name: stun
+              containerPort: {{ .Values.stun.targetPort }}
+              protocol: UDP
+            {{- end }}
+          args:
+            - {{ printf "-a=%s" .Values.derper.addr | quote }}
+            - {{ printf "-http-port=%v" (ternary .Values.derper.httpPort -1 .Values.service.http.enabled) | quote }}
+            - {{ printf "-stun-port=%v" .Values.stun.targetPort | quote }}
+            - {{ printf "-c=%s" .Values.derper.configPath | quote }}
+            - {{ printf "-certmode=%s" .Values.certificates.mode | quote }}
+            - {{ printf "-certdir=%s" .Values.certificates.certDir | quote }}
+            - {{ printf "-hostname=%s" .Values.derper.hostname | quote }}
+            - {{ printf "-stun=%t" .Values.stun.enabled | quote }}
+            - {{ printf "-home=%s" .Values.derper.home | quote }}
+            - {{ printf "-verify-client-url-fail-open=%t" .Values.derper.verifyClientUrlFailOpen | quote }}
+            {{- if .Values.derper.verifyClientUrl }}
+            - {{ printf "-verify-client-url=%s" .Values.derper.verifyClientUrl | quote }}
+            {{- end }}
+            {{- if and (eq .Values.certificates.mode "letsencrypt") .Values.certificates.acmeEmail }}
+            - {{ printf "-acme-email=%s" .Values.certificates.acmeEmail | quote }}
+            {{- end }}
+            {{- if .Values.derper.mesh.enabled }}
+            - {{ printf "-mesh-psk-file=%s" (include "derper.meshPskFile" .) | quote }}
+            {{- if .Values.derper.mesh.with }}
+            - {{ printf "-mesh-with=%s" (join "," .Values.derper.mesh.with) | quote }}
+            {{- end }}
+            {{- end }}
+            {{- range .Values.derper.extraArgs }}
+            - {{ . | quote }}
+            {{- end }}
+          {{- if .Values.extraEnv }}
+          env:
+            {{- range $key := (keys .Values.extraEnv | sortAlpha) }}
+            - name: {{ $key }}
+              value: {{ index $.Values.extraEnv $key | quote }}
+            {{- end }}
+          {{- end }}
+          {{- if and .Values.applySecurity .Values.securityContext }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          {{- if .Values.applyHealthChecks }}
+          {{- if .Values.probes.liveness.enabled }}
+          livenessProbe:
+            {{- omit .Values.probes.liveness "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if .Values.probes.readiness.enabled }}
+          readinessProbe:
+            {{- omit .Values.probes.readiness "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/derper
+            {{- if .Values.tmpVolume.enabled }}
+            - name: tmp
+              mountPath: {{ .Values.tmpVolume.mountPath }}
+            {{- end }}
+            {{- if eq .Values.certificates.mode "manual" }}
+            - name: manual-certs
+              mountPath: {{ .Values.certificates.certDir }}
+              readOnly: true
+            {{- end }}
+            {{- if .Values.derper.mesh.enabled }}
+            - name: mesh-psk
+              mountPath: {{ include "derper.meshPskMountDir" . }}
+              readOnly: true
+            {{- end }}
+      volumes:
+        - name: data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "derper.persistenceClaimName" . }}
+          {{- else }}
+          emptyDir:
+            sizeLimit: {{ .Values.persistence.emptyDirSizeLimit }}
+          {{- end }}
+        {{- if .Values.tmpVolume.enabled }}
+        - name: tmp
+          emptyDir:
+            {{- with .Values.tmpVolume.sizeLimit }}
+            sizeLimit: {{ . }}
+            {{- end }}
+        {{- end }}
+        {{- if eq .Values.certificates.mode "manual" }}
+        - name: manual-certs
+          secret:
+            secretName: {{ .Values.certificates.manual.existingSecret }}
+            items:
+              - key: {{ .Values.certificates.manual.crtKey }}
+                path: {{ include "derper.manualCertCrtFile" . }}
+              - key: {{ .Values.certificates.manual.keyKey }}
+                path: {{ include "derper.manualCertKeyFile" . }}
+        {{- end }}
+        {{- if .Values.derper.mesh.enabled }}
+        - name: mesh-psk
+          secret:
+            secretName: {{ .Values.derper.mesh.pskSecret.name }}
+            items:
+              - key: {{ .Values.derper.mesh.pskSecret.key }}
+                path: mesh-psk
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

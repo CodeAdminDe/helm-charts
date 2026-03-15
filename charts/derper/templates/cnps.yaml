@@ -1,0 +1,58 @@
+{{- if .Values.cnps.enabled }}
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ .Release.Name | printf "%s-%s--03-app-traffic" .Chart.Name | trunc 63 | trimSuffix "-" }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    checksum/values: {{ toJson .Values | sha256sum }}
+  labels:
+    {{- include "derper.labels" . | nindent 4 }}
+spec:
+  endpointSelector:
+    matchLabels:
+      {{- include "derper.selectorLabels" . | nindent 6 }}
+  ingress:
+    - fromEntities:
+        - world
+      toPorts:
+        - ports:
+          {{- if .Values.service.http.enabled }}
+            - port: {{ printf "%v" .Values.service.http.targetPort | quote }}
+              protocol: TCP
+          {{- end }}
+            - port: {{ printf "%v" .Values.service.https.targetPort | quote }}
+              protocol: TCP
+          {{- if .Values.stun.enabled }}
+            - port: {{ printf "%v" .Values.stun.targetPort | quote }}
+              protocol: UDP
+          {{- end }}
+    {{- range .Values.cnps.ingress.extraRules }}
+    - {{- toYaml . | nindent 6 }}
+    {{- end }}
+  egress:
+    - toEndpoints:
+      {{- range .Values.cnps.egress.dnsEndpoints }}
+        - matchLabels:
+          {{- range $k, $v := .matchLabels }}
+            {{ $k }}: {{ $v | quote }}
+          {{- end }}
+      {{- end }}
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+    - toEntities:
+        - world
+      toPorts:
+        - ports:
+          {{- range .Values.cnps.egress.worldPorts }}
+            - port: {{ .port | quote }}
+              protocol: {{ .protocol | default "TCP" }}
+          {{- end }}
+    {{- range .Values.cnps.egress.extraRules }}
+    - {{- toYaml . | nindent 6 }}
+    {{- end }}
+{{- end }}
