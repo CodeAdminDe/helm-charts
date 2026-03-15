@@ -3,7 +3,7 @@ name: kasm-ws
 description: A Helm chart for an easier Kasm Workspaces (https://kasm.com) deployment on Kubernetes. Please note that this is a private helm chart and not directly or indirectly affiliated with Kasm Technologies, Inc. or its authors.
 type: application
 # renovate: bumpVersion
-version: 0.1.1
+version: 0.1.0
 # renovate: image=kasmweb/api
 appVersion: "1.18.1"
 home: https://github.com/CodeAdminDe/helm-charts

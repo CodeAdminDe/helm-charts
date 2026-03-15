@@ -476,8 +476,7 @@ rbac:
     # -- ServiceAccount annotations (e.g., workload identity / IAM role bindings).
     annotations: {}
     # -- Automatically mount ServiceAccount API credentials into manager pods.
-    # @description Defaults to false for least-privilege. Effective mounting in manager pods only becomes true when this is true AND either rbac.create=true or a non-default serviceAccount name is configured.
-    automountServiceAccountToken: false
+    automountServiceAccountToken: true
 
 # -- Cilium Network Policies configuration
 libchartCnps:
