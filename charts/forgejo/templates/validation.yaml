@@ -150,10 +150,18 @@
   {{- if and $hasSecret $hasConfigMap -}}
     {{- fail (printf "forgejo.additionalConfigSources[%d] cannot define both secret and configMap." $idx) -}}
   {{- end -}}
-  {{- if and $hasSecret (empty (index (index $source "secret") "secretName")) -}}
+  {{- $secretConfig := get $source "secret" -}}
+  {{- if and $hasSecret (not (kindIs "map" $secretConfig)) -}}
+    {{- fail (printf "forgejo.additionalConfigSources[%d].secret must be an object." $idx) -}}
+  {{- end -}}
+  {{- if and $hasSecret (empty (get $secretConfig "secretName")) -}}
     {{- fail (printf "forgejo.additionalConfigSources[%d].secret.secretName must be set." $idx) -}}
   {{- end -}}
-  {{- if and $hasConfigMap (empty (index (index $source "configMap") "name")) -}}
+  {{- $configMapConfig := get $source "configMap" -}}
+  {{- if and $hasConfigMap (not (kindIs "map" $configMapConfig)) -}}
+    {{- fail (printf "forgejo.additionalConfigSources[%d].configMap must be an object." $idx) -}}
+  {{- end -}}
+  {{- if and $hasConfigMap (empty (get $configMapConfig "name")) -}}
     {{- fail (printf "forgejo.additionalConfigSources[%d].configMap.name must be set." $idx) -}}
   {{- end -}}
 {{- end -}}

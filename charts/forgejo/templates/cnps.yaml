@@ -28,7 +28,6 @@ metadata:
 
 {{- define "forgejo.CiliumNetworkPolicies-AppSet" -}}
 {{- $cnpgMode := and (eq .Values.database.type "postgresql") .Values.database.useCnpgCluster.enabled -}}
-{{- $externalPgMode := and (eq .Values.database.type "postgresql") (not .Values.database.useCnpgCluster.enabled) -}}
 {{- $redisMode := and .Values.redis.enabled .Values.redisIntegration.enabled -}}
 {{- $defaultWebIngressEndpoints := list -}}
 {{- if .Values.ingress.enabled -}}
@@ -95,10 +94,6 @@ metadata:
     {{- $_ := set $normalized "endPort" (get $portSpec "endPort") -}}
   {{- end -}}
   {{- $_ := set $portIndex $key $normalized -}}
-{{- end -}}
-{{- if $externalPgMode -}}
-{{- $dbPort := printf "%v" .Values.database.postgres.port -}}
-{{- $_ := set $portIndex (printf "%s/TCP/" $dbPort) (dict "port" $dbPort "protocol" "TCP") -}}
 {{- end -}}
 {{- $effectiveEgressPorts := list -}}
 {{- range $portKey := (keys $portIndex | sortAlpha) -}}
@@ -207,6 +202,7 @@ spec:
             {{ $k }}: {{ $v | quote }}
           {{- end }}
         {{- end }}
+      {{- if gt (len $effectiveEgressPorts) 0 }}
       toPorts:
         - ports:
           {{- range $effectiveEgressPorts }}
@@ -216,10 +212,12 @@ spec:
               {{- end }}
               protocol: {{ .protocol | default "TCP" }}
           {{- end }}
+      {{- end }}
     {{- end }}
     {{- if $hasEgressFQDNs }}
     - toFQDNs:
         {{- toYaml $effectiveEgressFQDNs | nindent 8 }}
+      {{- if gt (len $effectiveEgressPorts) 0 }}
       toPorts:
         - ports:
           {{- range $effectiveEgressPorts }}
@@ -229,10 +227,12 @@ spec:
               {{- end }}
               protocol: {{ .protocol | default "TCP" }}
           {{- end }}
+      {{- end }}
     {{- end }}
     {{- if $hasEgressEntities }}
     - toEntities:
         {{- toYaml $effectiveEgressEntities | nindent 8 }}
+      {{- if gt (len $effectiveEgressPorts) 0 }}
       toPorts:
         - ports:
           {{- range $effectiveEgressPorts }}
@@ -242,6 +242,7 @@ spec:
               {{- end }}
               protocol: {{ .protocol | default "TCP" }}
           {{- end }}
+      {{- end }}
     {{- end }}
     {{- range $extraEgressRules }}
     - {{- toYaml . | nindent 6 }}

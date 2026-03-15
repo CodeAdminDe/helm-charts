@@ -234,12 +234,12 @@ http
 
 {{/* Public Forgejo host helper. */}}
 {{- define "forgejo.publicHost" -}}
-{{- if and .Values.gatewayApi.enabled .Values.gatewayApi.hostnames (gt (len .Values.gatewayApi.hostnames) 0) -}}
+{{- if .Values.forgejo.publicUrl -}}
+{{- regexReplaceAll "^https?://([^/:]+).*$" (include "forgejo.publicUrl" .) "${1}" -}}
+{{- else if and .Values.gatewayApi.enabled .Values.gatewayApi.hostnames (gt (len .Values.gatewayApi.hostnames) 0) -}}
 {{- index .Values.gatewayApi.hostnames 0 -}}
 {{- else if and .Values.ingress.enabled .Values.ingress.hosts (gt (len .Values.ingress.hosts) 0) -}}
 {{- (index .Values.ingress.hosts 0).host -}}
-{{- else if .Values.forgejo.publicUrl -}}
-{{- regexReplaceAll "^https?://([^/:]+).*$" .Values.forgejo.publicUrl "${1}" -}}
 {{- else -}}
 {{- include "forgejo.defaultDomain" . -}}
 {{- end -}}
@@ -419,12 +419,13 @@ APP_NAME,RUN_USER,RUN_MODE,APP_SLOGAN,APP_DISPLAY_NAME_FORMAT
   {{- $generals := list -}}
   {{- $sections := dict -}}
 
-  {{- range $key, $value := .Values.forgejo.config }}
+  {{- range $key := (keys .Values.forgejo.config | sortAlpha) }}
+    {{- $value := index $.Values.forgejo.config $key -}}
     {{- if kindIs "map" $value }}
       {{- if gt (len $value) 0 }}
-        {{- $section := default (list) (get $sections $key) -}}
-        {{- range $subKey, $subValue := $value }}
-          {{- $section = append $section (printf "%s=%v" $subKey $subValue) -}}
+        {{- $section := list -}}
+        {{- range $subKey := (keys $value | sortAlpha) }}
+          {{- $section = append $section (printf "%s=%v" $subKey (index $value $subKey)) -}}
         {{- end }}
         {{- $_ := set $sections $key (join "\n" $section) -}}
       {{- end -}}
@@ -437,6 +438,9 @@ APP_NAME,RUN_USER,RUN_MODE,APP_SLOGAN,APP_DISPLAY_NAME_FORMAT
     {{- end }}
   {{- end }}
 
-  {{- $_ := set $sections "_generals_" (join "\n" $generals) -}}
-  {{- toYaml $sections -}}
+  {{- $_ := set $sections "_generals_" (join "\n" (sortAlpha $generals)) -}}
+  {{- range $sectionKey := (keys $sections | sortAlpha) }}
+{{ $sectionKey }}: |-
+{{ index $sections $sectionKey | nindent 2 }}
+  {{- end }}
 {{- end -}}

@@ -421,7 +421,7 @@ spec:
           {{- end }}
         {{- if .Values.tmpVolume.enabled }}
         - name: tmp
-          {{- if .Values.tmpVolume.sizeLimit }}
+          {{- with .Values.tmpVolume.sizeLimit }}
           emptyDir:
             sizeLimit: {{ . }}
           {{- else }}

@@ -169,8 +169,8 @@ securityContext:
   capabilities:
     drop:
       - ALL
-  # -- Additional capabilities to add. Set `SYS_CHROOT` here on CRI-O clusters if Git-over-SSH clone/read operations require it.
-  add: []
+    # -- Additional capabilities to add. Set `SYS_CHROOT` here on CRI-O clusters if Git-over-SSH clone/read operations require it.
+    add: []
   allowPrivilegeEscalation: false
   readOnlyRootFilesystem: true
   runAsNonRoot: true
@@ -503,6 +503,7 @@ cnps:
       toEntities:
         - world
       # -- Additional egress ports for the general egress rules.
+      # @description When using external PostgreSQL together with `libchartCnps.enabled=true`, explicitly add the database port here and define a matching `toEndpoints`, `toFQDNs`, `toEntities`, or `extraRules` target for that database traffic.
       toPorts:
         - port: "22"
           protocol: TCP
