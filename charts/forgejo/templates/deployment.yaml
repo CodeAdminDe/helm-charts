@@ -1,0 +1,455 @@
+{{- $cnpgMode := and (eq .Values.database.type "postgresql") .Values.database.useCnpgCluster.enabled -}}
+{{- $externalPgMode := and (eq .Values.database.type "postgresql") (not .Values.database.useCnpgCluster.enabled) -}}
+{{- $redisMode := and .Values.redis.enabled .Values.redisIntegration.enabled -}}
+{{- $managedAdminSecret := and .Values.admin.enabled (not .Values.admin.existingSecret.name) .Values.admin.username -}}
+{{- $adminUsernameKey := "username" -}}
+{{- $adminPasswordKey := "password" -}}
+{{- if .Values.admin.existingSecret.name -}}
+  {{- $adminUsernameKey = .Values.admin.existingSecret.usernameKey -}}
+  {{- $adminPasswordKey = .Values.admin.existingSecret.passwordKey -}}
+{{- end -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "forgejo.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "forgejo.labels" . | nindent 4 }}
+    {{- include "forgejo.componentLabels" (dict "component" "server") | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: {{ .Values.strategy.type }}
+  selector:
+    matchLabels:
+      {{- include "forgejo.componentSelectorLabels" (dict "root" . "component" "server") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "forgejo.componentSelectorLabels" (dict "root" . "component" "server") | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/values: {{ toJson .Values | sha256sum }}
+        checksum/inline-config: {{ include (print $.Template.BasePath "/config-secret.yaml") . | sha256sum }}
+        checksum/bootstrap-scripts: {{ include (print $.Template.BasePath "/init-secret.yaml") . | sha256sum }}
+        {{- if $managedAdminSecret }}
+        checksum/admin-secret: {{ include (print $.Template.BasePath "/admin-secret.yaml") . | sha256sum }}
+        {{- end }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "forgejo.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      {{- if .Values.runtimeClass.pods }}
+      runtimeClassName: {{ .Values.runtimeClass.pods }}
+      {{- end }}
+      {{- with .Values.priorityClassName }}
+      priorityClassName: {{ . }}
+      {{- end }}
+      {{- if and .Values.applySecurity .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
+      initContainers:
+        - name: init-directories
+          image: {{ include "forgejo.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /bootstrap-scripts/init_directory_structure.sh
+          env:
+            - name: GITEA_APP_INI
+              value: {{ include "forgejo.appIniPath" . | quote }}
+            - name: GITEA_CUSTOM
+              value: {{ include "forgejo.customDir" . | quote }}
+            - name: GITEA_WORK_DIR
+              value: {{ include "forgejo.workDir" . | quote }}
+            - name: GITEA_TEMP
+              value: {{ include "forgejo.tempDir" . | quote }}
+            - name: TMPDIR
+              value: {{ include "forgejo.tempDir" . | quote }}
+            {{- if .Values.image.rootless }}
+            - name: HOME
+              value: {{ include "forgejo.homeDir" . | quote }}
+            {{- end }}
+          {{- if and .Values.applySecurity .Values.securityContext }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
+          volumeMounts:
+            - name: bootstrap-scripts
+              mountPath: /bootstrap-scripts
+              readOnly: true
+            - name: data
+              mountPath: {{ .Values.persistence.mountPath }}
+              {{- with .Values.persistence.subPath }}
+              subPath: {{ . }}
+              {{- end }}
+            {{- if .Values.tmpVolume.enabled }}
+            - name: tmp
+              mountPath: {{ .Values.tmpVolume.mountPath }}
+            {{- end }}
+            {{- with .Values.extraInitVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+        {{- if $redisMode }}
+        - name: init-redis-config
+          image: {{ include "forgejo.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /bootstrap-scripts/configure_redis.sh
+          env:
+            - name: FORGEJO_REDIS_HOST
+              value: {{ include "forgejo.redisServiceName" . | quote }}
+            - name: FORGEJO_REDIS_PORT
+              value: {{ printf "%v" .Values.redis.service.port | quote }}
+            - name: FORGEJO_REDIS_QUEUE_DB
+              value: {{ printf "%v" .Values.redisIntegration.queueDb | quote }}
+            - name: FORGEJO_REDIS_CACHE_DB
+              value: {{ printf "%v" .Values.redisIntegration.cacheDb | quote }}
+            - name: FORGEJO_REDIS_SESSION_DB
+              value: {{ printf "%v" .Values.redisIntegration.sessionDb | quote }}
+            - name: FORGEJO_REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "forgejo.redisSecretName" . }}
+                  key: REDIS_PASSWORD
+          {{- if and .Values.applySecurity .Values.securityContext }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
+          volumeMounts:
+            - name: bootstrap-scripts
+              mountPath: /bootstrap-scripts
+              readOnly: true
+            - name: runtime-config
+              mountPath: /env-to-ini-mounts/runtime
+            {{- with .Values.extraInitVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+        {{- end }}
+        - name: init-app-ini
+          image: {{ include "forgejo.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /bootstrap-scripts/config_environment.sh
+          env:
+            - name: GITEA_APP_INI
+              value: {{ include "forgejo.appIniPath" . | quote }}
+            - name: GITEA_CUSTOM
+              value: {{ include "forgejo.customDir" . | quote }}
+            - name: GITEA_WORK_DIR
+              value: {{ include "forgejo.workDir" . | quote }}
+            - name: GITEA_TEMP
+              value: {{ include "forgejo.tempDir" . | quote }}
+            - name: TMPDIR
+              value: {{ include "forgejo.tempDir" . | quote }}
+            {{- if .Values.image.rootless }}
+            - name: HOME
+              value: {{ include "forgejo.homeDir" . | quote }}
+            {{- end }}
+            {{- if $cnpgMode }}
+            - name: FORGEJO__DATABASE__NAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "forgejo.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.database | quote }}
+            - name: FORGEJO__DATABASE__USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "forgejo.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.username | quote }}
+            - name: FORGEJO__DATABASE__PASSWD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "forgejo.cnpg.appConnectionSecretName" . }}
+                  key: {{ .Values.database.useCnpgCluster.secretKeys.password | quote }}
+            {{- else if $externalPgMode }}
+            - name: FORGEJO__DATABASE__PASSWD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.postgres.passwordSecret.name }}
+                  key: {{ .Values.database.postgres.passwordSecret.key | quote }}
+            {{- end }}
+            {{- with .Values.forgejo.additionalConfigFromEnvs }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- if and .Values.applySecurity .Values.securityContext }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
+          volumeMounts:
+            - name: bootstrap-scripts
+              mountPath: /bootstrap-scripts
+              readOnly: true
+            - name: data
+              mountPath: {{ .Values.persistence.mountPath }}
+              {{- with .Values.persistence.subPath }}
+              subPath: {{ . }}
+              {{- end }}
+            - name: inline-config
+              mountPath: /env-to-ini-mounts/inlines
+              readOnly: true
+            - name: runtime-config
+              mountPath: /env-to-ini-mounts/runtime
+            {{- if .Values.tmpVolume.enabled }}
+            - name: tmp
+              mountPath: {{ .Values.tmpVolume.mountPath }}
+            {{- end }}
+            {{- range $idx, $cfg := .Values.forgejo.additionalConfigSources }}
+            - name: additional-config-source-{{ $idx }}
+              mountPath: /env-to-ini-mounts/additionals/{{ $idx }}
+              readOnly: true
+            {{- end }}
+            {{- with .Values.extraInitVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+        - name: configure-forgejo
+          image: {{ include "forgejo.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /bootstrap-scripts/configure_forgejo.sh
+          env:
+            - name: GITEA_APP_INI
+              value: {{ include "forgejo.appIniPath" . | quote }}
+            - name: GITEA_CUSTOM
+              value: {{ include "forgejo.customDir" . | quote }}
+            - name: GITEA_WORK_DIR
+              value: {{ include "forgejo.workDir" . | quote }}
+            - name: GITEA_TEMP
+              value: {{ include "forgejo.tempDir" . | quote }}
+            - name: TMPDIR
+              value: {{ include "forgejo.tempDir" . | quote }}
+            - name: FORGEJO_ADMIN_ENABLED
+              value: {{ .Values.admin.enabled | toString | quote }}
+            {{- if .Values.image.rootless }}
+            - name: HOME
+              value: {{ include "forgejo.homeDir" . | quote }}
+            {{- end }}
+            {{- if .Values.admin.enabled }}
+            - name: GITEA_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "forgejo.adminSecretName" . }}
+                  key: {{ $adminUsernameKey | quote }}
+            - name: GITEA_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "forgejo.adminSecretName" . }}
+                  key: {{ $adminPasswordKey | quote }}
+            - name: GITEA_ADMIN_EMAIL
+              value: {{ .Values.admin.email | quote }}
+            - name: GITEA_ADMIN_PASSWORD_MODE
+              value: {{ .Values.admin.passwordMode | quote }}
+            {{- end }}
+          {{- if and .Values.applySecurity .Values.securityContext }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
+          volumeMounts:
+            - name: bootstrap-scripts
+              mountPath: /bootstrap-scripts
+              readOnly: true
+            - name: data
+              mountPath: {{ .Values.persistence.mountPath }}
+              {{- with .Values.persistence.subPath }}
+              subPath: {{ . }}
+              {{- end }}
+            {{- if .Values.tmpVolume.enabled }}
+            - name: tmp
+              mountPath: {{ .Values.tmpVolume.mountPath }}
+            {{- end }}
+            {{- with .Values.extraInitVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+      containers:
+        - name: forgejo
+          image: {{ include "forgejo.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.command }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if or .Values.envFromSecrets .Values.envFromConfigMaps }}
+          envFrom:
+            {{- range .Values.envFromSecrets }}
+            - secretRef:
+                name: {{ . }}
+            {{- end }}
+            {{- range .Values.envFromConfigMaps }}
+            - configMapRef:
+                name: {{ . }}
+            {{- end }}
+          {{- end }}
+          env:
+            - name: SSH_LISTEN_PORT
+              value: {{ include "forgejo.sshListenPort" . | quote }}
+            - name: SSH_PORT
+              value: {{ include "forgejo.sshPort" . | quote }}
+            - name: GITEA_APP_INI
+              value: {{ include "forgejo.appIniPath" . | quote }}
+            - name: GITEA_CUSTOM
+              value: {{ include "forgejo.customDir" . | quote }}
+            - name: GITEA_WORK_DIR
+              value: {{ include "forgejo.workDir" . | quote }}
+            - name: GITEA_TEMP
+              value: {{ include "forgejo.tempDir" . | quote }}
+            - name: TMPDIR
+              value: {{ include "forgejo.tempDir" . | quote }}
+            {{- if .Values.image.rootless }}
+            - name: HOME
+              value: {{ include "forgejo.homeDir" . | quote }}
+            {{- end }}
+            {{- $extraEnvKeys := keys .Values.extraEnv | sortAlpha }}
+            {{- range $key := $extraEnvKeys }}
+            - name: {{ $key }}
+              value: {{ index $.Values.extraEnv $key | quote }}
+            {{- end }}
+            {{- if kindIs "map" .Values.additionalEnvSecrets }}
+            {{- range $envName := keys .Values.additionalEnvSecrets | sortAlpha }}
+            {{- $secretConfig := index $.Values.additionalEnvSecrets $envName }}
+            {{- if kindIs "string" $secretConfig }}
+            - name: {{ $envName }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretConfig }}
+                  key: {{ $envName | quote }}
+            {{- else if kindIs "map" $secretConfig }}
+            {{- $secretName := default "" (index $secretConfig "secretName") }}
+            {{- if $secretName }}
+            - name: {{ default $envName (index $secretConfig "name") }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretName }}
+                  key: {{ default $envName (index $secretConfig "secretKey") | quote }}
+            {{- end }}
+            {{- end }}
+            {{- end }}
+            {{- else if kindIs "slice" .Values.additionalEnvSecrets }}
+            {{- range $secretConfig := .Values.additionalEnvSecrets }}
+            {{- $envName := default "" (index $secretConfig "name") }}
+            {{- $secretName := default "" (index $secretConfig "secretName") }}
+            {{- if and $envName $secretName }}
+            - name: {{ $envName }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretName }}
+                  key: {{ default $envName (index $secretConfig "secretKey") | quote }}
+            {{- end }}
+            {{- end }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ include "forgejo.httpPort" . }}
+              protocol: TCP
+            {{- if .Values.service.ssh.enabled }}
+            - name: ssh
+              containerPort: {{ include "forgejo.sshListenPort" . }}
+              protocol: TCP
+              {{- with .Values.service.ssh.hostPort }}
+              hostPort: {{ . }}
+              {{- end }}
+            {{- end }}
+          {{- if and .Values.applySecurity .Values.securityContext }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          {{- if .Values.applyHealthChecks }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          {{- if .Values.startupProbe.enabled }}
+          startupProbe:
+            {{- toYaml (omit .Values.startupProbe "enabled") | nindent 12 }}
+          {{- end }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.persistence.mountPath }}
+              {{- with .Values.persistence.subPath }}
+              subPath: {{ . }}
+              {{- end }}
+            {{- if .Values.tmpVolume.enabled }}
+            - name: tmp
+              mountPath: {{ .Values.tmpVolume.mountPath }}
+            {{- end }}
+            {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+        {{- with .Values.extraContainers }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      volumes:
+        - name: bootstrap-scripts
+          secret:
+            secretName: {{ include "forgejo.scriptSecretName" . }}
+            defaultMode: 0555
+        - name: inline-config
+          secret:
+            secretName: {{ include "forgejo.inlineConfigSecretName" . }}
+        - name: runtime-config
+          emptyDir: {}
+        - name: data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "forgejo.persistenceClaimName" . }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        {{- if .Values.tmpVolume.enabled }}
+        - name: tmp
+          {{- if .Values.tmpVolume.sizeLimit }}
+          emptyDir:
+            sizeLimit: {{ . }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        {{- end }}
+        {{- range $idx, $cfg := .Values.forgejo.additionalConfigSources }}
+        - name: additional-config-source-{{ $idx }}
+          {{- if hasKey $cfg "secret" }}
+          secret:
+            secretName: {{ (index $cfg "secret").secretName }}
+          {{- else if hasKey $cfg "configMap" }}
+          configMap:
+            name: {{ (index $cfg "configMap").name }}
+          {{- end }}
+        {{- end }}
+        {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

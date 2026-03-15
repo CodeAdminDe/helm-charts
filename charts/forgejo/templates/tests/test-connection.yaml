@@ -1,0 +1,25 @@
+{{- if .Values.test.enabled }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "forgejo.fullname" . }}-test-connection"
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "forgejo.labels" . | nindent 4 }}
+    {{- include "forgejo.componentLabels" (dict "component" "test") | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  {{- if .Values.runtimeClass.tests }}
+  runtimeClassName: {{ .Values.runtimeClass.tests }}
+  {{- end }}
+  containers:
+    - name: wget
+      image: {{ printf "%s:%s" .Values.test.image.repository .Values.test.image.tag }}
+      imagePullPolicy: {{ .Values.test.image.pullPolicy }}
+      command: ["sh", "-c"]
+      args:
+        - |
+          wget -qO- http://{{ include "forgejo.httpServiceName" . }}:{{ .Values.service.http.port }}/api/healthz
+  restartPolicy: Never
+{{- end }}

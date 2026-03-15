@@ -1,0 +1,40 @@
+apiVersion: v2
+name: forgejo
+description: A Helm chart for deploying Forgejo on Kubernetes.
+type: application
+# renovate: bumpVersion
+version: 0.1.0
+# renovate: image=code.forgejo.org/forgejo/forgejo
+appVersion: "14.0.3"
+kubeVersion: ">=1.24.0"
+home: https://github.com/CodeAdminDe/helm-charts
+keywords:
+  - forgejo
+  - git
+  - forge
+  - scm
+  - cnpg
+  - redis
+  - cloud-native
+  - helm
+maintainers:
+  - name: Frederic Roggon
+    email: frederic.roggon@codeadmin.de
+    url: https://github.com/CodeAdminDe
+dependencies:
+  - name: redis
+    repository: https://codeadminde.github.io/helm-charts
+    version: 0.4.1
+    alias: redis
+    condition: redis.enabled
+  - name: libchart-cnps
+    version: 0.2.1
+    repository: https://codeadminde.github.io/helm-charts
+    alias: libchart-cnps
+    condition: libchartCnps.enabled
+annotations:
+  category: Developer Tools
+  securityContext: "compatible"
+  images: |
+    - name: forgejo
+      image: code.forgejo.org/forgejo/forgejo:14.0.3-rootless

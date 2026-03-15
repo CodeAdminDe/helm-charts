@@ -1,0 +1,11 @@
+{{ template "extra.templates.readme.complexvalues" . }}
+
+## Notes
+
+* This chart intentionally targets the single-pod Forgejo deployment model. It defaults to `replicaCount=1` with `Recreate` strategy and does not try to paper over Forgejo HA complexity.
+* `service.http.type` stays `ClusterIP` in repo style. For external web exposure use `ingress` or `gatewayApi`.
+* SSH is modeled separately from HTTP. Ingress-nginx only covers web traffic; for SSH use either `tcpRoute` or a non-`ClusterIP` `service.ssh.type`.
+* The chart defaults to the official rootless Forgejo image. On some CRI-O based clusters, Git-over-SSH may additionally require `securityContext.add: [SYS_CHROOT]` as documented by Forgejo.
+* `database.useCnpgCluster.enabled=true` is the recommended production path. `database.type=sqlite` remains available for lightweight installs.
+* Forgejo's default in-memory session/cache and `level` queue adapters are left untouched unless you explicitly enable `redisIntegration.enabled=true` together with `redis.enabled=true` or provide your own overrides via `forgejo.additionalConfigSources` / `forgejo.additionalConfigFromEnvs`.
+* `forgejo.additionalConfigSources` and `forgejo.additionalConfigFromEnvs` are the chart's generic GitOps-friendly escape hatches for sensitive or advanced `app.ini` settings such as OIDC, LDAP, mailer, proxy, webhook, or external Redis/Valkey connection strings.

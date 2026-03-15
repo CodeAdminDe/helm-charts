@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "forgejo.httpServiceName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "forgejo.labels" . | nindent 4 }}
+    {{- include "forgejo.componentLabels" (dict "component" "server") | nindent 4 }}
+    {{- with .Values.service.http.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.service.http.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.http.type }}
+  ports:
+    - name: http
+      port: {{ .Values.service.http.port }}
+      targetPort: http
+      protocol: {{ .Values.service.http.targetProtocol | default "TCP" }}
+  selector:
+    {{- include "forgejo.componentSelectorLabels" (dict "root" . "component" "server") | nindent 4 }}
+{{- if .Values.service.ssh.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "forgejo.sshServiceName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "forgejo.labels" . | nindent 4 }}
+    {{- include "forgejo.componentLabels" (dict "component" "server") | nindent 4 }}
+    {{- with .Values.service.ssh.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.service.ssh.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.ssh.type }}
+  {{- if and (eq .Values.service.ssh.type "LoadBalancer") .Values.service.ssh.loadBalancerClass }}
+  loadBalancerClass: {{ .Values.service.ssh.loadBalancerClass }}
+  {{- end }}
+  {{- if and (eq .Values.service.ssh.type "LoadBalancer") .Values.service.ssh.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.service.ssh.loadBalancerIP }}
+  {{- end }}
+  {{- if and (eq .Values.service.ssh.type "LoadBalancer") .Values.service.ssh.loadBalancerSourceRanges }}
+  loadBalancerSourceRanges:
+    {{- toYaml .Values.service.ssh.loadBalancerSourceRanges | nindent 4 }}
+  {{- end }}
+  {{- if and (ne .Values.service.ssh.type "ClusterIP") .Values.service.ssh.externalTrafficPolicy }}
+  externalTrafficPolicy: {{ .Values.service.ssh.externalTrafficPolicy }}
+  {{- end }}
+  ports:
+    - name: ssh
+      port: {{ .Values.service.ssh.port }}
+      targetPort: ssh
+      protocol: TCP
+      {{- if and (eq .Values.service.ssh.type "NodePort") .Values.service.ssh.nodePort }}
+      nodePort: {{ .Values.service.ssh.nodePort }}
+      {{- end }}
+  selector:
+    {{- include "forgejo.componentSelectorLabels" (dict "root" . "component" "server") | nindent 4 }}
+{{- end }}
