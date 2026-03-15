@@ -105,6 +105,7 @@ spec:
 
 {{- define "headscale.CiliumNetworkPolicies-AppSet.ui" -}}
 metadata:
+  name: {{ include "headscale.nameWithSuffix" (dict "base" (.Release.Name | printf "%s-%s--03-app-traffic" .Chart.Name) "suffix" "-ui") }}
   namespace: {{ .Release.Namespace }}
   annotations:
     checksum/values: {{ toJson .Values | sha256sum }}
