@@ -1460,6 +1460,34 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/coturn-server-0.1.0/coturn-server-0.1.0.tgz
     version: 0.1.0
+  derper:
+  - annotations:
+      category: Networking
+      kubeVersion: '>=1.24.0'
+      securityContext: required
+    apiVersion: v2
+    appVersion: 1.94.2
+    created: "2026-03-15T21:22:29.654985205Z"
+    description: A Helm chart for running a Tailscale DERP relay on Kubernetes.
+    digest: f55b548600ed9bca81171d020a8bb31c21a9b6cc0bc60372688da4c406aaedde
+    home: https://github.com/CodeAdminDe/helm-charts
+    keywords:
+    - derper
+    - tailscale
+    - headscale
+    - relay
+    - networking
+    - cloud-native
+    - helm
+    maintainers:
+    - email: frederic.roggon@codeadmin.de
+      name: Frederic Roggon
+      url: https://github.com/CodeAdminDe
+    name: derper
+    type: application
+    urls:
+    - https://github.com/CodeAdminDe/helm-charts/releases/download/derper-0.1.0/derper-0.1.0.tgz
+    version: 0.1.0
   documenso:
   - annotations:
       category: Productivity
@@ -16074,4 +16102,4 @@ entries:
     urls:
     - https://github.com/CodeAdminDe/helm-charts/releases/download/webfinger-0.1.0/webfinger-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-15T21:11:01.110120096Z"
+generated: "2026-03-15T21:22:29.656221472Z"
