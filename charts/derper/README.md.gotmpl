@@ -1,0 +1,85 @@
+{{- define "extra.specifics.fromchart.derper" -}}
+<hr /><hr />
+
+## Appendix - Chart-specifics
+
+### Important operational notes
+
+* This chart intentionally renders no `Ingress` and no `HTTPRoute`. `derper` must be exposed directly via the Kubernetes `Service`.
+* Default container ports are non-root friendly: `8443/tcp` for DERP and `8080/tcp` for HTTP. The Service maps them to `443` and `80`.
+* The chart always passes `-c /var/lib/derper/derper.key` to preserve DERP node key behavior in non-root mode. Keep this path on persistent storage for stable node identity.
+* `certificates.mode=letsencrypt` requires direct reachability on TCP/80 and TCP/443.
+* `certificates.mode=manual` mounts an existing secret so that DERP sees files as `/var/lib/derper/certs/<hostname>.crt` and `/var/lib/derper/certs/<hostname>.key`, matching upstream expectations.
+* `stun.enabled=false` is the intended default when STUN comes from an external `coturn` deployment.
+* `derper.verifyClientUrl` is the preferred admission path for Headscale in this repo. The chart intentionally does not expose `--verify-clients`, which would require a colocated `tailscaled`.
+* The chart ships an optional native `CiliumNetworkPolicy` instead of depending on `libchart-cnps`, because DERP is not an ingress-controller-backed HTTP application.
+* Upstream `/debug/` endpoints are only intended for localhost or Tailscale-reachable access. This chart does not expose them separately.
+
+### Headscale integration
+
+Use a static DERP map in Headscale and disable the default DERP feed:
+
+```yaml
+derp:
+  server:
+    enabled: false
+  urls: []
+  paths:
+    - /etc/headscale/derp.yaml
+  auto_update_enabled: false
+  update_frequency: 0s
+```
+
+### Example values for the first rollout
+
+```yaml
+image:
+  repository: ghcr.io/codeadminde/derper
+  tag: "1.94.2"
+
+service:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  externalIPs:
+    - 91.99.10.12
+  http:
+    enabled: true
+    port: 80
+    targetPort: 8080
+  https:
+    enabled: true
+    port: 443
+    targetPort: 8443
+
+stun:
+  enabled: false
+
+derper:
+  hostname: relst01.codeadmin.de
+  addr: ":8443"
+  httpPort: 8080
+  configPath: /var/lib/derper/derper.key
+  verifyClientUrl: https://canet.codeadmin.de/verify
+  verifyClientUrlFailOpen: false
+  home: blank
+
+certificates:
+  mode: letsencrypt
+  certDir: /var/lib/derper/certs
+
+persistence:
+  enabled: true
+  storageClass: local-path
+  size: 16Mi
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    memory: 512Mi
+```
+{{- end -}}
+
+{{ template "extra.templates.readme.complexvalues" . }}
+{{ template "extra.specifics.fromchart.derper" . }}

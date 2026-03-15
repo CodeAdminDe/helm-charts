@@ -1,0 +1,239 @@
+# -- Number of DERP pod replicas. This chart only supports a single replica.
+replicaCount: 1
+
+# -- Override release-based naming.
+nameOverride: ""
+fullnameOverride: ""
+
+# -- Container image configuration.
+image:
+  # -- DERP image repository.
+  repository: ghcr.io/codeadminde/derper
+  # -- DERP image pull policy.
+  pullPolicy: IfNotPresent
+  # -- DERP image tag override (defaults to `.Chart.AppVersion` when empty).
+  tag: ""
+
+# -- Image pull secrets for private registries.
+imagePullSecrets: []
+
+# -- Kubernetes Service configuration for direct DERP exposure.
+service:
+  # -- Service type. `LoadBalancer` is the intended default for direct DERP exposure.
+  type: LoadBalancer
+  # -- Service annotations, for example provider-specific load balancer configuration.
+  annotations: {}
+  # -- External traffic policy for `LoadBalancer` or `NodePort` services.
+  externalTrafficPolicy: Local
+  # -- Internal traffic policy. Empty omits the field.
+  internalTrafficPolicy: Cluster
+  # -- Disable node port allocation for `LoadBalancer` services when supported by the cluster.
+  allocateLoadBalancerNodePorts: true
+  # -- Optional static load balancer IP.
+  loadBalancerIP: ""
+  # -- Optional list of external IPs.
+  externalIPs: []
+  http:
+    # -- Expose TCP/80 for ACME HTTP-01 and optional plain HTTP handling.
+    enabled: true
+    # -- Service port for HTTP.
+    port: 80
+    # -- Container target port for HTTP.
+    targetPort: 8080
+  https:
+    # -- Expose TCP/443 for DERP-over-TLS traffic.
+    enabled: true
+    # -- Service port for HTTPS.
+    port: 443
+    # -- Container target port for HTTPS.
+    targetPort: 8443
+
+# -- Integrated STUN listener configuration. Keep disabled when STUN is provided by an external Coturn deployment.
+stun:
+  # -- Enable integrated STUN and expose UDP on the Service.
+  enabled: false
+  # -- Service port for STUN.
+  port: 3478
+  # -- Container target port for STUN.
+  targetPort: 3478
+
+# -- Create service account.
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+  automountServiceAccountToken: false
+
+# -- Apply default pod/container security settings.
+applySecurity: true
+
+# -- Apply readiness and liveness probes from values.
+applyHealthChecks: true
+
+# -- Pod-level security context for DERP pods.
+podSecurityContext:
+  fsGroup: 65532
+
+# -- Container-level security context for the DERP container.
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- DERP process configuration.
+derper:
+  # -- Public DERP hostname used for TLS and DERP map entries.
+  hostname: derp.example.com
+  # -- DERP HTTPS listen address passed to `-a`.
+  addr: ":8443"
+  # -- DERP HTTP listen port passed to `-http-port` when `service.http.enabled=true`.
+  httpPort: 8080
+  # -- Persistent DERP config file passed to `-c`.
+  configPath: /var/lib/derper/derper.key
+  # -- Value passed to `-home`. Use `blank` for an empty landing page.
+  home: "blank"
+  # -- Optional Headscale admission controller URL passed to `-verify-client-url`.
+  verifyClientUrl: ""
+  # -- Fail-open setting for `-verify-client-url-fail-open`.
+  verifyClientUrlFailOpen: false
+  # -- Extra DERP arguments appended verbatim to the container args list.
+  extraArgs: []
+  mesh:
+    # -- Enable DERP mesh configuration.
+    enabled: false
+    pskSecret:
+      # -- Existing secret containing the DERP mesh PSK.
+      name: ""
+      # -- Secret key containing the DERP mesh PSK value.
+      key: mesh-psk
+    # -- List of DERP peers passed to `-mesh-with` as a comma-separated list.
+    with: []
+
+# -- Certificate management configuration.
+certificates:
+  # -- Certificate mode passed to `-certmode`. Supported values: `letsencrypt`, `manual`.
+  mode: letsencrypt
+  # -- Certificate directory passed to `-certdir`.
+  certDir: /var/lib/derper/certs
+  # -- Optional ACME contact email for `letsencrypt`.
+  acmeEmail: ""
+  manual:
+    # -- Existing secret providing certificate material for `manual` mode.
+    existingSecret: ""
+    # -- Secret key containing the PEM certificate.
+    crtKey: tls.crt
+    # -- Secret key containing the PEM private key.
+    keyKey: tls.key
+
+# -- Persistence settings for the DERP config file and ACME cache.
+persistence:
+  # -- Enable persistent storage for DERP state.
+  enabled: true
+  # -- Existing PVC name to reuse instead of creating one.
+  existingClaim: ""
+  # -- PVC size when the chart creates a claim.
+  size: 16Mi
+  # -- PVC storage class. Empty uses the cluster default.
+  storageClass: ""
+  # -- PVC access modes.
+  accessModes:
+    - ReadWriteOnce
+  # -- PVC annotations.
+  annotations: {}
+  # -- Optional PVC volume name.
+  volumeName: ""
+  # -- Keep the PVC on uninstall.
+  retain: false
+  # -- `emptyDir` size limit when `persistence.enabled=false`.
+  emptyDirSizeLimit: 16Mi
+
+# -- Temporary writable volume configuration for `/tmp`.
+tmpVolume:
+  # -- Enable a writable `emptyDir` for `/tmp`.
+  enabled: true
+  # -- Mount path for the tmp volume.
+  mountPath: /tmp
+  # -- Optional tmp volume size limit.
+  sizeLimit: 64Mi
+
+# -- DERP health probe configuration. TCP probes are the safest default because kubelet probes the Pod IP directly.
+probes:
+  liveness:
+    # -- Enable liveness probe.
+    enabled: true
+    tcpSocket:
+      port: https
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  readiness:
+    # -- Enable readiness probe.
+    enabled: true
+    tcpSocket:
+      port: https
+    initialDelaySeconds: 10
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
+
+# -- Resource requests and limits.
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    memory: 512Mi
+
+# -- RuntimeClass names.
+runtimeClass:
+  pods: ""
+  tests: ""
+
+# -- Extra environment variables passed to the DERP container.
+extraEnv: {}
+
+# -- Optional native CiliumNetworkPolicy configuration. This chart intentionally does not depend on `libchart-cnps`.
+cnps:
+  # -- Enable DERP-specific CiliumNetworkPolicy rendering.
+  enabled: false
+  ingress:
+    # -- Additional ingress rules appended after the built-in world-to-DERP rule.
+    extraRules: []
+  egress:
+    # -- Default DNS endpoint selectors for kube-dns/CoreDNS.
+    dnsEndpoints:
+      - matchLabels:
+          io.kubernetes.pod.namespace: kube-system
+          k8s-app: kube-dns
+      - matchLabels:
+          io.kubernetes.pod.namespace: kube-system
+          app.kubernetes.io/name: coredns
+    # -- Default world egress ports for ACME, `verify-client-url`, and optional DERP mesh traffic.
+    worldPorts:
+      - port: "443"
+        protocol: TCP
+    # -- Additional egress rules appended after the built-in DNS and world egress rules.
+    extraRules: []
+
+# -- Pod annotations.
+podAnnotations: {}
+
+# -- Pod labels.
+podLabels: {}
+
+# -- Workload node selector.
+nodeSelector: {}
+
+# -- Workload tolerations.
+tolerations: []
+
+# -- Workload affinity.
+affinity: {}

@@ -1,0 +1,108 @@
+{{- if not (has .Values.service.type (list "ClusterIP" "NodePort" "LoadBalancer")) -}}
+{{- fail "service.type must be one of ClusterIP, NodePort, or LoadBalancer." -}}
+{{- end -}}
+
+{{- if ne (int .Values.replicaCount) 1 -}}
+{{- fail "replicaCount must be 1 for derper. This chart does not provide transparent multi-replica DERP HA." -}}
+{{- end -}}
+
+{{- if not .Values.service.https.enabled -}}
+{{- fail "service.https.enabled=true is required so DERP remains reachable on TLS." -}}
+{{- end -}}
+
+{{- if and (or (eq .Values.service.type "LoadBalancer") (eq .Values.service.type "NodePort")) (not (has .Values.service.externalTrafficPolicy (list "Local" "Cluster"))) -}}
+{{- fail "service.externalTrafficPolicy must be either Local or Cluster for LoadBalancer or NodePort services." -}}
+{{- end -}}
+
+{{- if empty .Values.derper.hostname -}}
+{{- fail "derper.hostname must be set." -}}
+{{- end -}}
+
+{{- if empty .Values.derper.configPath -}}
+{{- fail "derper.configPath must be set so derper always receives -c in non-root mode." -}}
+{{- end -}}
+
+{{- if and .Values.derper.verifyClientUrl (not (or (hasPrefix "http://" .Values.derper.verifyClientUrl) (hasPrefix "https://" .Values.derper.verifyClientUrl))) -}}
+{{- fail "derper.verifyClientUrl must start with http:// or https:// when set." -}}
+{{- end -}}
+
+{{- $listenPort := regexFind "[0-9]+$" .Values.derper.addr -}}
+{{- if empty $listenPort -}}
+{{- fail "derper.addr must end with a TCP port, for example :8443." -}}
+{{- end -}}
+
+{{- if ne $listenPort (printf "%v" .Values.service.https.targetPort) -}}
+{{- fail "derper.addr must use the same port as service.https.targetPort so the container listen port matches the Service mapping." -}}
+{{- end -}}
+
+{{- if and .Values.service.http.enabled (ne (int .Values.derper.httpPort) (int .Values.service.http.targetPort)) -}}
+{{- fail "derper.httpPort must match service.http.targetPort when service.http.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.applySecurity .Values.securityContext.readOnlyRootFilesystem (not .Values.tmpVolume.enabled) -}}
+{{- fail "securityContext.readOnlyRootFilesystem=true requires tmpVolume.enabled=true." -}}
+{{- end -}}
+
+{{- if and .Values.applySecurity .Values.securityContext.runAsNonRoot (lt (int .Values.service.https.targetPort) 1024) -}}
+{{- fail "service.https.targetPort must be greater than 1023 when running derper as non-root." -}}
+{{- end -}}
+
+{{- if and .Values.applySecurity .Values.securityContext.runAsNonRoot .Values.service.http.enabled (lt (int .Values.service.http.targetPort) 1024) -}}
+{{- fail "service.http.targetPort must be greater than 1023 when running derper as non-root." -}}
+{{- end -}}
+
+{{- if and .Values.applySecurity .Values.securityContext.runAsNonRoot .Values.stun.enabled (lt (int .Values.stun.targetPort) 1024) -}}
+{{- fail "stun.targetPort must be greater than 1023 when running derper as non-root." -}}
+{{- end -}}
+
+{{- if and .Values.service.http.enabled (eq (printf "%v" .Values.service.http.port) (printf "%v" .Values.service.https.port)) -}}
+{{- fail "service.http.port and service.https.port must differ." -}}
+{{- end -}}
+
+{{- if and .Values.stun.enabled (eq (printf "%v" .Values.stun.port) (printf "%v" .Values.service.https.port)) -}}
+{{- fail "stun.port and service.https.port must differ." -}}
+{{- end -}}
+
+{{- if and .Values.stun.enabled .Values.service.http.enabled (eq (printf "%v" .Values.stun.port) (printf "%v" .Values.service.http.port)) -}}
+{{- fail "stun.port and service.http.port must differ." -}}
+{{- end -}}
+
+{{- if and .Values.persistence.existingClaim (not .Values.persistence.enabled) -}}
+{{- fail "persistence.existingClaim requires persistence.enabled=true." -}}
+{{- end -}}
+
+{{- if not (or (eq .Values.certificates.mode "letsencrypt") (eq .Values.certificates.mode "manual")) -}}
+{{- fail "certificates.mode must be either letsencrypt or manual." -}}
+{{- end -}}
+
+{{- if empty .Values.certificates.certDir -}}
+{{- fail "certificates.certDir must be set." -}}
+{{- end -}}
+
+{{- if eq .Values.certificates.mode "letsencrypt" -}}
+  {{- if not .Values.service.http.enabled -}}
+    {{- fail "certificates.mode=letsencrypt requires service.http.enabled=true so ACME HTTP-01 can succeed." -}}
+  {{- end -}}
+{{- else if eq .Values.certificates.mode "manual" -}}
+  {{- if empty .Values.certificates.manual.existingSecret -}}
+    {{- fail "certificates.manual.existingSecret must be set when certificates.mode=manual." -}}
+  {{- end -}}
+  {{- if empty .Values.certificates.manual.crtKey -}}
+    {{- fail "certificates.manual.crtKey must be set when certificates.mode=manual." -}}
+  {{- end -}}
+  {{- if empty .Values.certificates.manual.keyKey -}}
+    {{- fail "certificates.manual.keyKey must be set when certificates.mode=manual." -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if .Values.derper.mesh.enabled -}}
+  {{- if empty .Values.derper.mesh.pskSecret.name -}}
+    {{- fail "derper.mesh.pskSecret.name must be set when derper.mesh.enabled=true." -}}
+  {{- end -}}
+  {{- if empty .Values.derper.mesh.pskSecret.key -}}
+    {{- fail "derper.mesh.pskSecret.key must be set when derper.mesh.enabled=true." -}}
+  {{- end -}}
+  {{- if not .Values.derper.mesh.with -}}
+    {{- fail "derper.mesh.with must contain at least one peer when derper.mesh.enabled=true." -}}
+  {{- end -}}
+{{- end -}}

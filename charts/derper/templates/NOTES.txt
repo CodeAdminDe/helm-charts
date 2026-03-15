@@ -1,0 +1,22 @@
+DERP service: {{ include "derper.fullname" . }}
+Namespace: {{ .Release.Namespace }}
+Hostname: {{ .Values.derper.hostname }}
+Certificate mode: {{ .Values.certificates.mode }}
+
+This chart intentionally renders no Ingress and no HTTPRoute.
+Expose DERP directly through the Service on TCP/{{ .Values.service.https.port }}.
+
+{{- if .Values.service.http.enabled }}
+HTTP port TCP/{{ .Values.service.http.port }} is enabled.
+{{- if eq .Values.certificates.mode "letsencrypt" }}
+Keep TCP/{{ .Values.service.http.port }} reachable from the internet for ACME HTTP-01.
+{{- end }}
+{{- else }}
+HTTP port is disabled.
+{{- end }}
+
+{{- if .Values.stun.enabled }}
+Integrated STUN is enabled on UDP/{{ .Values.stun.port }}.
+{{- else }}
+Integrated STUN is disabled. Point your DERP map `stunport` to an external STUN service if required.
+{{- end }}
