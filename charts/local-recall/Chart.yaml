@@ -3,9 +3,9 @@ name: local-recall
 description: A Helm chart for deploying LocalRecall on Kubernetes.
 type: application
 # renovate: bumpVersion
-version: 0.1.2
+version: 0.1.3
 # renovate: image=quay.io/mudler/localrecall
-appVersion: "v0.5.7"
+appVersion: "v0.5.8"
 kubeVersion: ">=1.24.0"
 home: https://github.com/CodeAdminDe/helm-charts
 keywords:
@@ -31,4 +31,4 @@ annotations:
   securityContext: "compatible"
   images: |
     - name: local-recall
-      image: quay.io/mudler/localrecall:v0.5.7
+      image: quay.io/mudler/localrecall:v0.5.8
